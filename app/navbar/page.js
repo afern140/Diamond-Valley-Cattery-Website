@@ -17,9 +17,7 @@ const Navbar = () => {
         <div className="px-4 h-full sticky">
             <ul className="flex items-center text-white space-x-4 sticky">
                 <li>
-                    <Link href="/pages/about" className="rounded-lg">
-                        <Logo className="rounded-lg"/>
-                    </Link>
+                  <Logo className="rounded-lg"/>
                 </li>
                 <li className="grow">
                     <p className="font-bold text-xl">Diamond Valley Cattery</p>

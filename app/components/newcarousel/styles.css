@@ -44,6 +44,7 @@ body {
   .image-properties {
     box-shadow: 0 0 8px 8px rgb(31, 41, 55) inset;
     object-fit: contain;
+    
   }
   
   .navigation-wrapper {

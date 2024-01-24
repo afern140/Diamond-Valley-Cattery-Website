@@ -9,7 +9,9 @@ export default function Home() {
     <div className="w-full bg-white">
       <div className="container mx-auto">
         <Carousel />
+
         <h2 className="home-header">Welcome to Diamond Valley Cattery</h2>
+        
         <div className="flex justify-between py-6">
           <Button />
           <Button />

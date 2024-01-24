@@ -22,8 +22,8 @@ export default () => {
     <>
       <div className="navigation-wrapper">
         <div ref={sliderRef} className="keen-slider">
-          <div className="keen-slider__slide number-slide1"><Image className="image-properties" src="/img/Kitty_3.png" layout="fill"/></div>
-          <div className="keen-slider__slide number-slide2"><Image className="image-properties" src="/img/Kitty_4.png" layout="fill"/></div>
+          <div className="keen-slider__slide number-slide1"><Image className="image-properties" src="/img/Kitty_3.png" fill/></div>
+          <div className="keen-slider__slide number-slide2"><Image className="image-properties" src="/img/Kitty_4.png" fill/></div>
         </div>
         {loaded && instanceRef.current && (
           <>

@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Capriola&display=swap');
+
+.home-header {
+    font-family: 'Capriola', sans-serif;
+    font-weight: 400;
+    font-size: 2rem;
+    display: flex;
+    line-height: 2rem;
+    text-align: center;
+    justify-content: center;
+    color: #000;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}

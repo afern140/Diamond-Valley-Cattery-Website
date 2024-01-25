@@ -31,5 +31,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Required packages
 firebase
-react-firebase-hooks
-react-firebaseui
+encoding

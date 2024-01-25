@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { auth } from "../_utils/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import Link from "next/link";
  
 
 export default function Page() {
@@ -35,6 +36,7 @@ function handleEmailPasswordSignIn(e){
                 <button type="submit">Sign In with Email</button>
             </form>
             <button onClick={() => auth.sendPasswordResetEmail(email)}>Forgot Password</button>
+            <Link href='login/signup'>Sign Up</Link>
         </div>
         }
         {user && (

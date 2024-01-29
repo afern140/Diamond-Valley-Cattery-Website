@@ -9,14 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.18",
-    "@heroicons/react": "^2.1.1",
-    "@nextui-org/react": "^2.2.9",
-    "heroicons": "^2.1.1",
-    "keen-slider": "^6.8.6",
-    "next": "^14.0.4",
+    "encoding": "^0.1.13",
+    "firebase": "^10.7.2",
+    "firebaseui": "^6.1.0",
+    "next": "14.0.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-firebase-hooks": "^5.1.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

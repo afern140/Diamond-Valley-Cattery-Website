@@ -1,0 +1,10 @@
+.catslist-search-background {
+    border: 1px solid;
+    border-color: black;
+    border-radius: 1.25rem;
+    font-size: 20px;
+    max-width: 90%;
+    padding-left: 1rem;
+    width: 80%;
+    height: 2.5rem;
+}

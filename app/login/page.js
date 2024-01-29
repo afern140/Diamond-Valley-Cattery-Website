@@ -27,24 +27,27 @@ function handleEmailPasswordSignIn(e){
 }
 
  return(
-    <div>
-        {!user && 
+    <div className="bg-white min-h-screen flex items-center justify-center">
+        {!user &&
+        <div dir="ltr" className="text-center">
+          <p className="text-xl text-slate-400 font-semibold mb-10">Sign in to your account</p>
+          <form onSubmit={handleEmailPasswordSignIn} className="mb-8 flex flex-col items-center">
+            <input type="email" value={email} className="text-black border-s-4 border-slate-300 p-2 mb-4" onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
+            <input type="password" value={password} className="text-black border-s-4 border-slate-300 p-2 mb-4" onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
+            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">Sign In with Email</button>
+        </form>
         <div>
-            <form onSubmit={handleEmailPasswordSignIn}>
-                <input type="email" value={email} className="text-black" onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-                <input type="password" value={password} className="text-black" onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-                <button type="submit">Sign In with Email</button>
-            </form>
-            <button onClick={() => auth.sendPasswordResetEmail(email)}>Forgot Password</button>
-            <Link href='login/signup'>Sign Up</Link>
+          <button onClick={() => auth.sendPasswordResetEmail(email)} className="text-slate-500 mb-2">Forgot Password</button>
+          <Link href='login/signup' className="text-slate-500  ml-6">Sign Up</Link>
         </div>
+      </div>
         }
         {user && (
-        <div>
+        <div className="text-center">
             <p>
             Welcome, {user.displayName} ({user.email})
             </p>
-            <button onClick={handleSignOut}>Sign Out</button>
+            <button onClick={handleSignOut} className="bg-slate-500 text-white p-2">Sign Out</button>
             <br/>
         </div>
         )}

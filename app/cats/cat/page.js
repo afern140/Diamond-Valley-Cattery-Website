@@ -7,9 +7,16 @@ import Link from "next/link";
 import { useState } from "react";
 import Cats from "./cat"
 
+import { useRouter } from 'next/navigation'
+
+
 export default function Page({ params }) {
 
 	const [selectedCat, setSelectedCat] = useState(Cats[parseInt(params.cat)]);
+	const router = useRouter();
+	const data = router.query;
+
+	console.log(data);
 
 	return(
 		<main className="bg-gray-100">
@@ -93,7 +100,7 @@ export default function Page({ params }) {
 					</div>
 				</section>
 			) : (
-				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found</h1>
+				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>
 			)}
 		</main>
 	)

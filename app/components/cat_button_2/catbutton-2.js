@@ -13,12 +13,12 @@ const CatButton = ({picID}) => {
     const [ID, setID] = useState(picID);
 
     return (
-        <Link href="/pages/cats/profile">
+        <Link href="/pages/cats/profile" className="w-full flex justify-center">
         <button className="flex-col font-bold p-2 text-black place-items-center">
             <Image
                 src="/img/Kitty_2.png"
-                width={width < 1024 ? "130" : "250"}
-                height={width < 1024 ? "45" : "74"}
+                width={width < 1024 ? "300" : "300"}
+                height={width < 1024 ? "300" : "300"}
                 className="justify-center align-center place-items-center"
                 objectFit="contain"/>
             <p>Cat Name</p>

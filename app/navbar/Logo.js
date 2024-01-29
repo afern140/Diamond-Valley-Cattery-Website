@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "./Button";
+import Home from "@/app/page"
 
 const Logo = () => {
   //update the size of the logo when the size of the screen changes
@@ -35,7 +36,7 @@ const Logo = () => {
 
   return (
     <>
-      <Link href="/pages/about" style={{ display: showButton ? "none" : "block" }}>
+      <Link href="/" style={{ display: showButton ? "none" : "block" }}>
         <Image
           src="/img/Placeholder.png"
           alt="Logo"

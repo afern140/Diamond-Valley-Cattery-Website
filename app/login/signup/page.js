@@ -19,10 +19,30 @@ export default function page() {
   }
 
   return(
-    <form onSubmit={handleEmailPasswordSignUp}>
-      <input type="email" value={email} className="text-black" onChange={(e) => setEmail(e.target.value)} placeholder="Email" required/>
-      <input type="password" value={password} className="text-black" onChange={(e) => setPassword(e.target.value)} placeholder="Password" required/>
-      <button type="submit">Sign Up with Email</button>
-    </form>
+<div className="min-h-screen flex items-center justify-center bg-white">
+  <form onSubmit={handleEmailPasswordSignUp} className="mb-8 flex flex-col items-center">
+    <input
+      type="email"
+      value={email}
+      className="text-black border-s-4 border-slate-300 p-2 mb-4"
+      onChange={(e) => setEmail(e.target.value)}
+      placeholder="Email"
+      required
+    />
+    <input
+      type="password"
+      value={password}
+      className="text-black border-s-4 border-slate-300 p-2 mb-4"
+      onChange={(e) => setPassword(e.target.value)}
+      placeholder="Password"
+      required
+    />
+    <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">
+      Sign Up with Email
+    </button>
+  </form>
+</div>
+
+
   );
 }

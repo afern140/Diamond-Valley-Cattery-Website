@@ -14,18 +14,18 @@ import Vets from "./pages/vets/page"*/
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Diamond Valley Cattery',
-  description: 'Diamond Valley Cattery',
+title: 'Diamond Valley Cattery',
+description: 'Diamond Valley Cattery',
 }
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Navigation />
-        {children}
-        <Footer />
-      </body>
-    </html>
-  )
+return (
+	<html lang="en">
+		<body className={inter.className}>
+			<Navigation />
+				{children}
+			<Footer />
+		</body>
+	</html>
+)
 }

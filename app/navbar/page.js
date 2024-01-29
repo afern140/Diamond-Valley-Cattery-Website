@@ -33,7 +33,7 @@ const Navbar = () => {
       <div className="background-button-container">
         <Link href="" className="button-container"><button className="mt-2">...</button></Link>
         <Link href="" className="button-container"><button className="mt-2">About</button></Link>
-        <Link href="/pages/cats" className="button-container"><button className="mt-2">Cats</button></Link>
+        <Link href="/cats" className="button-container"><button className="mt-2">Cats</button></Link>
         <Link href="" className="button-container"><button className="mt-2">Litters</button></Link>
         <Link href="" className="button-container"><button className="mt-2">Vets</button></Link>
         <Link href="" className="button-container"><button className="mt-2">Registry</button></Link>

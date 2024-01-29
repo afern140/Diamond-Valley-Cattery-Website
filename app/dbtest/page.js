@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { db } from "../_util/firebase";
+import { db } from "../_utils/firebase";
 import { collection, getDocs, addDoc, query } from "firebase/firestore";
 
 async function getCats() {

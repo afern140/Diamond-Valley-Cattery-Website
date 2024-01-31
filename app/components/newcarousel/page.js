@@ -20,7 +20,7 @@ export default () => {
 
   return (
     <>
-      <div className="navigation-wrapper">
+      <div className="relative">
         <div ref={sliderRef} className="keen-slider">
           <div className="keen-slider__slide number-slide1"><Image className="image-properties" src="/img/Kitty_3.png" fill/></div>
           <div className="keen-slider__slide number-slide2"><Image className="image-properties" src="/img/Kitty_4.png" fill/></div>
@@ -48,7 +48,7 @@ export default () => {
         )}
       </div>
       {loaded && instanceRef.current && (
-        <div className="dots">
+        <div className="flex py-2 justify-center">
           {[
             ...Array(instanceRef.current.track.details.slides.length).keys(),
           ].map((idx) => {

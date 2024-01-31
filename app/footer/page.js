@@ -2,11 +2,10 @@ import React from "react";
 import Link from "next/link";
 import Logo from "@/app/navbar/Logo";
 import Button from "@/app/navbar/Button";
-import "./styles.css"
 
 const Footer = () => {
   return (
-    <div className="footer-body">
+    <div className="text-lg Capriola text-white">
         <div className="w-full h-10 bg-gray-900 top-0">
             <div className="flex mx-auto px-8 h-full w-50">
                 <button className="grow hover:underline">...</button>
@@ -16,7 +15,7 @@ const Footer = () => {
             </div>
             <div className="bg-gray-900 px-4">
                 <div className="w-full flex justify-end">
-                    <div className="contact-info-container">
+                    <div className="text-base grid grid-cols-2 gap-x-4">
                         <Link href="" className="hover:underline">Accessibility</Link>
                         <p>1-800-XXX-XXXX</p>
                         <Link href="" className="hover:underline">Privacy Policy</Link>

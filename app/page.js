@@ -1,16 +1,14 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import Carousel from './components/newcarousel/page'
-import Button from './components/displaybutton/page'
-import "./styles.css"
+import Button from './components/displaybutton'
 
 export default function Home() {
   return (
     <div className="w-full bg-white">
       <div className="container mx-auto">
-        <Carousel />
+        {/*<Carousel />*/}
 
-        <h2 className="home-header">Welcome to Diamond Valley Cattery</h2>
+        <h2 className=" text-4xl flex text-center justify-center text-black py-4">Welcome to Diamond Valley Cattery</h2>
         
         <div className="flex justify-between py-6">
           <Button />

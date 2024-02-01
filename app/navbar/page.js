@@ -23,21 +23,18 @@ const Navbar = () => {
                     <p className="font-bold text-xl">Diamond Valley Cattery</p>
                 </li>
                 <li className=" ">
-                    {(signOn == true) && <button className="signing-button" onClick={handleClick}>Sign In</button> }
+                    {(signOn == true) && <button className=" p-2.5 rounded-3xl bg-white font-bold px-2 text-black" onClick={handleClick}>Sign In</button> }
                     {(signOn == false) && <button className="signing-button" onClick={handleClick}>Sign Out</button> }
                     {/*<button className="h-12 rounded-3xl bg-white font-bold px-5 text-black" onClick={handleClick}>Sign In</button>*/}
                 </li>
             </ul>
           </div>
       </div>
-      <div className="background-button-container">
-        <Link href="" className="button-container"><button className="mt-2">...</button></Link>
-        <Link href="" className="button-container"><button className="mt-2">About</button></Link>
-        <Link href="/cats" className="button-container"><button className="mt-2">Cats</button></Link>
-        <Link href="" className="button-container"><button className="mt-2">Litters</button></Link>
-        <Link href="" className="button-container"><button className="mt-2">Vets</button></Link>
-        <Link href="" className="button-container"><button className="mt-2">Registry</button></Link>
-        <Link href="" className="button-container"><button className="mt-2">Contact</button></Link>
+      <div className="flex w-full h-10 bg-cat-blue-dark-0 sticky justify-between align-middle">
+        <Link href="" className=" flex-grow border-l border-r border-cat-blue-dark-1 text-center"><button className="mt-2">About</button></Link>
+        <Link href="/cats" className="flex-grow border-l border-r border-cat-blue-dark-1 text-center"><button className="mt-2">Cats</button></Link>
+        <Link href="" className="flex-grow border-l border-r border-cat-blue-dark-1 text-center"><button className="mt-2">Litters</button></Link>
+        <Link href="" className="flex-grow border-l border-r border-cat-blue-dark-1 text-center"><button className="mt-2">Contact</button></Link>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ const CatButton = ({picID}) => {
         <Link href="/pages/cats/profile" className="w-full flex justify-center">
         <button className="flex-col font-bold p-2 text-black place-items-center">
             <Image
+                alt="Kitty"
                 src="/img/Kitty_2.png"
                 width={width < 1024 ? "300" : "300"}
                 height={width < 1024 ? "300" : "300"}

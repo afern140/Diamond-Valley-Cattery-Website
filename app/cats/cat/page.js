@@ -16,8 +16,6 @@ export default function Page({ params }) {
 	const router = useRouter();
 	const data = router.query;
 
-	console.log(data);
-
 	return(
 		<main className="bg-gray-100">
 			{selectedCat ? (
@@ -102,6 +100,6 @@ export default function Page({ params }) {
 			) : (
 				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>
 			)}
-		</main>
-	)
+			</main>
+			)
 }

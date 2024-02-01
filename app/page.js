@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="w-full bg-white">
       <div className="container mx-auto">
-        <Carousel />
+        {/*<Carousel />*/}
 
         <h2 className="home-header">Welcome to Diamond Valley Cattery</h2>
         

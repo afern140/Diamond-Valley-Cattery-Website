@@ -1,12 +1,10 @@
 "use client"
 import React, { useState } from "react"
-import { useKeenSlider } from "keen-slider/react"
-import "keen-slider/keen-slider.min.css"
 import "./styles.css"
 import Image from "next/image"
 
-export default () => {
-  const [currentSlide, setCurrentSlide] = useState(0)
+export default function Carousel() {
+  {/*const [currentSlide, setCurrentSlide] = useState(0)
   const [loaded, setLoaded] = useState(false)
   const [sliderRef, instanceRef] = useKeenSlider({
     initial: 0,
@@ -22,8 +20,8 @@ export default () => {
     <>
       <div className="navigation-wrapper">
         <div ref={sliderRef} className="keen-slider">
-          <div className="keen-slider__slide number-slide1"><Image className="image-properties" src="/img/Kitty_3.png" fill/></div>
-          <div className="keen-slider__slide number-slide2"><Image className="image-properties" src="/img/Kitty_4.png" fill/></div>
+          <div className="keen-slider__slide number-slide1"><Image className="image-properties" src="/img/Kitty_3.png" alt="Kitty" fill/></div>
+          <div className="keen-slider__slide number-slide2"><Image className="image-properties" src="/img/Kitty_4.png" alt="Kitty" fill/></div>
         </div>
         {loaded && instanceRef.current && (
           <>
@@ -85,6 +83,6 @@ function Arrow(props) {
       {!props.left && (
         <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
       )}
-    </svg>
-  )
+      </svg>
+  )*/}
 }

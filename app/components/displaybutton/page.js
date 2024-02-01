@@ -6,6 +6,7 @@ const DisplayButton = () => {
         <button className="display-button-container">
             <div className="button-image">
                 <Image
+                    alt="Placeholder"
                     src="/img/Placeholder.png"
                     width={128}
                     height={128}/>

@@ -1,6 +1,4 @@
 import { Fragment, useState } from 'react'
-import { Combobox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import "./styles.css";
 
 const people = [
@@ -13,7 +11,7 @@ const people = [
 ]
 
 const DropDown = () => {
-  const [selected, setSelected] = useState(people[0])
+  {/*const [selected, setSelected] = useState(people[0])
   const [query, setQuery] = useState('')
 
   const filteredPeople =
@@ -24,10 +22,10 @@ const DropDown = () => {
             .toLowerCase()
             .replace(/\s+/g, '')
             .includes(query.toLowerCase().replace(/\s+/g, ''))
-        )
+)*/}
 
   return (
-    <div className="">
+    {/*<div className="">
       <Combobox value={selected} onChange={setSelected}>
         <div className="relative mt-1">
           <div className="dropdown-background relative w-full cursor-default overflow-hidden bg-white text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
@@ -93,7 +91,7 @@ const DropDown = () => {
           </Transition>
         </div>
       </Combobox>
-    </div>
+                          </div>*/}
   )
 };
 export default DropDown;

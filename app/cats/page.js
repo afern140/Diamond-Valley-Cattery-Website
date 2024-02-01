@@ -4,18 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import "./styles.css";
-import SearchBox from "@/app/components/searchbox/searchbox";
-import Dropdown from "@/app/components/dropdown/dropdown";
+//import SearchBox from "@/app/components/searchbox/searchbox";
+//import Dropdown from "@/app/components/dropdown/dropdown";
 import CatButton1 from "@/app/components/cat_button_1/catbutton-1";
 import CatButton2 from "@/app/components/cat_button_2/catbutton-2";
+import cats from "./cat/cat.json"
 
 export default function Page() {
-
   return (
     <main className="w-full flex-col justify-center">
       <div>
         <h1 className="catlist-header">Cats</h1>
-        <SearchBox />
+        {/*<SearchBox />*/}
       </div>
 
       <div className="flex py-6 w-full justify-center">
@@ -25,37 +25,40 @@ export default function Page() {
             <h2 className="py-4 text-2xl">Filters</h2>
 
             <h3 className="py-2 text-lg">Breed</h3>
-            <Dropdown/>
+            {/*<Dropdown/>*/}
             <h3 className="py-2 text-lg">Gender</h3>
-            <Dropdown/>
+            {/*<Dropdown/>*/}
             <h3 className="py-2 text-lg">Age</h3>
-            <Dropdown className="py-2" />
+            {/*<Dropdown/>*/}
             <h3 className="py-2 text-lg">Color</h3>
-            <Dropdown className="py-2" />
+            {/*<Dropdown/>*/}
           </div>
 
           {/* Second split of the page */}
           <div className="w-full flex-col">
             <div className="flex">
               <div className="w-3/5" />
-              <div className=" w-2/5">
-                <h2 className="justify-end px-12 flex">Sort By: </h2>
-                <Dropdown />
-              </div>
             </div>
             <div className="h-6"/>
             <div className="grid w-full grid-cols-3">
-                <CatButton1/>
+                {/*<CatButton1/>
                 <CatButton2 />
                 <CatButton1 />
                 <CatButton2 />
                 <CatButton1 />
-                <CatButton2 />
+                <CatButton2 />*/}
+
+                {
+                    cats.map((cat, index) => (
+                        <div key={index}>
+                            {(index % 2 == 0) ? <CatButton1 picID={index} /> : <CatButton2 picID={index} />}
+                        </div>
+                    ))
+                }
               </div>
           </div>  
         </div>
       </div>
     </main>
   )
-
-  }
+}

@@ -87,13 +87,13 @@ export default function Page() {
                     fieldInput.length >= 1 ? (
                         filteredResults.map((cat) => (
                             ((cat.name.toLowerCase().includes(fieldInput.toLowerCase())
-                            || cat.breed.toLowerCase().includes(fieldInput.toLowerCase()))
-                            && (
+                            || cat.breed.toLowerCase().includes(fieldInput.toLowerCase())))
+                            /*&& (
                                 (dropdownFilter === "breed" && cat.breed.toLowerCase().includes(dropdownValue.toLowerCase()))
                                 && (dropdownFilter === "gender" && cat.gender.toLowerCase().includes(dropdownValue.toLowerCase()))
                                 && (dropdownFilter === "age" && cat.age.toLowerCase().includes(dropdownValue.toLowerCase()))
                                 && (dropdownFilter === "color" && cat.color.toLowerCase().includes(dropdownValue.toLowerCase()))
-                            )) &&
+                            ))*/ &&
                                 <div>
                                     <CatButton1 id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
                                 </div>

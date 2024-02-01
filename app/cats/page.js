@@ -4,18 +4,36 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import "./styles.css";
-//import SearchBox from "@/app/components/searchbox/searchbox";
+import SearchBox from "@/app/components/searchbox/searchbox";
 //import Dropdown from "@/app/components/dropdown/dropdown";
 import CatButton1 from "@/app/components/cat_button_1/catbutton-1";
-import CatButton2 from "@/app/components/cat_button_2/catbutton-2";
 import cats from "./cat/cat.json"
 
 export default function Page() {
+    const [fieldInput, setFieldInput]  = useState()
+    {/*const handleInputChange = (
+        Event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setFormData({
+            ...FormData,
+            [Event.target.name]: Event.target.value,
+        });
+    };*/}
+
   return (
     <main className="w-full flex-col justify-center">
       <div>
         <h1 className="catlist-header">Cats</h1>
-        {/*<SearchBox />*/}
+        {/* Search Field */}
+        <div className="align-middle justify-center flex">
+            <input type="text"
+                   name="catlist-search"
+                   placeholder="Search"
+                   className="catslist-search-background"
+                   onChange = { (Event) => setFieldInput(Event.target.value) } />
+            
+            {/* Insert icon here... */}
+        </div>
       </div>
 
       <div className="flex py-6 w-full justify-center">
@@ -25,13 +43,13 @@ export default function Page() {
             <h2 className="py-4 text-2xl">Filters</h2>
 
             <h3 className="py-2 text-lg">Breed</h3>
-            {/*<Dropdown/>*/}
+            {/*<Dropdown />*/}
             <h3 className="py-2 text-lg">Gender</h3>
-            {/*<Dropdown/>*/}
+            {/*<Dropdown />*/}
             <h3 className="py-2 text-lg">Age</h3>
-            {/*<Dropdown/>*/}
+            {/*<Dropdown />*/}
             <h3 className="py-2 text-lg">Color</h3>
-            {/*<Dropdown/>*/}
+            {/*<Dropdown />*/}
           </div>
 
           {/* Second split of the page */}
@@ -41,17 +59,11 @@ export default function Page() {
             </div>
             <div className="h-6"/>
             <div className="grid w-full grid-cols-3">
-                {/*<CatButton1/>
-                <CatButton2 />
-                <CatButton1 />
-                <CatButton2 />
-                <CatButton1 />
-                <CatButton2 />*/}
-
+                {/* Populating the list with cats */}
                 {
                     cats.map((cat, index) => (
                         <div key={index}>
-                            {(index % 2 == 0) ? <CatButton1 picID={index} /> : <CatButton2 picID={index} />}
+                            <CatButton1 id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} /> 
                         </div>
                     ))
                 }

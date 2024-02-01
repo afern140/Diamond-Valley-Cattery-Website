@@ -10,16 +10,21 @@ import CatButton1 from "@/app/components/cat_button_1/catbutton-1";
 import cats from "./cat/cat.json"
 
 export default function Page() {
-    const [fieldInput, setFieldInput]  = useState()
-    {/*const handleInputChange = (
-        Event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        setFormData({
-            ...FormData,
-            [Event.target.name]: Event.target.value,
-        });
-    };*/}
+    const [fieldInput, setFieldInput]  = useState("")
+    const [filteredResults, setFilteredResults] = useState([])
 
+    const searchItems = (searchValue) => {
+        setFieldInput(searchValue)
+        
+        if (fieldInput !== "") {
+            const filteredData = cats.filter((cat) => { return Object.values(cat).join('').toLowerCase().includes(fieldInput.toLowerCase()) })
+            setFilteredResults(filteredData)
+        }
+        else {
+            setFilteredResults(cats)
+        }
+    }
+    
   return (
     <main className="w-full flex-col justify-center">
       <div>
@@ -30,7 +35,7 @@ export default function Page() {
                    name="catlist-search"
                    placeholder="Search"
                    className="catslist-search-background"
-                   onChange = { (Event) => setFieldInput(Event.target.value) } />
+                   onChange = { (Event) => searchItems(Event.target.value) } />
             
             {/* Insert icon here... */}
         </div>
@@ -61,11 +66,22 @@ export default function Page() {
             <div className="grid w-full grid-cols-3">
                 {/* Populating the list with cats */}
                 {
-                    cats.map((cat, index) => (
-                        <div key={index}>
-                            <CatButton1 id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} /> 
-                        </div>
-                    ))
+                    fieldInput.length >= 1 ? (
+                        filteredResults.map((cat) => (
+                            (cat.name.toLowerCase().includes(fieldInput.toLowerCase())
+                            || cat.breed.toLowerCase().includes(fieldInput.toLowerCase())) &&
+                                <div>
+                                    <CatButton1 id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
+                                </div>
+                            )
+                        )
+                    ) : (
+                        cats.map((cat, index) => (
+                            <div key={index}>
+                                <CatButton1 id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
+                            </div>
+                        ))
+                    )
                 }
               </div>
           </div>  

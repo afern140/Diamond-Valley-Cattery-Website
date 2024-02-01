@@ -15,7 +15,11 @@ module.exports = {
       colors: {
         "cat-blue-dark-0": "#305B73",
         "cat-blue-dark-1": "#1f2937",
+        "cat-gray-0": "#94b3c7bf",
       },
+      boxShadow: {
+        "cat-default": "0px 5px 5px 0px rgba(0, 0, 0, 0.25)",
+      }
     },
   },
   plugins: [],

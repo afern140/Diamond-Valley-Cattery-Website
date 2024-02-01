@@ -7,14 +7,18 @@ import Link from "next/link";
 import { useState } from "react";
 import Cats from "./cat"
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 
-export default function Page({ params }) {
+export default function Page() {
+	const params = useSearchParams().get("id");
 
-	const [selectedCat, setSelectedCat] = useState(Cats[parseInt(params.cat)]);
+	console.log(Cats.find(e => { return e.id === params}));
+	const [selectedCat, setSelectedCat] = useState(Cats.find(e => { return e.id === parseInt(params)}));
 	const router = useRouter();
 	const data = router.query;
+	
+
 
 	return(
 		<main className="bg-gray-100">

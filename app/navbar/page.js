@@ -33,8 +33,6 @@ const Navbar = () => {
         <Link href="" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">About</button></Link>
         <Link href="/pages/cats" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">Cats</button></Link>
         <Link href="" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">Litters</button></Link>
-        <Link href="" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">Vets</button></Link>
-        <Link href="" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">Registry</button></Link>
         <Link href="" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">Contact</button></Link>
       </div>
     </div>

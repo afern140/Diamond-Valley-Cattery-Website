@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { db } from '../../_utils/firebase'; // Update the path based on your project structure
+import { db } from '../_utils/firebase';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
-const ChatRoom = ({ roomId }) => {
+export default function chatRoom({ roomId }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -26,6 +26,4 @@ const ChatRoom = ({ roomId }) => {
       ))}
     </div>
   );
-};
-
-export default ChatRoom;
+}

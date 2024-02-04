@@ -1,12 +1,14 @@
 "use client";
 import React from 'react';
 import { useRouter } from 'next/router';
-import ChatRoom from '../chatroom/page';
-import ChatInput from '../../_utils/chatInput';
+import ChatRoom from './chatRoom';
+import ChatInput from '../_utils/chatInput';
 
-const ChatPage = () => {
+export default function chatPage() {
+console.log("Executing ChatPage");
   const router = useRouter();
   const { roomId } = router.query;
+console.log("roomId:", roomId);
 
   if (!roomId) {
     return <p>Loading...</p>; // Handle the loading state or redirect
@@ -19,6 +21,4 @@ const ChatPage = () => {
       <ChatInput roomId={roomId} />
     </Layout>
   );
-};
-
-export default ChatPage;
+}

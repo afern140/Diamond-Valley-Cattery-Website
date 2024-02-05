@@ -16,4 +16,4 @@ firebase
 react-firebase-hooks
 react-firebaseui
 encoding
-firebase
+

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Logo from "./Logo";
 import Button from "./Button";
 
+
 const Navbar = () => {
     const [signOn, setSignOn] = useState(false);
     const handleClick = () => { setSignOn((signOn) => !signOn)}

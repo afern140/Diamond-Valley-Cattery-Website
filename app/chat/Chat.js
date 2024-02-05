@@ -11,7 +11,6 @@ const Chat = () => {
   
     const style = {
       main: `flex flex-col p-[0px]`,
-      // Define other styles as needed
     };
   
     useEffect(() => {

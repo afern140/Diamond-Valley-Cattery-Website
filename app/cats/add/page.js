@@ -4,7 +4,7 @@ import { useState } from "react"
 
 export default function Page() {
 	const [cat, setCat] = useState({
-		id: 0,
+		id: null,
 		name: null,
 		age: null,
 		color: null,
@@ -16,13 +16,17 @@ export default function Page() {
 		fatherID: null,
 		motherID: null,
 		children: null
-	})
+	});
 
 	const Cats = null;
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setCat((prevCat) => ({ ...prevCat, [name]: value }));
+	}
+
+	const handleSubmit = async () => {
+		console.log(cat)
 	}
 
 	return(
@@ -49,6 +53,14 @@ export default function Page() {
 				<input
 					className="text-black p-2 m-5 mb-0 text-center border-2 border-[#305B73]"
 					type="text"
+					name="gender"
+					placeholder="Cat Gender"
+					value={cat.gender}
+					onChange={handleChange}
+				/>
+				<input
+					className="text-black p-2 m-5 mb-0 text-center border-2 border-[#305B73]"
+					type="text"
 					name="age"
 					placeholder="Cat Age"
 					value={cat.age}
@@ -62,8 +74,16 @@ export default function Page() {
 					value={cat.color}
 					onChange={handleChange}
 				/>
+				<input
+					className="text-black p-2 m-5 mb-0 text-center border-2 border-[#305B73]"
+					type="text"
+					name="eye-color"
+					placeholder="Cat Eye Color"
+					value={cat.eye_color}
+					onChange={handleChange}
+				/>
 			</div>
-			<button className="text-white text-2xl rounded-lg px-5 py-3 m-5 bg-[#305B73]">Next</button>
+			<button className="text-white text-2xl rounded-lg px-5 py-3 m-5 bg-[#305B73]" onClick={handleSubmit}>Next</button>
 		</main>
 	)
 }

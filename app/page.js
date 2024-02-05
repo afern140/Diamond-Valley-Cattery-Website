@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import Carousel from './components/newcarousel/page'
 import Button from './components/displaybutton/page'
 
 export default function Home() {

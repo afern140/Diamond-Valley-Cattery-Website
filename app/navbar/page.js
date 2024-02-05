@@ -30,7 +30,6 @@ const Navbar = () => {
           </div>
       </div>
       <div className="flex w-full h-10 bg-slate-400 sticky justify-between">
-        <Link href="" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">...</button></Link>
         <Link href="" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">About</button></Link>
         <Link href="/cats" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">Cats</button></Link>
         <Link href="" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">Litters</button></Link>

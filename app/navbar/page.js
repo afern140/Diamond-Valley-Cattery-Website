@@ -3,12 +3,16 @@ import { useEffect, useState } from "react";
 import React from "react";
 import Link from "next/link";
 import Logo from "./Logo";
-import Button from "./Button";
+import {useUserAuth} from "../_utils/auth-context";
 
 
 const Navbar = () => {
+    const {user,firebaseSignOut} = useUserAuth();
     const [signOn, setSignOn] = useState(false);
     const handleClick = () => { setSignOn((signOn) => !signOn)}
+    function handleSignOut(){
+      firebaseSignOut();
+ }
 
   return (
     <div className=" text-white font-normal text-xl">
@@ -22,8 +26,8 @@ const Navbar = () => {
                     <p className="font-bold text-xl">Diamond Valley Cattery</p>
                 </li>
                 <li className=" ">
-                    {(signOn == true) && <button className=" p-2.5 rounded-3xl bg-white font-bold px-2 text-black" onClick={handleClick}>Sign In</button> }
-                    {(signOn == false) && <button className="p-2.5 rounded-3xl bg-white font-bold px-2 text-black" onClick={handleClick}>Sign Out</button> }
+                    {!user && <Link href="../login"><button className=" p-2.5 rounded-3xl bg-white font-bold px-2 text-black">Sign In</button></Link> }
+                    {user && <button className="p-2.5 rounded-3xl bg-white font-bold px-2 text-black" onClick={handleSignOut}>Sign Out</button> }
                     {/*<button className="h-12 rounded-3xl bg-white font-bold px-5 text-black" onClick={handleClick}>Sign In</button>*/}
                 </li>
             </ul>

@@ -7,7 +7,7 @@ import Link from "next/link";
  
 
 export default function Page() {
-const {user, firebaseSignOut } = useUserAuth();
+const {user, firebaseSignOut} = useUserAuth();
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 

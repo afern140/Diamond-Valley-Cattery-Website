@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Capriola&display=swap');
+
+body, main, p, span, h1, h2, h3, h4, h5, h6, li, button {
+    font-family: 'Capriola', sans-serif;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

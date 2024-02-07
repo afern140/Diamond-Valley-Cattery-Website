@@ -13,7 +13,7 @@ function CatButton({ id, name, age, color, eye_color, breed, gender, vaccination
     const [width, setWidth] = useState(0);
 
     return (
-        <Link href={{pathname: "/cats/cat", query: {id}}} className="w-full flex justify-center">
+        <Link href={`/cats/${id}`} className="w-full flex justify-center">
         <button className="flex-col font-bold p-2 text-black place-items-center">
             <Image
                 alt="Kitty"

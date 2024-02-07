@@ -22,7 +22,12 @@ function handleEmailPasswordSignIn(e){
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        if (errorCode === 'auth/invalid-credential') {
+          alert('Invalid email or password');
+        }
+        else{
+        console.log(errorCode, "Error message is ", errorMessage);
+        }
       });
 }
 

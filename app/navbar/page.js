@@ -1,5 +1,4 @@
 "use client"
-import { useEffect, useState } from "react";
 import React from "react";
 import Link from "next/link";
 import Logo from "./Logo";
@@ -8,8 +7,6 @@ import {useUserAuth} from "../_utils/auth-context";
 
 const Navbar = () => {
     const {user,firebaseSignOut} = useUserAuth();
-    const [signOn, setSignOn] = useState(false);
-    const handleClick = () => { setSignOn((signOn) => !signOn)}
     function handleSignOut(){
       firebaseSignOut();
  }

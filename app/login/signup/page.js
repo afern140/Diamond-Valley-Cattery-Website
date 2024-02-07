@@ -12,14 +12,28 @@ export default function page() {
 
   async function handleRegister(e){
     e.preventDefault();
+    //Create user
+    console.log("Creating user.");
     await createUserWithEmailAndPassword(auth, email, password)
       .catch((error) => {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
+        if (errorCode === 'auth/email-already-in-use') {
+          alert('Invalid Email or Password');
+        }
+        else{
+         console.log(errorCode, errorMessage);
+        }
+      });
+      //Add user name
+      console.log("Adding username.");
+    await updateProfile(auth.currentUser, {displayName: displayName})
+      .catch ((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
         console.log(errorCode, errorMessage);
       });
-    await updateProfile(auth.currentUser, {displayName: displayName});
     //await sendEmailVerification(auth.currentUser);
     handleRedirect();
   }

@@ -43,7 +43,7 @@ function handleEmailPasswordSignIn(e){
       </div>
         }
         {user && (
-        <div className="text-center">
+        <div className="text-center text-slate-500 text-xl">
             <p>
             Welcome, {user.displayName} ({user.email})
             </p>

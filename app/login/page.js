@@ -7,9 +7,10 @@ import Chat from "../chat/Chat";
 import Link from "next/link";
 
 export default function Page() {
-  const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  
+  const {user, firebaseSignOut} = useUserAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   function handleSignOut() {
     firebaseSignOut();
@@ -17,13 +18,19 @@ export default function Page() {
 
   function handleEmailPasswordSignIn(e) {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password).catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(errorCode, errorMessage);
-    });
-  }
+    signInWithEmailAndPassword(auth, email, password)
+      .catch((error) => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode === 'auth/invalid-credential') {
+          alert('Invalid email or password');
+        }
+        else{
+        console.log(errorCode, "Error message is ", errorMessage);
+        }
+      });
+}
 
   return (
     <div className="bg-white min-h-screen flex items-center justify-center">
@@ -71,10 +78,11 @@ export default function Page() {
             </Link>
           </div>
         </div>
-      )}
-      {user && (
-        <div className="text-center">
-          <p>
+      </div>
+        }
+        {user && (
+        <div className="text-center text-slate-500">
+            <p>
             Welcome, {user.displayName} ({user.email})
           </p>
           <button

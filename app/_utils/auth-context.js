@@ -48,6 +48,6 @@ export const AuthContextProvider = ({ children }) => {
 };
  
 export const useUserAuth = () => {
-    console.log(useContext(AuthContext));
+    //console.log(useContext(AuthContext));
   return useContext(AuthContext);
 };

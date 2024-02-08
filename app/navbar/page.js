@@ -1,14 +1,15 @@
 "use client"
-import { useEffect, useState } from "react";
 import React from "react";
 import Link from "next/link";
 import Logo from "./Logo";
-import Button from "./Button";
+import {useUserAuth} from "../_utils/auth-context";
 
 
 const Navbar = () => {
-    const [signOn, setSignOn] = useState(false);
-    const handleClick = () => { setSignOn((signOn) => !signOn)}
+    const {user,firebaseSignOut} = useUserAuth();
+    function handleSignOut(){
+      firebaseSignOut();
+ }
 
   return (
     <div className="font-sans text-white font-normal text-base">
@@ -22,8 +23,8 @@ const Navbar = () => {
                     <p className="font-bold text-xl">Diamond Valley Cattery</p>
                 </li>
                 <li className=" ">
-                    {(signOn == true) && <button className="px-4 py-2 rounded-full bg-white font-bold text-black" onClick={handleClick}>Sign In</button> }
-                    {(signOn == false) && <button className="px-4 py-2 rounded-full bg-white font-bold text-black" onClick={handleClick}>Sign Out</button> }
+                    {!user && <Link href="../login"><button className=" p-2.5 rounded-3xl bg-white font-bold px-2 text-black">Sign In</button></Link> }
+                    {user && <button className="p-2.5 rounded-3xl bg-white font-bold px-2 text-black" onClick={handleSignOut}>Sign Out</button> }
                     {/*<button className="h-12 rounded-3xl bg-white font-bold px-5 text-black" onClick={handleClick}>Sign In</button>*/}
                 </li>
             </ul>

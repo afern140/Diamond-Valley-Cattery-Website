@@ -15,7 +15,7 @@ const Footer = () => {
             </div>
             <div className=" bg-gray-900 p-7">
                 <div className="w-full flex justify-end">
-                    <div className=" grid-cols-2 grid text-base">
+                    <div className="text-base grid grid-cols-2 gap-x-4">
                         <Link href="" className="hover:underline">Accessibility</Link>
                         <p>1-800-XXX-XXXX</p>
                         <Link href="" className="hover:underline">Privacy Policy</Link>

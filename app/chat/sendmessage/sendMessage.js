@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import { auth, db } from "../../_utils/firebase";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";

@@ -51,7 +51,6 @@ export default function Page({ params }) {
                             <Link href="/chat">
                             <button className="bg-white text-[#305B73] p-2 m-2 rounded-md">Request a Meeting</button>
                             </Link>
-						
 						</div>
 					</div>
 					<div className="text-black text-xl font-bold">

@@ -9,13 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@material-tailwind/react": "^2.1.8",
     "encoding": "^0.1.13",
-    "firebase": "^10.7.2",
-    "firebaseui": "^6.1.0",
+    "firebase": "^10.8.0",
     "firebase-admin": "^12.0.0",
-    "next": "14.0.4",
-    "react": "^18",
-    "react-dom": "^18",
+    "firebaseui": "^6.1.0",
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1"
   },
   "devDependencies": {

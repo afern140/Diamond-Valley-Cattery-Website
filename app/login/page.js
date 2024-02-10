@@ -7,7 +7,7 @@ import Link from "next/link";
  
 
 export default function Page() {
-const {user, gitHubSignIn, firebaseSignOut } = useUserAuth();
+const {user, firebaseSignOut} = useUserAuth();
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 
@@ -22,7 +22,12 @@ function handleEmailPasswordSignIn(e){
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        if (errorCode === 'auth/invalid-credential') {
+          alert('Invalid email or password');
+        }
+        else{
+        console.log(errorCode, "Error message is ", errorMessage);
+        }
       });
 }
 
@@ -43,7 +48,7 @@ function handleEmailPasswordSignIn(e){
       </div>
         }
         {user && (
-        <div className="text-center">
+        <div className="text-center text-slate-500">
             <p>
             Welcome, {user.displayName} ({user.email})
             </p>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import Message from "./message/message";
-import SendMessage from "./sendmessage/sendMessage";
+import SendMessage from "./sendmessage/sendMessage"; 
 import { db } from "../_utils/firebase";
 import { query, collection, orderBy, onSnapshot } from "firebase/firestore";
+import { auth } from "../_utils/firebase"; 
+import { addDoc, serverTimestamp } from "firebase/firestore"; 
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -48,8 +50,11 @@ const Chat = () => {
       uid,
       timestamp: serverTimestamp(),
     });
+    setInput("");
     if (scroll.current) {
       scroll.current.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.warn("Scroll ref not available.");
     }
   };
 
@@ -65,7 +70,7 @@ const Chat = () => {
         )}
       </div>
       {/* Send Message Component */}
-      {showSendMessage && <SendMessage sendMessage={sendMessage} />}
+      {showSendMessage && <SendMessage scroll={scroll} />} {/* Pass scroll ref as prop */}
     </div>
   );
 };

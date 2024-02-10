@@ -48,7 +48,9 @@ export default function Page({ params }) {
 						</div>
 						<div className="flex flex-col text-white text-xl font-bold text-center bg-[#305B73] p-7 m-auto rounded-lg">
 							<h2>Want to Purchase {selectedCat.name}?</h2>
-							<button className="bg-white text-[#305B73] p-2 m-2 rounded-md">Request a Meeting</button>
+                            <Link href="/chat">
+                            <button className="bg-white text-[#305B73] p-2 m-2 rounded-md">Request a Meeting</button>
+                            </Link>
 						</div>
 					</div>
 					<div className="text-black text-xl font-bold">

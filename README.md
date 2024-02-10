@@ -17,4 +17,6 @@ For firebase get variables from firebase console for this project.
 
 ## Required packages
 firebase
+react-firebase-hooks
+react-firebaseui
 encoding

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import Cats from "./cat"
+import Carousel from "@/app/components/carousel"
 
 import { useRouter } from 'next/navigation'
 
@@ -22,42 +23,41 @@ export default function Page({ params }) {
 		<main className="bg-gray-100">
 			{selectedCat ? (
 				<section>
-					<h1 className="text-black text-4xl text-center font-bold p-5 pb-0">{selectedCat.name}</h1>
-					<Image
+					<h1 className="text-black text-4xl text-center font-bold pt-8 pb-4">{selectedCat.name}</h1>
+					{/*<Image
 						src="/img/Placeholder.png"
 						alt="Cat"
 						width={450}
 						height={225}
 						className="border-2 border-black m-5 mx-auto"
-					/>
+					/>*/}
+					<Carousel />
 					<div className="flex flex-row">
-						<div className="flex flex-wrap text-black text-xl font-bold text-left">
-							<div className="bg-blue-100 p-10 m-10 rounded-lg min-w-64">
+						<div className="flex flex-col text-black text-xl font-bold text-left">
+							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
 								<h2 className="text-2xl mb-2">Details</h2>
-								<h3>Breed: {selectedCat.breed}</h3>
-								<h3>Age: {selectedCat.age}</h3>
-								<h3>Color: {selectedCat.color}</h3>
-								<h3>Eye Color: {selectedCat.eye_color}</h3>
-								<h3>Gender: {selectedCat.gender}</h3>
+								<h3>Breed: <span className="font-normal">{selectedCat.breed}</span></h3>
+								<h3>Gender: <span className="font-normal">{selectedCat.gender}</span></h3>
+								<h3>Age: <span className="font-normal">{selectedCat.age}</span></h3>
+								<h3>Color: <span className="font-normal">{selectedCat.color}</span></h3>
+								<h3>Eye Color: <span className="font-normal">{selectedCat.eye_color}</span></h3>
 							</div>
-							<div  className="bg-blue-100 p-10 m-10 rounded-lg">
-								<h2 className="text-2xl mb-2">Medical History</h2>
-								<h3>Vaccinations: {selectedCat.vaccinations}</h3>
-								<h3>Conditions: {selectedCat.conditions}</h3>
+							<div  className="px-10 mx-10 rounded-lg">
+								<h2 className="text-2xl mb-2">Health</h2>
+								<h3>Vaccinations: <span className="font-normal">{selectedCat.vaccinations}</span></h3>
+								<h3>Conditions: <span className="font-normal">{selectedCat.conditions}</span></h3>
 							</div>
 						</div>
-						<div className="flex flex-col text-white text-xl font-bold text-center bg-[#305B73] p-7 m-auto rounded-lg">
+						<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
 							<h2>Want to Purchase {selectedCat.name}?</h2>
-                            <Link href="/chat">
-                            <button className="bg-white text-[#305B73] p-2 m-2 rounded-md">Request a Meeting</button>
-                            </Link>
+							<button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Request a Meeting</button>
 						</div>
 					</div>
-					<div className="text-black text-xl font-bold">
-						<h2 className="text-2xl m-10 mb-0">Genetics</h2>
+					<div className="text-black text-xl font-bold p-10">
+						<h2 className="text-2xl mx-10 mt-10">Genetics</h2>
 						<div className="flex flex-wrap">
 							<div>
-								<h3 className="bg-blue-100 p-10 m-10 rounded-lg text-center">
+								<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
 									Father
 									<Link href={`./${selectedCat.fatherID}`}>
 										<Image
@@ -70,7 +70,7 @@ export default function Page({ params }) {
 									</Link>
 								</h3>
 							</div>
-							<h3 className="bg-blue-100 p-10 m-10 rounded-lg text-center">
+							<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
 								Mother
 								<Link href={`./${selectedCat.motherID}`}>
 									<Image
@@ -83,7 +83,7 @@ export default function Page({ params }) {
 								</Link>
 							</h3>
 							{selectedCat.children ? (
-								<h3 className="bg-blue-100 p-10 m-10 rounded-lg text-center">
+								<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
 									Children
 									{selectedCat.childrenList.map((childID) => (
 									<Link href={`./${childID}`}>

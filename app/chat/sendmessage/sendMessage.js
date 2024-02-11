@@ -37,11 +37,11 @@ const SendMessage = ({ scroll }) => {
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        className={style.input}
+        className="relative outline-none border border-gray-400 rounded-lg py-1 px-2 w-auto bg-white text-xl text-slate-700 placeholder-slate-400 focus:outline-none focus:shadow-outline"
         type="text"
         placeholder="Message"
       />
-      <button className={style.button} type="submit">
+      <button className="w-auto bg-slate-400 text-white rounded-lg py-2 px-4 m-4" type="submit">
         Send
       </button>
     </form>

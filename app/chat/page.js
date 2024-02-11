@@ -4,7 +4,7 @@ import Chat from "./Chat";
 import { useUserAuth } from "../_utils/auth-context";
 
 const style = {
-    appContainer: `max-w-[728px] mx-auto text-center`,
+    appContainer: `max-w-[728px] mx-auto text-center `,
     sectionContainer: `flex flex-col h-[90vh] bg-gray-100 mt-10 shadow-xl border relative`,
   };
 function page() {

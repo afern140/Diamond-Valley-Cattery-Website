@@ -59,8 +59,8 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen relative">
-      <div className="overflow-y-auto h-full max-h-[calc(100vh - 200px)]" ref={scroll} onScroll={handleScroll}>
+    <div className="flex flex-col h-[500px] relative bg-slate-300">
+      <div className="overflow-y-auto h-full max-h-[calc(100vh - 200px)] " ref={scroll} onScroll={handleScroll}>
         {messages.length > 0 ? (
           messages.map((message) => (
             <Message key={message.id} message={message} />

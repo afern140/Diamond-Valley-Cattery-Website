@@ -82,17 +82,27 @@ export default function Page() {
 
 			//Add to database
 			const catListRef = collection(db, "cats");
-			const docRef = addDoc(catListRef, {cat_name: form.name.value,
-				cat_gender: form.gender.value,
-				cat_breed: form.breed.value,
-				cat_color: form.color.value});
+			const docRef = addDoc(catListRef, {
+				id: data.length + 1,
+				name: form.name.value,
+				age: form.age.value,
+				color: form.color.value,
+				eye_color: form.eye_color.value,
+				breed: form.breed.value,
+				gender: form.gender.value,
+				vaccinations: form.vaccinations.value,
+				conditions: form.conditions.value,
+				//Randomly assign parents for now
+				motherID: Math.floor(Math.random() * 30),
+				fatherID: Math.floor(Math.random() * 30)
+			});
 			return docRef;
 		}
 	}
 
 	return (
 		<ApiDataProvider>
-			<CatData onSelect={() => handleSubmit()}/>
+			<CatData onSubmit={() => handleSubmit()}/>
 		</ApiDataProvider>
 	)
 

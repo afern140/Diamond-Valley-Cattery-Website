@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import Cats from "./cat"
+import Carousel from "@/app/components/carousel"
 
 import { useRouter } from 'next/navigation'
 

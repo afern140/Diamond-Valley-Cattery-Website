@@ -52,14 +52,21 @@ const ApiDataProvider = ({ children }) => {
 	const catList = [];
 	catListSnapshot.forEach((doc) => {
 		//catList.push(doc.data());
-		console.log("doc:");
-		console.log(doc.data());
+		//console.log("doc:");
+		//console.log(doc.data());
 		const item = doc.data();
 		const newItem = {
-			name: item.cat_name,
-			breed: item.cat_breed,
-			gender: item.cat_gender,
-			color: item.cat_color,
+			id: item.id,
+			name: item.name,
+			age: item.age,
+			color: item.color,
+			eye_color: item.eye_color,
+			breed: item.breed,
+			gender: item.gender,
+			vaccinations: item.vaccinations,
+			conditions: item.conditions,
+			motherID: item.motherID,
+			fatherID: item.fatherID
 		};
 		catList.push(newItem);
 	});

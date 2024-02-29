@@ -123,13 +123,7 @@ export default function CatList() {
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
       <div>
-        <div className=" grid grid-flow-col">
-          <div className="" />
-          <h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
-          <div className="pt-12 flex">
-            <button className=" bg-cat-gray-1 p-3 m-auto rounded-3xl text-white">Add Cat</button>
-          </div>
-        </div>
+          <h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Add Cat</h1>
         {/* Search Field */}
         <div className="align-middle justify-center flex">
             <input type="text"
@@ -166,11 +160,11 @@ export default function CatList() {
             <Dropdown queryType="color" callback={callback} />
 
             <h2 className="py-6 text-2xl font-semibold">Notes</h2>
-            <div className="align-top justify-start mx-auto flex">
-                <input type="text"
+            <div className="align-top justify-start mx-autoflex">
+                <textarea type="text"
                     name="catlist-search"
-                    placeholder="Search"
-                    className=" border border-black rounded-3xl text-xl pl-4 m-auto min-h-48 h-10 text-start" />
+                    placeholder="Write notes here..."
+                    className=" border placeholder:italic pt-2 -mr-2 pr-2 border-black rounded-xl text-xl pl-4 m-auto min-h-48 h-10 text-start" />
                 
                 {/* Insert icon here... */}
             </div>

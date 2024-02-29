@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import Dropdown from "@/app/components/dropdown";
 import CatButton1 from "@/app/components/catbutton-1";
 import cats from "./[cat]/cat.json"
@@ -121,7 +122,15 @@ export default function CatList() {
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
       <div>
-        <h1 className=" font-normal text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
+        <div className=" grid grid-flow-col">
+          <div className="" />
+          <h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
+          <div className="pt-12 flex">
+            <Link href="" className="m-auto">
+              <button className=" bg-cat-gray-1 p-3 rounded-3xl text-white">Add Cat</button>
+            </Link>
+          </div>
+        </div>
         {/* Search Field */}
         <div className="align-middle justify-center flex">
             <input type="text"

@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Dropdown from "@/app/components/dropdown";
-import CatButton1 from "@/app/components/catbutton-1";
-import cats from "./[cat]/cat.json"
+import CatButton from "@/app/components/catbutton-1";
+import CatButton_NoTitle from "@/app/components/catbutton-notitle";
+import cats from "@/app/cats/[cat]/cat.json"
 
 import ApiDataProvider from '../_utils/api_provider';
 import ApiDataContext from '../_utils/api_context';
@@ -126,9 +127,7 @@ export default function CatList() {
           <div className="" />
           <h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
           <div className="pt-12 flex">
-            <Link href="/addcat" className="m-auto">
-              <button className=" bg-cat-gray-1 p-3 rounded-3xl text-white">Add Cat</button>
-            </Link>
+            <button className=" bg-cat-gray-1 p-3 m-auto rounded-3xl text-white">Add Cat</button>
           </div>
         </div>
         {/* Search Field */}
@@ -147,8 +146,10 @@ export default function CatList() {
         <div className="flex w-4/5">
           {/* First split of the page */}
           <div className=" w-1/3 mr-6 align-middle justify-start flex-col flex items-center">
-            <h2 className="py-6 text-2xl font-semibold">Filters</h2>
+            <h2 className="py-6 text-2xl font-semibold">Parameters</h2>
 
+            <h3 className="py-2 text-lg">Name</h3>
+            <Dropdown queryType="breed" callback={callback} />
             <h3 className="py-2 text-lg">Breed</h3>
             <Dropdown queryType="breed" callback={callback} />
             <h3 className="py-2 text-lg">Gender</h3>
@@ -158,29 +159,90 @@ export default function CatList() {
             <h3 className="py-2 text-lg">Color</h3>
             <Dropdown queryType="color" callback={callback} />
 
+            <h2 className="py-6 text-2xl font-semibold">Medical</h2>
+            <h3 className="py-2 text-lg">Conditions</h3>
+            <Dropdown queryType="color" callback={callback} />
+            <h3 className="py-2 text-lg">Vaccinations</h3>
+            <Dropdown queryType="color" callback={callback} />
+
+            <h2 className="py-6 text-2xl font-semibold">Notes</h2>
+            <div className="align-top justify-start mx-auto flex">
+                <input type="text"
+                    name="catlist-search"
+                    placeholder="Search"
+                    className=" border border-black rounded-3xl text-xl pl-4 m-auto min-h-48 h-10 text-start" />
+                
+                {/* Insert icon here... */}
+            </div>
+
             <button onClick={clearFilters} className=" py-2 px-4 mt-10 bg-slate-300 rounded-xl font-semibold">Clear Filters</button>
           </div>
 
           {/* Second split of the page */}
           <div className="w-full flex-col">
-            <div className="flex">
-              <div className=" w-1/4 ml-auto mr-full justify-end flex-col">
-                <h2 className="flex justify-end font-bold text-xl">Sort by:</h2>
-                <Dropdown queryType="sort" callback={callback} />
-              </div>
-            </div>
+            <h2 className="flex py-6 justify-center font-bold text-2xl">Images</h2>
             <div className="h-6"/>
-            <div className="grid w-full grid-cols-3">
+            <div className="grid border border-black w-full grid-cols-3">
                 {/* Populating the list with cats */}
                 {
-                  filteredResults.map((cat) => (
+                filteredResults.map((cat, i) => (
                     <div>
-                        <CatButton1 id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
+                        {(i <= 3) && <CatButton_NoTitle id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
                     </div>
-                  ))
+                ))
                 }
-              </div>
-          </div>  
+            </div>
+
+            <h2 className="flex py-6 justify-center font-bold text-2xl">Lineage</h2>
+            <h3 className="flex justify-center font-bold text-xl">Parents</h3>
+            <div className="h-2"/>
+            <div className="border border-black w-full">
+                <div className="align-middle flex justify-center p-2">
+                <input type="text"
+                    name="catlist-search"
+                    placeholder="Search"
+                    className=" border border-black rounded-3xl text-xl pl-4 w-full h-10" />
+                
+                {/* Insert icon here... */}
+                </div>
+                <div className="grid grid-cols-3">
+                {/* Populating the list with cats */}
+                {
+                filteredResults.map((cat, i) => (
+                    <div>
+                        {(i <= 2) && <CatButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
+                    </div>
+                ))
+                }
+                </div>
+            </div>
+            <div className="h-6"/>
+            <h3 className="flex justify-center font-bold text-xl">Parents</h3>
+            <div className="h-2"/>
+            <div className="border border-black w-full">
+                <div className="align-middle flex justify-center p-2">
+                <input type="text"
+                    name="catlist-search"
+                    placeholder="Search"
+                    className=" border border-black rounded-3xl text-xl pl-4 w-full h-10" />
+                
+                {/* Insert icon here... */}
+                </div>
+                <div className="grid grid-cols-3">
+                {/* Populating the list with cats */}
+                {
+                filteredResults.map((cat, i) => (
+                    <div>
+                        {(i <= 2) && <CatButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
+                    </div>
+                ))
+                }
+                </div>
+            </div>
+            
+            <div className="h-4" />
+            <div className="flex justify-end"><button className="flex justify-center bg-cat-gray-1 text-white py-3 px-5 rounded-xl">Submit</button></div>
+        </div>
         </div>
       </div>
     </main>

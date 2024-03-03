@@ -12,8 +12,11 @@ import ApiDataContext from '../_utils/api_context';
 
 export default function CatList() {
 
-	const [fieldInput, setFieldInput] = useState("");
-    const [filteredResults, setFilteredResults] = useState(cats);
+	const [fieldInput_parents, setFieldInput_parents] = useState("");
+	const [fieldInput_children, setFieldInput_children] = useState("");
+  const [filteredResults, setFilteredResults] = useState(cats);
+  const [filteredResults_parents, setFilteredResults_parents] = useState(cats);
+  const [filteredResults_children, setFilteredResults_children] = useState(cats);
 	const [data, setData] = useState(cats);
 
 	const dbdata = React.useContext(ApiDataContext);
@@ -30,23 +33,23 @@ export default function CatList() {
 	}, [dbdata]);
 
 	useEffect(() => {
-		searchItems("", "");
+		searchItems_parents("", "");
 	}
 	, [data]);
 
-    const searchItems = (searchValue, filterValue) => {
-      let filteredData = cats;
+    const searchItems_parents = (searchValue, filterValue) => {
+    let filteredData_parents = cats;
 
 	  //Overwrite filteredData with dbdata if it exists
 	  if (data != null && data != undefined) {
-		  filteredData = data;
+		  filteredData_parents = data;
 	  }
       
-      if (filterValue === "") { setFieldInput(searchValue.trim()); }
+      if (filterValue === "") { setFieldInput_parents(searchValue.trim()); }
 
-      if (fieldInput !== "") {
-        filteredData = filteredData.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(searchValue.toLowerCase()) );
-        console.log("first pass: " + fieldInput);
+      if (fieldInput_parents !== "") {
+        filteredData_parents = filteredData_parents.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(searchValue.toLowerCase()) );
+        console.log("first pass (parents): " + fieldInput_parents);
       }
 
       if (dropdownValue !== "") {
@@ -67,8 +70,44 @@ export default function CatList() {
         console.log("third pass: " + sortingMethod);
       }
 
-      setFilteredResults(filteredData);
+      setFilteredResults_parents(filteredData_parents);
     }
+
+    const searchItems_children = (searchValue, filterValue) => {
+      let filteredData_children = cats;
+  
+      //Overwrite filteredData with dbdata if it exists
+      if (data != null && data != undefined) {
+        filteredData_children = data;
+      }
+        
+        if (filterValue === "") { setFieldInput_children(searchValue.trim()); }
+  
+        if (fieldInput_children !== "") {
+          filteredData_children = filteredData_children.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(searchValue.toLowerCase()) );
+          console.log("first pass (children): " + fieldInput_children);
+        }
+  
+        if (dropdownValue !== "") {
+          if (dropdownFilter === "breed" || breedType !== "") { breedType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.breed).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
+          if (dropdownFilter === "gender" || genderType !== "") { genderType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.gender).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
+          if (dropdownFilter === "age" || ageType !== "") { ageType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.age).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
+          if (dropdownFilter === "color" || colorType !== "") { colorType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
+          //filteredData = filteredData.filter((cat) => { return Object.values(cat).join('').toLowerCase().includes(dropdownValue.toLowerCase())})
+          console.log("second pass: " + dropdownValue + " : " + dropdownFilter);
+        }
+  
+        if (sortingMethod !== "") {
+          if (sortingMethod === "Name") { filteredData.sort((a, b) => a.name > b.name); }
+          else if (sortingMethod === "Breed") { filteredData.sort((a, b) => a.breed > b.breed); }
+          else if (sortingMethod === "Gender") { filteredData.sort((a, b) => a.gender > b.gender); }
+          else if (sortingMethod === "Age") { filteredData.sort((a, b) => a.age - b.age); }
+          else if (sortingMethod === "Color") { filteredData.sort((a, b) => a.color > b.color); }
+          console.log("third pass: " + sortingMethod);
+        }
+  
+        setFilteredResults_children(filteredData_children);
+      }
 
     {/*  */}
     const [dropdownFilter, setDropdownFilter] = useState("");
@@ -95,7 +134,7 @@ export default function CatList() {
         setDropdownValue(type); 
       }
 
-      searchItems(type, filter);
+      searchItems_parents(type, filter);
     }
 
     const clearFilters = () => {
@@ -118,22 +157,13 @@ export default function CatList() {
       return () => {
         //clearFilters();
       }
-    }, [fieldInput, dropdownValue]);
+    }, [fieldInput_parents, fieldInput_children, dropdownValue]);
 
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
       <div>
           <h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Add Cat</h1>
         {/* Search Field */}
-        <div className="align-middle justify-center flex">
-            <input type="text"
-                   name="catlist-search"
-                   placeholder="Search"
-                   className=" border border-black rounded-3xl text-xl pl-4 w-4/5 h-10"
-                   onChange = { (Event) => searchItems(Event.target.value, "") } />
-            
-            {/* Insert icon here... */}
-        </div>
       </div>
 
       <div className="flex py-6 w-full justify-center">
@@ -195,14 +225,14 @@ export default function CatList() {
                 <input type="text"
                     name="catlist-search"
                     placeholder="Search"
-                    className=" border border-black rounded-3xl text-xl pl-4 w-full h-10" />
-                
+                    className=" border border-black rounded-3xl text-xl pl-4 w-full h-10"
+                    onChange = { (Event) => searchItems_parents(Event.target.value, "") } />
                 {/* Insert icon here... */}
                 </div>
                 <div className="grid grid-cols-3">
                 {/* Populating the list with cats */}
                 {
-                filteredResults.map((cat, i) => (
+                filteredResults_parents.map((cat, i) => (
                     <div>
                         {(i <= 2) && <CatButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
                     </div>
@@ -211,21 +241,22 @@ export default function CatList() {
                 </div>
             </div>
             <div className="h-6"/>
-            <h3 className="flex justify-center font-bold text-xl">Parents</h3>
+            <h3 className="flex justify-center font-bold text-xl">Children</h3>
             <div className="h-2"/>
             <div className="border border-black w-full">
                 <div className="align-middle flex justify-center p-2">
                 <input type="text"
                     name="catlist-search"
                     placeholder="Search"
-                    className=" border border-black rounded-3xl text-xl pl-4 w-full h-10" />
+                    className=" border border-black rounded-3xl text-xl pl-4 w-full h-10"
+                    onChange = { (Event) => searchItems_children(Event.target.value, "") } />
                 
                 {/* Insert icon here... */}
                 </div>
                 <div className="grid grid-cols-3">
                 {/* Populating the list with cats */}
                 {
-                filteredResults.map((cat, i) => (
+                filteredResults_children.map((cat, i) => (
                     <div>
                         {(i <= 2) && <CatButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
                     </div>

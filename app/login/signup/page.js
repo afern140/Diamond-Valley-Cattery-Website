@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { auth } from '../../_utils/firebase'; // assuming you have a firebase.js file that exports the auth object
+import { auth } from '../../_utils/firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { useUserAuth } from "../../_utils/auth-context";
 

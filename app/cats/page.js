@@ -107,9 +107,9 @@ export default function Page() {
       </div>
 
       <div className="flex py-6 w-full justify-center">
-        <div className="flex w-4/5">
+        <div className="flex w-4/5 md:flex-row flex-col gap-4">
           {/* First split of the page */}
-          <div className=" w-1/3 mr-6 align-middle justify-start flex-col flex items-center">
+          <div className="align-middle justify-start flex-col flex items-center min-w-[200px]">
             <h2 className="py-6 text-2xl font-semibold">Filters</h2>
 
             <h3 className="py-2 text-lg">Breed</h3>
@@ -126,14 +126,14 @@ export default function Page() {
 
           {/* Second split of the page */}
           <div className="w-full flex-col">
-            <div className="flex">
-              <div className=" w-1/4 ml-auto mr-full justify-end flex-col">
-                <h2 className="flex justify-end font-bold text-xl">Sort by:</h2>
+            <div className="flex w-full md:justify-end">
+              <div className=" flex flex-col md:w-[300px] w-full">
+                <h2 className="flex font-bold text-xl md:justify-end justify-start">Sort by:</h2>
                 <Dropdown queryType="sort" callback={callback} />
               </div>
             </div>
             <div className="h-6"/>
-            <div className="grid w-full grid-cols-3">
+            <div className="grid w-full md:grid-cols-3 grid-cols-3 gap-2">
                 {/* Populating the list with cats */}
                 {
                   filteredResults.map((cat) => (

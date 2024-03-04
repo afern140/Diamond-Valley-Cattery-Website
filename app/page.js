@@ -11,7 +11,7 @@ export default function Home() {
 
         <h2 className="font-sans font-normal text-2xl flex items-center justify-center text-center text-black py-4">Welcome to Diamond Valley Cattery</h2>
         
-        <div className="flex justify-between py-6">
+        <div className="flex justify-between py-6 md:flex-row flex-col px-6 gap-8">
           <Button />
           <Button />
           <Button />

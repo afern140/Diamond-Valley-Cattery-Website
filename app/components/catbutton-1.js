@@ -14,7 +14,7 @@ function CatButton({ id, name, age, color, eye_color, breed, gender, vaccination
 
     return (
         <Link href={`/cats/${id}`} className="w-full flex justify-center">
-        <button className="flex-col font-bold p-2 text-black place-items-center">
+        <button className="flex-col font-bold text-black place-items-center">
             <Image
                 alt="Kitty"
                 src={ id % 2 == 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png" }
@@ -23,7 +23,7 @@ function CatButton({ id, name, age, color, eye_color, breed, gender, vaccination
                 className="justify-center align-center place-items-center"
                 objectFit="contain"/>
             <p className=" mt-1">{name}</p>
-            <p className=" text-sm font-medium">{breed}</p>
+            <p className=" text-sm font-medium text-wrap break-words">{breed}</p>
         </button>
         </Link>
     );

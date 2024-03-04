@@ -32,9 +32,9 @@ export default function Page({ params }) {
 						className="border-2 border-black m-5 mx-auto"
 					/>*/}
 					<Carousel />
-					<div className="flex flex-row">
-						<div className="flex flex-col text-black text-xl font-bold text-left">
-							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
+					<div className="flex xl:flex-row flex-col py-6 gap-10">
+						<div className="flex xl:flex-row flex-col gap-10 text-black text-xl font-bold text-left">
+							<div className="mx-10 rounded-lg min-w-64">
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{selectedCat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{selectedCat.gender}</span></h3>
@@ -42,22 +42,22 @@ export default function Page({ params }) {
 								<h3>Color: <span className="font-normal">{selectedCat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{selectedCat.eye_color}</span></h3>
 							</div>
-							<div  className="px-10 mx-10 rounded-lg">
+							<div  className="mx-10 rounded-lg">
 								<h2 className="text-2xl mb-2">Health</h2>
 								<h3>Vaccinations: <span className="font-normal">{selectedCat.vaccinations}</span></h3>
 								<h3>Conditions: <span className="font-normal">{selectedCat.conditions}</span></h3>
 							</div>
 						</div>
-						<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
+						<div className="flex flex-col xl:ml-auto ml-0 mb-auto text-black text-xl font-bold text-center bg-cat-gray-1 rounded-lg px-10">
 							<h2>Want to Purchase {selectedCat.name}?</h2>
 							<button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Request a Meeting</button>
 						</div>
 					</div>
 					<div className="text-black text-xl font-bold p-10">
-						<h2 className="text-2xl mx-10 mt-10">Genetics</h2>
-						<div className="flex flex-wrap">
-							<div>
-								<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
+						<h2 className="text-2xl mb-4">Genetics</h2>
+						<div className="flex flex-wrap md:flex-row flex-col">
+							<div className="mt-5 md:m-10">
+								<h3 className="bg-cat-gray-1 flex flex-col items-center p-6 rounded-lg bg-opacity-75 shadow-xl text-black w-full">
 									Father
 									<Link href={`./${selectedCat.fatherID}`}>
 										<Image
@@ -70,18 +70,20 @@ export default function Page({ params }) {
 									</Link>
 								</h3>
 							</div>
-							<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
-								Mother
-								<Link href={`./${selectedCat.motherID}`}>
-									<Image
-										src="/img/Placeholder.png"
-										alt="Cat"
-										width={200}
-										height={100}
-										className="border-2 border-black m-5"
-									/>
-								</Link>
-							</h3>
+							<div className="mt-5 md:m-10">
+								<h3 className="bg-cat-gray-1 flex flex-col items-center p-6 rounded-lg bg-opacity-75 shadow-xl text-black w-full">
+									Mother
+									<Link href={`./${selectedCat.fatherID}`}>
+										<Image
+											src="/img/Placeholder.png"
+											alt="Cat"
+											width={200}
+											height={100}
+											className="border-2 border-black m-5"
+										/>
+									</Link>
+								</h3>
+							</div>
 							{selectedCat.children ? (
 								<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
 									Children

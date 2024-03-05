@@ -17,8 +17,6 @@ import CatProfile from './catprofile';
 
 export default function Page({ params }) {
 
-	
-
 	return(
 		<ApiDataProvider>
 			<CatProfile params={params}/>

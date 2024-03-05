@@ -1,29 +1,22 @@
 "use client"
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import Dropdown from "@/app/components/dropdown";
-import CatButton1 from "@/app/components/catbutton-1";
+import LitterButton from "@/app/components/litterbutton_wrapper";
 import cats from "@/app/cats/[cat]/cat.json"
 
-import ApiDataProvider from '../_utils/api_provider';
-import ApiDataContext from '../_utils/api_context';
+import ApiDataProvider from '@/app/_utils/api_provider';
+import ApiDataContext from '@/app/_utils/api_context';
 
-export default function CatList() {
+export default function Litters() {
 
 	const [fieldInput, setFieldInput] = useState("");
-  const [filteredResults, setFilteredResults] = useState(cats);
+    const [filteredResults, setFilteredResults] = useState(cats);
 	const [data, setData] = useState(cats);
 
 	const dbdata = React.useContext(ApiDataContext);
 
 	useEffect(() => {
-		/*console.log("Cats: ")
-		console.log(cats);
-		console.log("dbdata: ");
-		console.log(dbdata);*/
-		console.log("Cat list dbdata updated!")
-		console.log(dbdata);
 		setData(dbdata);
 		//Re-run filter to update the list
 	}, [dbdata]);
@@ -123,59 +116,29 @@ export default function CatList() {
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
       <div>
         <div className=" grid grid-flow-col">
-          <div className="" />
-          <h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
-          <div className="pt-12 flex">
-            <Link href="/addcat" className="m-auto">
-              <button className=" bg-cat-gray-1 p-3 rounded-3xl text-white">Add Cat</button>
-            </Link>
-          </div>
-        </div>
-        {/* Search Field */}
-        <div className="align-middle justify-center flex">
-            <input type="text"
-                   name="catlist-search"
-                   placeholder="Search"
-                   className=" border border-black rounded-3xl text-xl pl-4 w-4/5 h-10"
-                   onChange = { (Event) => searchItems(Event.target.value, "") } />
-            
-            {/* Insert icon here... */}
+          <h1 className=" font-bold m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Litters</h1>
         </div>
       </div>
 
       <div className="flex py-6 w-full justify-center">
         <div className="flex w-4/5">
-          {/* First split of the page */}
-          <div className=" w-1/3 mr-6 align-middle justify-start flex-col flex items-center">
-            <h2 className="py-6 text-2xl font-semibold">Filters</h2>
 
-            <h3 className="py-2 text-lg">Breed</h3>
-            <Dropdown queryType="breed" callback={callback} />
-            <h3 className="py-2 text-lg">Gender</h3>
-            <Dropdown queryType="gender" callback={callback} />
-            <h3 className="py-2 text-lg">Age</h3>
-            <Dropdown queryType="age" callback={callback} />
-            <h3 className="py-2 text-lg">Color</h3>
-            <Dropdown queryType="color" callback={callback} />
-
-            <button onClick={clearFilters} className=" py-2 px-4 mt-10 bg-slate-300 rounded-xl font-semibold">Clear Filters</button>
-          </div>
-
-          {/* Second split of the page */}
+          {/* Litter List */}
           <div className="w-full flex-col">
             <div className="flex">
-              <div className=" w-1/4 ml-auto mr-full justify-end flex-col">
-                <h2 className="flex justify-end font-bold text-xl">Sort by:</h2>
+              <div className=" min-w-72 mr-auto ml-full justify-start flex-col">
+                <h2 className="flex justify-start font-bold text-xl">Sort by:</h2>
                 <Dropdown queryType="sort" callback={callback} />
               </div>
             </div>
             <div className="h-6"/>
-            <div className="grid w-full grid-cols-3">
+            <div className="bg-red-100">
                 {/* Populating the list with cats */}
                 {
                   filteredResults.map((cat) => (
+                    
                     <div>
-                        <CatButton1 id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
+                        <LitterButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
                     </div>
                   ))
                 }

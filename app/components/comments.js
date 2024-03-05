@@ -7,6 +7,10 @@ import ApiDataContext from "../_utils/api_context";
 
 const dbdata = React.useContext(ApiDataContext);
 
+export default function Comments() {
+    
+}
+
 
 /**
  * References for page:

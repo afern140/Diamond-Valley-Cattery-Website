@@ -3,16 +3,16 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "@/app/components/dropdown";
 import CatButton1 from "@/app/components/catbutton-1";
-import cats from "./[cat]/cat.json"
+import defaultCats from "./[cat]/cat.json"
 
 //import ApiDataProvider from '../_utils/api_provider';
 import ApiDataContext from '../_utils/api_context';
 
 export default function CatList() {
 	//Holds data that the page can display. Uses backup data until database is loaded
-	const [data, setData] = useState(cats);
+	const [data, setData] = useState(defaultCats);
 	//Holds the list of cats that are currently displayed, after filtering
-    const [filteredResults, setFilteredResults] = useState(cats);
+    const [filteredResults, setFilteredResults] = useState(defaultCats);
 	//Search field input
 	const [fieldInput, setFieldInput] = useState("");
 	//List of filters that are currently applied
@@ -22,13 +22,13 @@ export default function CatList() {
 	const [sortingMethod, setSortingMethod] = useState("");
 
 	//Replaces the cats list with the database data when it is loaded
-	const dbdata = React.useContext(ApiDataContext);
+	const { cats } = React.useContext(ApiDataContext);
 	useEffect(() => {
 		//console.log("Cat list dbdata updated!")
 		//console.log(dbdata);
-		setData(dbdata);
+		setData(cats);
 		//Re-run filter to update the list
-	}, [dbdata]);
+	}, [cats]);
 
 	//Search field handler
 	const searchItems = (event) => {
@@ -84,9 +84,9 @@ export default function CatList() {
 	//When search, filters, or sorting method change, update the list of cats
 	useEffect(() => {
 		console.log("Beginning data filtering")
-		let filteredData = data;
+		let filteredData = cats;
 
-		if (data === undefined || data === null) {
+		if (cats === undefined || cats === null) {
 			filteredData = cats;
 		}
 		//Filter by search field
@@ -135,7 +135,7 @@ export default function CatList() {
 		setFilteredResults(filteredData);
 		console.log("Filtered Data: ");
 		console.log(filteredData);
-	}, [fieldInput, filters, sortingMethod, data]);
+	}, [fieldInput, filters, sortingMethod, data, cats]);
 	/*useEffect(() => {
 		searchItems("", "");
 	}
@@ -271,12 +271,13 @@ export default function CatList() {
             <div className="h-6"/>
             <div className="grid w-full grid-cols-3">
                 {/* Populating the list with cats */}
-                {
+                {filteredResults ?
                   filteredResults.map((cat) => (
                     <div>
                         <CatButton1 id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
                     </div>
                   ))
+				  : "Awaiting cats"
                 }
               </div>
           </div>  

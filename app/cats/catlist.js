@@ -103,7 +103,7 @@ export default function CatList() {
 			//filteredData = filteredData.filter((cat) => Object.values(cat.gender).join('').toLowerCase().includes(filters[1].toLowerCase()) );
 			//Can't do this for gender because "Female" contains "Male"
 			//Instead, this field will use an exact match
-			filteredData = filteredData.filter((cat) => cat.gender == filters[1]);
+			filteredData = filteredData.filter((cat) => cat.gender.toLowerCase() == filters[1].toLowerCase());
 		}
 		//Filter by age
 		if (filters[2] !== "") {

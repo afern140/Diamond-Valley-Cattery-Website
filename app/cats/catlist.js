@@ -100,7 +100,10 @@ export default function CatList() {
 		}
 		//Filter by gender
 		if (filters[1] !== "") {
-			filteredData = filteredData.filter((cat) => Object.values(cat.gender).join('').toLowerCase().includes(filters[1].toLowerCase()) );
+			//filteredData = filteredData.filter((cat) => Object.values(cat.gender).join('').toLowerCase().includes(filters[1].toLowerCase()) );
+			//Can't do this for gender because "Female" contains "Male"
+			//Instead, this field will use an exact match
+			filteredData = filteredData.filter((cat) => cat.gender == filters[1]);
 		}
 		//Filter by age
 		if (filters[2] !== "") {
@@ -111,28 +114,35 @@ export default function CatList() {
 			filteredData = filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(filters[3].toLowerCase()) );
 		}
 		//Sort
+		//Because React won't actually update data that is simply sorted, we need to create a new array
+		let sortedData;
 		if (sortingMethod !== "") {
 			console.log("Sorting by " + sortingMethod);
 			switch (sortingMethod) {
 				case "Name":
-					filteredData.sort((a, b) => a.name > b.name);
+					sortedData = [...filteredData.sort((a, b) => a.name > b.name)];
 					break;
 				case "Breed":
-					filteredData.sort((a, b) => a.breed > b.breed);
+					sortedData = [...filteredData.sort((a, b) => a.breed > b.breed)];
 					break;
 				case "Gender":
-					filteredData.sort((a, b) => a.gender > b.gender);
+					sortedData = [...filteredData.sort((a, b) => a.gender > b.gender)];
 					break;
 				case "Age":
-					filteredData.sort((a, b) => a.age - b.age);
+					sortedData = [...filteredData.sort((a, b) => a.age - b.age)];
 					break;
 				case "Color":
-					filteredData.sort((a, b) => a.color > b.color);
+					sortedData = [...filteredData.sort((a, b) => a.color > b.color)];
+					break;
+				default:
+					sortedData = [...filteredData.sort((a, b) => a.color > b.color)];
 					break;
 			}
 		}
+		else if (filteredData != null && filteredData != undefined)
+			sortedData = [...filteredData.sort((a, b) => a.id > b.id)];
 		//Update the list
-		setFilteredResults(filteredData);
+		setFilteredResults(sortedData);
 		console.log("Filtered Data: ");
 		console.log(filteredData);
 	}, [fieldInput, filters, sortingMethod, data, cats]);

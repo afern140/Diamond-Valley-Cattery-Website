@@ -7,7 +7,7 @@ import { db } from "../_utils/firebase";
 //Various firestore functions
 import { collection, getDocs, addDoc, query } from "firebase/firestore";
 
-async function getCats() {
+/*async function getCats() {
 	//Finds the collection, queries the collection, makes a snapshot of the collection, then dumps that snapshot into an array
 	//whew
 	const catRef = collection(db, "cats");
@@ -29,7 +29,7 @@ async function getCats() {
 	});
 	console.log(catList);
 	return catList;
-}
+}*/
 
 const ApiDataProvider = ({ children }) => {
 	//Holds raw data from firestore
@@ -55,8 +55,12 @@ const ApiDataProvider = ({ children }) => {
 		//catList.push(doc.data());
 		//console.log("doc:");
 		//console.log(doc.data());
-		const item = doc.data();
-		const newItem = {
+		//const item = doc.data();
+		//New method: Loads entire document into array
+		//Now changes to the document structure can be made without breaking the app
+		const catsData = {id: doc.id, ...doc.data()};
+		/*const newItem = {
+			docid: doc.id,
 			id: item.id,
 			name: item.name,
 			age: item.age,
@@ -68,8 +72,8 @@ const ApiDataProvider = ({ children }) => {
 			conditions: item.conditions,
 			motherID: item.motherID,
 			fatherID: item.fatherID
-		};
-		catList.push(newItem);
+		};*/
+		catList.push(catsData);
 	});
 	//console.log(catList);
 	setCats(catList);
@@ -80,15 +84,17 @@ const ApiDataProvider = ({ children }) => {
 	const userListSnapshot = await getDocs(userQuery);
 	const userList = [];
 	userListSnapshot.forEach((doc) => {
-		const item = doc.data();
+		/*const item = doc.data();
 		const newItem = {
+			docid: doc.id,
 			name: item.name,
 			role: item.role,
 			uid: item.uid
-		};
-		userList.push(newItem);
+		};*/
+		const userData = {id: doc.id, ...doc.data()};
+		userList.push(userData);
 	});
-	console.log(userList);
+	//console.log(userList);
 	setUsers(userList);
 	}
 

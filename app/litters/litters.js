@@ -47,7 +47,7 @@ export default function Litters() {
         if (dropdownFilter === "age" || ageType !== "") { ageType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.age).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
         if (dropdownFilter === "color" || colorType !== "") { colorType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
         //filteredData = filteredData.filter((cat) => { return Object.values(cat).join('').toLowerCase().includes(dropdownValue.toLowerCase())})
-        console.log("second pass: " + dropdownValue + " : " + dropdownFilter);
+        console.log("second pass: " + {dropdownValue} + " : " + dropdownFilter);
       }
 
       if (sortingMethod !== "") {
@@ -132,11 +132,10 @@ export default function Litters() {
               </div>
             </div>
             <div className="h-6"/>
-            <div className="bg-red-100">
+            <div className="flex-col">
                 {/* Populating the list with cats */}
                 {
-                  filteredResults.map((cat) => (
-                    
+                  (dbdata !== null) && dbdata.map((cat) => (
                     <div>
                         <LitterButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
                     </div>

@@ -1,6 +1,4 @@
-"use client"
-
-import { useState, React } from "react";
+import React, { useState } from "react";
 import cats from "@/app/cats/[cat]/cat.json"
 
 const breedQuery = cats.map(i => i.breed);
@@ -16,15 +14,18 @@ const sortFilters = ["None", "Name", "Breed", "Gender", "Age", "Color"];
 
 
 function Dropdown({queryType, callback}) {
-    const [isOpen, setIsOpen] = useState(false)
-    const [query, setQuery] = useState("")
+    const [isOpen, setIsOpen] = useState(false);
+    const [query, setQuery] = useState("");
 
-    let dropdownValue;
+    const [dropdownValue, setDropdownValue] = useState("");
+    const [dropSelectClassname, setDropSelectClassname] = useState(" text-gray-500 italic font-normal text-base");
+    
     const handleCallback = (selected) => {
         callback(queryType + " " + selected);
-        dropdownValue = selected;
+        setDropdownValue(selected);
         setIsOpen(false);
-        //console.log("Value: " + dropdownValue);
+        console.log("[Dropdown] Value: " + dropdownValue + " QueryType: " + queryType);
+        setDropSelectClassname("text-sm");
     }
 
     let list;
@@ -47,7 +48,7 @@ function Dropdown({queryType, callback}) {
     <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
         <button onClick={() => setIsOpen((prev) => !prev)}
                 className="bg-white text-black h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border border-black duration-300 active:text-white">
-                    <span>{dropdownValue}</span>
+                    <span className={dropSelectClassname}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
                 </button>
             
             { /* When we press the dropdown button, we change the state to 'Open' and populate the list with the appropriate values. */}

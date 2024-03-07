@@ -4,9 +4,47 @@ import { useRouter } from "next/navigation";
 import ApiDataProvider from "../_utils/api_provider";
 import ApiDataContext from "../_utils/api_context";
 
+   export default function Comments() {
+      const dbdata = React.useContext(ApiDataContext);
+      const { comments } = React.useContext(ApiDataContext);
+      
+      useEffect(() => {
+         console.log("Comments page dbdata updated!");
+         console.log(comments);
+      }, [dbdata]);
 
-const dbdata = React.useContext(ApiDataContext);
+      return (
+         <main>
+            <h1>Comments</h1>
+            Hello this is a test.
+            {!comments && <p>Loading...</p>}
+            {comments &&
+               comments.map((comment) => (
+               <Comment 
+               catid={comment.catid}
+               message={comment.message}
+               createuid={comment.createuid}
+               
+               />
+               ))
+            }
+            
+            
+         </main>
+      );
 
+   }
+
+   function Comment({catid, message, createuid, date}) {
+      return (
+         <div>
+            <h2>{catid}</h2>
+            <p>{message}</p>
+            <p>Created by: {createuid}</p>
+            <p>Created on: {date}</p>
+         </div>
+      );
+   }
 
 /**
  * References for page:

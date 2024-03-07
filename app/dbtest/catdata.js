@@ -7,12 +7,17 @@ import { db } from "../_utils/firebase";
 import { collection, getDocs, addDoc, query } from "firebase/firestore";
 
 export default function CatData(onSubmit){
-	const dbdata = React.useContext(ApiDataContext);
-	const [data, setData] = useState(React.useContext(ApiDataContext));
+	//These hold data from the database when it's ready
+	const {cats} = React.useContext(ApiDataContext);
+	const {users} = React.useContext(ApiDataContext);
 
-	useEffect(() => {
-		setData(dbdata);
-	}, [dbdata]);
+	const [data, setData] = useState(cats);
+
+	//
+	/*useEffect(() => {
+		setData(cats);
+	}, [cats]);*/
+	
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -72,14 +77,14 @@ export default function CatData(onSubmit){
 		}
 	};
 
-	if (data) return (
+	return (
 			<div className="flex">
 				{/* Read */}
 				<div>
 					<h1>DB Test</h1>
 					<p>Testing database connection</p>
-					{data.map((item) => (
-						<div className="my-7">
+					{cats ? cats.map((item) => (
+						<div className="my-7" key={item.id}>
 						<p>ID: {item.id}</p>
 						<p>Name: {item.name}</p>
 						<p>Age: {item.age}</p>
@@ -93,7 +98,8 @@ export default function CatData(onSubmit){
 						<p>Father: {item.fatherID}</p>
 
 						</div>
-					))}
+					))
+				: "Awaiting cats"}
 				</div>
 				{/* Write */}
 				<div>
@@ -131,12 +137,23 @@ export default function CatData(onSubmit){
 						</div>
 					</form>
 				</div>
+				{/* Users */}
+				<div>
+					{users ? users.map((item) => (
+						<div className="my-7" key={item.id}>
+						<p>Name: {item.name}</p>
+						<p>Role: {item.role}</p>
+						<p>UID: {item.uid}</p>
+						</div>
+					))
+					: "Awaiting users"}
+				</div>
 			</div>
 	)
-	else return (
+	/*else return (
 		<div>
 			<h1>DB Test</h1>
 			<p>Awaiting database connection</p>
 		</div>
-	);
+	);*/
 }

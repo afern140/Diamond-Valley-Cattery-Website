@@ -31,8 +31,8 @@ export default function CatList() {
 	}, [cats]);
 
 	//Search field handler
-	const searchItems = (event) => {
-		setFieldInput(event.target.value);
+	const searchItems = (value) => {
+		setFieldInput(value);
 	}
 
 	//Filter handler

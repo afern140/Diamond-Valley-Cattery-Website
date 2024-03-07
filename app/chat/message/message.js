@@ -1,4 +1,3 @@
-// message/message.js
 import React from 'react';
 
 const style = {
@@ -7,6 +6,7 @@ const style = {
   senderName: `text-gray-600 text-xs`,
   sent: `bg-[#395dff] text-white float-right ml-auto`,
   received: `bg-[#e5e5ea] text-black float-left mr-auto`,
+  image: `max-w-full h-auto`,
 };
 
 const Message = ({ message, isCurrentUser }) => {
@@ -16,7 +16,8 @@ const Message = ({ message, isCurrentUser }) => {
     <div className={style.messageContainer}>
       <div className={`${style.message} ${messageClass}`}>
         {!isCurrentUser && message.name && <p className={style.senderName}>{message.name}</p>}
-        <p>{message.text}</p>
+        {message.text && <p>{message.text}</p>}
+        {message.pictureUrl && <img src={message.pictureUrl} alt="Sent" className={style.image} />}
       </div>
     </div>
   );

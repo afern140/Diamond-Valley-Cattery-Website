@@ -11,7 +11,7 @@ import ApiDataContext from '@/app/_utils/api_context';
 export default function Litters() {
 
 	const [fieldInput, setFieldInput] = useState("");
-    const [filteredResults, setFilteredResults] = useState(cats);
+  const [filteredResults, setFilteredResults] = useState(cats);
 	const [data, setData] = useState(cats);
 
 	const dbdata = React.useContext(ApiDataContext);
@@ -51,15 +51,16 @@ export default function Litters() {
       }
 
       if (sortingMethod !== "") {
-        if (sortingMethod === "Name") { filteredData.sort((a, b) => a.name > b.name); }
-        else if (sortingMethod === "Breed") { filteredData.sort((a, b) => a.breed > b.breed); }
-        else if (sortingMethod === "Gender") { filteredData.sort((a, b) => a.gender > b.gender); }
-        else if (sortingMethod === "Age") { filteredData.sort((a, b) => a.age - b.age); }
-        else if (sortingMethod === "Color") { filteredData.sort((a, b) => a.color > b.color); }
+        if (sortingMethod === "Name") { filteredData.sort(function(a, b){ return a.name > b.name ? 1 : -1; }); }
+        else if (sortingMethod === "Breed") { filteredData.sort(function(a, b){ return a.breed > b.breed ? 1 : -1; }); }
+        else if (sortingMethod === "Gender") { filteredData.sort(function(a, b){ return a.gender > b.gender ? 1 : -1; }); }
+        else if (sortingMethod === "Age") { filteredData.sort(function(a, b){ return a.age > b.age ? 1 : -1; }); }
+        else if (sortingMethod === "Color") { filteredData.sort(function(a, b){ return a.color > b.color ? 1 : -1; }); }
         console.log("third pass: " + sortingMethod);
       }
 
       setFilteredResults(filteredData);
+      console.log(filteredResults);
     }
 
     {/*  */}
@@ -90,27 +91,20 @@ export default function Litters() {
       searchItems(type, filter);
     }
 
-    const clearFilters = () => {
-        setDropdownFilter("");
-        setDropdownValue("");
-
-        breedType = "";
-        genderType = "";
-        ageType = "";
-        colorType = "";
-
-        console.log("Cleared filters!");
-        searchItems("", "");
-    }
-
     const [sortingMethod, setSortingMethod] = useState("");
 
-    useEffect(() => {
+    
+    function populateList() {
+      return filteredResults.map((cat) => 
+        <div>
+            <LitterButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
+        </div>
+      )
+    }
 
-      return () => {
-        //clearFilters();
-      }
-    }, [fieldInput, dropdownValue]);
+    useEffect(() => {
+      populateList();
+    }, [filteredResults])
 
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
@@ -135,11 +129,7 @@ export default function Litters() {
             <div className="flex-col">
                 {/* Populating the list with cats */}
                 {
-                  (dbdata !== null) && dbdata.map((cat) => (
-                    <div>
-                        <LitterButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
-                    </div>
-                  ))
+                  (data !== null) && populateList()
                 }
               </div>
           </div>  

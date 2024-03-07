@@ -52,7 +52,7 @@ function LitterButton({ id, name, age, color, eye_color, breed, gender, vaccinat
                 <p className=" text-left text-3xl">{name}</p>
                 <p className=" text-xl font-medium text-left">Date: date</p>
                 <p className=" text-xl font-medium text-left">Parents: {data.map((cat, i) => (<span>{motherID === cat.id && "Mother - " + cat.name}</span>))} {data.map((cat, i) => (<span>{fatherID === cat.id && "Father - " + cat.name}</span>))}</p>
-                <p className=" text-xl font-medium text-left">Children: {data.map((cat, i) => (<span>{(motherID === cat.motherID || fatherID === cat.fatherID) && cat.name} </span>))}</p>
+                <p className=" text-xl font-medium text-left">Children: {data.map((cat, i) => (<span>{(id === cat.motherID || id === cat.fatherID) && cat.name} </span>))}</p>
             </div>
         </button> ) : (<div />) }
         </Link>

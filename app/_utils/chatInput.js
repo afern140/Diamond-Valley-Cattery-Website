@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { db, auth } from "./firebase";
+import { rtdb, auth } from "./firebase"; 
 
-export default function chatInput({ roomId }) {
-    console.log("Executing ChatInput");
+export default function ChatInput({ roomId }) {
+  console.log("Executing ChatInput");
   const [message, setMessage] = useState('');
 
   const sendMessage = async (e) => {
@@ -12,9 +12,10 @@ export default function chatInput({ roomId }) {
       return;
     }
 
-    await db.collection('rooms').doc(roomId).collection('messages').add({
-      message,
-      timestamp: new Date(),
+    // Push the message to the Firebase Realtime Database
+    await rtdb.ref(`rooms/${roomId}/messages`).push({
+      message: message,
+      timestamp: new Date().toISOString(), 
       user: auth.currentUser.displayName,
       userId: auth.currentUser.uid,
     });

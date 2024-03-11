@@ -10,8 +10,9 @@ import {db} from "../../_utils/firebase";
 //Add items
 export async function addUser(userDoc) {
     console.log("Entered addUser.")
-    const itemsRef = collection(db, 'users');
+    const itemsRef = collection(db, "users");
     const docRef = await addDoc(itemsRef, userDoc);
+    console.log("Document written with ID: ", docRef.id);
     return docRef.id;
 }
 
@@ -21,12 +22,9 @@ export default function page() {
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const {user} = useUserAuth();
-  
-   
 
-
+  //Handles the creation of a new user in Firebase Authentication
     async function handleRegister(e){
-
         e.preventDefault();
         //Create user
         console.log("Creating user.");
@@ -68,14 +66,16 @@ export default function page() {
         handleRedirect();
       }
 
+      //Add user to database (user collection in Cloud Firestore)
     async function addUserData(user){
         console.log("Entered addUserData.");
         const userDoc = {
             name: user.displayName,
             role: "customer",
-            uid: user.uid,
+            uid: user.uid
         };
         console.log("Adding user to database.");
+        console.log(userDoc);
         addUser(userDoc);
         console.log("User added to database.");
     }

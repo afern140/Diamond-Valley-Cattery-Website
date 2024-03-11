@@ -15,16 +15,15 @@ import ApiDataContext from "../_utils/api_context";
 
       return (
          <main>
-            <h1>Comments</h1>
-            Hello this is a test.
+            <h1 className="text-5xl font-bold">Comments</h1>
+            Hello this is a test of the comments system.
             {!comments && <p>Loading...</p>}
             {comments &&
                comments.map((comment) => (
                <Comment 
-               catid={comment.catid}
+               catName={comment.catName}
                message={comment.message}
-               createuid={comment.createuid}
-               
+               createName={comment.createName}
                />
                ))
             }
@@ -35,13 +34,12 @@ import ApiDataContext from "../_utils/api_context";
 
    }
 
-   function Comment({catid, message, createuid, date}) {
+   function Comment({catName, message, createName}) {
       return (
          <div>
-            <h2>{catid}</h2>
+            <h2 className="text-3xl">{catName}</h2>
             <p>{message}</p>
-            <p>Created by: {createuid}</p>
-            <p>Created on: {date}</p>
+            <p>Created by: {createName}</p>
          </div>
       );
    }

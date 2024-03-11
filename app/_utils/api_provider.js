@@ -101,10 +101,11 @@ const ApiDataProvider = ({ children }) => {
 	commentListSnapshot.forEach((doc) => {
 		const item = doc.data();
 		const newComment = {
+			catID: item.catID,
+			catName: item.catName,
+			createID: item.createID,
+			createName: item.createName,
 			message: item.message,
-			createuid: item.createuid,
-			date: item.date,
-			catid: item.catid
 		}
 		commentList.push(newComment);
 	});

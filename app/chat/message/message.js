@@ -16,7 +16,7 @@ const Message = ({ message, isCurrentUser }) => {
     <div className={style.messageContainer}>
       <div className={`${style.message} ${messageClass}`}>
         {!isCurrentUser && message.name && <p className={style.senderName}>{message.name}</p>}
-        {message.text && <p>{message.text}</p>}
+        <p>{message.text}</p>
         {message.pictureUrl && <img src={message.pictureUrl} alt="Sent" className={style.image} />}
       </div>
     </div>

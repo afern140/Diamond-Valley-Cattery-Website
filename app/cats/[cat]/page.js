@@ -1,5 +1,3 @@
-//Cat data generated with cobbl.io
-
 "use client"
 
 import Image from "next/image";

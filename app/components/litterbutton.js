@@ -8,7 +8,7 @@ import ApiDataContext from '../_utils/api_context';
 
 import cats from "@/app/cats/[cat]/cat.json"
 
-function LitterButton({ id, name, age, color, eye_color, breed, gender, vaccinations, conditions, fatherID, motherID, children }) {
+function LitterButton({ id, name, expDate, fatherID, motherID, notes, breed, gender, age, color, imgURL }) {
     const [width, setWidth] = useState(0);
 
     const [data, setData] = useState(cats);
@@ -17,25 +17,22 @@ function LitterButton({ id, name, age, color, eye_color, breed, gender, vaccinat
 
     let motherName = "";
     let fatherName = "";
+    let date = "";
 
 	useEffect(() => {
-		console.log(dbdata);
-		setData(dbdata);
-		//Re-run filter to update the list
-
-        //Overwrite filteredData with dbdata if it exists
-        if (data != null && data != undefined) {
-            
-            data.map((cat, index) => {
-                motherName = (motherID === index) ? cat.name : "m_placeholder";
-            })
-
-            data.map((cat, index) => {
-                fatherName = (fatherID === index) ? cat.name : "f_placeholder";
-            })
-        }
-
+		setData(dbdata.litters);
 	}, [dbdata]);
+
+    function returnDate(expected_date) {
+        if (expected_date === undefined) { return "No Date"; }
+        //console.log("Date: " + new Date(expected_date.seconds * 1000));
+
+        // The 'Date' Object works with miliseconds, so we convert it by multiplying by 1000
+		const date = new Date(expected_date.seconds * 1000);
+		const sp = date.toUTCString().split(" ");
+		return sp[1].concat(" ", sp[2], " ", sp[3]);
+	}
+
 
     return (
         <Link href={`/litters/${id}`} className=" w-fit flex justify-start">
@@ -43,14 +40,14 @@ function LitterButton({ id, name, age, color, eye_color, breed, gender, vaccinat
         <button className="flex font-bold p-2 text-black place-items-center">
             <Image
                 alt="Kitty_Litter"
-                src={ "/img/Kitty_Litter.png"}
-                width={width < 1024 ? "200" : "200"}
-                height={width < 1024 ? "200" : "200"}
-                className="justify-center align-center place-items-center"
-                objectFit="contain"/>
+                src={ imgURL ? imgURL : "/img/Kitty_Litter.png" }
+                width="200"
+                height="200"
+                style={{objectFit: "cover"}}
+                className="justify-center align-center place-items-center"/>
             <div className=" pl-4 mb-auto" >
                 <p className=" text-left text-3xl">{name}</p>
-                <p className=" text-xl font-medium text-left">Date: date</p>
+                <p className=" text-xl font-medium text-left">Date: {returnDate(expDate)}</p>
                 <p className=" text-xl font-medium text-left">Parents: {data.map((cat, i) => (<span>{motherID === cat.id && "Mother - " + cat.name}</span>))} {data.map((cat, i) => (<span>{fatherID === cat.id && "Father - " + cat.name}</span>))}</p>
                 <p className=" text-xl font-medium text-left">Children: {data.map((cat, i) => (<span>{(id === cat.motherID || id === cat.fatherID) && cat.name} </span>))}</p>
             </div>

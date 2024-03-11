@@ -17,7 +17,8 @@ export default function Litters() {
 	const dbdata = React.useContext(ApiDataContext);
 
 	useEffect(() => {
-		setData(dbdata);
+    console.log("Litters: " + dbdata.litters);
+		setData(dbdata.litters);
 		//Re-run filter to update the list
 	}, [dbdata]);
 
@@ -60,7 +61,7 @@ export default function Litters() {
       }
 
       setFilteredResults(filteredData);
-      console.log(filteredResults);
+      //console.log(filteredResults);
     }
 
     {/*  */}
@@ -95,9 +96,9 @@ export default function Litters() {
 
     
     function populateList() {
-      return filteredResults.map((cat) => 
+      return filteredResults.map((litter) => 
         <div>
-            <LitterButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
+            <LitterButton id={litter.id} name={litter.name} expDate={litter.expDate} motherID={litter.motherID} fatherID={litter.fatherID} notes={litter.notes} breed={litter.breed} gender={litter.gender} age={litter.age} color={litter.color} imgURL={litter.imgURL} />
         </div>
       )
     }
@@ -129,7 +130,7 @@ export default function Litters() {
             <div className="flex-col">
                 {/* Populating the list with cats */}
                 {
-                  (data !== null) && populateList()
+                  (data !== null && data !== undefined) && populateList()
                 }
               </div>
           </div>  

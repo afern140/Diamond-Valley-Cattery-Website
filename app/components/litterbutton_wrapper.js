@@ -6,11 +6,11 @@ import ApiDataProvider from '@/app/_utils/api_provider';
 
 import LitterButton from './litterbutton';
 
-export default function LitterButton_Wrapper({ id, name, age, color, eye_color, breed, gender, vaccinations, conditions, fatherID, motherID, children }) {
+export default function LitterButton_Wrapper({ id, name, expDate, fatherID, motherID, notes, breed, gender, age, color, imgURL }) {
     
   return (
 	<ApiDataProvider>
-		<LitterButton id={id} name={name} age={age} color={color} eye_color={eye_color} breed={breed} gender={gender} vaccinations={vaccinations} conditions={conditions} fatherID={fatherID} motherID={motherID} children={children} />
+		<LitterButton id={id} name={name} expDate={expDate} motherID={motherID} fatherID={fatherID} notes={notes} breed={breed} gender={gender} age={age} color={color} imgURL={imgURL} />
 	</ApiDataProvider>
   )
 }

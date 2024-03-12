@@ -35,6 +35,7 @@ const ApiDataProvider = ({ children }) => {
 	//Holds raw data from firestore
 	const [cats, setCats] = useState(null);
 	const [users, setUsers] = useState(null);
+	const [litters, setLitters] = useState(null);
 
 	//Loads data from firestore when component mounts
 	useEffect(() => {
@@ -96,11 +97,22 @@ const ApiDataProvider = ({ children }) => {
 	});
 	//console.log(userList);
 	setUsers(userList);
+	/* Litter Addition */
+	const litterRef = collection(db, "litters");
+	const litterQuery = query(litterRef);
+	const litterListSnapshot = await getDocs(litterQuery);
+	const litterList = [];
+
+	litterListSnapshot.forEach((doc) => {
+		const littersData = {id: doc.id, ...doc.data()};
+		litterList.push(littersData);
+	});
+	setLitters(litterList);
 	}
 
 	//Creates a context wrapper of some sort that provides the data to the app
 	return (
-		<ApiDataContext.Provider value={{cats, users}}>
+		<ApiDataContext.Provider value={{cats, users, litters}}>
 			{children}
 		</ApiDataContext.Provider>
 	);

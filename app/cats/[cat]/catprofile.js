@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import Carousel from "@/app/components/carousel"
 
 import ApiDataProvider from '../../_utils/api_provider';
-import ApiDataContext from '../../_utils/api_context';
+import ApiDataContext from '@/app/_utils/api_context';
 
 export default function CatProfile({params}) {
 

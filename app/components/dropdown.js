@@ -24,9 +24,10 @@ function Dropdown({queryType, callback, cats}) {
     let dropdownValue;
     const handleCallback = (selected) => {
         callback(queryType + " " + selected);
-        dropdownValue = selected;
+        setDropdownValue(selected);
         setIsOpen(false);
-        //console.log("Value: " + dropdownValue);
+        console.log("[Dropdown] Value: " + dropdownValue + " QueryType: " + queryType);
+        setDropSelectClassname("text-sm");
     }
 
     let list;
@@ -48,7 +49,9 @@ function Dropdown({queryType, callback, cats}) {
     return (
     <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
         <button onClick={() => setIsOpen((prev) => !prev)}
-                className="bg-white text-black h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border border-black duration-300 active:text-white" />
+                className="bg-white text-black h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border border-black duration-300 active:text-white">
+                    <span className={dropSelectClassname}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
+                </button>
             
             { /* When we press the dropdown button, we change the state to 'Open' and populate the list with the appropriate values. */}
             { isOpen && (

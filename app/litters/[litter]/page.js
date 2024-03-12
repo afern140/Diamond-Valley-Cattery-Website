@@ -5,13 +5,13 @@
 import React, { useState, useEffect } from "react";
 
 import ApiDataProvider from '@/app/_utils/api_provider';
-import CatProfile from './catprofile';
+import LitterProfile from './litterprofile';
 
 export default function Page({ params }) {
 
 	return(
 		<ApiDataProvider>
-			<CatProfile params={params}/>
+			<LitterProfile params={params}/>
 		</ApiDataProvider>
 	)
 }

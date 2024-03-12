@@ -155,6 +155,8 @@ export default function CatList() {
     const searchItems = (searchValue, filterValue) => {
       let filteredData = cats;
 
+      //const catEntriesID = Object.keys(data)[0];
+      //console.log(data.cats)
 	  //Overwrite filteredData with dbdata if it exists
 	  if (data != null && data != undefined) {
 		  filteredData = data;
@@ -185,6 +187,7 @@ export default function CatList() {
         console.log("third pass: " + sortingMethod);
       }
 
+      //filteredData === null ? setFilteredResults(filteredData) : setFilteredResults([]);
       setFilteredResults(filteredData);
     }
 

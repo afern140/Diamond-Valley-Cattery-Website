@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import Image from 'next/image'
 import Link from "next/link";
-import data from "@/app/cats/[cat]/cat.json"
 
 const IDs = [
     { id: 0, link: "/img/Kitty_1.png",

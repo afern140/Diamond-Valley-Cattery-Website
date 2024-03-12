@@ -6,7 +6,6 @@ import { getAuth } from "firebase/auth";
 import { getDatabase, ref } from  "firebase/database";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -23,3 +22,4 @@ export const rtdb = getDatabase(app);
 export const strg = getStorage(app);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+export const imageDb = getStorage(app);

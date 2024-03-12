@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Image from 'next/image'
 import Link from "next/link";
+import data from "@/app/cats/[cat]/cat.json"
 
 const IDs = [
     { id: 0, link: "/img/Kitty_1.png",
@@ -21,8 +22,6 @@ function CatButton({ id, name, age, color, eye_color, breed, gender, vaccination
                 height={width < 1024 ? "300" : "300"}
                 className="justify-center align-center place-items-center"
                 objectFit="contain"/>
-            <p className=" mt-1">{name}</p>
-            <p className=" text-sm font-medium">{breed}</p>
         </button>
         </Link>
     );

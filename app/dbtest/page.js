@@ -1,10 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { db } from "../_utils/firebase";
-import { collection, getDocs, addDoc, query } from "firebase/firestore";
+import React, { useState, useEffect } from 'react';
+/*import { db } from "../_utils/firebase";
+import { collection, getDocs, addDoc, query } from "firebase/firestore";*/
+//Provides the wrapper for the data
+import ApiDataProvider from '../_utils/api_provider';
+//Retrieves the data from the context wrapper
+//import ApiDataContext from '../_utils/api_context';
 
-async function getCats() {
+//Test component to display cats
+import CatData from './catdata';
+
+/*async function getCats() {
 	const catRef = collection(db, "cats");
 	const q = query(catRef);
 	const shoppingListSnapshot = await getDocs(q);
@@ -24,13 +31,14 @@ async function getCats() {
 	});
 	//console.log(shoppingList);
 	return shoppingList;
-}
+}*/
 
 export default function Page() {
 
-	const [data, setData] = useState(null);
+	//const [data, setData] = useState(React.useContext(ApiDataContext));
+	//const {data} = React.useContext(ApiDataContext);
 
-	useEffect(() => {
+	/*useEffect(() => {
 		loadCats();
 	}, []);
 
@@ -42,7 +50,7 @@ export default function Page() {
 	async function loadCats() {
 		const cats = await getCats();
 		setData(cats);
-	}
+	}*/
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -74,56 +82,76 @@ export default function Page() {
 
 			//Add to database
 			const catListRef = collection(db, "cats");
-			const docRef = addDoc(catListRef, {cat_name: form.name.value,
-				cat_gender: form.gender.value,
-				cat_breed: form.breed.value,
-				cat_color: form.color.value});
+			const docRef = addDoc(catListRef, {
+				id: data.length + 1,
+				name: form.name.value,
+				age: form.age.value,
+				color: form.color.value,
+				eye_color: form.eye_color.value,
+				breed: form.breed.value,
+				gender: form.gender.value,
+				vaccinations: form.vaccinations.value,
+				conditions: form.conditions.value,
+				//Randomly assign parents for now
+				motherID: Math.floor(Math.random() * 30),
+				fatherID: Math.floor(Math.random() * 30)
+			});
 			return docRef;
 		}
 	}
 
+	return (
+		<ApiDataProvider>
+			<CatData onSubmit={() => handleSubmit()}/>
+		</ApiDataProvider>
+	)
+
 	if (data) return (
-		<div className="flex">
-			{/* Read */}
-			<div>
-				<h1>DB Test</h1>
-				<p>Testing database connection</p>
-				{data.map((item) => (
-					<div className="my-7">
-					<p>Name: {item.name}</p>
-					<p>Gender: {item.gender}</p>
-					<p>Breed: {item.breed}</p>
-					<p>Color: {item.color}</p>
-					</div>
-				))}
+		<ApiDataProvider>
+			<div className="flex">
+				{/* Read */}
+				<div>
+					<h1>DB Test</h1>
+					<p>Testing database connection</p>
+					{data.map((item) => (
+						<div className="my-7">
+						<p>Name: {item.name}</p>
+						<p>Gender: {item.gender}</p>
+						<p>Breed: {item.breed}</p>
+						<p>Color: {item.color}</p>
+						</div>
+					))}
+				</div>
+				{/* Write */}
+				<div>
+					<h1>New cat</h1>
+					<form onSubmit={handleSubmit}>
+						<div className="flex flex-col">
+							<label htmlFor="name">Name</label>
+							<input type="text" name="name" id="name" />
+
+							<label htmlFor="gender">Gender</label>
+							<input type="text" name="gender" id="gender" />
+
+							<label htmlFor="breed">Breed</label>
+							<input type="text" name="breed" id="breed" />
+
+							<label htmlFor="color">Color</label>
+							<input type="text" name="color" id="color" />
+
+							<button type="submit">Add cat</button>
+						</div>
+					</form>
+				</div>
 			</div>
-			{/* Write */}
-			<div>
-				<h1>New cat</h1>
-				<form onSubmit={handleSubmit}>
-					<div className="flex flex-col">
-						<label htmlFor="name">Name</label>
-						<input type="text" name="name" id="name" />
-
-						<label htmlFor="gender">Gender</label>
-						<input type="text" name="gender" id="gender" />
-
-						<label htmlFor="breed">Breed</label>
-						<input type="text" name="breed" id="breed" />
-
-						<label htmlFor="color">Color</label>
-						<input type="text" name="color" id="color" />
-
-						<button type="submit">Add cat</button>
-					</div>
-				</form>
-			</div>
-		</div>
+		</ApiDataProvider>
 	)
 	else return (
+		<ApiDataProvider>
 		<div>
 			<h1>DB Test</h1>
 			<p>Awaiting database connection</p>
 		</div>
+		</ApiDataProvider>
 	);
 }

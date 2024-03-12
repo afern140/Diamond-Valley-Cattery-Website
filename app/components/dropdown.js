@@ -1,30 +1,33 @@
 "use client"
 
 import { useState, React } from "react";
-import cats from "@/app/cats/[cat]/cat.json"
+//import cats from "@/app/cats/[cat]/cat.json"
 
-const breedQuery = cats.map(i => i.breed);
-const genderQuery = cats.map(i => i.gender);
-const ageQuery = cats.map(i => i.age);
-const colorQuery = cats.map(i => i.color);
-
-const breedFiltered = cats.filter(({ breed }, index) => !breedQuery.includes(breed, index + 1));
-const genderFiltered = cats.filter(({ gender }, index) => !genderQuery.includes(gender, index + 1));
-const ageFiltered = cats.filter(({ age }, index) => !ageQuery.includes(age, index + 1));
-const colorFiltered = cats.filter(({ color }, index) => !colorQuery.includes(color, index + 1));
-const sortFilters = ["None", "Name", "Breed", "Gender", "Age", "Color"];
-
-
-function Dropdown({queryType, callback}) {
+function Dropdown({queryType, callback, cats}) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
+
+	if (cats === undefined || cats === null) {
+		cats = [];
+	}
+	const breedQuery = cats.map(i => i.breed);
+	const genderQuery = cats.map(i => i.gender);
+	const ageQuery = cats.map(i => i.age);
+	const colorQuery = cats.map(i => i.color);
+
+	const breedFiltered = cats.filter(({ breed }, index) => !breedQuery.includes(breed, index + 1));
+	const genderFiltered = cats.filter(({ gender }, index) => !genderQuery.includes(gender, index + 1));
+	const ageFiltered = cats.filter(({ age }, index) => !ageQuery.includes(age, index + 1));
+	const colorFiltered = cats.filter(({ color }, index) => !colorQuery.includes(color, index + 1));
+	const sortFilters = ["None", "Name", "Breed", "Gender", "Age", "Color"];
 
     let dropdownValue;
     const handleCallback = (selected) => {
         callback(queryType + " " + selected);
-        dropdownValue = selected;
+        setDropdownValue(selected);
         setIsOpen(false);
-        //console.log("Value: " + dropdownValue);
+        console.log("[Dropdown] Value: " + dropdownValue + " QueryType: " + queryType);
+        setDropSelectClassname("text-sm");
     }
 
     let list;
@@ -46,7 +49,9 @@ function Dropdown({queryType, callback}) {
     return (
     <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
         <button onClick={() => setIsOpen((prev) => !prev)}
-                className="bg-white text-black h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border border-black duration-300 active:text-white" />
+                className="bg-white text-black h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border border-black duration-300 active:text-white">
+                    <span className={dropSelectClassname}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
+                </button>
             
             { /* When we press the dropdown button, we change the state to 'Open' and populate the list with the appropriate values. */}
             { isOpen && (

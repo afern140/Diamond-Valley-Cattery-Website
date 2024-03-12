@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import Carousel from "@/app/components/carousel"
 
 import ApiDataProvider from '../../_utils/api_provider';
-import ApiDataContext from '../../_utils/api_context';
+import ApiDataContext from '@/app/_utils/api_context';
 
 import { useUserAuth } from "@/app/_utils/auth-context";
 import { getUser, updateUser, useUser } from "@/app/_utils/user_services";
@@ -37,22 +37,21 @@ export default function CatProfile({params}) {
 
 	//console.log(data);
 
-	const dbdata = React.useContext(ApiDataContext);
+	const { cats } = React.useContext(ApiDataContext);
 	const [catData, setCatData] = useState([]);
 
 	useEffect(() => {
 		console.log("Cat page dbdata updated!")
-		console.log(dbdata);
+		//console.log(cats);
 
-
-		setCatData(dbdata);
-	}, [dbdata]);
+		setCatData(cats);
+	}, [cats]);
 
 	useEffect(() => {
-		if (dbdata != null && dbdata != undefined)
+		if (cats != null && cats != undefined)
 		{
 			//Select cat with id that matches params
-			const cat = dbdata.find(cat => cat.id === parseInt(params.cat));
+			const cat = cats.find(cat => cat.id === parseInt(params.cat));
 			setSelectedCat(cat);
 		}
 	}, [catData]);
@@ -89,7 +88,7 @@ export default function CatProfile({params}) {
 
 	return(
 		<main className="bg-gray-100">
-			{selectedCat ? (
+			{selectedCat && catData ? (
 				<section>
 					<h1 className="text-black text-4xl text-center font-bold pt-8 pb-4">{selectedCat.name}</h1>
 					{/*<Image

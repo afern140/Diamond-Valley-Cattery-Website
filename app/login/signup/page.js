@@ -1,8 +1,21 @@
 "use client";
 import { useState } from 'react';
-import { auth } from '../../_utils/firebase'; // assuming you have a firebase.js file that exports the auth object
+import { auth } from '../../_utils/firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { useUserAuth } from "../../_utils/auth-context";
+import {collection,addDoc} from "firebase/firestore";
+import {db} from "../../_utils/firebase";
+
+//Change for user
+//Add items
+export async function addUser(userDoc) {
+    console.log("Entered addUser.")
+    const itemsRef = collection(db, "users");
+    const docRef = await addDoc(itemsRef, userDoc);
+    console.log("Document written with ID: ", docRef.id);
+    return docRef.id;
+}
+
 
 export default function page() {
   const [email, setEmail] = useState('');
@@ -10,37 +23,66 @@ export default function page() {
   const [displayName, setDisplayName] = useState('');
   const {user} = useUserAuth();
 
-  async function handleRegister(e){
-    e.preventDefault();
-    //Create user
-    console.log("Creating user.");
-    await createUserWithEmailAndPassword(auth, email, password)
-      .catch((error) => {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        if (errorCode === 'auth/email-already-in-use') {
-          alert('Invalid Email or Password');
-        }
-        else{
-         console.log(errorCode, errorMessage);
-        }
-      });
-      //Add user name
-      console.log("Adding username.");
-    await updateProfile(auth.currentUser, {displayName: displayName})
-      .catch ((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-    //await sendEmailVerification(auth.currentUser);
-    handleRedirect();
-  }
+  //Handles the creation of a new user in Firebase Authentication
+    async function handleRegister(e){
+        e.preventDefault();
+        //Create user
+        console.log("Creating user.");
+        await createUserWithEmailAndPassword(auth, email, password)
+          .catch((error) => {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode === 'auth/email-already-in-use') {
+              alert('Invalid Email or Password');
+            }
+            else{
+             console.log(errorCode, errorMessage);
+            }
+          });
+        //Add user name
+        //console.log("Adding username.");
+        await updateProfile(auth.currentUser, {displayName: displayName})
+          .catch ((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+          });
+          /**
+          ((userCredential) => {
+            // User created, now create userDoc
+            const user = userCredential.user;
+            const userDoc = {
+              role: "customer",
+              uid: user.uid,
+              name: displayName,
+            };
+            //Add user to database
+            
+          })
+          */
+        //await sendEmailVerification(auth.currentUser);
+        addUserData(auth.currentUser);
+        handleRedirect();
+      }
+
+      //Add user to database (user collection in Cloud Firestore)
+    async function addUserData(user){
+        console.log("Entered addUserData.");
+        const userDoc = {
+            name: user.displayName,
+            role: "customer",
+            uid: user.uid
+        };
+        console.log("Adding user to database.");
+        console.log(userDoc);
+        addUser(userDoc);
+        console.log("User added to database.");
+    }
   
   function handleRedirect(){
     window.location.href = '/login';
-  } 
+  }
 
   return(
     <div>

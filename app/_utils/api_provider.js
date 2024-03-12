@@ -35,6 +35,7 @@ const ApiDataProvider = ({ children }) => {
 	//Holds raw data from firestore
 	const [cats, setCats] = useState(null);
 	const [users, setUsers] = useState(null);
+	const [comments, setComments] = useState(null);
 	const [litters, setLitters] = useState(null);
 
 	//Loads data from firestore when component mounts
@@ -85,18 +86,37 @@ const ApiDataProvider = ({ children }) => {
 	const userListSnapshot = await getDocs(userQuery);
 	const userList = [];
 	userListSnapshot.forEach((doc) => {
-		/*const item = doc.data();
+		const item = doc.data();
 		const newItem = {
-			docid: doc.id,
 			name: item.name,
 			role: item.role,
 			uid: item.uid
-		};*/
-		const userData = {id: doc.id, ...doc.data()};
-		userList.push(userData);
+		};
+		userList.push(newItem);
 	});
-	//console.log(userList);
+	console.log(userList);
 	setUsers(userList);
+	
+
+	//Load comment data
+	const commentRef = collection(db, "comments");
+	const commentQuery = query(commentRef);
+	const commentListSnapshot = await getDocs(commentQuery);
+	const commentList = [];
+	commentListSnapshot.forEach((doc) => {
+		const item = doc.data();
+		const newComment = {
+			catID: item.catID,
+			catName: item.catName,
+			createID: item.createID,
+			createName: item.createName,
+			message: item.message,
+		}
+		commentList.push(newComment);
+	});
+	console.log(commentList);
+	setComments(commentList);
+
 	/* Litter Addition */
 	const litterRef = collection(db, "litters");
 	const litterQuery = query(litterRef);
@@ -108,11 +128,12 @@ const ApiDataProvider = ({ children }) => {
 		litterList.push(littersData);
 	});
 	setLitters(litterList);
+
 	}
 
 	//Creates a context wrapper of some sort that provides the data to the app
 	return (
-		<ApiDataContext.Provider value={{cats, users, litters}}>
+		<ApiDataContext.Provider value={{cats, users, litters, comments}}>
 			{children}
 		</ApiDataContext.Provider>
 	);

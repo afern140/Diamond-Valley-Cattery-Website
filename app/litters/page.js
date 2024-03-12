@@ -4,13 +4,13 @@ import React, { useState, useEffect } from "react";
 
 import ApiDataProvider from '../_utils/api_provider';
 
-import CatList from './catlist';
+import Litters from './litters';
 
 export default function Page() {
     
   return (
 	<ApiDataProvider>
-		<CatList />
+		<Litters />
 	</ApiDataProvider>
   )
 }

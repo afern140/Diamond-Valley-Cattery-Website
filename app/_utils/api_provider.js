@@ -73,7 +73,8 @@ const ApiDataProvider = ({ children }) => {
 			vaccinations: item.vaccinations,
 			conditions: item.conditions,
 			motherID: item.motherID,
-			fatherID: item.fatherID
+			fatherID: item.fatherID,
+			docID: doc.id
 		};*/
 		catList.push(catsData);
 	});

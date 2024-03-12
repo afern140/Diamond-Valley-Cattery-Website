@@ -11,7 +11,25 @@ import Carousel from "@/app/components/carousel"
 import ApiDataProvider from '../../_utils/api_provider';
 import ApiDataContext from '@/app/_utils/api_context';
 
+import { useUserAuth } from "@/app/_utils/auth-context";
+import { getUser, updateUser, useUser } from "@/app/_utils/user_services";
+import { db } from "@/app/_utils/firebase";
+import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
+
 export default function CatProfile({params}) {
+
+	const {user} = useUserAuth();
+	const [filteredUser, setFilteredUser] = useState();
+	const [updatedUser, setUpdatedUser] = useState();
+
+	useEffect(() => {
+		const fetchUser = async () => {
+			const filteredUser = await getUser(user);
+			setFilteredUser(filteredUser);
+			setUpdatedUser(filteredUser);
+		};
+		fetchUser();
+	}, [user]);
 
 	const [selectedCat, setSelectedCat] = useState(Cats[parseInt(params.cat)]);
 	const router = useRouter();
@@ -37,6 +55,36 @@ export default function CatProfile({params}) {
 			setSelectedCat(cat);
 		}
 	}, [catData]);
+	
+	const [favorite, setFavorite] = useState(false);
+
+	useEffect(() => {
+		const fetchFavorites = async () => {
+			if (filteredUser && filteredUser.favorites && filteredUser.favorites.cats) {
+				// const usersCatData = filteredUser.favorites.cats.map(async (catRef) => {
+				// 	const catDoc = await getDoc(catRef);
+				// 	return { ...catDoc.data() };
+				// });
+				setFavorite(filteredUser.favorites.cats.some(ref => ref.path === doc(db, 'cats', selectedCat.docID).path));
+			}
+		};
+		fetchFavorites();
+	}, [filteredUser, selectedCat]);
+
+	const handleFavoriteButton = async () => {
+		let updatedFavorites;
+		if (favorite) {
+			updatedFavorites = filteredUser.favorites.cats.filter(ref => ref.path !== doc(db, 'cats', selectedCat.docID).path);
+		} else {
+			if (!filteredUser.favorites.cats.some(ref => ref.path === doc(db, 'cats', selectedCat.docID).path)) {
+				updatedFavorites = [...filteredUser.favorites.cats, doc(db, 'cats', selectedCat.docID)];
+			} else {
+				updatedFavorites = filteredUser.favorites.cats;
+			}
+		}
+		await updateUser({ ...filteredUser, favorites: { ...filteredUser.favorites, cats: updatedFavorites } });
+		setFavorite(updatedFavorites.some(ref => ref.path === doc(db, 'cats', selectedCat.docID).path));
+	};
 
 	return(
 		<main className="bg-gray-100">
@@ -67,9 +115,17 @@ export default function CatProfile({params}) {
 								<h3>Conditions: <span className="font-normal">{selectedCat.conditions}</span></h3>
 							</div>
 						</div>
-						<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
-							<h2>Want to Purchase {selectedCat.name}?</h2>
-							<Link href={"/chat"}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Request a Meeting</button></Link>
+						<div className="flex flex-col ml-auto mx-10 mb-auto">
+							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
+								<h2>Want to Purchase {selectedCat.name}?</h2>
+								<Link href={"/chat"}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Request a Meeting</button></Link>
+							</div>
+							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
+								<h2>{favorite ? `Remove ${selectedCat.name} from Favorites?` : `Add ${selectedCat.name} to Favorites?`}</h2>
+								<button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md" onClick={handleFavoriteButton}>
+									{favorite ? "Remove from Favorites" : "Add to Favorites"}
+								</button>
+							</div>
 						</div>
 					</div>
 					<div className="text-black text-xl font-bold p-10">

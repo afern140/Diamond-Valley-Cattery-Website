@@ -1,5 +1,3 @@
-//Cat data generated with cobbl.io
-
 "use client"
 
 import React, { useState, useEffect } from "react";

@@ -3,7 +3,8 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getAuth } from "firebase/auth";
- import { getFirestore } from "firebase/firestore";
+import { getDatabase, ref } from  "firebase/database";
+import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,6 +18,8 @@ const firebaseConfig = {
  
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export const rtdb = getDatabase(app);
+export const strg = getStorage(app);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const imageDb = getStorage(app);

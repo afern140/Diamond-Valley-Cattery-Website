@@ -1,25 +1,27 @@
-import React, { useState } from "react";
-import cats from "@/app/cats/[cat]/cat.json"
+"use client"
 
-const breedQuery = cats.map(i => i.breed);
-const genderQuery = cats.map(i => i.gender);
-const ageQuery = cats.map(i => i.age);
-const colorQuery = cats.map(i => i.color);
+import { useState, React } from "react";
+//import cats from "@/app/cats/[cat]/cat.json"
 
-const breedFiltered = cats.filter(({ breed }, index) => !breedQuery.includes(breed, index + 1));
-const genderFiltered = cats.filter(({ gender }, index) => !genderQuery.includes(gender, index + 1));
-const ageFiltered = cats.filter(({ age }, index) => !ageQuery.includes(age, index + 1));
-const colorFiltered = cats.filter(({ color }, index) => !colorQuery.includes(color, index + 1));
-const sortFilters = ["None", "Name", "Breed", "Gender", "Age", "Color"];
+function Dropdown({queryType, callback, cats}) {
+    const [isOpen, setIsOpen] = useState(false)
+    const [query, setQuery] = useState("")
 
+	if (cats === undefined || cats === null) {
+		cats = [];
+	}
+	const breedQuery = cats.map(i => i.breed);
+	const genderQuery = cats.map(i => i.gender);
+	const ageQuery = cats.map(i => i.age);
+	const colorQuery = cats.map(i => i.color);
 
-function Dropdown({queryType, callback}) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [query, setQuery] = useState("");
+	const breedFiltered = cats.filter(({ breed }, index) => !breedQuery.includes(breed, index + 1));
+	const genderFiltered = cats.filter(({ gender }, index) => !genderQuery.includes(gender, index + 1));
+	const ageFiltered = cats.filter(({ age }, index) => !ageQuery.includes(age, index + 1));
+	const colorFiltered = cats.filter(({ color }, index) => !colorQuery.includes(color, index + 1));
+	const sortFilters = ["None", "Name", "Breed", "Gender", "Age", "Color"];
 
-    const [dropdownValue, setDropdownValue] = useState("");
-    const [dropSelectClassname, setDropSelectClassname] = useState(" text-gray-500 italic font-normal text-base");
-    
+    let dropdownValue;
     const handleCallback = (selected) => {
         callback(queryType + " " + selected);
         setDropdownValue(selected);

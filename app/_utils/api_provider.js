@@ -97,7 +97,6 @@ const ApiDataProvider = ({ children }) => {
 	});
 	//console.log(userList);
 	setUsers(userList);
-
 	/* Litter Addition */
 	const litterRef = collection(db, "litters");
 	const litterQuery = query(litterRef);

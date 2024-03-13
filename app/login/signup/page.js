@@ -21,6 +21,7 @@ export default function page() {
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const {user} = useUserAuth();
+  const [name, setName] = useState('');
   
    
 
@@ -71,9 +72,11 @@ export default function page() {
     async function addUserData(user){
         console.log("Entered addUserData.");
         const userDoc = {
-            name: user.displayName,
+            username: user.displayName,
             role: "customer",
             uid: user.uid,
+            email: user.email,
+            name: name,
         };
         console.log("Adding user to database.");
         addUser(userDoc);
@@ -107,12 +110,20 @@ export default function page() {
             />
             <input 
               type="text"
-              placeholder="Full Name"
+              placeholder="Username"
               value = {displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               className="text-black border-s-4 border-slate-300 p-2 mb-4"
               required
             />
+            <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="text-black border-s-4 border-slate-300 p-2 mb-4"
+                
+                />
             <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">
               Sign Up with Email
             </button>

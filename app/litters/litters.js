@@ -8,6 +8,9 @@ import cats from "@/app/cats/[cat]/cat.json"
 import ApiDataProvider from '@/app/_utils/api_provider';
 import ApiDataContext from '@/app/_utils/api_context';
 
+import { db } from "../_utils/firebase";
+import { getDoc } from "firebase/firestore";
+
 export default function Litters() {
 
 	const [fieldInput, setFieldInput] = useState("");
@@ -17,7 +20,7 @@ export default function Litters() {
 	const dbdata = React.useContext(ApiDataContext);
 
 	useEffect(() => {
-    console.log("Litters: " + dbdata.litters);
+    //console.log(dbdata);
 		setData(dbdata.litters);
 		//Re-run filter to update the list
 	}, [dbdata]);
@@ -96,10 +99,11 @@ export default function Litters() {
 
     
     function populateList() {
-      return filteredResults.map((litter) => 
-        <div>
-            <LitterButton id={litter.id} name={litter.name} expDate={litter.expDate} motherID={litter.motherID} fatherID={litter.fatherID} notes={litter.notes} breed={litter.breed} gender={litter.gender} age={litter.age} color={litter.color} imgURL={litter.imgURL} />
-        </div>
+      return filteredResults.map((litter, i) => 
+          (typeof litter.id === "string" || litter.id instanceof String) && 
+          (<div>
+            <LitterButton id={litter.id} />
+          </div>)
       )
     }
 

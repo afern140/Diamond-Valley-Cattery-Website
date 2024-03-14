@@ -7,6 +7,8 @@ function Dropdown({queryType, callback, cats}) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
 
+    const [dropSelectClassname, setDropSelectClassname] = useState(" text-gray-500 italic font-normal text-base");
+
 	if (cats === undefined || cats === null) {
 		cats = [];
 	}

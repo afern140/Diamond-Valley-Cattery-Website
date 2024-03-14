@@ -5,10 +5,15 @@ import { collection, doc, getDocs, updateDoc, getDoc } from "firebase/firestore"
 import { db } from "../_utils/firebase";
 
 export const getUser = async(userAuth) => {
-	const usersCollection = await getDocs(collection(db, 'users'));
-	const usersData = usersCollection.docs.map((doc) => ({id: doc.id, ...doc.data(),}));
-	const user = usersData.find(userItem => userItem.uid == userAuth.uid)
-	return user;
+	if (userAuth != undefined)
+	{
+		 usersCollection = await getDocs(collection(db, 'users'));
+		const usersData = usersCollection.docs.map((doc) => ({id: doc.id, ...doc.data(),}));
+		const user = usersData.find(userItem => userItem.uid == userAuth.uid)
+		return user;
+	}
+	else
+		return undefined;
 }
 
 export const getUserCats = async(filteredUser) => {

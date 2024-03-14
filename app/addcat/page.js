@@ -10,6 +10,9 @@ import cats from "@/app/cats/[cat]/cat.json"
 import ApiDataProvider from '../_utils/api_provider';
 import ApiDataContext from '../_utils/api_context';
 
+import { db } from "../_utils/firebase";
+import { collection, getDocs, addDoc, query } from "firebase/firestore";
+
 export default function CatList() {
 
 	const [fieldInput_parents, setFieldInput_parents] = useState("");
@@ -20,6 +23,42 @@ export default function CatList() {
 	const [data, setData] = useState(cats);
 
 	const dbdata = React.useContext(ApiDataContext);
+
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		const emptyFields = [];
+		const form = event.target;
+		if (form.name.value === "") emptyFields.push("name");
+		if (form.age.value === "") emptyFields.push("age");
+		if (form.color.value === "") emptyFields.push("color");
+		if (form.eye_color.value === "") emptyFields.push("eye_color");
+		if (form.breed.value === "") emptyFields.push("breed");
+		if (form.gender.value === "") emptyFields.push("gender");
+
+		if (emptyFields.length > 0) 
+			alert(
+				`Please fill in the following fields: ${emptyFields.join(", ")}`
+			);
+		else {
+			alert("Added " + form.name.value + " the " + form.color.value + " " + form.breed.value + "!");
+			
+			//Add to database
+			const catListRef = collection(db, "cats");
+			const docRef = addDoc(catListRef, {
+				name: form.name.value,
+				age: form.age.value,
+				color: form.color.value,
+				eye_color: form.eye_color.value,
+				breed: form.breed.value,
+				gender: form.gender.value,
+				vaccinations: form.vaccinations.value,
+				conditions: form.conditions.value,
+				//Randomly assign parents for now
+				motherID: Math.floor(Math.random() * 30),
+				fatherID: Math.floor(Math.random() * 30)
+			});
+			}
+	}
 
 	useEffect(() => {
 		/*console.log("Cats: ")
@@ -152,13 +191,6 @@ export default function CatList() {
 
     const [sortingMethod, setSortingMethod] = useState("");
 
-    useEffect(() => {
-
-      return () => {
-        //clearFilters();
-      }
-    }, [fieldInput_parents, fieldInput_children, dropdownValue]);
-
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
       <div>
@@ -168,26 +200,36 @@ export default function CatList() {
 
       <div className="flex py-6 w-full justify-center">
         <div className="flex w-4/5">
+		
           {/* First split of the page */}
           <div className=" w-1/3 mr-6 align-middle justify-start flex-col flex items-center">
+		  <form onSubmit={handleSubmit}>
             <h2 className="py-6 text-2xl font-semibold">Parameters</h2>
 
+			
             <h3 className="py-2 text-lg">Name</h3>
-            <Dropdown queryType="breed" callback={callback} />
+            <input type="text" name="name" placeholder="Name" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
+
             <h3 className="py-2 text-lg">Breed</h3>
-            <Dropdown queryType="breed" callback={callback} />
+            <input type="text" name="breed" placeholder="Breed" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
+
             <h3 className="py-2 text-lg">Gender</h3>
-            <Dropdown queryType="gender" callback={callback} />
+            <input type="text" name="gender" placeholder="Gender" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
+			
             <h3 className="py-2 text-lg">Age</h3>
-            <Dropdown queryType="age" callback={callback} />
+            <input type="text" name="age" placeholder="Age" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
+
             <h3 className="py-2 text-lg">Color</h3>
-            <Dropdown queryType="color" callback={callback} />
+            <input type="text" name="color" placeholder="Color" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
+
+			<h3 className="py-2 text-lg">Eye Color</h3>
+			<input type="text" name="eye_color" placeholder="Eye Color" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
 
             <h2 className="py-6 text-2xl font-semibold">Medical</h2>
             <h3 className="py-2 text-lg">Conditions</h3>
-            <Dropdown queryType="color" callback={callback} />
+            <input type="text" name="conditions" placeholder="Conditions" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
             <h3 className="py-2 text-lg">Vaccinations</h3>
-            <Dropdown queryType="color" callback={callback} />
+            <input type="text" name="vaccinations" placeholder="Vaccinations" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
 
             <h2 className="py-6 text-2xl font-semibold">Notes</h2>
             <div className="align-top justify-start mx-autoflex">
@@ -197,9 +239,10 @@ export default function CatList() {
                     className=" border placeholder:italic pt-2 -mr-2 pr-2 border-black rounded-xl text-xl pl-4 m-auto min-h-48 h-10 text-start" />
                 
                 {/* Insert icon here... */}
+				{/* ^ What? */}
             </div>
-
-            <button onClick={clearFilters} className=" py-2 px-4 mt-10 bg-slate-300 rounded-xl font-semibold">Clear Filters</button>
+			<button className="flex justify-center bg-cat-gray-1 text-white py-3 px-5 rounded-xl">Submit</button>
+			</form>
           </div>
 
           {/* Second split of the page */}
@@ -267,6 +310,7 @@ export default function CatList() {
             
             <div className="h-4" />
             <div className="flex justify-end"><button className="flex justify-center bg-cat-gray-1 text-white py-3 px-5 rounded-xl">Submit</button></div>
+
         </div>
         </div>
       </div>

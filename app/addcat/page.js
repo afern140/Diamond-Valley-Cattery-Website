@@ -5,7 +5,7 @@ import Link from "next/link";
 import Dropdown from "@/app/components/dropdown";
 import CatButton from "@/app/components/catbutton-1";
 import CatButton_NoTitle from "@/app/components/catbutton-notitle";
-import cats from "@/app/cats/[cat]/cat.json"
+//import cats from "@/app/cats/[cat]/cat.json"
 
 import ApiDataProvider from '../_utils/api_provider';
 import ApiDataContext from '../_utils/api_context';
@@ -14,6 +14,7 @@ import { db } from "../_utils/firebase";
 import { collection, getDocs, addDoc, query } from "firebase/firestore";
 
 export default function CatList() {
+	const {cats} = React.useContext(ApiDataContext);
 
 	const [fieldInput_parents, setFieldInput_parents] = useState("");
 	const [fieldInput_children, setFieldInput_children] = useState("");
@@ -24,6 +25,7 @@ export default function CatList() {
 
 	const dbdata = React.useContext(ApiDataContext);
 
+	
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		const emptyFields = [];
@@ -45,6 +47,7 @@ export default function CatList() {
 			//Add to database
 			const catListRef = collection(db, "cats");
 			const docRef = addDoc(catListRef, {
+				id: cats.length + 1,
 				name: form.name.value,
 				age: form.age.value,
 				color: form.color.value,
@@ -80,9 +83,9 @@ export default function CatList() {
     let filteredData_parents = cats;
 
 	  //Overwrite filteredData with dbdata if it exists
-	  if (data != null && data != undefined) {
+	  /**if (data != null && data != undefined) {
 		  filteredData_parents = data;
-	  }
+	  }*/
       
       if (filterValue === "") { setFieldInput_parents(searchValue.trim()); }
 
@@ -116,9 +119,9 @@ export default function CatList() {
       let filteredData_children = cats;
   
       //Overwrite filteredData with dbdata if it exists
-      if (data != null && data != undefined) {
+      /*if (data != null && data != undefined) {
         filteredData_children = data;
-      }
+      }*/
         
         if (filterValue === "") { setFieldInput_children(searchValue.trim()); }
   
@@ -252,11 +255,12 @@ export default function CatList() {
             <div className="grid border border-black w-full grid-cols-3">
                 {/* Populating the list with cats */}
                 {
-                filteredResults.map((cat, i) => (
+                filteredResults ? filteredResults.map((cat, i) => (
                     <div>
                         {(i <= 3) && <CatButton_NoTitle id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
                     </div>
                 ))
+				: "Loading..."
                 }
             </div>
 
@@ -275,11 +279,12 @@ export default function CatList() {
                 <div className="grid grid-cols-3">
                 {/* Populating the list with cats */}
                 {
-                filteredResults_parents.map((cat, i) => (
+                filteredResults_parents ? filteredResults_parents.map((cat, i) => (
                     <div>
                         {(i <= 2) && <CatButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
                     </div>
                 ))
+				: "Loading..."
                 }
                 </div>
             </div>
@@ -299,11 +304,12 @@ export default function CatList() {
                 <div className="grid grid-cols-3">
                 {/* Populating the list with cats */}
                 {
-                filteredResults_children.map((cat, i) => (
+                filteredResults_children ? filteredResults_children.map((cat, i) => (
                     <div>
                         {(i <= 2) && <CatButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
                     </div>
                 ))
+				: "Loading..."
                 }
                 </div>
             </div>

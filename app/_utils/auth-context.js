@@ -43,7 +43,7 @@ export const AuthContextProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-    return unsubscribe; // This function is returned to be called on cleanup
+    return unsubscribe;
   }, []);
 
   return (

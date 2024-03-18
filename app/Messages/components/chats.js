@@ -18,7 +18,7 @@ const Chats = () => {
   }, [currentUser?.uid]);
 
   const handleSelectChat = (userInfo) => {
-    setSelectedUser(userInfo); // Use setSelectedUser from AuthContext to set the current chat user
+   // setSelectedUser(userInfo); // Use setSelectedUser from AuthContext to set the current chat user
   };
 
   return (

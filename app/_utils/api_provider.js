@@ -60,7 +60,7 @@ const ApiDataProvider = ({ children }) => {
 		//const item = doc.data();
 		//New method: Loads entire document into array
 		//Now changes to the document structure can be made without breaking the app
-		const catsData = {id: doc.id, ...doc.data()};
+		const catsData = {docid: doc.id, ...doc.data()};
 		/*const newItem = {
 			docid: doc.id,
 			id: item.id,

@@ -294,9 +294,9 @@ export default function CatList() {
             <div className="grid w-full grid-cols-3">
                 {/* Populating the list with cats */}
                 {filteredResults ?
-                  filteredResults.map((cat) => (
+                  filteredResults.map((cat, index) => (
                     <div>
-                        <CatButton1 id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
+                        <CatButton1 id={cat.id} imageID={index} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
                     </div>
                   ))
 				  : "Awaiting cats"

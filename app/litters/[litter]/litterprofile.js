@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 
 import { useRouter } from 'next/navigation'
 import Carousel from "@/app/components/carousel"
-import LitterButton from "@/app/components/litterbutton_wrapper"
+import CatButton from "@/app/components/catbutton-1"
 
 import ApiDataContext from '@/app/_utils/api_context';
 
@@ -58,13 +58,13 @@ export default function LitterProfile({params}) {
 	}
 
     function returnParent(parent) {
-        if (parent && parent._key && parent._key.path.segments)  { return doc(db, "litters", parent._key.path.segments[6]); }
+        if (parent && parent._key && parent._key.path.segments)  { return doc(db, "cats", parent._key.path.segments[6]); }
         return "";
     }
 
     function returnChildren(children) {
         if (children && children.length > 0) {
-            return children.map((child) => doc(db, "litters", child._key.path.segments[6]))
+            return children.map((child) => doc(db, "cats", child._key.path.segments[6]))
         }
         return [];
     }
@@ -111,10 +111,10 @@ export default function LitterProfile({params}) {
 						<h2 className="text-2xl mx-10 mt-6">Kittens</h2>
 						<div className="flex flex-wrap">
 							{
-								children.map((child) => 
+								children.map((child, index) => 
 									(
 									<div>
-										<LitterButton id={child} />
+										<CatButton id={child} imageID={index} />
 									</div>
 								))
 							}

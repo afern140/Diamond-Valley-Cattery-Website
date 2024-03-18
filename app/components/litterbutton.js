@@ -56,13 +56,13 @@ function LitterButton({ id }) {
 	}
 
     function returnParent(parent) {
-        if (parent && parent._key && parent._key.path.segments)  { return doc(db, "litters", parent._key.path.segments[6]); }
+        if (parent && parent._key && parent._key.path.segments)  { return doc(db, "cats", parent._key.path.segments[6]); }
         return "";
     }
 
     function returnChildren(children) {
         if (children && children.length > 0) {
-            return children.map((child) => doc(db, "litters", child._key.path.segments[6]))
+            return children.map((child) => doc(db, "cats", child._key.path.segments[6]))
         }
         return [];
     }

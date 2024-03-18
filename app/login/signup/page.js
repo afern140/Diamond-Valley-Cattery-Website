@@ -51,26 +51,17 @@ export default function page() {
             var errorMessage = error.message;
             console.log(errorCode, errorMessage);
           });
-          /**
-          ((userCredential) => {
-            // User created, now create userDoc
-            const user = userCredential.user;
-            const userDoc = {
-              role: "customer",
-              uid: user.uid,
-              name: displayName,
-            };
-            //Add user to database
-            
-          })
-          */
-        //await sendEmailVerification(auth.currentUser);
         addUserData(auth.currentUser);
         handleRedirect();
       }
 
     async function addUserData(user){
         console.log("Entered addUserData.");
+        console.log(user.displayName);
+        console.log(user.uid);
+        console.log(user.email);
+        
+        
         const userDoc = {
             username: user.displayName,
             role: "customer",
@@ -78,8 +69,19 @@ export default function page() {
             email: user.email,
             name: name,
         };
+        
+       /*
+       const userDoc = {
+              username: "Sterben",
+                role: "customer",
+                uid: "1234567890",
+                email: "anthonyho992@gmail.com",
+                name: "anthony",
+        };
+        */
         console.log("Adding user to database.");
-        addUser(userDoc);
+        const docRef = await addUser(userDoc);
+        console.log(docRef)
         console.log("User added to database.");
     }
   

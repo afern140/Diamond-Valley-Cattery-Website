@@ -19,7 +19,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const rtdb = getDatabase(app);
-export const strg = getStorage(app);
+export const storage = getStorage(app);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const imageDb = getStorage(app);

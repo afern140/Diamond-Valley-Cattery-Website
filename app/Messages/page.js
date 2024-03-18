@@ -1,14 +1,17 @@
+"use client";
 import React from "react";
-import Sidebar from "../chat/sidebar/sidebar";
-import Chats from "../chat/chats/chats";
+import Sidebar from "./components/sidebar";
+import Chat from "./components/chat";
 
 const Page = () => {
-    return(
-        <div>
-            <Sidebar />
-            <Chats />
-        </div>
-    )
-}
+  return (
+    <div className='Messages'>
+      <div className='messageContainer'>
+        <Sidebar />
+        <Chat />
+      </div>
+    </div>
+  );
+};
 
 export default Page;

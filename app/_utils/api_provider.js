@@ -7,7 +7,7 @@ import { db } from "../_utils/firebase";
 //Various firestore functions
 import { collection, getDocs, addDoc, query } from "firebase/firestore";
 
-async function getCats() {
+/*async function getCats() {
 	//Finds the collection, queries the collection, makes a snapshot of the collection, then dumps that snapshot into an array
 	//whew
 	const catRef = collection(db, "cats");
@@ -29,11 +29,14 @@ async function getCats() {
 	});
 	console.log(catList);
 	return catList;
-}
+}*/
 
 const ApiDataProvider = ({ children }) => {
 	//Holds raw data from firestore
-	const [data, setData] = useState(null);
+	const [cats, setCats] = useState(null);
+	const [users, setUsers] = useState(null);
+	const [comments, setComments] = useState(null);
+	const [litters, setLitters] = useState(null);
 
 	//Loads data from firestore when component mounts
 	useEffect(() => {
@@ -47,15 +50,19 @@ const ApiDataProvider = ({ children }) => {
 		//Finds the collection, queries the collection, makes a snapshot of the collection, then dumps that snapshot into an array
 	//whew
 	const catRef = collection(db, "cats");
-	const q = query(catRef);
-	const catListSnapshot = await getDocs(q);
+	const catQuery = query(catRef);
+	const catListSnapshot = await getDocs(catQuery);
 	const catList = [];
 	catListSnapshot.forEach((doc) => {
 		//catList.push(doc.data());
 		//console.log("doc:");
 		//console.log(doc.data());
-		const item = doc.data();
-		const newItem = {
+		//const item = doc.data();
+		//New method: Loads entire document into array
+		//Now changes to the document structure can be made without breaking the app
+		const catsData = {id: doc.id, ...doc.data()};
+		/*const newItem = {
+			docid: doc.id,
 			id: item.id,
 			name: item.name,
 			age: item.age,
@@ -67,16 +74,66 @@ const ApiDataProvider = ({ children }) => {
 			conditions: item.conditions,
 			motherID: item.motherID,
 			fatherID: item.fatherID
-		};
-		catList.push(newItem);
+		};*/
+		catList.push(catsData);
 	});
-	console.log(catList);
-	setData(catList);
+	//console.log(catList);
+	setCats(catList);
+
+	//Load user data
+	const userRef = collection(db, "users");
+	const userQuery = query(userRef);
+	const userListSnapshot = await getDocs(userQuery);
+	const userList = [];
+	userListSnapshot.forEach((doc) => {
+		const item = doc.data();
+		const newItem = {
+			name: item.name,
+			role: item.role,
+			uid: item.uid
+		};
+		userList.push(newItem);
+	});
+	console.log(userList);
+	setUsers(userList);
+	
+
+	//Load comment data
+	const commentRef = collection(db, "comments");
+	const commentQuery = query(commentRef);
+	const commentListSnapshot = await getDocs(commentQuery);
+	const commentList = [];
+	commentListSnapshot.forEach((doc) => {
+		const item = doc.data();
+		const newComment = {
+			catID: item.catID,
+			catName: item.catName,
+			createID: item.createID,
+			createName: item.createName,
+			message: item.message,
+		}
+		commentList.push(newComment);
+	});
+	console.log(commentList);
+	setComments(commentList);
+
+	/* Litter Addition */
+	const litterRef = collection(db, "litters");
+	const litterQuery = query(litterRef);
+	const litterListSnapshot = await getDocs(litterQuery);
+	const litterList = [];
+
+	litterListSnapshot.forEach((doc) => {
+		const littersData = {id: doc.id, ...doc.data()};
+		litterList.push(littersData);
+	});
+	setLitters(litterList);
+
 	}
 
 	//Creates a context wrapper of some sort that provides the data to the app
 	return (
-		<ApiDataContext.Provider value={data}>
+		<ApiDataContext.Provider value={{cats, users, litters, comments}}>
 			{children}
 		</ApiDataContext.Provider>
 	);

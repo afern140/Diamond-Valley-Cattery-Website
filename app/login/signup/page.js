@@ -51,7 +51,7 @@ export default function page() {
             var errorMessage = error.message;
             console.log(errorCode, errorMessage);
           });
-        addUserData(auth.currentUser);
+        await addUserData(auth.currentUser);
         handleRedirect();
       }
 

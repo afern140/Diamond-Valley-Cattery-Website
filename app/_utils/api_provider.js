@@ -60,7 +60,9 @@ const ApiDataProvider = ({ children }) => {
 		//const item = doc.data();
 		//New method: Loads entire document into array
 		//Now changes to the document structure can be made without breaking the app
-		const catsData = {id: doc.id, ...doc.data()};
+
+		const catsData = {docid: doc.id, ...doc.data()};
+
 		/*const newItem = {
 			docid: doc.id,
 			id: item.id,
@@ -73,7 +75,8 @@ const ApiDataProvider = ({ children }) => {
 			vaccinations: item.vaccinations,
 			conditions: item.conditions,
 			motherID: item.motherID,
-			fatherID: item.fatherID
+			fatherID: item.fatherID,
+			docID: doc.id
 		};*/
 		catList.push(catsData);
 	});

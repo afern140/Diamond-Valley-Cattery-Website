@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { auth } from '../../_utils/firebase'; // assuming you have a firebase.js file that exports the auth object
+import { auth } from '../../_utils/firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { useUserAuth } from "../../_utils/auth-context";
 import {collection,addDoc} from "firebase/firestore";
@@ -10,8 +10,9 @@ import {db} from "../../_utils/firebase";
 //Add items
 export async function addUser(userDoc) {
     console.log("Entered addUser.")
-    const itemsRef = collection(db, 'users');
+    const itemsRef = collection(db, "users");
     const docRef = await addDoc(itemsRef, userDoc);
+    console.log("Document written with ID: ", docRef.id);
     return docRef.id;
 }
 
@@ -22,12 +23,10 @@ export default function page() {
   const [displayName, setDisplayName] = useState('');
   const {user} = useUserAuth();
   const [name, setName] = useState('');
-  
-   
 
 
+  //Handles the creation of a new user in Firebase Authentication
     async function handleRegister(e){
-
         e.preventDefault();
         //Create user
         console.log("Creating user.");
@@ -55,6 +54,7 @@ export default function page() {
         handleRedirect();
       }
 
+      //Add user to database (user collection in Cloud Firestore)
     async function addUserData(user){
         console.log("Entered addUserData.");
         console.log(user.displayName);
@@ -65,6 +65,7 @@ export default function page() {
         const userDoc = {
             username: user.displayName,
             role: "customer",
+
             uid: user.uid,
             email: user.email,
             name: name,
@@ -80,6 +81,7 @@ export default function page() {
         };
         */
         console.log("Adding user to database.");
+
         const docRef = await addUser(userDoc);
         console.log(docRef)
         console.log("User added to database.");

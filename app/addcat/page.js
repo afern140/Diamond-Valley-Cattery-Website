@@ -3,12 +3,12 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Dropdown from "@/app/components/dropdown";
-import CatButton from "@/app/components/catbutton-1";
-import CatButton_NoTitle from "@/app/components/catbutton-notitle";
+import CatParentButton from "./parent_button";
 //import cats from "@/app/cats/[cat]/cat.json"
 
 import ApiDataProvider from '../_utils/api_provider';
 import ApiDataContext from '../_utils/api_context';
+import { doc } from "firebase/firestore";
 
 import { db } from "../_utils/firebase";
 import { collection, getDocs, addDoc, query } from "firebase/firestore";
@@ -23,8 +23,25 @@ export default function CatList() {
   const [filteredResults_children, setFilteredResults_children] = useState(cats);
 	const [data, setData] = useState(cats);
 
+	//Stores docIDs for selected parents
+	const [selectedMother, setSelectedMother] = useState("");
+	const [selectedFather, setSelectedFather] = useState("");
+
 	const dbdata = React.useContext(ApiDataContext);
 
+	//Handles selection of parents
+	const handleSelect = (docid) => {
+		const selectedCat = cats.find(cat => cat.docid === docid);
+		if (!selectedCat)
+		{
+			console.log("Error: selected cat not found");
+			return;
+		}
+		if (selectedCat.gender == "Male")
+			setSelectedFather(docid);
+		else
+			setSelectedMother(docid);
+	}
 	
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -46,6 +63,11 @@ export default function CatList() {
 			
 			//Add to database
 			const catListRef = collection(db, "cats");
+
+			//Create references to parents from selected parents
+			const motherDoc = doc(db, "cats", selectedMother);
+			const fatherDoc = doc(db, "cats", selectedFather);
+
 			const docRef = addDoc(catListRef, {
 				id: cats.length + 1,
 				name: form.name.value,
@@ -56,9 +78,8 @@ export default function CatList() {
 				gender: form.gender.value,
 				vaccinations: form.vaccinations.value,
 				conditions: form.conditions.value,
-				//Randomly assign parents for now
-				motherID: Math.floor(Math.random() * 30),
-				fatherID: Math.floor(Math.random() * 30)
+				mother: motherDoc,
+				father: fatherDoc
 			});
 			}
 	}
@@ -91,108 +112,11 @@ export default function CatList() {
 
       if (fieldInput_parents !== "") {
         filteredData_parents = filteredData_parents.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(searchValue.toLowerCase()) );
-        console.log("first pass (parents): " + fieldInput_parents);
-      }
-
-      if (dropdownValue !== "") {
-        if (dropdownFilter === "breed" || breedType !== "") { breedType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.breed).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
-        if (dropdownFilter === "gender" || genderType !== "") { genderType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.gender).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
-        if (dropdownFilter === "age" || ageType !== "") { ageType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.age).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
-        if (dropdownFilter === "color" || colorType !== "") { colorType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
-        //filteredData = filteredData.filter((cat) => { return Object.values(cat).join('').toLowerCase().includes(dropdownValue.toLowerCase())})
-        console.log("second pass: " + dropdownValue + " : " + dropdownFilter);
-      }
-
-      if (sortingMethod !== "") {
-        if (sortingMethod === "Name") { filteredData.sort((a, b) => a.name > b.name); }
-        else if (sortingMethod === "Breed") { filteredData.sort((a, b) => a.breed > b.breed); }
-        else if (sortingMethod === "Gender") { filteredData.sort((a, b) => a.gender > b.gender); }
-        else if (sortingMethod === "Age") { filteredData.sort((a, b) => a.age - b.age); }
-        else if (sortingMethod === "Color") { filteredData.sort((a, b) => a.color > b.color); }
-        console.log("third pass: " + sortingMethod);
+        //console.log("first pass (parents): " + fieldInput_parents);
       }
 
       setFilteredResults_parents(filteredData_parents);
     }
-
-    const searchItems_children = (searchValue, filterValue) => {
-      let filteredData_children = cats;
-  
-      //Overwrite filteredData with dbdata if it exists
-      /*if (data != null && data != undefined) {
-        filteredData_children = data;
-      }*/
-        
-        if (filterValue === "") { setFieldInput_children(searchValue.trim()); }
-  
-        if (fieldInput_children !== "") {
-          filteredData_children = filteredData_children.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(searchValue.toLowerCase()) );
-          console.log("first pass (children): " + fieldInput_children);
-        }
-  
-        if (dropdownValue !== "") {
-          if (dropdownFilter === "breed" || breedType !== "") { breedType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.breed).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
-          if (dropdownFilter === "gender" || genderType !== "") { genderType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.gender).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
-          if (dropdownFilter === "age" || ageType !== "") { ageType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.age).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
-          if (dropdownFilter === "color" || colorType !== "") { colorType = dropdownValue;  filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(dropdownValue.toLowerCase())); }
-          //filteredData = filteredData.filter((cat) => { return Object.values(cat).join('').toLowerCase().includes(dropdownValue.toLowerCase())})
-          console.log("second pass: " + dropdownValue + " : " + dropdownFilter);
-        }
-  
-        if (sortingMethod !== "") {
-          if (sortingMethod === "Name") { filteredData.sort((a, b) => a.name > b.name); }
-          else if (sortingMethod === "Breed") { filteredData.sort((a, b) => a.breed > b.breed); }
-          else if (sortingMethod === "Gender") { filteredData.sort((a, b) => a.gender > b.gender); }
-          else if (sortingMethod === "Age") { filteredData.sort((a, b) => a.age - b.age); }
-          else if (sortingMethod === "Color") { filteredData.sort((a, b) => a.color > b.color); }
-          console.log("third pass: " + sortingMethod);
-        }
-  
-        setFilteredResults_children(filteredData_children);
-      }
-
-    {/*  */}
-    const [dropdownFilter, setDropdownFilter] = useState("");
-    const [dropdownValue, setDropdownValue] = useState("");
-    let breedType;
-    let genderType;
-    let ageType;
-    let colorType;
-    const callback = (value) => {
-      const split = value.split(" ");
-      const filter = split[0];
-      const type = split[1];
-
-      if (filter === "sort") { 
-        if (type === "None") {
-          setSortingMethod("");
-        }
-        else {
-          setSortingMethod(type);
-        }
-      }
-      else {
-        setDropdownFilter(filter);
-        setDropdownValue(type); 
-      }
-
-      searchItems_parents(type, filter);
-    }
-
-    const clearFilters = () => {
-        setDropdownFilter("");
-        setDropdownValue("");
-
-        breedType = "";
-        genderType = "";
-        ageType = "";
-        colorType = "";
-
-        console.log("Cleared filters!");
-        searchItems("", "");
-    }
-
-    const [sortingMethod, setSortingMethod] = useState("");
 
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
@@ -228,6 +152,12 @@ export default function CatList() {
 			<h3 className="py-2 text-lg">Eye Color</h3>
 			<input type="text" name="eye_color" placeholder="Eye Color" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
 
+			<h3 className="py-2 text-lg">Mother</h3>
+			{selectedMother ? <p>{selectedMother}</p> : <p>None</p>}
+
+			<h3 className="py-2 text-lg">Father</h3>
+			{selectedFather ? <p>{selectedFather}</p> : <p>None</p>}
+
             <h2 className="py-6 text-2xl font-semibold">Medical</h2>
             <h3 className="py-2 text-lg">Conditions</h3>
             <input type="text" name="conditions" placeholder="Conditions" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
@@ -249,24 +179,22 @@ export default function CatList() {
           </div>
 
           {/* Second split of the page */}
-          <div className="w-full flex-col">
-            <h2 className="flex py-6 justify-center font-bold text-2xl">Images</h2>
-            <div className="h-6"/>
-            <div className="grid border border-black w-full grid-cols-3">
-                {/* Populating the list with cats */}
-                {
-                filteredResults ? filteredResults.map((cat, i) => (
-                    <div>
-                        {(i <= 3) && <CatButton_NoTitle id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
-                    </div>
-                ))
+        <div className="w-full flex-col">
+          	<h2 className="flex py-6 justify-center font-bold text-2xl">Images</h2>
+			<div className="h-6"/>
+				<div className="grid border border-black w-full grid-cols-3">
+				{/* Populating the list with cats */}
+				{
+				filteredResults ? filteredResults.map((cat, i) => (
+					<div>
+						{(i <= 3) && <CatParentButton docid={cat.docid} id={cat.id} name={cat.name} breed={cat.breed}/>}
+					</div>
+				))
 				: "Loading..."
-                }
-            </div>
+				}
+			</div>
 
-            <h2 className="flex py-6 justify-center font-bold text-2xl">Lineage</h2>
-            <h3 className="flex justify-center font-bold text-xl">Parents</h3>
-            <div className="h-2"/>
+            <h2 className="flex py-6 justify-center font-bold text-2xl">Parents</h2>
             <div className="border border-black w-full">
                 <div className="align-middle flex justify-center p-2">
                 <input type="text"
@@ -276,47 +204,18 @@ export default function CatList() {
                     onChange = { (Event) => searchItems_parents(Event.target.value, "") } />
                 {/* Insert icon here... */}
                 </div>
-                <div className="grid grid-cols-3">
-                {/* Populating the list with cats */}
-                {
-                filteredResults_parents ? filteredResults_parents.map((cat, i) => (
-                    <div>
-                        {(i <= 2) && <CatButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
-                    </div>
-                ))
-				: "Loading..."
-                }
+                <div className="flex flex-wrap justify-between overflow-scroll max-h-screen">
+					{/* Populating the list with cats */}
+					{
+					filteredResults_parents ? filteredResults_parents.map((cat, i) => (
+						<div>
+							{<CatParentButton docid={cat.docid} id={cat.id} name={cat.name} breed={cat.breed} onSelect={() => handleSelect(cat.docid)}/>}
+						</div>
+					))
+					: "Loading..."
+					}
                 </div>
             </div>
-            <div className="h-6"/>
-            <h3 className="flex justify-center font-bold text-xl">Children</h3>
-            <div className="h-2"/>
-            <div className="border border-black w-full">
-                <div className="align-middle flex justify-center p-2">
-                <input type="text"
-                    name="catlist-search"
-                    placeholder="Search"
-                    className=" border border-black rounded-3xl text-xl pl-4 w-full h-10"
-                    onChange = { (Event) => searchItems_children(Event.target.value, "") } />
-                
-                {/* Insert icon here... */}
-                </div>
-                <div className="grid grid-cols-3">
-                {/* Populating the list with cats */}
-                {
-                filteredResults_children ? filteredResults_children.map((cat, i) => (
-                    <div>
-                        {(i <= 2) && <CatButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
-                    </div>
-                ))
-				: "Loading..."
-                }
-                </div>
-            </div>
-            
-            <div className="h-4" />
-            <div className="flex justify-end"><button className="flex justify-center bg-cat-gray-1 text-white py-3 px-5 rounded-xl">Submit</button></div>
-
         </div>
         </div>
       </div>

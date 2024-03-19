@@ -22,6 +22,8 @@ export default function page() {
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const {user} = useUserAuth();
+  const [name, setName] = useState('');
+
 
   //Handles the creation of a new user in Firebase Authentication
     async function handleRegister(e){
@@ -48,35 +50,40 @@ export default function page() {
             var errorMessage = error.message;
             console.log(errorCode, errorMessage);
           });
-          /**
-          ((userCredential) => {
-            // User created, now create userDoc
-            const user = userCredential.user;
-            const userDoc = {
-              role: "customer",
-              uid: user.uid,
-              name: displayName,
-            };
-            //Add user to database
-            
-          })
-          */
-        //await sendEmailVerification(auth.currentUser);
-        addUserData(auth.currentUser);
+        await addUserData(auth.currentUser);
         handleRedirect();
       }
 
       //Add user to database (user collection in Cloud Firestore)
     async function addUserData(user){
         console.log("Entered addUserData.");
+        console.log(user.displayName);
+        console.log(user.uid);
+        console.log(user.email);
+        
+        
         const userDoc = {
-            name: user.displayName,
+            username: user.displayName,
             role: "customer",
-            uid: user.uid
+
+            uid: user.uid,
+            email: user.email,
+            name: name,
         };
+        
+       /*
+       const userDoc = {
+              username: "Sterben",
+                role: "customer",
+                uid: "1234567890",
+                email: "anthonyho992@gmail.com",
+                name: "anthony",
+        };
+        */
         console.log("Adding user to database.");
-        console.log(userDoc);
-        addUser(userDoc);
+
+        const docRef = await addUser(userDoc);
+        console.log(docRef)
         console.log("User added to database.");
     }
   
@@ -107,12 +114,20 @@ export default function page() {
             />
             <input 
               type="text"
-              placeholder="Full Name"
+              placeholder="Username"
               value = {displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               className="text-black border-s-4 border-slate-300 p-2 mb-4"
               required
             />
+            <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="text-black border-s-4 border-slate-300 p-2 mb-4"
+                
+                />
             <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">
               Sign Up with Email
             </button>

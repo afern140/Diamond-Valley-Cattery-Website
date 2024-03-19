@@ -3,46 +3,92 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import ApiDataProvider from "../_utils/api_provider";
 import ApiDataContext from "../_utils/api_context";
+import {db} from "../_utils/firebase";
+import {auth} from "../_utils/firebase";
+import {collection,addDoc} from "firebase/firestore";
 
-   export default function Comments() {
-      const dbdata = React.useContext(ApiDataContext);
-      const { comments } = React.useContext(ApiDataContext);
-      
-      useEffect(() => {
-         console.log("Comments page dbdata updated!");
-         console.log(comments);
-      }, [dbdata]);
+export default function Comments() {
+   const dbdata = React.useContext(ApiDataContext);
+   const { comments } = React.useContext(ApiDataContext);
 
-      return (
-         <main>
-            <h1 className="text-5xl font-bold">Comments</h1>
-            Hello this is a test of the comments system.
-            {!comments && <p>Loading...</p>}
-            {comments &&
-               comments.map((comment) => (
-               <Comment 
-               catName={comment.catName}
-               message={comment.message}
-               createName={comment.createName}
-               />
-               ))
-            }
+   useEffect(() => {
+      console.log("Comments page dbdata updated!");
+      console.log(comments);
+   }, [dbdata]);
+
+   return (
+      <main>
+         <h1 className="text-5xl font-bold">Comments</h1>
+         Hello this is a test of the comments system.
+         {!comments && <p>Loading...</p>}
+         {comments &&
+            comments.map((comment) => (
+            <Comment 
+            catName={comment.catName}
+            message={comment.message}
+            createName={comment.createName}
+            />
+            ))
             
-            
-         </main>
-      );
+         }
+         <NewComment/>         
+      </main>
+   );
+    
+}
 
+async function addComment(commentDoc){
+   console.log("Entered addComment.")
+   const itemsRef = collection(db, 'comments');
+   const docRef = await addDoc(itemsRef, commentDoc);
+   return docRef.id;
+}
+
+function NewComment() {
+   const [message, setMessage] = useState("");
+   
+   async function handleAddComment(e){
+      e.preventDefault();
+      console.log("Adding comment.");
+      const commentDoc = {
+         message: message,
+         createUID: auth.currentUser.uid,
+         createName: auth.currentUser.displayName,
+         catID: "666",
+         catName: "Test Cat"         
+      };
+      await addComment(commentDoc);
+      window.location.reload();
    }
 
-   function Comment({catName, message, createName}) {
-      return (
-         <div>
-            <h2 className="text-3xl">{catName}</h2>
-            <p>{message}</p>
-            <p>Created by: {createName}</p>
-         </div>
-      );
-   }
+   return(
+      <div>
+         <h2 className="text-3xl flex flex-col items-center">New Comment</h2>
+         <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
+            <input  
+               type="text"
+               placeholder="Comment Here"
+               value = {message}
+               onChange={(e) => setMessage(e.target.value)}
+               className="border-s-4 border-slate-300 p-2 mb-4 text-black"
+            />
+            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">
+               Submit
+            </button>
+         </form>
+      </div>
+   );
+}
+
+function Comment({catName, message, createName}) {
+   return (
+      <div>
+         <h2 className="text-3xl">{catName}</h2>
+         <p>{message}</p>
+         <p>Created by: {createName}</p>
+      </div>
+   );
+}
 
 /**
  * References for page:

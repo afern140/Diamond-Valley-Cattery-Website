@@ -1,9 +1,6 @@
-"use client"
-
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import cats from "./cat"
 
 import { useRouter } from 'next/navigation'
 import Carousel from "@/app/components/carousel"
@@ -11,70 +8,118 @@ import CatButton from "@/app/components/catbutton-1"
 
 import ApiDataContext from '@/app/_utils/api_context';
 
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/app/_utils/firebase";
+
 export default function LitterProfile({params}) {
 
-	const [selectedLitter, setSelectedLitter] = useState(cats[parseInt(params.cat)]);
-	const router = useRouter();
-	const data = router.query;
+	const [toggleKittens, setToggleKittens] = useState(false);
+	const offButtonStyle = "rounded-xl py-2 px-4 bg-red-500 transition duration-150 active:bg-red-300"
+	const onButtonStyle = "rounded-xl py-2 px-4 bg-green-500 transition duration-150 active:bg-green-300"
 
-	const dbdata = React.useContext(ApiDataContext);
-	const [litterData, setLitterData] = useState([]);
+	const [litter, setLitter] = useState(null);
+    const [mother, setMother] = useState(null);
+    const [father, setFather] = useState(null);
+    const [children, setChildren] = useState([]);
+    
+    async function loadLitters() {
+        //console.log(id);
+        const litterRef = doc(db, "litters", params.litter);
+	    const litterSnap = await getDoc(litterRef);
+        setLitter(litterSnap.data());
 
-	useEffect(() => {
-		setLitterData(dbdata.litters);
-	}, [dbdata]);
+        //console.log(litterSnap.data());
+        const motherRef = returnParent(litterSnap.data().mother);
+        const fatherRef = returnParent(litterSnap.data().father);
+        const childrenRef = returnChildren(litterSnap.data().children);
+        const motherSnap = (motherRef === "") ? "" : await getDoc(motherRef);
+        const fatherSnap = (fatherRef === "") ? "" : await getDoc(fatherRef);
+        let childrenSnap = [];
+        for (const c of childrenRef)  { childrenSnap.push(c._key.path.segments[1]); }
+        //console.log(childrenSnap);
 
-	useEffect(() => {
-		if (litterData != null && litterData != undefined)
-		{
-			//Select cat with id that matches params
-			const litter = litterData.find(litter => litter.id === parseInt(params.litter));
-			setSelectedLitter(litter);
-			//if (litter) { console.log(returnDate(litter.expDate)); }
+        setMother(motherRef === "" ? "" : motherSnap.data().name);
+        setFather(fatherRef === "" ? "" : fatherSnap.data().name);
+        if (childrenRef.length > 0) {
+			setChildren(childrenSnap);
+			console.log(childrenSnap);
 		}
-	}, [litterData]);
-
-	function returnDate(expected_date) {
-		const date = new Date(expected_date.seconds);
+        //console.log(childrenSnap.map((child) => child.data()));
+    }
+    
+    function returnDate(expected_date) {
+        if (expected_date === undefined) { return "No Date"; }
+        //console.log("Date: " + new Date(expected_date.seconds * 1000));
+        
+        // The 'Date' Object works with miliseconds, so we convert it by multiplying by 1000
+		const date = new Date(expected_date.seconds * 1000);
 		const sp = date.toUTCString().split(" ");
 		return sp[1].concat(" ", sp[2], " ", sp[3]);
 	}
 
+    function returnParent(parent) {
+        if (parent && parent._key && parent._key.path.segments)  { return doc(db, "cats", parent._key.path.segments[6]); }
+        return "";
+    }
+
+    function returnChildren(children) {
+        if (children && children.length > 0) {
+            return children.map((child) => doc(db, "cats", child._key.path.segments[6]))
+        }
+        return [];
+    }
+    
+    useEffect(() => {
+       loadLitters();
+    }, []);
 
 	return(
 		<main className="bg-gray-100">
-			{selectedLitter ? (
+			{litter ? (
 				<section>
-					<h1 className="text-black text-4xl text-center font-bold pt-8 pb-4">{selectedLitter.name}</h1>
+					<h1 className="text-black text-4xl text-center font-bold pt-8 pb-4">{litter.name}</h1>
 					<Carousel />
 					<div className="flex flex-row">
 						<div className="flex flex-col text-black text-xl font-bold text-left">
 							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
 								<h2 className="text-2xl mb-2">Details</h2>
-								<h3>Expected Date: <span className="font-normal">{returnDate(selectedLitter.expDate)}</span></h3>
-								<h3>Parent 1: <span className="font-normal">{litterData.map((cat, i) => (<span> {(cat.id === selectedLitter.motherID) && <span>{cat.name}</span> } </span>))}</span></h3>
-								<h3>Parent 2: <span className="font-normal">{litterData.map((cat, i) => (<span> {(cat.id === selectedLitter.fatherID) && <span>{cat.name}</span> } </span>))}</span></h3>
+								<h3>Expected Date: <span className="font-normal">{returnDate(litter.expDate)}</span></h3>
+								<h3>Mother: <span className="font-normal">{mother}</span></h3>
+								<h3>Father: <span className="font-normal">{father}</span></h3>
 								<div className="mt-6"/>
-								<h3>Notes: <span className="font-normal">{selectedLitter.notes}</span></h3>
+								<h3>Notes: <span className="font-normal">{litter.notes}</span></h3>
 							</div>
 						</div>
 						<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
-							<h2>Want to Purchase {selectedLitter.name}?</h2>
+							<h2>Want to Purchase {litter.name}?</h2>
 							<Link href={"/chat"}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Request a Meeting</button></Link>
 						</div>
 					</div>
+
+					{/* Toggle Button Section */}
+					{!toggleKittens && 
+					<div className=" justify-end flex px-10 pb-10">
+						<button className={toggleKittens ? onButtonStyle : offButtonStyle} onClick={() => (setToggleKittens(!toggleKittens))}>
+							Toggle Kittens<br/> {toggleKittens ? <span className="font-bold">On</span> : <span className="font-bold">Off</span>}
+						</button>
+					</div>
+					}
+
+					{/* Kittens Section */}
+					{ toggleKittens && 
 					<div className="text-black text-xl font-bold px-10 pb-10">
 						<h2 className="text-2xl mx-10 mt-6">Kittens</h2>
 						<div className="flex flex-wrap">
 							{
-								litterData.map((cat, i) => (
+								children.map((child, index) => 
+									(
 									<div>
-										{(cat.motherID === selectedLitter.id || cat.fatherID === selectedLitter.id) && <CatButton id={cat.id} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />}
+										<CatButton id={child} imageID={index} />
 									</div>
 								))
 							}
 						</div>
-					</div>
+					</div>}
 				</section>
 			) : (
 				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>

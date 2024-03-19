@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import Message from "./message/message";
 import SendMessage from "./sendmessage/sendMessage"; 
-import { db } from "../_utils/firebase";
-import { query, collection, orderBy, onSnapshot } from "firebase/firestore";
-import { auth } from "../_utils/firebase"; 
-import { addDoc, serverTimestamp } from "firebase/firestore"; 
+import { rtdb } from "../_utils/firebase";
+import { ref, onValue, off } from "firebase/database";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -12,15 +10,26 @@ const Chat = () => {
   const scroll = useRef();
 
   useEffect(() => {
-    const q = query(collection(db, "messages"), orderBy("timestamp"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let messages = [];
-      querySnapshot.forEach((doc) => {
-        messages.push({ ...doc.data(), id: doc.id });
-      });
-      setMessages(messages);
-    });
-    return () => unsubscribe();
+    // Function to handle incoming messages from Realtime Database
+    const handleIncomingMessages = (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const messagesArray = Object.keys(data).map(key => ({
+          ...data[key],
+          id: key
+        }));
+        setMessages(messagesArray);
+        // Check if user is at the bottom of the chat window and show send message component accordingly
+        setShowSendMessage(isUserAtBottom());
+      }
+    };
+
+    // Subscribe to messages node in Realtime Database
+    const messagesRef = ref(rtdb, 'messages');
+    onValue(messagesRef, handleIncomingMessages);
+
+    // Cleanup function to unsubscribe from Realtime Database
+    return () => off(messagesRef, 'value', handleIncomingMessages);
   }, []);
 
   // Function to check if the user is at the bottom of the chat window
@@ -29,33 +38,12 @@ const Chat = () => {
     if (element) {
       return element.scrollTop + element.clientHeight >= element.scrollHeight;
     }
-    return true; // Default to true if element is not available
+    return true; 
   };
 
   // Function to handle scroll event
   const handleScroll = () => {
     setShowSendMessage(isUserAtBottom());
-  };
-
-  // Function to send a message
-  const sendMessage = async (input) => {
-    if (!input) {
-      alert("Please enter a valid message");
-      return;
-    }
-    const { uid, displayName } = auth.currentUser;
-    await addDoc(collection(db, "messages"), {
-      text: input,
-      name: displayName,
-      uid,
-      timestamp: serverTimestamp(),
-    });
-    setInput("");
-    if (scroll.current) {
-      scroll.current.scrollIntoView({ behavior: "smooth" });
-    } else {
-      console.warn("Scroll ref not available.");
-    }
   };
 
   return (

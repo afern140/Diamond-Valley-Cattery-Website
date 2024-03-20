@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "@/app/components/dropdown";
 import LitterButton from "@/app/components/litterbutton_wrapper";
-import cats from "@/app/cats/[cat]/cat.json"
+//import cats from "@/app/cats/[cat]/cat.json"
 
 import ApiDataProvider from '@/app/_utils/api_provider';
 import ApiDataContext from '@/app/_utils/api_context';
@@ -14,8 +14,8 @@ import { getDoc } from "firebase/firestore";
 export default function Litters() {
 
 	const [fieldInput, setFieldInput] = useState("");
-  const [filteredResults, setFilteredResults] = useState(cats);
-	const [data, setData] = useState(cats);
+  const [filteredResults, setFilteredResults] = useState([]);
+	const [data, setData] = useState([]);
 
 	const dbdata = React.useContext(ApiDataContext);
 
@@ -31,7 +31,7 @@ export default function Litters() {
 	, [data]);
 
     const searchItems = (searchValue, filterValue) => {
-      let filteredData = cats;
+      let filteredData = [];
 
 	  //Overwrite filteredData with dbdata if it exists
 	  if (data != null && data != undefined) {

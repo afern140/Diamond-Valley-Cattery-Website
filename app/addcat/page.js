@@ -9,6 +9,7 @@ import CatParentButton from "./parent_button";
 import ApiDataProvider from '../_utils/api_provider';
 import ApiDataContext from '../_utils/api_context';
 import { doc } from "firebase/firestore";
+import { getObjects, getObject } from "../_utils/firebase_services";
 
 import { db } from "../_utils/firebase";
 import { collection, getDocs, addDoc, query } from "firebase/firestore";
@@ -17,17 +18,25 @@ export default function CatList() {
 	const {cats} = React.useContext(ApiDataContext);
 
 	const [fieldInput_parents, setFieldInput_parents] = useState("");
-	const [fieldInput_children, setFieldInput_children] = useState("");
-  const [filteredResults, setFilteredResults] = useState(cats);
-  const [filteredResults_parents, setFilteredResults_parents] = useState(cats);
-  const [filteredResults_children, setFilteredResults_children] = useState(cats);
-	const [data, setData] = useState(cats);
+	const [filteredResults, setFilteredResults] = useState(cats);
+	const [filteredResults_parents, setFilteredResults_parents] = useState(cats);
+
+	//Holds list of available conditions
+	const [conditions, setConditions] = useState();
+
+	useEffect(() => {
+		const fetchConditions = async () => {
+			const conditions = await getObjects('conditions');
+			setConditions(conditions);
+			console.log("Conditions:");
+			console.log(conditions);
+		};
+		fetchConditions();
+	}, []);
 
 	//Stores docIDs for selected parents
 	const [selectedMother, setSelectedMother] = useState("");
 	const [selectedFather, setSelectedFather] = useState("");
-
-	const dbdata = React.useContext(ApiDataContext);
 
 	//Handles selection of parents
 	const handleSelect = (docid) => {
@@ -54,6 +63,13 @@ export default function CatList() {
 		if (form.breed.value === "") emptyFields.push("breed");
 		if (form.gender.value === "") emptyFields.push("gender");
 
+		//Choose new ID by finding the highest current ID
+		let newID = 0;
+		cats.forEach(cat => {
+			if (cat.id > newID)
+				newID = cat.id;
+		});
+
 		if (emptyFields.length > 0) 
 			alert(
 				`Please fill in the following fields: ${emptyFields.join(", ")}`
@@ -67,9 +83,10 @@ export default function CatList() {
 			//Create references to parents from selected parents
 			const motherDoc = doc(db, "cats", selectedMother);
 			const fatherDoc = doc(db, "cats", selectedFather);
+			const conditionDoc = [doc(db, "conditions", form.conditions.value)];
 
-			const docRef = addDoc(catListRef, {
-				id: cats.length + 1,
+			addDoc(catListRef, {
+				id: newID + 1,
 				name: form.name.value,
 				age: form.age.value,
 				color: form.color.value,
@@ -77,46 +94,34 @@ export default function CatList() {
 				breed: form.breed.value,
 				gender: form.gender.value,
 				vaccinations: form.vaccinations.value,
-				conditions: form.conditions.value,
+				conditions: conditionDoc,
 				mother: motherDoc,
 				father: fatherDoc
 			});
-			}
+		}
 	}
-
-	useEffect(() => {
-		/*console.log("Cats: ")
-		console.log(cats);
-		console.log("dbdata: ");
-		console.log(dbdata);*/
-		console.log("Cat list dbdata updated!")
-		console.log(dbdata);
-		setData(dbdata);
-		//Re-run filter to update the list
-	}, [dbdata]);
 
 	useEffect(() => {
 		searchItems_parents("", "");
-	}
-	, [data]);
+	}, [cats]);
 
     const searchItems_parents = (searchValue, filterValue) => {
-    let filteredData_parents = cats;
-
-	  //Overwrite filteredData with dbdata if it exists
-	  /**if (data != null && data != undefined) {
-		  filteredData_parents = data;
-	  }*/
+    	let filteredData_parents = cats;
       
-      if (filterValue === "") { setFieldInput_parents(searchValue.trim()); }
+		if (filterValue === "") { setFieldInput_parents(searchValue.trim()); }
 
-      if (fieldInput_parents !== "") {
-        filteredData_parents = filteredData_parents.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(searchValue.toLowerCase()) );
-        //console.log("first pass (parents): " + fieldInput_parents);
-      }
+		if (fieldInput_parents !== "") {
+			filteredData_parents = filteredData_parents.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(searchValue.toLowerCase()) );
+		}
 
-      setFilteredResults_parents(filteredData_parents);
+		setFilteredResults_parents(filteredData_parents);
     }
+
+	//Quick test for condition dropdown output
+	const handleCondTest = (value) => {
+		console.log("Condition selected:");
+		console.log(value);
+	}
 
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
@@ -141,7 +146,11 @@ export default function CatList() {
             <input type="text" name="breed" placeholder="Breed" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
 
             <h3 className="py-2 text-lg">Gender</h3>
-            <input type="text" name="gender" placeholder="Gender" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
+			<select name="gender" className="border border-black rounded-xl text-xl pl-4 w-full h-10">
+				<option value="Male">Male</option>
+				<option value="Female">Female</option>
+			</select>
+            {/*<input type="text" name="gender" placeholder="Gender" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />*/}
 			
             <h3 className="py-2 text-lg">Age</h3>
             <input type="text" name="age" placeholder="Age" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
@@ -160,7 +169,15 @@ export default function CatList() {
 
             <h2 className="py-6 text-2xl font-semibold">Medical</h2>
             <h3 className="py-2 text-lg">Conditions</h3>
-            <input type="text" name="conditions" placeholder="Conditions" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
+			<select onChange={(e) => handleCondTest(e.target.value)} name="conditions" className="border border-black rounded-xl text-xl pl-4 w-full h-10">
+				<option value="">None</option>
+				{conditions ? conditions.map((condition) => (
+					<option value={condition.docId}>{condition.name}</option>
+				)): "Loading..."}
+			</select>
+           {/*<input type="text" name="conditions" placeholder="Conditions" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />*/}
+
+
             <h3 className="py-2 text-lg">Vaccinations</h3>
             <input type="text" name="vaccinations" placeholder="Vaccinations" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
 

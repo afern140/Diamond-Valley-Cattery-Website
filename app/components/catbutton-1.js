@@ -13,7 +13,7 @@ const IDs = [
 ]
 
 function CatButton({ id, name, breed, imageID}) {
-    const [width, setWidth] = useState(0);
+    /*const [width, setWidth] = useState(0);
 
     const [cat, setCat] = useState(null);
     const [catName, setCatName] = useState(null)
@@ -31,7 +31,7 @@ function CatButton({ id, name, breed, imageID}) {
 
     useEffect(() => {
         loadCats();
-     }, []);
+     }, []);*/
 
     return (
         <ApiDataProvider>
@@ -39,13 +39,15 @@ function CatButton({ id, name, breed, imageID}) {
                 <button className="flex-col font-bold p-2 text-black place-items-center">
                     <Image
                         alt="Kitty"
-                        src={ imageID % 2 == 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png" }
-                        width={width < 1024 ? "300" : "300"}
-                        height={width < 1024 ? "300" : "300"}
+                        src={ id % 2 == 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png" }
+                        /*width={width < 1024 ? "300" : "300"}
+                        height={width < 1024 ? "300" : "300"}*/
+						width={"300"}
+						height={"300"}
                         className="justify-center align-center place-items-center"
                         objectFit="contain"/>
-                    <p className=" mt-1">{name ? name : catName}</p>
-                    <p className=" text-sm font-medium">{breed ? breed : breedType}</p>
+                    <p className=" mt-1">{name/* ? name : catName*/}</p>
+                    <p className=" text-sm font-medium">{breed/* ? breed : breedType*/}</p>
                 </button>
             </Link>
         </ApiDataProvider>

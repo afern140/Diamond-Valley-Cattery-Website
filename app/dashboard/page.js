@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { getUser, getUserCats, updateUser, useUser } from "../_utils/user_services";
 import DashMessage from "@/app/components/dash_message"
+import CatButton from "@/app/components/catbutton-1"
 
 // const getUser = async(userAuth) => {
 // 	const usersCollection = await getDocs(collection(db, 'users'));
@@ -172,21 +173,12 @@ export default function Page() {
 					</div>
 
 					<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">Favorite Cats</h2>
-					<div className="flex">
-						{favoriteCats ? (favoriteCats.map((cat) => (
-							<h3 className="bg-[#EFEFEF] p-10 m-10 rounded-lg text-black text-xl font-bold text-center">
-								{cat.name}
-								<Link href={`./cats/${cat.id}`}>
-									<Image
-										src="/img/Placeholder.png"
-										alt="Cat"
-										width={200}
-										height={100}
-										className="border-2 border-black m-5"
-									/>
-								</Link>
-							</h3>
-						))) : <h2 className="px-5">Add cats to your favorites list to have them appear here</h2>}
+					<div className="w-full px-10 pb-10">
+						<div className="bg-[#EFEFEF] flex rounded-lg py-8 px-4 space-x-2 justify-start">
+							{favoriteCats ? (favoriteCats.map((cat, i) => (
+								<CatButton id={cat.id} name={cat.name} breed={cat.breed} imageID={i} imageSize={200} />
+							))) : <h2 className="px-5">Add cats to your favorites list to have them appear here</h2>}
+						</div>
 					</div>
 				</div>
 				) : (

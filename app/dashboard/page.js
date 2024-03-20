@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { getUser, getUserCats, updateUser, useUser } from "../_utils/user_services";
+import DashMessage from "@/app/components/dash_message"
 
 // const getUser = async(userAuth) => {
 // 	const usersCollection = await getDocs(collection(db, 'users'));
@@ -92,7 +93,7 @@ export default function Page() {
 								alt="Profile Picture"
 								width={100}
 								height={100}
-								className="border-2 border-black m-5 mb-2"
+								className="border-2 border-black m-5 mb-2 rounded-lg"
 							/>
 							<h2>Role: {filteredUser.role}</h2>
 						</div>
@@ -145,10 +146,35 @@ export default function Page() {
 							</>
 						)}
 					</div>
+
+					{/* Messages and Posts Section */}
+					<div className="flex mx-auto w-full justify-evenly px-5 space-x-5">
+						<div className="w-full pl-5 pr-1">
+							<h2 className="text-black text-2xl font-bold pb-4 w-full text-center">Unread Messages</h2>
+							
+							<div className=" bg-cat-gray-0 w-full flex-col space-y-3 rounded-lg px-3 pt-5 pb-7">
+								<DashMessage />
+								<DashMessage />
+								<DashMessage />
+							</div>
+						</div>
+						<div className="w-full pr-5 pl-1">
+							<h2 className="text-black text-2xl font-bold pb-4 w-full text-center">New Posts</h2>
+							
+							<div className=" bg-cat-gray-0 w-full flex-col space-y-3 rounded-lg px-3 pt-5 pb-7">
+								<div className="opacity-0">
+									<DashMessage />
+									<DashMessage />
+									<DashMessage />
+								</div>
+							</div>
+						</div>
+					</div>
+
 					<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">Favorite Cats</h2>
 					<div className="flex">
 						{favoriteCats ? (favoriteCats.map((cat) => (
-							<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-black text-xl font-bold text-center">
+							<h3 className="bg-[#EFEFEF] p-10 m-10 rounded-lg text-black text-xl font-bold text-center">
 								{cat.name}
 								<Link href={`./cats/${cat.id}`}>
 									<Image
@@ -160,7 +186,7 @@ export default function Page() {
 									/>
 								</Link>
 							</h3>
-						))) : <h2>Add cats to your favorites list to have them appear here</h2>}
+						))) : <h2 className="px-5">Add cats to your favorites list to have them appear here</h2>}
 					</div>
 				</div>
 				) : (

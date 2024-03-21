@@ -24,12 +24,13 @@ export default function CatList() {
 	//Holds list of available conditions
 	const [conditions, setConditions] = useState();
 
+
 	useEffect(() => {
 		const fetchConditions = async () => {
 			const conditions = await getObjects('conditions');
 			setConditions(conditions);
-			console.log("Conditions:");
-			console.log(conditions);
+			//console.log("Conditions:");
+			//console.log(conditions);
 		};
 		fetchConditions();
 	}, []);

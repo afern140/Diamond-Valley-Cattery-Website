@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 
 import { useRouter } from 'next/navigation'
 import Carousel from "@/app/components/carousel"
-import CatButton from "@/app/components/catbutton-1"
+import CatButton from "@/app/components/catbutton"
 
 import ApiDataContext from '@/app/_utils/api_context';
 

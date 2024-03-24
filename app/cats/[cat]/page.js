@@ -95,6 +95,11 @@ export default function Page({params}) {
 		setFavorite(updatedFavorites.some(ref => ref.path === doc(db, 'cats', cat.docId).path));
 	};
 
+    //TO DO 
+    const handleMeetingbutton = async => {
+        
+    };
+    
 	return(
 		<main className="bg-gray-100">
 			{cat ? (

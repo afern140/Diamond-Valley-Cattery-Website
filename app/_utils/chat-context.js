@@ -2,16 +2,8 @@
 
 import React, { createContext, useContext, useState } from "react";
 import { db } from "@/app/_utils/firebase"; // Ensure this points to your Firebase config file
-import {
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  query,
-  where,
-  onSnapshot,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, doc, setDoc, getDoc, query, onSnapshot, updateDoc, orderBy, addDoc,serverTimestamp } from "firebase/firestore";
+
 
 const ChatContext = createContext();
 
@@ -31,32 +23,33 @@ export const ChatProvider = ({ children }) => {
     }
 
     setCurrentChatId(chatId);
-    return chatId; 
+    return chatId;
   };
 
   // Function to send a message in a chat
   const sendMessage = async (chatId, message) => {
-    // Message document reference
-    const messagesRef = collection(db, "chats", chatId, "messages");
-    // Adding a new message document to Firestore
-    await addDoc(messagesRef, {
-      ...message,
-      timestamp: new Date(),
+    const messageRef = collection(db, "chats", chatId, "messages");
+    await addDoc(messageRef, {
+      text: message.text,
+      userId: message.userId,
+      timestamp: serverTimestamp(),
     });
   };
 
   // Function to load messages for a given chat
-  const loadChatMessages = async (chatId) => {
+  const loadChatMessages = (chatId, callback) => {
     const messagesRef = collection(db, "chats", chatId, "messages");
     const q = query(messagesRef, orderBy("timestamp", "asc"));
 
-    onSnapshot(q, (querySnapshot) => {
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const messages = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(messages);
+      callback(messages); // Call the callback with the messages
     });
+
+    return unsubscribe; // Return the unsubscribe function for cleanup
   };
 
   return (

@@ -19,7 +19,6 @@ export default function Page({params}) {
 	const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
 	const [favorite, setFavorite] = useState(false);
-    const [currentChatId, setCurrentChatId] = useState();
 
 	useEffect(() => {
 		const fetchCat = async () => {
@@ -103,14 +102,13 @@ export default function Page({params}) {
     //TO DO 
     const handleMeetingButton = async () => {
         console.log("Meeting button clicked");
-        
         console.log("User UID:", user?.uid);
         console.log("Cat Owner UID:", cat?.owner?.uid);
-        try {
+        if (user && cat.owner) {
             const chatId = await createOrJoinChat(user.uid, cat.owner.uid);
-            console.log("Chat created or joined with ID:", chatId);
-        } catch (error) {
-            console.error("Error creating or joining chat:", error);
+            if (chatId) {
+                window.location.href = `/Messages/${chatId}`;
+            }
         }
     };
     
@@ -181,7 +179,6 @@ export default function Page({params}) {
 							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
 								<h2>Want to Purchase {cat.name}?</h2>
 								<button onClick={handleMeetingButton} className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md" >Request a Meeting</button>
-                                {currentChatId && <Chat chatId={currentChatId} />}
 							</div>
 							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
 								<Link href={`./${cat.id}/edit`}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Edit {cat.name}</button></Link>

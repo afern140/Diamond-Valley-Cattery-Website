@@ -84,6 +84,14 @@ export default function Page({params}) {
 		fetchFavorites();
 	}, [filteredUser, cat]);
 
+	//Changes the page title when the cat is loaded
+	useEffect(() => {
+		if (cat) 
+			document.title = "Diamond Valley Cattery - " + cat.name + "'s page";
+		else
+			document.title = "Diamond Valley Cattery - Cat page";
+	}, [cat]);
+
 	const handleFavoriteButton = async () => {
 		let updatedFavorites;
 		if (favorite) {

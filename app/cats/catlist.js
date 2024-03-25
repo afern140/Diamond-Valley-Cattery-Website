@@ -85,6 +85,7 @@ export default function CatList() {
 	//When search, filters, or sorting method change, update the list of cats
 	useEffect(() => {
 		console.log("Beginning data filtering")
+		console.log(cats);
 		let filteredData = cats;
 
 		if (cats === undefined || cats === null) {

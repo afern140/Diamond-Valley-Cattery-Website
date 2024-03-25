@@ -6,6 +6,7 @@ import ApiDataContext from './api_context';
 import { db } from "../_utils/firebase";
 //Various firestore functions
 import { collection, getDocs, addDoc, query } from "firebase/firestore";
+import { set } from 'firebase/database';
 
 /*async function getCats() {
 	//Finds the collection, queries the collection, makes a snapshot of the collection, then dumps that snapshot into an array
@@ -37,6 +38,7 @@ const ApiDataProvider = ({ children }) => {
 	const [users, setUsers] = useState(null);
 	const [comments, setComments] = useState(null);
 	const [litters, setLitters] = useState(null);
+	const [forums, setForum] = useState(null);
 
 	//Loads data from firestore when component mounts
 	useEffect(() => {
@@ -97,7 +99,7 @@ const ApiDataProvider = ({ children }) => {
 		};
 		userList.push(newItem);
 	});
-	console.log(userList);
+	//console.log(userList);
 	setUsers(userList);
 	
 
@@ -117,8 +119,19 @@ const ApiDataProvider = ({ children }) => {
 		}
 		commentList.push(newComment);
 	});
-	console.log(commentList);
+	//console.log(commentList);
 	setComments(commentList);
+
+	//load forum data
+	const forumRef = collection(db, "forums");
+	const forumQuery = query(forumRef);
+	const forumListSnapshot = await getDocs(forumQuery);
+	const forumList = [];
+	forumListSnapshot.forEach((doc) => {
+		const forumData = {id: doc.id, ...doc.data()};
+		forumList.push(forumData);
+	});
+	setForum(forumList);
 
 	/* Litter Addition */
 	const litterRef = collection(db, "litters");
@@ -136,7 +149,7 @@ const ApiDataProvider = ({ children }) => {
 
 	//Creates a context wrapper of some sort that provides the data to the app
 	return (
-		<ApiDataContext.Provider value={{cats, users, litters, comments}}>
+		<ApiDataContext.Provider value={{cats, users, litters, comments,forums}}>
 			{children}
 		</ApiDataContext.Provider>
 	);

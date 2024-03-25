@@ -232,7 +232,7 @@ export default function Page({params}) {
 							) : null}
 						</div>
 					</div>
-					<Comments/>
+					<Comments cat={cat}/>
 				</section>
 			) : (
 				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>

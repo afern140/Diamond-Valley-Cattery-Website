@@ -6,6 +6,7 @@ import { useState, React } from "react";
 function Dropdown({queryType, callback, cats}) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
+    const [dropdownValue, setDropdownValue] = useState("");
 
     const [dropSelectClassname, setDropSelectClassname] = useState(" text-gray-500 italic font-normal text-base");
 
@@ -23,7 +24,9 @@ function Dropdown({queryType, callback, cats}) {
 	const colorFiltered = cats.filter(({ color }, index) => !colorQuery.includes(color, index + 1));
 	const sortFilters = ["None", "Name", "Breed", "Gender", "Age", "Color"];
 
-    let dropdownValue;
+    const selectedFilterStyle = "text-sm text-black"
+    const unselectedFilterStyle = "text-sm italic text-gray-500 font-normal"
+
     const handleCallback = (selected) => {
         callback(queryType + " " + selected);
         setDropdownValue(selected);
@@ -52,7 +55,7 @@ function Dropdown({queryType, callback, cats}) {
     <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
         <button onClick={() => setIsOpen((prev) => !prev)}
                 className="bg-white text-black h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border border-black duration-300 active:text-white">
-                    <span className={"text-sm"}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
+                    {dropdownValue === "" ? <span className={unselectedFilterStyle}>Select...</span> : <span className={selectedFilterStyle}>{dropdownValue}</span>}
                 </button>
             
             { /* When we press the dropdown button, we change the state to 'Open' and populate the list with the appropriate values. */}

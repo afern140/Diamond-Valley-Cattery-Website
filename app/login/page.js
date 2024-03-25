@@ -48,10 +48,14 @@ function handleEmailPasswordSignIn(e){
       </div>
         }
         {user && (
-        <div className="text-center text-slate-500">
+        <div className="text-center space-y-6 text-slate-500">
             <p>
             Welcome, {user.displayName} ({user.email})
             </p>
+            <Link href="../dashboard">
+              <button className="bg-slate-500 text-white p-2">Dashboard</button>
+            </Link>
+            <br />
             <button onClick={handleSignOut} className="bg-slate-500 text-white p-2">Sign Out</button>
             <br/>
         </div>

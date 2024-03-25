@@ -176,43 +176,47 @@ export default function Page({params}) {
 						</div>
 					</div>
 					<div className="text-black text-xl font-bold p-10">
-						<h2 className="text-2xl mx-10 mt-10">Parents</h2>
+						{cat.father || cat.mother ? <div>
+							<h2 className="text-2xl mx-10 mt-10">Parents</h2>
+							<div className="flex flex-wrap">
+								{cat.father ? (
+									<div className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
+										{cat.father.name}
+										<Link href={`./${cat.father.id}`}>
+											<Image
+												src="/img/Placeholder.png"
+												alt="Cat"
+												width={200}
+												height={100}
+												className="border-2 border-black m-5"
+											/>
+											<h2 className="font-normal">Father</h2>
+										</Link>
+									</div>
+								) : (<></>)}
+								{cat.mother ? (
+									<div className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
+										{cat.mother.name}
+										<Link href={`./${cat.mother.id}`}>
+											<Image
+												src="/img/Placeholder.png"
+												alt="Cat"
+												width={200}
+												height={100}
+												className="border-2 border-black m-5"
+											/>
+											<h2 className="font-normal">Mother</h2>
+										</Link>
+									</div>
+								) : (<></>)}
+							</div>
+						</div> : <div></div>
+						}
 						<div className="flex flex-wrap">
-							{cat.father ? (
-								<div className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
-									{cat.father.name}
-									<Link href={`./${cat.father.id}`}>
-										<Image
-											src="/img/Placeholder.png"
-											alt="Cat"
-											width={200}
-											height={100}
-											className="border-2 border-black m-5"
-										/>
-										<h2 className="font-normal">Father</h2>
-									</Link>
-								</div>
-							) : (<></>)}
-							{cat.mother ? (
-								<div className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
-									{cat.mother.name}
-									<Link href={`./${cat.mother.id}`}>
-										<Image
-											src="/img/Placeholder.png"
-											alt="Cat"
-											width={200}
-											height={100}
-											className="border-2 border-black m-5"
-										/>
-										<h2 className="font-normal">Mother</h2>
-									</Link>
-								</div>
-							) : (<></>)}
-						</div>
-						<h2 className="text-2xl mx-10 mt-10">Children</h2>
-						<div className="flex flex-wrap">
-							{cat.children ? (
-								cat.children.map((child) => (
+							{ cat.children && cat.children.length > 0 ? (
+								<div>
+								<h2 className="text-2xl mx-10 mt-10">Children</h2>
+								{cat.children.map((child) => (
 									<div key={child.id} className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
 										{child.name}
 										<Link href={`./${child.id}`}>
@@ -225,7 +229,8 @@ export default function Page({params}) {
 											/>
 										</Link>
 									</div>
-								))
+								))}
+								</div>
 							) : null}
 						</div>
 					</div>

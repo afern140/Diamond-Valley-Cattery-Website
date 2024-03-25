@@ -297,7 +297,7 @@ export default function CatList() {
                   filteredResults.map((cat, index) => (
                     <div>
                         <CatButton1 id={cat.id} imageID={index} name={cat.name} age={cat.age} color={cat.color} eye_color={cat.eye_color} breed={cat.breed} gender={cat.gender} vaccinations={cat.vaccinations} conditions={cat.conditions} fatherID={cat.fatherID} motherID={cat.motherID} children={cat.children} />
-                    </div>
+					</div>
                   ))
 				  : "Awaiting cats"
                 }

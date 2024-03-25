@@ -119,8 +119,7 @@ export default function Page({params}) {
             }
         }
     };
-    
-    
+     
 	return(
 		<main className="bg-gray-100">
 			{cat ? (

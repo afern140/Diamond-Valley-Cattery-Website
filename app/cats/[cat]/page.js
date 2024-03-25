@@ -9,10 +9,13 @@ import { getUser, updateUser, useUser } from "@/app/_utils/user_services";
 import { db } from "@/app/_utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
+import { useChat } from "@/app/_utils/chat-context";
 import Comments from "@/app/components/comments";
 import ApiDataProvider from "@/app/_utils/api_provider";
 
 export default function Page({params}) {
+
+    const {createOrJoinChat} = useChat();
 	const {user} = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
@@ -105,6 +108,19 @@ export default function Page({params}) {
 		setFavorite(updatedFavorites.some(ref => ref.path === doc(db, 'cats', cat.docId).path));
 	};
 
+    //TO DO 
+    const handleMeetingButton = async () => {
+        console.log("Meeting button clicked");
+        console.log("User UID:", user?.uid);
+        console.log("Cat Owner UID:", cat?.owner?.uid);
+        if (user && cat.owner) {
+            const chatId = await createOrJoinChat(user.uid, cat.owner.uid);
+            if (chatId) {
+                window.location.href = `/Messages/${chatId}`;
+            }
+        }
+    };
+     
 	return(
 		<ApiDataProvider>
 		<main className="bg-gray-100">
@@ -171,7 +187,7 @@ export default function Page({params}) {
 						<div className="flex flex-col ml-auto mx-10 mb-auto">
 							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
 								<h2>Want to Purchase {cat.name}?</h2>
-								<Link href={"/chat"}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Request a Meeting</button></Link>
+								<button onClick={handleMeetingButton} className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md" >Request a Meeting</button>
 							</div>
 							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
 								<Link href={`./${cat.id}/edit`}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Edit {cat.name}</button></Link>

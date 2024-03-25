@@ -8,7 +8,7 @@ function CatButton({ cat }) {
 			<button className="flex-col font-bold p-2 text-black place-items-center">
 				<Image
 					alt="Cat"
-					src={ Math.random() > 0.5 ? "/img/Kitty_1.png" : "/img/Kitty_2.png" }
+					src={cat.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
 					width={300}
 					height={300}
 					className="justify-center align-center place-items-center"

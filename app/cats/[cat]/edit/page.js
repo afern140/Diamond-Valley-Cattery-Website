@@ -182,6 +182,14 @@ export default function Page({params}){
 		await updateObject(cat);
 	}
 
+	//Changes the page title when the cat is loaded
+	useEffect(() => {
+		if (cat) 
+			document.title = "Diamond Valley Cattery - Editing " + cat.name;
+		else
+			document.title = "Diamond Valley Cattery - Editing";
+	}, [cat]);
+
 	return(
 		<main className="bg-white min-h-screen text-black p-4">
 			{cat ? (

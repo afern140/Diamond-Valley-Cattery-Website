@@ -1,23 +1,13 @@
 "use client";
-import React from "react";
-import Chat from "./Chat";
-import { useUserAuth } from "../_utils/auth-context";
+// pages/chats/[chatId].js
+import { useRouter } from 'next/router';
+import Chat from '@/app/chat/Chat/Chat'; 
 
-const style = {
-    appContainer: `max-w-[728px] mx-auto text-center `,
-    sectionContainer: `flex flex-col h-[90vh] bg-gray-100 mt-10 shadow-xl border relative`,
+const ChatPage = () => {
+  const router = useRouter();
+  const { chatId } = router.query;
+
+  return <Chat chatId={chatId} />;
 };
 
-function Page() {
-    const { user } = useUserAuth();
-    //  console.log(user)
-    return (
-        <div className={style.appContainer}>
-            <section className={style.sectionContainer}>
-                {user && <Chat />}
-            </section>
-        </div>
-    );
-}
-
-export default Page;
+export default ChatPage;

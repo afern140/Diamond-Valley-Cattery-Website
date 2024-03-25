@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { collection, doc, getDocs, updateDoc, getDoc } from "firebase/firestore";
+import { collection, doc, getDocs, updateDoc, addDoc, getDoc } from "firebase/firestore";
 import { db } from "../_utils/firebase";
 
 export const getObjects = async (type) => {
@@ -17,9 +17,17 @@ export const getObject = async (type, id) => {
 	return object;
 }
 
-export const updateObject = async (type, updatedObject) => {
+export const createObject = async (type, object) => {
+	const document = await addDoc(collection(db, type), object)
+	alert(`Added new ${type} object`)
+	return document;
+}
+
+export const updateObject = async (type, updatedObject, confirm) => {
 	const { docId, ...updatedObjectPrunedDocID } = updatedObject;
 	const objectRef = doc(db, type, docId);
 	await updateDoc(objectRef, updatedObjectPrunedDocID);
-	alert(`Updated ${type} data`);
+	if (confirm) {
+		alert(`Updated ${type} object`);
+	}
 }

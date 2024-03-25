@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import Message from "./message/message";
-import SendMessage from "./sendmessage/sendMessage"; 
-import { rtdb } from "../_utils/firebase";
+import Message from "../message/message";
+import SendMessage from "../sendmessage/sendMessage"; 
+import { rtdb } from "../../_utils/firebase";
 import { ref, onValue, off } from "firebase/database";
 
 const Chat = () => {

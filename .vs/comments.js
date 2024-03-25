@@ -7,47 +7,31 @@ import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
 import {collection,addDoc} from "firebase/firestore";
 
-export default function Comments(cat) {
+export default function Comments() {
    const dbdata = React.useContext(ApiDataContext);
    const { comments } = React.useContext(ApiDataContext);
-   const [commentsFiltered, setCommentsFiltered] = useState();
 
    useEffect(() => {
-      /*console.log("Comments page dbdata updated!");
-      console.log("Comments are: ")
+      console.log("Comments page dbdata updated!");
       console.log(comments);
-      console.log("Cat is: ");
-      console.log(cat);
-      console.log("Cat ID is: ");
-      console.log(cat.cat.id);
-      */
-      if (comments){
-         const filtered = comments.filter(comment => String(comment.catID) === String(cat.cat.id));
-         setCommentsFiltered(filtered);
-      }
-      
-      console.log("Comments Filtered: ");
-      console.log(commentsFiltered);
-
-   }, [dbdata,comments]);
-
+   }, [dbdata]);
 
    return (
-      <main className="text-black">
+      <main>
          <h1 className="text-5xl font-bold">Comments</h1>
          Hello this is a test of the comments system.
-         {!commentsFiltered && <p>Loading...</p>}
-         {commentsFiltered &&
-            commentsFiltered.map((comments) => (
+         {!comments && <p>Loading...</p>}
+         {comments &&
+            comments.map((comment) => (
             <Comment 
-            catName={comments.catName}
-            message={comments.message}
-            createName={comments.createName}
+            catName={comment.catName}
+            message={comment.message}
+            createName={comment.createName}
             />
             ))
             
          }
-         <NewComment cat={cat.cat}/>
+         <NewComment/>         
       </main>
    );
     
@@ -60,25 +44,25 @@ async function addComment(commentDoc){
    return docRef.id;
 }
 
-function NewComment(cat) {
+function NewComment() {
    const [message, setMessage] = useState("");
-   const currentCat = cat.cat;
    
    async function handleAddComment(e){
       e.preventDefault();
+      console.log("Adding comment.");
       const commentDoc = {
          message: message,
          createUID: auth.currentUser.uid,
          createName: auth.currentUser.displayName,
-         catID: currentCat.id,
-         catName: currentCat.name
+         catID: "666",
+         catName: "Test Cat"         
       };
       await addComment(commentDoc);
       window.location.reload();
    }
 
    return(
-      <div className="text-black">
+      <div>
          <h2 className="text-3xl flex flex-col items-center">New Comment</h2>
          <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
             <input  
@@ -88,7 +72,7 @@ function NewComment(cat) {
                onChange={(e) => setMessage(e.target.value)}
                className="border-s-4 border-slate-300 p-2 mb-4 text-black"
             />
-            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-black p-2">
+            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">
                Submit
             </button>
          </form>
@@ -98,7 +82,7 @@ function NewComment(cat) {
 
 function Comment({catName, message, createName}) {
    return (
-      <div className="text-black">
+      <div>
          <h2 className="text-3xl">{catName}</h2>
          <p>{message}</p>
          <p>Created by: {createName}</p>

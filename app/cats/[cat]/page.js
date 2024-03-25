@@ -9,6 +9,8 @@ import { getUser, updateUser, useUser } from "@/app/_utils/user_services";
 import { db } from "@/app/_utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
+import Comments from "@/app/components/comments";
+import ApiDataProvider from "@/app/_utils/api_provider";
 
 export default function Page({params}) {
 	const {user} = useUserAuth();
@@ -96,6 +98,7 @@ export default function Page({params}) {
 	};
 
 	return(
+		<ApiDataProvider>
 		<main className="bg-gray-100">
 			{cat ? (
 				<section>
@@ -229,10 +232,12 @@ export default function Page({params}) {
 							) : null}
 						</div>
 					</div>
+					<Comments/>
 				</section>
 			) : (
 				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>
 			)}
 		</main>
+		</ApiDataProvider>
 	)
 }

@@ -17,7 +17,7 @@ export default function Comments() {
    }, [dbdata]);
 
    return (
-      <main>
+      <main className="text-black">
          <h1 className="text-5xl font-bold">Comments</h1>
          Hello this is a test of the comments system.
          {!comments && <p>Loading...</p>}
@@ -62,7 +62,7 @@ function NewComment() {
    }
 
    return(
-      <div>
+      <div className="text-black">
          <h2 className="text-3xl flex flex-col items-center">New Comment</h2>
          <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
             <input  
@@ -72,7 +72,7 @@ function NewComment() {
                onChange={(e) => setMessage(e.target.value)}
                className="border-s-4 border-slate-300 p-2 mb-4 text-black"
             />
-            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">
+            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-black p-2">
                Submit
             </button>
          </form>
@@ -82,7 +82,7 @@ function NewComment() {
 
 function Comment({catName, message, createName}) {
    return (
-      <div>
+      <div className="text-black">
          <h2 className="text-3xl">{catName}</h2>
          <p>{message}</p>
          <p>Created by: {createName}</p>

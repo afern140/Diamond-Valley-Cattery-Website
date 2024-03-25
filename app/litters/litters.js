@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Dropdown from "@/app/components/dropdown";
 import LitterButton from "@/app/components/litterbutton_wrapper";
-import cats from "@/app/cats/[cat]/cat.json"
+//import cats from "@/app/cats/[cat]/cat.json"
+cats = "";
 
 import ApiDataProvider from '@/app/_utils/api_provider';
 import ApiDataContext from '@/app/_utils/api_context';

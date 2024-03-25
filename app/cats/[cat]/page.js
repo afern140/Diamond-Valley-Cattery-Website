@@ -10,7 +10,8 @@ import { db } from "@/app/_utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
-
+import Comments from "@/app/components/comments";
+import ApiDataProvider from "@/app/_utils/api_provider";
 
 export default function Page({params}) {
 
@@ -121,6 +122,7 @@ export default function Page({params}) {
     };
      
 	return(
+		<ApiDataProvider>
 		<main className="bg-gray-100">
 			{cat ? (
 				<section>
@@ -254,10 +256,12 @@ export default function Page({params}) {
 							) : null}
 						</div>
 					</div>
+					<Comments cat={cat}/>
 				</section>
 			) : (
 				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>
 			)}
 		</main>
+		</ApiDataProvider>
 	)
 }

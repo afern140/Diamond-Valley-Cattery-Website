@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-import { db } from "@/app/_utils/firebase"; // Ensure this points to your Firebase config file
+import { db } from "@/app/_utils/firebase";
 import { collection, doc, setDoc, getDoc, query, onSnapshot, updateDoc, orderBy, addDoc,serverTimestamp } from "firebase/firestore";
 
 

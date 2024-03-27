@@ -5,13 +5,14 @@ import React, { useState, useEffect } from 'react';
 import { useChat } from '@/app/_utils/chat-context'; 
 import { useUserAuth } from '@/app/_utils/auth-context'; 
 
-const ChatPage = () => {
+const ChatPage = ({params}) => {
+    console.log(params);
     const { user } = useUserAuth();
     const { loadChatMessages, sendMessage } = useChat();
     const [currentMessages, setCurrentMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
-    const chatId = "Q8Excpz00sakI3GNSciydRchrc82_W12Ek3CIPwSpjmk75XmefHqeBuG3"; 
+    const chatId = params.chat; 
 
     useEffect(() => {
         if (!chatId) return;

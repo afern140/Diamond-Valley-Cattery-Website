@@ -104,7 +104,7 @@ export default function Page({params}) {
 					<div className="flex flex-row">
 						<div className="flex flex-col text-black text-xl font-bold text-left">
 							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
-								<h2 className="text-2xl mb-2">Details</h2>
+								<h2 className="text-3xl mb-4">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
 								<h3>Age: <span className="font-normal">{cat.age}</span></h3>
@@ -112,48 +112,62 @@ export default function Page({params}) {
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>
 							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
-								<h2 className="text-2xl mb-2">Description</h2>
-								<p className="font-normal">{cat.description}</p>
+								<h2 className="text-3xl mb-2">Description</h2>
+								{ cat.description ? <p className="font-normal">{cat.description}</p>
+												  : (<div className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
+												  		<h2 className="font-normal italic text-gray-800">None</h2>
+											  		</div>)}
 							</div>
-							<div className="flex flex-row p-10 mx-10 mt-6 rounded-lg min-w-64">
+							<div className="flex flex-row p-10 mx-10 mt-6 rounded-lg min-w-64 space-x-6">
 								<div>
-									<h2 className="text-2xl mb-2">Conditions</h2>
-									{cat.conditions ? (
+									<h2 className="text-3xl mb-2">Conditions</h2>
+									{cat.conditions && cat.conditions.length > 0 ? (
 										cat.conditions.map((condition) => (
-											<div key={condition.id} className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
-												<h3>{condition.name}</h3>
+											<div key={condition.id} className="flex flex-col text-lg border border-black-300 rounded-md p-4 m-4 ml-0">
+												<h3 className="text-2xl">{condition.name}</h3>
+												<div className="w-full border" />
 												<p>Description: <span className="font-normal">{condition.description}</span></p>
 												<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
 												<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 											</div>
 										)
-									)) : (<h2>None</h2>)}
+									)) : (<div className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
+											<h2 className="font-normal italic text-gray-800">None</h2>
+										</div>)}
 								</div>
 								<div>
-									<h2 className="text-2xl mb-2">Vaccinations</h2>
-									{cat.vaccinations ? (
+									<h2 className="text-3xl mb-2">Vaccinations</h2>
+									{cat.vaccinations && cat.vaccinations.length > 0 ? (
 										cat.vaccinations.map((vaccination) => (
-											<div key={vaccination.id} className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
-												<h3>{vaccination.name}</h3>
+											<div key={vaccination.id} className="flex flex-col text-lg border-2 border-black-300 rounded-md p-4 m-4 ml-0 space-y-1">
+												<h3 className="text-2xl">{vaccination.name}</h3>
+												<div className="w-full border" />
 												<p>Description: <span className="font-normal">{vaccination.description}</span></p>
+												<div className="w-full border" />
 												<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
+												<div className="w-full border" />
 												<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
+												<div className="w-full border" />
 												<h4>Doses Taken Dates:</h4>
-												<ul className="list-disc">
+												<ul className="list-disc pl-4">
 													{vaccination.datesTaken.map((date, index) => (
 														<li key={index} className="font-normal">{new Date(date.seconds * 1000).toLocaleDateString()}</li>
 													))}
 												</ul>
+												<div className="w-full border" />
 												<h4>Doses Remaining: <span className="font-normal">{vaccination.dosesRemaining}</span></h4>
+												<div className="w-full border" />
 												<h4>Planned Dosage Dates:</h4>
-												<ul className="list-disc">
+												<ul className="list-disc pl-4">
 													{vaccination.futureDates.map((date, index) => (
 														<li key={index} className="font-normal">{new Date(date.seconds * 1000).toLocaleDateString()}</li>
 													))}
 												</ul>
 											</div>
 										))
-									) : (<h2>None</h2>)}
+									) : (<div className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
+											<h2 className="font-normal italic text-gray-800">None</h2>
+										</div>)}
 								</div>
 							</div>
 						</div>
@@ -177,14 +191,14 @@ export default function Page({params}) {
 					</div>
 					<div className="text-black text-xl font-bold p-10">
 						{cat.father || cat.mother ? <div>
-							<h2 className="text-2xl mx-10 mt-10">Parents</h2>
-							<div className="flex flex-wrap">
+							<h2 className="text-4xl mx-10 mt-10 mb-4">Parents</h2>
+							<div className="flex flex-wrap border-2 bg-[#EEEEEE] rounded-lg">
 								{cat.father ? (
-									<div className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
+									<div className="bg-[#D7D7D7] border-2 p-10 m-10 rounded-lg text-center">
 										{cat.father.name}
 										<Link href={`./${cat.father.id}`}>
 											<Image
-												src="/img/Placeholder.png"
+												src={cat.father.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
 												alt="Cat"
 												width={200}
 												height={100}
@@ -195,11 +209,11 @@ export default function Page({params}) {
 									</div>
 								) : (<></>)}
 								{cat.mother ? (
-									<div className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
+									<div className="bg-[#D7D7D7] border-2 p-10 m-10 rounded-lg text-center">
 										{cat.mother.name}
 										<Link href={`./${cat.mother.id}`}>
 											<Image
-												src="/img/Placeholder.png"
+												src={cat.mother.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
 												alt="Cat"
 												width={200}
 												height={100}
@@ -212,24 +226,26 @@ export default function Page({params}) {
 							</div>
 						</div> : <div></div>
 						}
-						<div className="flex flex-wrap">
+						<div className="flex w-full">
 							{ cat.children && cat.children.length > 0 ? (
 								<div>
-								<h2 className="text-2xl mx-10 mt-10">Children</h2>
-								{cat.children.map((child) => (
-									<div key={child.id} className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
-										{child.name}
-										<Link href={`./${child.id}`}>
-											<Image
-												src="/img/Placeholder.png"
-												alt="Cat"
-												width={200}
-												height={100}
-												className="border-2 border-black m-5"
-											/>
-										</Link>
+									<h2 className="text-4xl mx-10 mt-10 mb-4">Children</h2>
+									<div className="flex flex-wrap bg-[#EEEEEE] border-2 rounded-lg">
+									{cat.children.map((child) => (
+										<div key={child.id} className="bg-[#D7D7D7] border-2 p-10 m-10 rounded-lg text-center">
+											{child.name}
+											<Link href={`./${child.id}`}>
+												<Image
+													src={child.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
+													alt="Cat"
+													width={200}
+													height={100}
+													className="border-2 border-black m-5"
+												/>
+											</Link>
+										</div>
+									))}
 									</div>
-								))}
 								</div>
 							) : null}
 						</div>

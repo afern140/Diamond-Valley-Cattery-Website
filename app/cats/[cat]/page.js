@@ -116,7 +116,7 @@ export default function Page({params}) {
         if (user && cat.owner) {
             const chatId = await createOrJoinChat(user.uid, cat.owner.uid);
             if (chatId) {
-                window.location.href = `/Messages/${chatId}`;
+                window.location.href = `/messages/${chatId}`;
             }
         }
     };

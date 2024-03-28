@@ -4,7 +4,7 @@ const style = {
   messageContainer: `flex justify-start my-2 w-full`, 
   message: ` py-2 px-3 inline-block w-full`,
   senderName: `text-gray-600 text-xs`,
-  sent: `bg-[#C9D9E3] text-white float-right ml-auto`,
+  sent: `bg-[#C9D9E3] text-black float-right ml-auto text-right`,
   received: `bg-[#E3C9C9] text-black float-left mr-auto`,
   image: `max-w-full h-auto`,
 };
@@ -15,7 +15,7 @@ const Message = ({ message, isCurrentUser }) => {
   return (
     <div className={style.messageContainer}>
       <div className={`${style.message} ${messageClass}`}>
-        {!isCurrentUser && message.name && <p className={style.senderName}>{message.name}</p>}
+        {message.name && <p className={style.senderName}>{message.name}</p>}
         <p>{message.text}</p>
         {message.pictureUrl && <img src={message.pictureUrl} alt="Sent" className={style.image} />}
       </div>

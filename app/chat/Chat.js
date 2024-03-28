@@ -1,13 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
 import Message from "./message/message";
 import SendMessage from "./sendmessage/sendMessage"; 
-import { rtdb } from "../_utils/firebase";
+import { rtdb, auth } from "../_utils/firebase";
 import { ref, onValue, off } from "firebase/database";
+import { useUserAuth } from "../_utils/auth-context";
+import { getUser, getUserCats, updateUser, useUser } from "../_utils/user_services";
 
-const Chat = ({styling}) => {
+const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [showSendMessage, setShowSendMessage] = useState(true);
   const scroll = useRef();
+
+  const {user} = useUserAuth();
+	const [filteredUser, setFilteredUser] = useState();
+
+	useEffect(() => {
+		const fetchUser = async () => {
+			const filteredUser = await getUser(user);
+			setFilteredUser(filteredUser);
+			setUpdatedUser(filteredUser);
+      console.log(user);
+		};
+		fetchUser();
+	}, [user]);
 
   useEffect(() => {
     // Function to handle incoming messages from Realtime Database
@@ -53,7 +68,7 @@ const Chat = ({styling}) => {
           <div className="overflow-y-auto h-full max-h-[calc(100vh - 200px)] " ref={scroll} onScroll={handleScroll}>
             {messages.length > 0 ? (
               messages.map((message) => (
-                <Message key={message.id} message={message} />
+                <div><Message key={message.id} message={message} isCurrentUser={user.uid === message.uid} /></div>
               ))
             ) : (
               <p className="text-center mt-4">No messages yet.</p>

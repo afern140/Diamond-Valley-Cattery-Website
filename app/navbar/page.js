@@ -30,7 +30,7 @@ const Navbar = () => {
             </ul>
           </div>
       </div>
-      <div className="flex w-full h-10 bg-slate-400 sticky justify-between border-b-2 border-black">
+      <div className="flex w-full h-10 bg-[#305B73] sticky justify-between border-b-2 border-black">
         <Link href="" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">About</button></Link>
         <Link href="/cats" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">Cats</button></Link>
         <Link href="/litters" className="flex-grow border-l border-r border-solid border-gray-700 text-center"><button className="mt-2">Litters</button></Link>

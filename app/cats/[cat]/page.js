@@ -15,6 +15,7 @@ export default function Page({params}) {
 	const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
 	const [favorite, setFavorite] = useState(false);
+	const [canEdit, setCanEdit] = useState(true);
 
 	useEffect(() => {
 		const fetchCat = async () => {
@@ -102,40 +103,26 @@ export default function Page({params}) {
 					<h1 className="text-black text-4xl text-center font-bold pt-8 pb-4">{cat.name}</h1>
 					<Carousel />
 					<div className="flex flex-row">
-						<div className="flex flex-col text-black text-xl font-bold text-left">
-							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
-								<h2 className="text-3xl mb-4">Details</h2>
-								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
-								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
-								<h3>Age: <span className="font-normal">{cat.age}</span></h3>
-								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
-								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
-							</div>
-							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
-								<h2 className="text-3xl mb-2">Description</h2>
-								{ cat.description ? <p className="font-normal">{cat.description}</p>
-												  : (<div className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
-												  		<h2 className="font-normal italic text-gray-800">None</h2>
-											  		</div>)}
-							</div>
-							<div className="flex flex-row p-10 mx-10 mt-6 rounded-lg min-w-64 space-x-6">
-								<div>
-									<h2 className="text-3xl mb-2">Conditions</h2>
-									{cat.conditions && cat.conditions.length > 0 ? (
-										cat.conditions.map((condition) => (
-											<div key={condition.id} className="flex flex-col text-lg border border-black-300 rounded-md p-4 m-4 ml-0">
-												<h3 className="text-2xl">{condition.name}</h3>
-												<div className="w-full border" />
-												<p>Description: <span className="font-normal">{condition.description}</span></p>
-												<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
-												<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
-											</div>
-										)
-									)) : (<div className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
-											<h2 className="font-normal italic text-gray-800">None</h2>
-										</div>)}
+						<div className="flex flex-col text-black text-xl font-bold text-left w-[70vw]">
+							<div className="flex p-10 mx-10 mt-6 rounded-lg min-w-64 bg-[#C9D9E3] shadow space-x-4">
+								<div className="flex flex-col min-w-64 bg-[#EFEFEF] shadow rounded-xl p-4">
+									<h2 className="text-3xl mb-4">Details</h2>
+									<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
+									<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
+									<h3>Age: <span className="font-normal">{cat.age}</span></h3>
+									<h3>Color: <span className="font-normal">{cat.color}</span></h3>
+									<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 								</div>
-								<div>
+								<div className=" p-4 min-w-64 bg-[#EFEFEF] shadow rounded-xl mx-auto w-full h-full">
+									<h2 className="text-3xl mb-2">Description</h2>
+									{ cat.description ? <p className="font-normal">{cat.description}</p>
+													: (<div className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
+															<h2 className="font-normal italic text-gray-800">None</h2>
+														</div>)}
+								</div>
+							</div>
+							<div className="flex flex-row p-10 mx-10 mt-6 rounded-lg min-w-64 space-x-4 bg-[#C9D9E3] shadow">
+								<div className="bg-[#EFEFEF] rounded-xl p-4 shadow w-1/2">
 									<h2 className="text-3xl mb-2">Vaccinations</h2>
 									{cat.vaccinations && cat.vaccinations.length > 0 ? (
 										cat.vaccinations.map((vaccination) => (
@@ -169,20 +156,37 @@ export default function Page({params}) {
 											<h2 className="font-normal italic text-gray-800">None</h2>
 										</div>)}
 								</div>
+								<div className="bg-[#EFEFEF] rounded-xl p-4 shadow w-1/2">
+									<h2 className="text-3xl mb-2">Conditions</h2>
+									{cat.conditions && cat.conditions.length > 0 ? (
+										cat.conditions.map((condition) => (
+											<div key={condition.id} className="flex flex-col text-lg border border-black-300 rounded-md p-4 m-4 ml-0">
+												<h3 className="text-2xl">{condition.name}</h3>
+												<div className="w-full border" />
+												<p>Description: <span className="font-normal">{condition.description}</span></p>
+												<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
+												<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
+											</div>
+										)
+									)) : (<div className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
+											<h2 className="font-normal italic text-gray-800">None</h2>
+										</div>)}
+								</div>
 							</div>
 						</div>
 						<div className="flex flex-col ml-auto mx-10 mb-auto">
-							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
+							{ canEdit &&
+							<div className="flex flex-col ml-auto mr-full mt-6 text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-xl shadow">
+								<Link href={`./${cat.id}/edit`}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md shadow">Edit {cat.name}</button></Link>
+							</div>}
+							<div className="flex flex-col ml-auto mr-full mt-6 text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-xl max-w-96 w-full shadow">
 								<h2>Want to Purchase {cat.name}?</h2>
-								<Link href={"/chat"}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Request a Meeting</button></Link>
-							</div>
-							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
-								<Link href={`./${cat.id}/edit`}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Edit {cat.name}</button></Link>
+								<Link href={"/chat"}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md shadow">Request a Meeting</button></Link>
 							</div>
 							{user ? (
-								<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
+								<div className="flex flex-col ml-auto mr-full mt-6 text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-xl max-w-96 w-full shadow">
 									<h2>{favorite ? `Remove ${cat.name} from Favorites?` : `Add ${cat.name} to Favorites?`}</h2>
-									<button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md" onClick={handleFavoriteButton}>
+									<button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md shadow" onClick={handleFavoriteButton}>
 										{favorite ? "Remove from Favorites" : "Add to Favorites"}
 									</button>
 								</div>
@@ -190,49 +194,51 @@ export default function Page({params}) {
 						</div>
 					</div>
 					<div className="text-black text-xl font-bold p-10">
-						{cat.father || cat.mother ? <div>
-							<h2 className="text-4xl mx-10 mt-10 mb-4">Parents</h2>
-							<div className="flex flex-wrap border-2 bg-[#EEEEEE] rounded-lg">
-								{cat.father ? (
-									<div className="bg-[#D7D7D7] border-2 p-10 m-10 rounded-lg text-center">
-										{cat.father.name}
-										<Link href={`./${cat.father.id}`}>
-											<Image
-												src={cat.father.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
-												alt="Cat"
-												width={200}
-												height={100}
-												className="border-2 border-black m-5"
-											/>
-											<h2 className="font-normal">Father</h2>
-										</Link>
-									</div>
-								) : (<></>)}
-								{cat.mother ? (
-									<div className="bg-[#D7D7D7] border-2 p-10 m-10 rounded-lg text-center">
-										{cat.mother.name}
-										<Link href={`./${cat.mother.id}`}>
-											<Image
-												src={cat.mother.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
-												alt="Cat"
-												width={200}
-												height={100}
-												className="border-2 border-black m-5"
-											/>
-											<h2 className="font-normal">Mother</h2>
-										</Link>
-									</div>
-								) : (<></>)}
-							</div>
-						</div> : <div></div>
-						}
+						<div className=" flex w-full">
+							{cat.father || cat.mother ? <div>
+								<h2 className="text-4xl mx-10 mt-10 mb-4">Parents</h2>
+								<div className="flex flex-wrap shadow bg-[#EEEEEE]border-2 rounded-xl">
+									{cat.father ? (
+										<div className="bg-[#D7D7D7] border-2 shadow p-10 m-10 rounded-lg text-center">
+											{cat.father.name}
+											<Link href={`./${cat.father.id}`}>
+												<Image
+													src={cat.father.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
+													alt="Cat"
+													width={200}
+													height={100}
+													className="border-2 border-black m-5"
+												/>
+												<h2 className="font-normal">Father</h2>
+											</Link>
+										</div>
+									) : (<></>)}
+									{cat.mother ? (
+										<div className="bg-[#D7D7D7] border-2 shadow p-10 m-10 rounded-lg text-center">
+											{cat.mother.name}
+											<Link href={`./${cat.mother.id}`}>
+												<Image
+													src={cat.mother.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
+													alt="Cat"
+													width={200}
+													height={100}
+													className="border-2 border-black m-5"
+												/>
+												<h2 className="font-normal">Mother</h2>
+											</Link>
+										</div>
+									) : (<></>)}
+								</div>
+							</div> : <div></div>
+							}
+						</div>
 						<div className="flex w-full">
 							{ cat.children && cat.children.length > 0 ? (
 								<div>
 									<h2 className="text-4xl mx-10 mt-10 mb-4">Children</h2>
-									<div className="flex flex-wrap bg-[#EEEEEE] border-2 rounded-lg">
+									<div className="flex flex-wrap bg-[#EEEEEE] border-2 rounded-xl shadow">
 									{cat.children.map((child) => (
-										<div key={child.id} className="bg-[#D7D7D7] border-2 p-10 m-10 rounded-lg text-center">
+										<div key={child.id} className="bg-[#D7D7D7] border-2 shadow p-10 m-10 rounded-lg text-center">
 											{child.name}
 											<Link href={`./${child.id}`}>
 												<Image

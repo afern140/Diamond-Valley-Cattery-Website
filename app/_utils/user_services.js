@@ -23,7 +23,7 @@ export const updateUser = async (updatedUser) => {
 	const { id, ...updatedUserPrunedID } = updatedUser;
 	const userRef = doc(db, 'users', id);
 	await updateDoc(userRef, updatedUserPrunedID);
-	alert("Updated user data");
+	//alert("Updated user data");
 }
 
 const UserContext = createContext();

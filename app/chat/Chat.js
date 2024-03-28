@@ -4,7 +4,7 @@ import SendMessage from "./sendmessage/sendMessage";
 import { rtdb } from "../_utils/firebase";
 import { ref, onValue, off } from "firebase/database";
 
-const Chat = () => {
+const Chat = ({styling}) => {
   const [messages, setMessages] = useState([]);
   const [showSendMessage, setShowSendMessage] = useState(true);
   const scroll = useRef();
@@ -20,7 +20,7 @@ const Chat = () => {
         }));
         setMessages(messagesArray);
         // Check if user is at the bottom of the chat window and show send message component accordingly
-        setShowSendMessage(isUserAtBottom());
+        setShowSendMessage(true);//isUserAtBottom());
       }
     };
 
@@ -43,23 +43,29 @@ const Chat = () => {
 
   // Function to handle scroll event
   const handleScroll = () => {
-    setShowSendMessage(isUserAtBottom());
+    setShowSendMessage(true);//isUserAtBottom());
   };
 
   return (
-    <div className="flex flex-col h-[500px] relative bg-slate-300">
-      <div className="overflow-y-auto h-full max-h-[calc(100vh - 200px)] " ref={scroll} onScroll={handleScroll}>
-        {messages.length > 0 ? (
-          messages.map((message) => (
-            <Message key={message.id} message={message} />
-          ))
-        ) : (
-          <p className="text-center mt-4">No messages yet.</p>
-        )}
+    <main className="h-[500px] mb-32 shadow-xl bg-gray-100 rounded-xl">
+        <div className="h-full flex flex-col rounded-xl border-4 border-[#305B73] pb-[3.4rem]">
+        <div className="flex flex-col h-full rounded-l bg-clip-content">
+          <div className="overflow-y-auto h-full max-h-[calc(100vh - 200px)] " ref={scroll} onScroll={handleScroll}>
+            {messages.length > 0 ? (
+              messages.map((message) => (
+                <Message key={message.id} message={message} />
+              ))
+            ) : (
+              <p className="text-center mt-4">No messages yet.</p>
+            )}
+          </div>
+        </div>
+        {/* Send Message Component */}
+        <div className="my-auto border-[#305B73] shadow-xl">
+          {showSendMessage && <SendMessage scroll={scroll} />} {/* Pass scroll ref as prop */}
+        </div>
       </div>
-      {/* Send Message Component */}
-      {showSendMessage && <SendMessage scroll={scroll} />} {/* Pass scroll ref as prop */}
-    </div>
+    </main>
   );
 };
 

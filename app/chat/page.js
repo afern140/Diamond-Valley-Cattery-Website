@@ -4,15 +4,16 @@ import Chat from "./Chat";
 import { useUserAuth } from "../_utils/auth-context";
 
 const style = {
-    appContainer: `max-w-[728px] mx-auto text-center `,
-    sectionContainer: `flex flex-col h-[90vh] bg-gray-100 mt-10 shadow-xl border relative`,
+    appContainer: `max-w-[728px] mx-auto text-center rounded-xl`,
+    sectionContainer: `flex flex-col w-full max-w-[728px] justify-center mx-auto mt-10 relative rounded-xl`,
 };
 
-function Page() {
+function Page({cat}) {
     const { user } = useUserAuth();
     //  console.log(user)
     return (
-        <div className={style.appContainer}>
+        <div className={"w-full h-full text-black bg-white flex flex-col"}>
+            <h1 className="justify-center flex pt-12 text-3xl">{cat && cat.name ? cat.name + " " : "{cat.name} "} <span className=""> Request</span></h1>
             <section className={style.sectionContainer}>
                 {user && <Chat />}
             </section>

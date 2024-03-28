@@ -1,11 +1,11 @@
 import React from 'react';
 
 const style = {
-  messageContainer: `flex justify-start my-2`, 
-  message: `shadow-xl py-2 px-3 rounded-lg inline-block max-w-[80%]`,
+  messageContainer: `flex justify-start my-2 w-full`, 
+  message: ` py-2 px-3 inline-block w-full`,
   senderName: `text-gray-600 text-xs`,
-  sent: `bg-[#395dff] text-white float-right ml-auto`,
-  received: `bg-[#e5e5ea] text-black float-left mr-auto`,
+  sent: `bg-[#C9D9E3] text-white float-right ml-auto`,
+  received: `bg-[#E3C9C9] text-black float-left mr-auto`,
   image: `max-w-full h-auto`,
 };
 

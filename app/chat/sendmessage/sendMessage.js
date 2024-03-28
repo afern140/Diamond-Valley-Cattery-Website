@@ -4,8 +4,8 @@ import { ref, push } from "firebase/database";
 import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const style = {
-  form: `flex justify-center items-center h-14 w-full max-w-[728px] text-xl absolute bottom-0`,
-  input: `w-[40%] p-3 bg-gray-900 text-white outline-none border-none`,
+  form: `flex justify-center items-center h-14 w-full max-w-[728px] text-xl border-t-2 border-gray-400`,
+  input: `w-[40%] pl-2 bg-[#F3F3F3] text-black outline-none border-none rounded-bl-lg`,
   button: `w-auto bg-slate-400 text-white rounded-lg py-2 px-4 m-4`,
 };
 
@@ -51,6 +51,7 @@ const SendMessage = ({ scroll }) => {
         uid,
         timestamp: new Date().toISOString(),
       });
+      console.log("Pushed a new message!");
     } catch (error) {
       console.error("Error pushing message to database:", error);
       // Handle error pushing message to database
@@ -68,12 +69,13 @@ const SendMessage = ({ scroll }) => {
 
   return (
     <form onSubmit={sendMessage} className={style.form} onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+      <button className="text-gray-500 text-3xl ml-2 bg-gray-200 px-2 rounded-full">+</button>
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
         className={style.input}
         type="text"
-        placeholder="Message"
+        placeholder="Type your message..."
       />
       <input
         type="file"

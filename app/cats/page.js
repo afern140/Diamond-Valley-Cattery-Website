@@ -148,14 +148,13 @@ export default function Page() {
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
 	<div>
-		<div className=" grid grid-flow-col">
-		<div className="" />
-		<h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
-		<div className="pt-12 flex">
-			<Link href="/addcat" className="m-auto">
-			<button className=" bg-cat-gray-1 p-3 rounded-3xl text-white">Add Cat</button>
-			</Link>
-		</div>
+		<div className="flex w-4/5 mx-auto pt-16 pb-8">
+			<h1 className=" font-normal text-4xl text-black mx-auto flex">Cats</h1>
+			<div className="flex mx-auto right-0 fixed -translate-x-[10vw]">
+				<Link href="/addcat" className="m-auto">
+				<button className=" bg-cat-gray-1 p-3 rounded-3xl text-white">Add Cat</button>
+				</Link>
+			</div>
 		</div>
 		{/* Search Field */}
 		<div className="align-middle justify-center flex">

@@ -243,9 +243,8 @@ export default function CatList() {
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
       <div>
-        <div className=" grid grid-flow-col">
-          <div className="" />
-          <h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
+        <div className=" flex pb-4">
+          <h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black">Cats</h1>
           <div className="pt-12 flex">
             <Link href="/addcat" className="m-auto">
               <button className=" bg-cat-gray-1 p-3 rounded-3xl text-white">Add Cat</button>

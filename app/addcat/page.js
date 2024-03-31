@@ -89,7 +89,7 @@ export default function CatList() {
 				mother: selectedMother ? doc(db, "cats", selectedMother) : null,
 				father: selectedFather ? doc(db, "cats", selectedFather) : null,
 				conditions: form.conditions.value ? [doc(db, "conditions", form.conditions.value)] : [],
-				imageUrl: url,
+				thumbnail: url,
 			};
 			const docRef = await addDoc(collection(db, "cats"), newData);
 			const newCat = { docid: docRef.id, ...newData };
@@ -218,7 +218,7 @@ export default function CatList() {
 								{
 									filteredResults_parents ? filteredResults_parents.map((cat, i) => (
 										<div>
-											{<CatParentButton docid={cat.docid} id={cat.id} name={cat.name} imgUrl={cat.imageUrl} breed={cat.breed} onSelect={() => handleSelect(cat.docid)} />}
+											{<CatParentButton docid={cat.docid} id={cat.id} name={cat.name} imgUrl={cat.thumbnail} breed={cat.breed} onSelect={() => handleSelect(cat.docid)} />}
 										</div>
 									))
 										: "Loading..."

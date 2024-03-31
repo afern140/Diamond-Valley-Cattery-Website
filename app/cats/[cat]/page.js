@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Carousel from "@/app/components/carousel"
 import { useUserAuth } from "@/app/_utils/auth-context";
+import Addimg from "@/app/components/addCatCarousel";
 import { getUser, updateUser, useUser } from "@/app/_utils/user_services";
 import { db } from "@/app/_utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -24,6 +25,7 @@ export default function Page({params}) {
 	useEffect(() => {
 		const fetchCat = async () => {
 			const cat = await getObject('cats', parseInt(params.cat));
+			console.log('Cat Data', cat);
 			if (cat.mother) {
 				const motherDoc = await getDoc(cat.mother);
 				cat.mother = motherDoc.data();
@@ -120,6 +122,22 @@ export default function Page({params}) {
             }
         }
     };
+	const handleImageUpload = async (imageUrl) => {
+		try {
+			let updatedCat = { ...cat };
+			if (!updatedCat || !updatedCat.carouselImage) {
+				updatedCat = { ...updatedCat, carouselImage: [] };
+			}
+
+			if (!updatedCat.carouselImage.includes(imageUrl)) {
+				updatedCat.carouselImage.push(imageUrl);
+			}
+
+			setCat(updatedCat);
+		} catch (error) {
+			console.error("Error handling image upload:", error);
+		}
+	};
      
 	return(
 		<ApiDataProvider>
@@ -127,7 +145,7 @@ export default function Page({params}) {
 			{cat ? (
 				<section>
 					<h1 className="text-black text-4xl text-center font-bold pt-8 pb-4">{cat.name}</h1>
-					<Carousel />
+					<Carousel images={cat.carouselImage} />
 					<div className="flex flex-row">
 						<div className="flex flex-col text-black text-xl font-bold text-left">
 							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
@@ -255,6 +273,9 @@ export default function Page({params}) {
 								))
 							) : null}
 						</div>
+					</div>
+					<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
+						<Addimg onImageUpload={handleImageUpload} cat={cat} />
 					</div>
 					<Comments cat={cat}/>
 				</section>

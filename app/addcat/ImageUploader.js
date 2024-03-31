@@ -7,15 +7,33 @@ function ImageUploader({ onImageSelected, inputKey }) {
     if (e.target.files.length) {
       const file = e.target.files[0];
       const previewUrl = URL.createObjectURL(file);
+      const img = new Image();
+      img.src = previewUrl;
+      img.onload = () => {
+
+        if (img.width !== img.height) {
+
+          alert('The uploaded image must be a square。');
+          setImgPreview(''); 
+          if (onImageSelected) {
+            onImageSelected(null); 
+          }
+          URL.revokeObjectURL(previewUrl);
+        } else {
       setImgPreview(previewUrl);
       if (onImageSelected) {
         onImageSelected(file); 
       }
     }
+  }
+    }
   };
 
   useEffect(() => {
-    setImgPreview('');
+    if (imgPreview) {
+      URL.revokeObjectURL(imgPreview);
+      setImgPreview('');
+    }
   }, [inputKey]); 
 
   useEffect(() => {

@@ -6,6 +6,8 @@ import { AuthContextProvider } from "./_utils/auth-context";
 import { UserProvider } from "./_utils/user_services";
 import { ChatProvider } from "./_utils/chat-context";
 
+import { ThemeProvider } from "@/app/components/theme-provider";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -20,9 +22,16 @@ export default function RootLayout({ children }) {
         <ChatProvider>
           <html lang="en">
             <body className={inter.className}>
-              <Navigation />
-              {children}
-              <Footer />
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Navigation />
+                {children}
+                <Footer />
+              </ThemeProvider>
             </body>
           </html>
         </ChatProvider>

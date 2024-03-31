@@ -12,7 +12,7 @@ import { doc } from "firebase/firestore";
 import { getObjects, getObject } from "../_utils/firebase_services";
 
 import { db } from "../_utils/firebase";
-import { collection, getDocs, addDoc, query } from "firebase/firestore";
+import { collection, getDocs, addDoc, query, Timestamp } from "firebase/firestore";
 
 export default function CatList() {
 	const {cats} = React.useContext(ApiDataContext);
@@ -58,11 +58,12 @@ export default function CatList() {
 		const emptyFields = [];
 		const form = event.target;
 		if (form.name.value === "") emptyFields.push("name");
-		if (form.age.value === "") emptyFields.push("age");
+		//if (form.age.value === "") emptyFields.push("age");
+		if (form.birthdate.value === "") emptyFields.push("birthdate");
 		if (form.color.value === "") emptyFields.push("color");
 		if (form.eye_color.value === "") emptyFields.push("eye_color");
 		if (form.breed.value === "") emptyFields.push("breed");
-		if (form.gender.value === "") emptyFields.push("gender");
+		//if (form.gender.value === "") emptyFields.push("gender");
 
 		//Choose new ID by finding the highest current ID
 		let newID = 0;
@@ -70,6 +71,13 @@ export default function CatList() {
 			if (cat.id > newID)
 				newID = cat.id;
 		});
+		
+		//Create timestamp from date from input
+		//It must be converted from a date string to a date object
+		//Then to a timestamp object so Firebase will accept it
+		//I hate it
+		const date = new Date(form.birthdate.value);
+		const timestamp = Timestamp.fromDate(date);
 
 		if (emptyFields.length > 0) 
 			alert(
@@ -89,7 +97,7 @@ export default function CatList() {
 			addDoc(catListRef, {
 				id: newID + 1,
 				name: form.name.value,
-				age: form.age.value,
+				birthdate: timestamp,
 				color: form.color.value,
 				eye_color: form.eye_color.value,
 				breed: form.breed.value,
@@ -153,8 +161,11 @@ export default function CatList() {
 			</select>
             {/*<input type="text" name="gender" placeholder="Gender" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />*/}
 			
-            <h3 className="py-2 text-lg">Age</h3>
-            <input type="text" name="age" placeholder="Age" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
+            {/*<h3 className="py-2 text-lg">Age</h3>
+            <input type="text" name="age" placeholder="Age" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />*/}
+
+			<h3 className="py-2 text-lg">Birthdate</h3>
+			<input type="date" name="birthdate" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
 
             <h3 className="py-2 text-lg">Color</h3>
             <input type="text" name="color" placeholder="Color" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
@@ -183,15 +194,12 @@ export default function CatList() {
             <input type="text" name="vaccinations" placeholder="Vaccinations" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
 
             <h2 className="py-6 text-2xl font-semibold">Notes</h2>
-            <div className="align-top justify-start mx-autoflex">
+            {/*<div className="align-top justify-start mx-autoflex">
                 <textarea type="text"
                     name="catlist-search"
                     placeholder="Write notes here..."
                     className=" border placeholder:italic pt-2 -mr-2 pr-2 border-black rounded-xl text-xl pl-4 m-auto min-h-48 h-10 text-start" />
-                
-                {/* Insert icon here... */}
-				{/* ^ What? */}
-            </div>
+				</div>*/}
 			<button className="flex justify-center bg-cat-gray-1 text-white py-3 px-5 rounded-xl">Submit</button>
 			</form>
           </div>

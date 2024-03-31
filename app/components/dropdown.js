@@ -6,6 +6,7 @@ import { useState, React } from "react";
 function Dropdown({queryType, callback, cats}) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
+	const [dropdownValue, setDropdownValue] = useState("")
 
     const [dropSelectClassname, setDropSelectClassname] = useState(" text-gray-500 italic font-normal text-base");
 
@@ -14,16 +15,23 @@ function Dropdown({queryType, callback, cats}) {
 	}
 	const breedQuery = cats.map(i => i.breed);
 	const genderQuery = cats.map(i => i.gender);
-	const ageQuery = cats.map(i => i.age);
+	//const ageQuery = cats.map(i => i.age);
 	const colorQuery = cats.map(i => i.color);
 
 	const breedFiltered = cats.filter(({ breed }, index) => !breedQuery.includes(breed, index + 1));
 	const genderFiltered = cats.filter(({ gender }, index) => !genderQuery.includes(gender, index + 1));
-	const ageFiltered = cats.filter(({ age }, index) => !ageQuery.includes(age, index + 1));
+	//const ageFiltered = cats.filter(({ age }, index) => !ageQuery.includes(age, index + 1));
+	//Age is a special case, and will be sorted into groups
+	//Groups are Kitten (0-6 months), Young (6 months - 1 ), Adult (1 year+)
+	const ageFiltered = [
+		{age: "Kitten (0-6 months)"},
+		{age: "Young (6 months - 1 year)"},
+		{age: "Adult (1 year+)"}
+	];
 	const colorFiltered = cats.filter(({ color }, index) => !colorQuery.includes(color, index + 1));
 	const sortFilters = ["None", "Name", "Breed", "Gender", "Age", "Color"];
 
-    let dropdownValue;
+    //let dropdownValue;
     const handleCallback = (selected) => {
         callback(queryType + " " + selected);
         setDropdownValue(selected);
@@ -57,7 +65,9 @@ function Dropdown({queryType, callback, cats}) {
             
             { /* When we press the dropdown button, we change the state to 'Open' and populate the list with the appropriate values. */}
             { isOpen && (
-                <div className=" bg-slate-200 absolute top-10 right-0 flex flex-col items-start rounded-lg p-2 w-full z-20">
+                <div className=" bg-slate-200 absolute top-10 right-0 flex flex-col items-start rounded-lg p-2 w-full h-96 z-20 overflow-auto">
+					{/* "None" button that goes on top to clear the filter */}
+					<button onClick={(e) => handleCallback("")} className="font-bold w-full flex">None</button>
                     {list.map((item, index) => (
                         <div className=" flex w-full justify-between hover:bg-slate-100 cursor-pointer rounded-r-lg border-l-transparent hover:border-l-slate-400 border-l-4 pl-1" 
                              key={index}>

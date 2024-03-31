@@ -49,20 +49,25 @@ export default function Page({params}) {
 				}));
 				cat.children = childrenData;
 			}
-			if (cat.conditions) {
+			if (cat.conditions && Array.isArray(cat.conditions)) {
 				const conditionsData = await Promise.all(cat.conditions.map(async (conditionRef) => {
 					const conditionDoc = await getDoc(conditionRef);
 					return conditionDoc.data();
 				}));
 				cat.conditions = conditionsData;
 			}
-			if (cat.vaccinations) {
+			else
+				cat.conditions = [];
+
+			if (cat.vaccinations && Array.isArray(cat.vaccinations)) {
 				const vaccinationsData = await Promise.all(cat.vaccinations.map(async (vaccinationRef) => {
 					const vaccinationDoc = await getDoc(vaccinationRef);
 					return vaccinationDoc.data();
 				}));
 				cat.vaccinations = vaccinationsData;
 			}
+			else
+				cat.vaccinations = [];
 			setCat(cat);
 		};
 		fetchCat();
@@ -78,7 +83,7 @@ export default function Page({params}) {
 	
 	useEffect(() => {
 		const fetchFavorites = async () => {
-			if (filteredUser && filteredUser.favorites && filteredUser.favorites.cats) {
+			if (filteredUser && filteredUser.favorites && filteredUser.favorites.cats && cat) {
 				setFavorite(filteredUser.favorites.cats.some(ref => ref.path === doc(db, 'cats', cat.docId).path));
 			}
 		};
@@ -134,7 +139,8 @@ export default function Page({params}) {
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
-								<h3>Age: <span className="font-normal">{cat.age}</span></h3>
+								{/*<h3>Age: <span className="font-normal">{cat.age}</span></h3>*/}
+								<h3>Birthdate: <span className="font-normal">{new Date(cat.birthdate.seconds * 1000).toLocaleDateString()}</span></h3>
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>

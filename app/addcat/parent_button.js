@@ -1,16 +1,15 @@
 import Image from 'next/image'
 
-export default function CatParentButton({ docid, id, name, breed, onSelect}) {
+export default function CatParentButton({ docid, id, name, breed,imgUrl, onSelect}) {
 	const handleSelect = (docid) => {
-		console.log("Selected: ", docid);
 		onSelect(id);
 	}
 
     return (
         <button className="flex-col font-bold p-2 text-black place-items-center" onClick={() => handleSelect(docid)}>
-            <Image
+            <img
                 alt="Kitty"
-                src={ id % 2 == 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png" }
+                src={ imgUrl }
                 width={"300"}
                 height={"300"}
                 className="justify-center align-center place-items-center"

@@ -5,7 +5,7 @@ import ApiDataContext from './api_context';
 //db contains initialized firebase db credentials
 import { db } from "../_utils/firebase";
 //Various firestore functions
-import { collection, getDocs, addDoc, query } from "firebase/firestore";
+import { collection, getDocs, addDoc, query, doc, updateDoc } from "firebase/firestore";
 import { set } from 'firebase/database';
 
 /*async function getCats() {
@@ -55,7 +55,8 @@ const ApiDataProvider = ({ children }) => {
 	const catQuery = query(catRef);
 	const catListSnapshot = await getDocs(catQuery);
 	const catList = [];
-	catListSnapshot.forEach((doc) => {
+	const updatePromises = [];
+	catListSnapshot.forEach((docSnapshot) => {
 		//catList.push(doc.data());
 		//console.log("doc:");
 		//console.log(doc.data());
@@ -63,7 +64,7 @@ const ApiDataProvider = ({ children }) => {
 		//New method: Loads entire document into array
 		//Now changes to the document structure can be made without breaking the app
 
-		const catsData = {docid: doc.id, ...doc.data()};
+		const catsData = { docid: docSnapshot.id, ...docSnapshot.data() };
 
 		/*const newItem = {
 			docid: doc.id,
@@ -99,9 +100,10 @@ const ApiDataProvider = ({ children }) => {
 		};
 		userList.push(newItem);
 	});
-	//console.log(userList);
+	await Promise.all(updatePromises);
+	console.log(userList);
 	setUsers(userList);
-	
+
 
 	//Load comment data
 	const commentRef = collection(db, "comments");
@@ -147,9 +149,12 @@ const ApiDataProvider = ({ children }) => {
 
 	}
 
+	const addCatToList = (newCat) => {
+		setCats((prevCats) => [...prevCats, newCat]);
+	};
 	//Creates a context wrapper of some sort that provides the data to the app
 	return (
-		<ApiDataContext.Provider value={{cats, users, litters, comments,forums}}>
+		<ApiDataContext.Provider value={{cats, users, litters, comments, forums, addCatToList}}>
 			{children}
 		</ApiDataContext.Provider>
 	);

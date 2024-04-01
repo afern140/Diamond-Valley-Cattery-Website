@@ -55,14 +55,14 @@ export default function Page({ params }) {
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setLitter((prevLitter) => ({ ...prevLitter, [name]: value }));
-	}
+	};
 
 	const handleDateChange = (e) => {
 		const { name, value } = e.target;
 		const date = new Date(value);
 		const timestamp = Timestamp.fromDate(date);
 		setLitter((prevLitter) => ({ ...prevLitter, [name]: timestamp }))
-	}
+	};
 
 	const handleSelectParentToUpdate = (parent) => {
 		setSelectedParent(parent);
@@ -77,7 +77,7 @@ export default function Page({ params }) {
 
 	const handleMarkAsComplete = () => {
 		setShowChildSelection(true);
-	}
+	};
 
 	const handleSelectChild = (selectedCat) => {
 		setShowChildSelection(false);
@@ -86,7 +86,7 @@ export default function Page({ params }) {
 		if (litter.completed == false) {
 			setLitter((prevLitter) => ({ ...prevLitter, completed: true }));
 		}
-	}
+	};
 
 	const handleAddChild = () => {
 		setShowChildSelection(true);
@@ -106,7 +106,7 @@ export default function Page({ params }) {
 		}
 		const updatedLitter = { ...litter, mother: motherRef, father: fatherRef, children: childrenRefs }
 		await updateObject('litters', updatedLitter, true)
-	}
+	};
 
 	return (
 		<main className="bg-white text-black">
@@ -167,37 +167,37 @@ export default function Page({ params }) {
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 					</div>
 					<h2>Children</h2>
-						{litter.completed ? (
-							<div>
-								{litter.children.map((child) => (
-									<div>
-										<h3>{child.name}</h3>
-										<Image
-											src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}
-											alt="Cat"
-											width={200}
-											height={100}
-										/>
-										<button onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
-									</div>
-								))}
+					{litter.completed ? (
+						<div>
+							{litter.children.map((child) => (
 								<div>
+									<h3>{child.name}</h3>
 									<Image
-										src="/img/Placeholder.png"
+										src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}
 										alt="Cat"
 										width={200}
 										height={100}
 									/>
-									<button onClick={() => handleAddChild()}>Select Child</button>
+									<button onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 								</div>
-								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
+							))}
+							<div>
+								<Image
+									src="/img/Placeholder.png"
+									alt="Cat"
+									width={200}
+									height={100}
+								/>
+								<button onClick={() => handleAddChild()}>Select Child</button>
 							</div>
-						) : (<div>
-								<button onClick={handleMarkAsComplete}>Mark as Complete</button>
-								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
-							</div>
-						)}
-						<button onClick={handleSubmit}>Submit</button>
+							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
+						</div>
+					) : (<div>
+							<button onClick={handleMarkAsComplete}>Mark as Complete</button>
+							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
+						</div>
+					)}
+					<button onClick={handleSubmit}>Submit</button>
 				</div>
 			) : (
 				<h1>Loading...</h1>

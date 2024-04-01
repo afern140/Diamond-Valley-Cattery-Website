@@ -12,6 +12,7 @@ import EditCondition from "@/app/components/conditions/edit-condition"
 import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
+import CatSelection from "@/app/components/cats/cat-selection"
 
 export default function Page({params}){
 	const {user} = useUserAuth();
@@ -530,34 +531,7 @@ export default function Page({params}){
 								</div>
 							) : (<></>)}
 						</div>
-						{showParentSelection && (
-							<div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-								<div className="bg-white p-8 rounded-lg shadow-lg w-3/4 h-3/4 overflow-auto relative">
-									<h2 className="text-lg font-bold mb-4">Select a New Cat</h2>
-									<div className="flex flex-wrap border border-gray-300 p-5 rounded-lg justify-between">
-										{cats ? cats.map((cat) => (
-											<div key={cat.id}>
-												<button className="flex-col font-bold p-2 text-black place-items-center" onClick={() => handleReplaceParent(cat)}>
-													<Image
-														alt="Kitty"
-														src={cat.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
-														width={300}
-														height={300}
-														className="justify-center align-center place-items-center"
-														objectFit="contain"
-													/>
-													<p className="mt-1">{cat.name}</p>
-													<p className="text-sm font-medium">{cat.breed}</p>
-												</button>
-											</div>
-										)) : "Loading..."}
-									</div>
-									<div className="sticky bottom-0 right-0 p-5 bg-white rounded-lg flex justify-end mt-4">
-										<button onClick={() => setShowParentSelection(false)} className="bg-gray-500 text-white font-bold py-2 px-4 rounded mr-4">Cancel</button>
-									</div>
-								</div>
-							</div>
-						)}
+						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 					</div>
 					<div>
 						<h2 className="text-xl font-bold mb-4">Children</h2>
@@ -588,34 +562,7 @@ export default function Page({params}){
 								<button onClick={() => handleAddChild()} className="bg-slate-200 py-2 px-4 rounded mt-4">Select Child</button>
 							</div>
 						</div>
-						{showChildSelection && (
-							<div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-								<div className="bg-white p-8 rounded-lg shadow-lg w-3/4 h-3/4 overflow-auto relative">
-									<h2 className="text-lg font-bold mb-4">Select a New Cat</h2>
-									<div className="flex flex-wrap border border-gray-300 p-5 rounded-lg justify-between">
-										{cats ? cats.map((cat) => (
-											<div key={cat.id}>
-												<button className="flex-col font-bold p-2 text-black place-items-center" onClick={() => handleSelectChild(cat)}>
-													<Image
-														alt="Kitty"
-														src={cat.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
-														width={300}
-														height={300}
-														className="justify-center align-center place-items-center"
-														objectFit="contain"
-													/>
-													<p className="mt-1">{cat.name}</p>
-													<p className="text-sm font-medium">{cat.breed}</p>
-												</button>
-											</div>
-										)) : "Loading..."}
-									</div>
-									<div className="sticky bottom-0 right-0 p-5 bg-white rounded-lg flex justify-end mt-4">
-										<button onClick={() => setShowChildSelection(false)} className="bg-gray-500 text-white font-bold py-2 px-4 rounded mr-4">Cancel</button>
-									</div>
-								</div>
-							</div>
-						)}
+						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
 					<button onClick={handleSubmit} className="bg-slate-200 py-2 px-4 rounded mt-4">Submit</button>
 				</div>

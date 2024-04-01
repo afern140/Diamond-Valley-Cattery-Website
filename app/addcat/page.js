@@ -8,12 +8,12 @@ import CatParentButton from "./parent_button";
 import { v4 } from "uuid";
 // import ApiDataProvider from '../_utils/api_provider';
 import ApiDataContext from '../_utils/api_context';
-import { doc } from "firebase/firestore";
 import { getObjects, getObject } from "../_utils/firebase_services";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { imageDb, db } from "../_utils/firebase";
-import { collection, addDoc } from "firebase/firestore";
 import ImageUploader from "./ImageUploader";
+import { doc, collection, getDocs, addDoc, query, Timestamp } from "firebase/firestore";
+
 export default function CatList() {
 	const { cats, addCatToList } = React.useContext(ApiDataContext);
 	const [fieldInput_parents, setFieldInput_parents] = useState("");
@@ -61,6 +61,28 @@ export default function CatList() {
 			if (!form[field].value) emptyFields.push(field);
 		});
 
+		if (form.name.value === "") emptyFields.push("name");
+		//if (form.age.value === "") emptyFields.push("age");
+		if (form.birthdate.value === "") emptyFields.push("birthdate");
+		if (form.color.value === "") emptyFields.push("color");
+		if (form.eye_color.value === "") emptyFields.push("eye_color");
+		if (form.breed.value === "") emptyFields.push("breed");
+		//if (form.gender.value === "") emptyFields.push("gender");
+
+		//Choose new ID by finding the highest current ID
+		let newID = 0;
+		cats.forEach(cat => {
+			if (cat.id > newID)
+				newID = cat.id;
+		});
+		
+		//Create timestamp from date from input
+		//It must be converted from a date string to a date object
+		//Then to a timestamp object so Firebase will accept it
+		//I hate it
+		const date = new Date(form.birthdate.value);
+		const timestamp = Timestamp.fromDate(date);
+
 		if (emptyFields.length > 0) {
 			alert(`Please fill in the following fields: ${emptyFields.join(", ")}`);
 			return;
@@ -80,7 +102,7 @@ export default function CatList() {
 
 			const newData = {
 				name: form.name.value,
-				age: form.age.value,
+				birthdate: timestamp,
 				color: form.color.value,
 				eye_color: form.eye_color.value,
 				breed: form.breed.value,
@@ -125,11 +147,7 @@ export default function CatList() {
 
 	return (
 		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
-			<div>
-				<h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Add Cat</h1>
-				{/* Search Field */}
-			</div>
-
+			<h1 className="flex justify-center py-6 font-bold text-4xl">Add Cat</h1>
 			<div className="flex py-6 w-full justify-center">
 				<div className="flex w-4/5">
 

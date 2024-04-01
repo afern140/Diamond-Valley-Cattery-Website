@@ -5,57 +5,55 @@ import ApiDataProvider from "../_utils/api_provider";
 import ApiDataContext from "../_utils/api_context";
 import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
-import {collection,addDoc} from "firebase/firestore";
+import {collection,addDoc,query,getDocs} from "firebase/firestore";
 
 export default function Comments(cat) {
    const dbdata = React.useContext(ApiDataContext);
-   const { comments } = React.useContext(ApiDataContext);
-   const [commentsFiltered, setCommentsFiltered] = useState();
+   const [comments, setComments] = useState([]);
 
    useEffect(() => {
-      /*console.log("Comments page dbdata updated!");
-      console.log("Comments are: ")
-      console.log(comments);
-      console.log("Cat is: ");
-      console.log(cat);
-      console.log("Cat ID is: ");
-      console.log(cat.cat.id);
-      */
-      if (comments){
-         const filtered = comments.filter(comment => String(comment.catID) === String(cat.cat.id));
-         setCommentsFiltered(filtered);
+      try {
+         getComments(cat).then((comments) => {
+            setComments(comments);
+         });
       }
-      
-      console.log("Comments Filtered: ");
-      console.log(commentsFiltered);
-
+      catch (error) {
+         console.error("Error getting comments: ", error);
+      }
    }, [dbdata,comments]);
 
 
    return (
       <main className="text-black">
          <h1 className="text-5xl font-bold">Comments</h1>
-         Hello this is a test of the comments system.
-         {!commentsFiltered && <p>Loading...</p>}
-         {commentsFiltered &&
-            commentsFiltered.map((comments) => (
+         Hello this is a test of the comments system.   
+            {comments.map((comments) => (
             <Comment 
             catName={comments.catName}
             message={comments.message}
             createName={comments.createName}
             />
-            ))
-            
-         }
+            ))}
          <NewComment cat={cat.cat}/>
       </main>
    );
-    
 }
 
-async function addComment(commentDoc){
-   console.log("Entered addComment.")
-   const itemsRef = collection(db, 'comments');
+async function getComments(cat){
+   const itemsRef = collection(db, 'cats', cat.cat.docId, 'comments');
+   const q = query(itemsRef);
+   const snapshot = await getDocs(q);
+   const itemsList = snapshot.docs.map((doc) => {
+      return {id: doc.id, ...doc.data()};
+   });
+   return itemsList;
+}
+
+async function addComment(commentDoc,cat){
+   //console.log("Entered addComment.")
+   const itemsRef = collection(db, 'cats', cat.cat.docId, 'comments');
+   console.log("Cat in add comment is: ");
+   console.log(cat.cat.docId);
    const docRef = await addDoc(itemsRef, commentDoc);
    return docRef.id;
 }
@@ -73,8 +71,8 @@ function NewComment(cat) {
          catID: currentCat.id,
          catName: currentCat.name
       };
-      await addComment(commentDoc);
-      window.location.reload();
+      await addComment(commentDoc,cat);
+      //window.location.reload();
    }
 
    return(

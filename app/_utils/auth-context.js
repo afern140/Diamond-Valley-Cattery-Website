@@ -10,6 +10,8 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "./firebase";
+import {getUser} from "./user_services";
+import { set } from "firebase/database";
  
 const AuthContext = createContext();
  
@@ -34,8 +36,13 @@ export const AuthContextProvider = ({ children }) => {
   };
  
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        const userData = await getUser(currentUser);
+        setUser({ ...userData, uid: currentUser.uid
+        });
+      } else
+      setUser(null);
     });
     return () => unsubscribe();
   }, [user]);

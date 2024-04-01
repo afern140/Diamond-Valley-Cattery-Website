@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useChat } from "@/app/_utils/chat-context";
 import { useUserAuth } from "@/app/_utils/auth-context";
 
+//Message
 export default function page({ params }) {
   const { user } = useUserAuth();
   const { loadChatMessages, sendMessage } = useChat();

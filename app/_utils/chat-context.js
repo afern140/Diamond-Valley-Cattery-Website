@@ -6,12 +6,17 @@ import {
   doc,
   setDoc,
   getDoc,
-  onSnapshot,
   updateDoc,
   serverTimestamp,
   arrayUnion,
   collection,
   addDoc,
+  where,
+  query,
+  getDocs,
+  orderBy,
+  limit,
+  onSnapshot,
 } from "firebase/firestore";
 
 const ChatContext = createContext();
@@ -19,7 +24,6 @@ const ChatContext = createContext();
 export const ChatProvider = ({ children }) => {
   const [currentChatId, setCurrentChatId] = useState(null);
 
-  // This is a React context provider component for chat functionalities.
   const createOrJoinChat = async (userId1, userId2) => {
     const chatId = [userId1, userId2].sort().join("_");
     const chatRef = doc(db, "chats", chatId);
@@ -42,6 +46,7 @@ export const ChatProvider = ({ children }) => {
       ...message,
       chatId: chatId,
       timestamp: serverTimestamp(),
+      read: false,
     };
 
     const messageRef = await addDoc(collection(db, "messages"), messageDoc);
@@ -77,9 +82,79 @@ export const ChatProvider = ({ children }) => {
     fetchMessages();
   };
 
+  // Function to fetch the latest messages for each chat
+  const fetchChatsWithLatestMessage = async (userId) => {
+    const chatsQuery = query(
+      collection(db, "chats"),
+      where("users", "array-contains", userId)
+    );
+    const chatsSnapshot = await getDocs(chatsQuery);
+
+    const chatsWithLatestMessage = await Promise.all(
+      chatsSnapshot.docs.map(async (chatDoc) => {
+        const messagesQuery = query(
+          collection(db, "messages"),
+          where("chatId", "==", chatDoc.id),
+          orderBy("timestamp", "desc"),
+          limit(1)
+        );
+        const messagesSnapshot = await getDocs(messagesQuery);
+        if (!messagesSnapshot.empty) {
+          const messageDoc = messagesSnapshot.docs[0];
+          return {
+            chatId: chatDoc.id,
+            lastMessage: {
+              id: messageDoc.id,
+              ...messageDoc.data(),
+            },
+          };
+        }
+        return null;
+      })
+    );
+
+    return chatsWithLatestMessage.filter((chat) => chat != null);
+  };
+
+  // Function to listen to the latest unread messages for a specific chat
+  const listenToLatestUnreadMessage = (chatId, callback) => {
+    const messagesQuery = query(
+      collection(db, "messages"),
+      where("chatId", "==", chatId),
+      where("read", "==", false),
+      orderBy("timestamp", "desc"),
+      limit(1)
+    );
+
+    return onSnapshot(messagesQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        const messageData = snapshot.docs[0].data();
+        messageData.id = snapshot.docs[0].id;
+        callback(messageData);
+      }
+    });
+  };
+
+  const markMessageAsRead = async (messageId) => {
+    const messageRef = doc(db, "messages", messageId);
+
+    // Firestore call to update the message's read status
+    await updateDoc(messageRef, {
+      read: true,
+    });
+  };
+
   return (
     <ChatContext.Provider
-      value={{ createOrJoinChat, sendMessage, loadChatMessages, currentChatId }}
+      value={{
+        createOrJoinChat,
+        sendMessage,
+        loadChatMessages,
+        currentChatId,
+        fetchChatsWithLatestMessage,
+        listenToLatestUnreadMessage,
+        markMessageAsRead,
+      }}
     >
       {children}
     </ChatContext.Provider>

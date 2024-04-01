@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { collection, doc, getDocs, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../_utils/firebase";
+import { auth } from "../_utils/firebase";
+import { updateProfile } from "firebase/auth";
 
 export const getUser = async (userAuth) => {
 	if (!userAuth) return;
@@ -56,6 +58,43 @@ export function upateUserProfile(newDisplayName, newPhotoURL){
 		});
 	}
   }
+/*
+* Updates the user's email with a new email.
+*
+* @param {string} newEmail - The new email for the user.
+*
+* If the update is successful, an alert will be shown with the message "Email updated".
+* If the update fails, an alert will be shown with the message "Email update failed".
+*/
+export function changeEmail(newEmail){
+	updateEmail(auth.currentUser, newEmail)
+	.then(() => {
+		alert("Email updated");
+	})
+	.catch((error) => {
+		console.log(error);
+		alert("Email update failed");
+	});
+}
+
+/*
+* Updates the user's password with a new password.
+*
+* @param {string} newPassword - The new password for the user.
+*
+* If the update is successful, an alert will be shown with the message "Password updated".
+* If the update fails, an alert will be shown with the message "Password update failed".
+*/
+export function changePassword(newPassword){
+	updatePassword(auth.currentUser, newPassword)
+	.then(() => {
+		alert("Password updated");
+	})
+	.catch((error) => {
+		console.log(error);
+		alert("Password update failed");
+	});
+}
 
 const UserContext = createContext();
 

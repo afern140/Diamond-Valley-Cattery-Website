@@ -8,15 +8,11 @@ import {
   GithubAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
-  getAuth
 } from "firebase/auth";
 import { auth } from "./firebase";
 import {getUser} from "./user_services";
-import { set } from "firebase/database";
  
 const AuthContext = createContext();
-const auth = getAuth(displayName, photoURL);
  
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -57,12 +53,7 @@ export const AuthContextProvider = ({ children }) => {
   );
 };
 
-export function
 
- /*
-  * Returns the current user object.
-  *
- */
 export const useUserAuth = () => {
     //console.log(useContext(AuthContext));
   return useContext(AuthContext);

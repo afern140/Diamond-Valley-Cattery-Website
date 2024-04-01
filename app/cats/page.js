@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { getObjects, getObject } from "../_utils/firebase_services";
 import Dropdown from "@/app/components/dropdown";
-import CatButton1 from "@/app/components/catbutton";
+import CatButton from "@/app/components/cats/catbutton";
 
 export default function Page() {
 	//Holds data that the page can display. Uses backup data until database is loaded
@@ -215,7 +215,7 @@ export default function Page() {
 				{filteredResults ?
 				filteredResults.map((cat) => (
 					<div>
-						<CatButton1 cat={cat}/>
+						<CatButton cat={cat}/>
 					</div>
 				))
 				: "Awaiting cats"

@@ -168,14 +168,14 @@ export default function Page({params}) {
 												<h4>Doses Taken Dates:</h4>
 												<ul className="list-disc">
 													{vaccination.datesTaken.map((date, index) => (
-														<li key={index} className="font-normal">{new Date(date.seconds * 1000).toLocaleDateString()}</li>
+														<li key={index} className="font-normal">{new Date(date.toDate()).toISOString().split('T')[0]}</li>
 													))}
 												</ul>
 												<h4>Doses Remaining: <span className="font-normal">{vaccination.dosesRemaining}</span></h4>
 												<h4>Planned Dosage Dates:</h4>
 												<ul className="list-disc">
 													{vaccination.futureDates.map((date, index) => (
-														<li key={index} className="font-normal">{new Date(date.seconds * 1000).toLocaleDateString()}</li>
+														<li key={index} className="font-normal">{new Date(date.toDate()).toISOString().split('T')[0]}</li>
 													))}
 												</ul>
 											</div>

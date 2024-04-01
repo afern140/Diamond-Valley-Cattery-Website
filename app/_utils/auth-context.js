@@ -8,6 +8,7 @@ import {
   GithubAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail
 } from "firebase/auth";
 import { auth } from "./firebase";
 import {getUser} from "./user_services";
@@ -53,11 +54,22 @@ export const AuthContextProvider = ({ children }) => {
   );
 };
 
-
 export const useUserAuth = () => {
     //console.log(useContext(AuthContext));
   return useContext(AuthContext);
 };
+
+export function resetPasswordByEmail(email){
+  return sendPasswordResetEmail(auth, email)
+  .then(() => {
+    alert("Password reset email sent");
+  })
+  .catch((error) => {
+    console.log(error);
+    alert("Password reset email failed");
+
+  });
+}
 
 /*
 how to send photo to firebase storage and get url for user profile

@@ -57,38 +57,35 @@ export const AuthContextProvider = ({ children }) => {
   );
 };
 
-/*
-  * Updates the user's profile with a new display name and/or photo URL.
-  *
-  * @param {string} newDisplayName - The new display name for the user.
-  * @param {string} newPhotoURL - The new photo URL for the user.
-  * 
-  * If either parameter is provided, it will update the corresponding field in the user's profile.
-  * If the update is successful, an alert will be shown with the message "Profile updated".
-  * If the update fails, an alert will be shown with the message "Profile update failed".
-*/
-export function upateUserProflie(newDisplayName, newPhotoURL){
-  const updateObject = {};
-  if (newDisplayName) {
-    updateObject.displayName = newDisplayName;
-  }
-  if (newPhotoURL) {
-    updateObject.photoURL = newPhotoURL;
-  }
-  if (newDisplayName || newPhotoURL) {
-    updateProfile(auth.currentUser, updateObject)
-      .then(() => {
-        alert ("Profile updated");
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Profile update failed");
-      });
-  }
-}
+export function
 
- 
+ /*
+  * Returns the current user object.
+  *
+ */
 export const useUserAuth = () => {
     //console.log(useContext(AuthContext));
   return useContext(AuthContext);
 };
+
+/*
+how to send photo to firebase storage and get url for user profile
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
+// Create a reference to 'images/mountains.jpg'
+const storage = getStorage();
+const storageRef = ref(storage, 'images/mountains.jpg');
+
+// 'file' comes from the Blob or File API
+uploadBytesResumable(storageRef, file).then((snapshot) => {
+  console.log('Uploaded a blob or file!');
+
+  // Get the download URL
+  getDownloadURL(snapshot.ref).then((downloadURL) => {
+    console.log('File available at', downloadURL);
+
+    // Now you can use this URL as the photoURL for the user's profile
+    updateProfile(auth.currentUser, { photoURL: downloadURL });
+  });
+});
+*/

@@ -27,6 +27,36 @@ export const updateUser = async (updatedUser) => {
 	alert("Updated user data");
 }
 
+/*
+  * Updates the user's profile with a new display name and/or photo URL.
+  *
+  * @param {string} newDisplayName - The new display name for the user.
+  * @param {string} newPhotoURL - The new photo URL for the user. Use dowlnoadURL from firebase storage.
+  * 
+  * If either parameter is provided, it will update the corresponding field in the user's profile.
+  * If the update is successful, an alert will be shown with the message "Profile updated".
+  * If the update fails, an alert will be shown with the message "Profile update failed".
+*/
+export function upateUserProfile(newDisplayName, newPhotoURL){
+	const updateObject = {};
+	if (newDisplayName) {
+	  updateObject.displayName = newDisplayName;
+	}
+	if (newPhotoURL) {
+	  updateObject.photoURL = newPhotoURL;
+	}
+	if (newDisplayName || newPhotoURL) {
+	  updateProfile(auth.currentUser, updateObject)
+		.then(() => {
+		  alert ("Profile updated");
+		})
+		.catch((error) => {
+		  console.log(error);
+		  alert("Profile update failed");
+		});
+	}
+  }
+
 const UserContext = createContext();
 
 export const UserProvider = ({ children, user }) => {

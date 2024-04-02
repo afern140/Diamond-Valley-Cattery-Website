@@ -15,14 +15,11 @@ export default function page({ params }) {
   const chatId = params.chat;
 
   useEffect(() => {
-    let unsubscribe = () => {};
-
     if (chatId) {
-      unsubscribe = loadChatMessages(chatId, setCurrentMessages);
+      loadChatMessages(chatId, setCurrentMessages);
     }
-    // Cleanup subscription on unmount or when chatId changes
-    return () => unsubscribe();
-  }, [chatId]);
+    
+  }, []);
 
   // This function is called when the user sends a message.
   const handleSendMessage = async (e) => {

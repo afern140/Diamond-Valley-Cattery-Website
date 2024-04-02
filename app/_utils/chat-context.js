@@ -126,13 +126,15 @@ export const ChatProvider = ({ children }) => {
       limit(1)
     );
 
-    return onSnapshot(messagesQuery, (snapshot) => {
+    const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
       if (!snapshot.empty) {
         const messageData = snapshot.docs[0].data();
         messageData.id = snapshot.docs[0].id;
         callback(messageData);
       }
     });
+
+    return unsubscribe; 
   };
 
   const markMessageAsRead = async (messageId) => {

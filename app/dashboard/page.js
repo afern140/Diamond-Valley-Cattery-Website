@@ -90,23 +90,23 @@ export default function Page() {
 
   // Recent message
   useEffect(() => {
-    let isSubscribed = true;
-
-    const fetchAndSetChats = async () => {
-      const chats = await fetchChatsWithLatestMessage(user.uid);
-      if (isSubscribed) {
-        setChatsWithLatestUnreadMessage(chats);
-      }
-    };
-
     if (user) {
+      const fetchAndSetChats = async () => {
+        const chats = await fetchChatsWithLatestMessage(user.uid);
+        setChatsWithLatestUnreadMessage(chats);
+      };
       fetchAndSetChats();
     }
-
-    return () => {
-      isSubscribed = false;
-    };
   }, [user, fetchChatsWithLatestMessage]);
+
+  useEffect(() => {
+    if (chatsWithLatestUnreadMessage.length > 0) {
+      const newUnreadMessageIds = new Set(
+        chatsWithLatestUnreadMessage.map(({ lastMessage }) => lastMessage.id)
+      );
+      setUnreadMessageIds(newUnreadMessageIds);
+    }
+  }, [chatsWithLatestUnreadMessage]);
 
   const redirectToChat = async (chatId, messageId) => {
     try {
@@ -126,7 +126,7 @@ export default function Page() {
       console.error("Error marking message as read or redirecting:", error);
     }
   };
-
+  
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return "No date";
 

@@ -106,7 +106,7 @@ export default function Page() {
     return () => {
       isSubscribed = false;
     };
-  }, [user, fetchChatsWithLatestMessage]);
+  }, [user]);
 
   const redirectToChat = async (chatId, messageId) => {
     try {

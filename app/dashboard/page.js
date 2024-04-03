@@ -54,9 +54,9 @@ export default function Page() {
   const [unreadMessageIds, setUnreadMessageIds] = useState(new Set());
   useEffect(() => {
     const fetchUser = async () => {
-      const filteredUser = await getUser(user);
-      setFilteredUser(filteredUser);
-      setUpdatedUser(filteredUser);
+      const newUser = await getUser(user);
+      setFilteredUser(newUser);
+      setUpdatedUser(newUser);
     };
     fetchUser();
   }, [user]);

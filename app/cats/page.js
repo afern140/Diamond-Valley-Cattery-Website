@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { getObjects, getObject } from "../_utils/firebase_services";
 import Dropdown from "@/app/components/dropdown";
@@ -159,27 +160,54 @@ export default function Page() {
 		console.log(filteredData);
 	}, [fieldInput, filters, sortingMethod, cats]);
 
+	const zigzagSize = new Array(100).fill(null);
+
 	return (
-		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
+		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white overflow-hidden">
+			
+			{/* Zigzag */}
+			<div className="relative w-full bg-repeat-x flex pt-16">
+				{ 
+				zigzagSize.map(() => (
+					<div className="flex">
+					<div className="size-[16px] bg-white bg-gradient-to-br from-white from-50% to-teal-500 to-50%" />
+					<div className="size-[16px] bg-white bg-gradient-to-bl from-white from-50% to-teal-500 to-50%" />
+					</div>
+				))
+				}
+			</div>
+			
+			{/* Top Solid-Color Part */}
+			<div className="w-full mx-auto bg-teal-500 h-[360px] text-white text-center">
+				<h1 className="text-4xl pt-20">Cats</h1>
+				<h2 className="text-xl pt-4 w-3/5 mx-auto">DISCOVER YOUR NEW BEST FRIEND AT DIAMOND VALLEY CATTERY. BROWSE OUR ADORABLE CATS AVAILABLE FOR PURCHASE.</h2>
+			</div>
+
+			{/* Zigzag */}
+			<div className="relative w-full bg-repeat-x flex">
+				{ 
+				zigzagSize.map(() => (
+					<div className="flex">
+					<div className="size-[16px] bg-white bg-gradient-to-tr from-white from-50% to-teal-500 to-50%" />
+					<div className="size-[16px] bg-white bg-gradient-to-tl from-white from-50% to-teal-500 to-50%" />
+					</div>
+				))
+				}
+			</div>
+	
 	<div>
-		<div className=" grid grid-flow-col">
-		<div className="" />
-		<h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
-		<div className="pt-12 flex">
-			<Link href="/addcat" className="m-auto">
-			<button className=" bg-cat-gray-1 p-3 rounded-3xl text-white">Add Cat</button>
-			</Link>
-		</div>
-		</div>
+		<div className=" pt-10" />
 		{/* Search Field */}
-		<div className="align-middle justify-center flex">
+		<div className="align-middle justify-center flex translate-x-6">
 			<input type="text"
 				name="catlist-search"
 				placeholder="Search"
-				className=" border border-black rounded-3xl text-xl pl-4 w-4/5 h-10"
-				onChange = { (Event) => searchItems(Event.target.value, "") } />
+				className=" bg-teal-50 border border-teal-500 placeholder-teal-600 shadow rounded-3xl text-xl pl-4 w-4/5 h-10 focus:outline-none focus:ring focus:border-teal-300"
+				onChange = { (Event) => searchItems(Event.target.value, "") }>
+			</input>
 			
 			{/* Insert icon here... */}
+			<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
 		</div>
 	</div>
 
@@ -189,16 +217,18 @@ export default function Page() {
 		<div className=" w-1/3 mr-6 align-middle justify-start flex-col flex items-center">
 			<h2 className="py-6 text-2xl font-semibold">Filters</h2>
 
-			<h3 className="py-2 text-lg">Breed</h3>
-			<Dropdown queryType="breed" callback={filterItems} cats={cats}/>
-			<h3 className="py-2 text-lg">Gender</h3>
-			<Dropdown queryType="gender" callback={filterItems} cats={cats}/>
-			<h3 className="py-2 text-lg">Age</h3>
-			<Dropdown queryType="age" callback={filterItems} cats={cats}/>
-			<h3 className="py-2 text-lg">Color</h3>
-			<Dropdown queryType="color" callback={filterItems} cats={cats}/>
+			<div className="p-8 bg-teal-500 text-white rounded-xl">
+				<h3 className="py-2 text-lg">Breed</h3>
+				<Dropdown isInsidePanel={true} queryType="breed" callback={filterItems} cats={cats}/>
+				<h3 className="py-2 text-lg">Gender</h3>
+				<Dropdown isInsidePanel={true} queryType="gender" callback={filterItems} cats={cats}/>
+				<h3 className="py-2 text-lg">Age</h3>
+				<Dropdown isInsidePanel={true} queryType="age" callback={filterItems} cats={cats}/>
+				<h3 className="py-2 text-lg">Color</h3>
+				<Dropdown isInsidePanel={true} queryType="color" callback={filterItems} cats={cats}/>
 
-			<button onClick={clearFilters} className=" py-2 px-4 mt-10 bg-slate-300 rounded-xl font-semibold">Clear Filters</button>
+				<button onClick={clearFilters} className=" py-2 px-4 mt-10 bg-slate-300 rounded-xl font-semibold">Clear Filters</button>
+			</div>
 		</div>
 
 		{/* Second split of the page */}

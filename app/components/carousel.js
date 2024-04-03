@@ -69,7 +69,7 @@ export default function CarouselDefault() {
 	  },
 	}
 	return (    
-	<div className="grid max-h-[440px] w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
+	<div className="grid relative z-40 max-h-[440px] w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
 	<Carousel
 	  className="pb-5"
 	  autoplay

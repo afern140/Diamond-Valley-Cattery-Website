@@ -20,7 +20,7 @@ module.exports = {
       },
       boxShadow: {
         "cat-default": "0px 5px 5px 0px rgba(0, 0, 0, 0.25)",
-      }
+      },
     },
   },
   darkMode: "class",

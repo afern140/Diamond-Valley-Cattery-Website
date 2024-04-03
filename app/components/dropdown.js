@@ -3,7 +3,7 @@
 import { useState, React } from "react";
 //import cats from "@/app/cats/[cat]/cat.json"
 
-function Dropdown({queryType, callback, cats}) {
+function Dropdown({queryType, callback, cats, isInsidePanel}) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
 	const [dropdownValue, setDropdownValue] = useState("")
@@ -59,7 +59,7 @@ function Dropdown({queryType, callback, cats}) {
     return (
     <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
         <button onClick={() => setIsOpen((prev) => !prev)}
-                className="bg-white text-black h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border border-black duration-300 active:text-white">
+                className={"h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border duration-300 active:text-white " + (isInsidePanel ? "bg-teal-100 text-teal-600 border-teal-700" : "bg-white text-black border-black")}>
                     <span className={"text-sm"}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
                 </button>
             

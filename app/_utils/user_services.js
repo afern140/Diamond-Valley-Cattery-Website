@@ -1,6 +1,4 @@
 "use client"
-
-import React, { createContext, useContext, useState, useEffect } from 'react';
 import { collection, doc, getDocs, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../_utils/firebase";
 
@@ -26,25 +24,3 @@ export const updateUser = async (updatedUser) => {
 	await updateDoc(userRef, updatedUserPrunedID);
 	alert("Updated user data");
 }
-
-const UserContext = createContext();
-
-export const UserProvider = ({ children, user }) => {
-	const [filteredUser, setFilteredUser] = useState();
-
-	useEffect(() => {
-		const fetchUser = async () => {
-			const filteredUser = await getUser(user);
-			setFilteredUser(filteredUser);
-		};
-		fetchUser();
-	}, [user]);
-
-	return(
-		<UserContext.Provider value={ filteredUser }>
-			{children}
-		</UserContext.Provider>
-	);
-};
-
-export const useUser = () => useContext(UserContext);

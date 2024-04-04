@@ -5,7 +5,7 @@ import Link from "next/link";
 import Button from "./Button";
 import Home from "@/app/page"
 
-const Logo = () => {
+const Logo = ({callback}) => {
   //update the size of the logo when the size of the screen changes
   const [width, setWidth] = useState(0);
 
@@ -36,7 +36,7 @@ const Logo = () => {
 
   return (
     <div className="flex m-auto">
-      <Link href="/" className="flex">
+      <Link onClick={callback("Home")} href="/" className="flex">
         <Image
           src="/img/Placeholder.png"
           alt="Logo"
@@ -44,14 +44,13 @@ const Logo = () => {
           height={width < 1024 ? "60" : "50"}
           className="relative"
         />
-        <h1 className="ml-2 text-2xl m-auto">Diamond Valley Cattery</h1>
+        <h1 className="ml-2 text-md m-auto">Diamond Valley Cattery</h1>
       </Link>
       <div
         style={{
           display: showButton ? "block" : "none",
         }}
       >
-        <Button />
       </div>
     </div>
   );

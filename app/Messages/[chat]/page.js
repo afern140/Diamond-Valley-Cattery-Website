@@ -1,4 +1,6 @@
-"use client";
+// Inside page.js or ChatPage.js
+
+'use client';
 
 import React, { useState, useEffect } from "react";
 import { useChat } from "@/app/_utils/chat-context";
@@ -15,11 +17,12 @@ export default function page({ params }) {
   const chatId = params.chat;
 
   useEffect(() => {
-    if (chatId) {
-      loadChatMessages(chatId, setCurrentMessages);
-    }
+    if (!chatId) return;
     
-  }, []);
+    const unsubscribe = loadChatMessages(chatId, setCurrentMessages);
+    
+    return unsubscribe
+  }, [chatID]);
 
   // This function is called when the user sends a message.
   const handleSendMessage = async (e) => {

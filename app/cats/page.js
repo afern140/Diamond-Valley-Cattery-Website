@@ -163,46 +163,25 @@ export default function Page() {
 	const zigzagSize = new Array(100).fill(null);
 
 	return (
-		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white overflow-hidden">
+		<main className="w-full flex-col justify-center text-black text-xl font-normal overflow-hidden relative">
 			
-			{/* Zigzag */}
-			<div className="relative w-full bg-repeat-x flex pt-16">
-				{ 
-				zigzagSize.map(() => (
-					<div className="flex">
-					<div className="size-[16px] bg-white bg-gradient-to-br from-white from-50% to-teal-500 to-50%" />
-					<div className="size-[16px] bg-white bg-gradient-to-bl from-white from-50% to-teal-500 to-50%" />
-					</div>
-				))
-				}
-			</div>
+			{/* Background Underlay */}
+			<div className="size-full absolute -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
 			
-			{/* Top Solid-Color Part */}
-			<div className="w-full mx-auto bg-teal-500 h-[360px] text-white text-center">
-				<h1 className="text-4xl pt-20">Cats</h1>
-				<h2 className="text-xl pt-4 w-3/5 mx-auto">DISCOVER YOUR NEW BEST FRIEND AT DIAMOND VALLEY CATTERY. BROWSE OUR ADORABLE CATS AVAILABLE FOR PURCHASE.</h2>
-			</div>
-
-			{/* Zigzag */}
-			<div className="relative w-full bg-repeat-x flex">
-				{ 
-				zigzagSize.map(() => (
-					<div className="flex">
-					<div className="size-[16px] bg-white bg-gradient-to-tr from-white from-50% to-teal-500 to-50%" />
-					<div className="size-[16px] bg-white bg-gradient-to-tl from-white from-50% to-teal-500 to-50%" />
-					</div>
-				))
-				}
+			<div className="text-black pt-20 flex pb-10">
+				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
+					<span className="text-6xl pb-10 font-extrabold">CATS</span> <br />
+					<div className="mt-8"><span className="">DISCOVER YOUR NEW BEST FRIEND AT DIAMOND VALLEY CATTERY. BROWSE OUR ADORABLE CATS AVAILABLE FOR PURCHASE.</span></div>
+				</div>
 			</div>
 	
 			<div>
-				<div className=" pt-10" />
 				{/* Search Field */}
 				<div className="align-middle justify-center flex translate-x-6">
 					<input type="text"
 						name="catlist-search"
 						placeholder="Search"
-						className=" bg-teal-50 border border-teal-500 placeholder-teal-600 shadow rounded-3xl text-xl pl-4 w-4/5 h-10 focus:outline-none focus:ring focus:border-teal-300"
+						className=" bg-purple-100 bg-opacity-50 border-2 placeholder-gray-700 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
 						onChange = { (Event) => searchItems(Event.target.value, "") }>
 					</input>
 					
@@ -212,32 +191,45 @@ export default function Page() {
 			</div>
 
 		<div className="flex py-6 w-full justify-center">
-			<div className="flex w-4/5">
+			<div className="flex w-full">
 				{/* First split of the page */}
-				<div className=" w-1/3 mr-6 align-middle justify-start flex-col flex items-center">
-					<h2 className="py-6 text-2xl font-semibold">Filters</h2>
+				<div className=" w-1/3 mr-6 ml-20 align-middle justify-start flex-col flex items-center relative z-20">
 
-					<div className="p-8 bg-teal-500 text-white rounded-xl">
+					<div className="p-6 w-full bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] text-gray-700 rounded-xl relative -z-20">
+						<h2 className="py-6 text-2xl font-semibold text-center drop-shadow-md">Filters</h2>
 						<h3 className="py-2 text-lg">Breed</h3>
-						<Dropdown queryType="breed" callback={filterItems} cats={cats}/>
+						<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>
 						<h3 className="py-2 text-lg">Gender</h3>
-						<Dropdown queryType="gender" callback={filterItems} cats={cats}/>
+						<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>
 						<h3 className="py-2 text-lg">Age</h3>
-						<Dropdown queryType="age" callback={filterItems} cats={cats}/>
+						<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>
 						<h3 className="py-2 text-lg">Color</h3>
-						<Dropdown queryType="color" callback={filterItems} cats={cats}/>
+						<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>
 
-						<button onClick={clearFilters} className=" py-2 px-4 mt-10 bg-slate-300 rounded-xl font-semibold">Clear Filters</button>
+						<div className="w-fit z-10">
+							<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-gradient-to-r from-[#F492F0] to-[#A18DCE] text-gray-700 rounded-xl font-semibold">Clear Filters</button>
+							{/*<div className="p-4 bg-yellow-700 rounded-xl absolute h-10 -translate-y-[36px] -z-10 w-full" />*/}
+						</div>
 					</div>
 				</div>
 
 				{/* Second split of the page */}
-				<div className="w-full flex-col">
-					<div className="flex">
-					<div className=" w-1/4 ml-auto mr-full justify-end flex-col">
-						<h2 className="flex justify-end font-bold text-xl">Sort by:</h2>
-						<Dropdown queryType="sort" callback={sortItems} />
-					</div>
+				<div className="w-full flex-col mr-16">
+					<div className="flex space-x-6">
+						<div className=" w-full justify-end flex-col bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-xl py-2 px-2">
+							<h2 className="flex justify-start font-bold text-xl text-gray-700 drop-shadow-md">Sort by:</h2>
+							<div className=" pt-4">
+								<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
+							</div>
+							
+						</div>
+						<Link href="/add">
+							<button className="bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative">
+								<div>
+									<span className="-translate-x-10 relative">+</span>
+								</div>
+							</button>
+						</Link>
 					</div>
 					<div className="h-6"/>
 					<div className="grid w-full grid-cols-3">

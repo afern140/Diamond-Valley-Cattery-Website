@@ -146,7 +146,11 @@ export default function CatList() {
 	}
 
 	return (
-		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
+		<main className="w-full flex-col justify-center text-black text-xl font-normal relative">
+			{/* Background Underlay */}
+			<div className="size-full absolute -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
+			
+			
 			<h1 className="flex justify-center py-6 font-bold text-4xl">Add Cat</h1>
 			<div className="flex py-6 w-full justify-center">
 				<div className="flex w-4/5">

@@ -3,11 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const LinkButton = ({text, href, yellowBackdrop}) => {
-    return (
-      <Link className="rounded-full" href={href ? href : "/"}>
-        <button className={"text-lg border size-fit m-auto px-4 py-2 rounded-full border-teal-500 hover:border-teal-50"
-                          + (yellowBackdrop ? " bg-yellow-500 text-black" : "")}>
+const LinkButton = ({text, href, selected, callback}) => {
+    
+  
+  return (
+      <Link onClick={() => callback(text)} className="rounded-full" href={href ? href : "/"}>
+        <button className={"text-lg size-fit m-auto px-4 py-2 rounded-full hover:text-gray-500"
+                          + (selected ? " text-white bg-black bg-opacity-70" : "")}>
             {text ? text : "Navigate"}
         </button>
       </Link>

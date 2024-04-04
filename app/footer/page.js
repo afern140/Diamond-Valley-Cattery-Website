@@ -5,7 +5,7 @@ import Button from "@/app/navbar/Button";
 
 const Footer = () => {
   return (
-    <div className=" text-2xl bg-gray-900 left-0 bottom-0 right-0">
+    <div className=" text-2xl border-t-2 border-[#AE87D8] text-black bg-[#F1C4EA] left-0 bottom-0 right-0">
         <div className="w-full h-10">
             <div className="flex mx-auto px-8 h-full py-4">
                 <button className="grow hover:underline">...</button>
@@ -13,7 +13,7 @@ const Footer = () => {
                 <button className="grow hover:underline">Cats</button>
                 <button className="grow hover:underline">Litters</button>
             </div>
-            <div className=" bg-gray-900 p-7">
+            <div className=" bg-[#F1C4EA] p-7">
                 <div className="w-full flex justify-end">
                     <div className="text-base grid grid-cols-2 gap-x-4">
                         <Link href="" className="hover:underline">Accessibility</Link>

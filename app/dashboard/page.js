@@ -90,23 +90,23 @@ export default function Page() {
 
   // Recent message
   useEffect(() => {
-    let isSubscribed = true;
-
-    const fetchAndSetChats = async () => {
-      const chats = await fetchChatsWithLatestMessage(user.uid);
-      if (isSubscribed) {
+    if (user) {
+      const fetchAndSetChats = async () => {
+        const chats = await fetchChatsWithLatestMessage(user.uid);
         setChatsWithLatestUnreadMessage(chats);
       }
-    };
-
-    if (user) {
       fetchAndSetChats();
     }
+  }, [user]);
 
-    return () => {
-      isSubscribed = false;
-    };
-  }, [user, fetchChatsWithLatestMessage]);
+  useEffect(() => {
+    if (chatsWithLatestUnreadMessage.length > 0) {
+      const newUnreadMessageIDs = new Set(
+        chatsWithLatestUnreadMessage.map(({ lastMessage }) => lastMessage.id)
+      );
+      setUnreadMessageIds(newUnreadMessageIDs);
+    }
+  }, [chatsWithLatestUnreadMessage]);
 
   const redirectToChat = async (chatId, messageId) => {
     try {

@@ -54,9 +54,9 @@ export default function Page() {
   const [unreadMessageIds, setUnreadMessageIds] = useState(new Set());
   useEffect(() => {
     const fetchUser = async () => {
-      const filteredUser = await getUser(user);
-      setFilteredUser(filteredUser);
-      setUpdatedUser(filteredUser);
+      const newUser = await getUser(user);
+      setFilteredUser(newUser);
+      setUpdatedUser(newUser);
     };
     fetchUser();
   }, [user]);
@@ -90,23 +90,23 @@ export default function Page() {
 
   // Recent message
   useEffect(() => {
-    if (user) {
-      const fetchAndSetChats = async () => {
-        const chats = await fetchChatsWithLatestMessage(user.uid);
+    let isSubscribed = true;
+
+    const fetchAndSetChats = async () => {
+      const chats = await fetchChatsWithLatestMessage(user.uid);
+      if (isSubscribed) {
         setChatsWithLatestUnreadMessage(chats);
-      };
+      }
+    };
+
+    if (user) {
       fetchAndSetChats();
     }
-  }, [user, fetchChatsWithLatestMessage]);
 
-  useEffect(() => {
-    if (chatsWithLatestUnreadMessage.length > 0) {
-      const newUnreadMessageIds = new Set(
-        chatsWithLatestUnreadMessage.map(({ lastMessage }) => lastMessage.id)
-      );
-      setUnreadMessageIds(newUnreadMessageIds);
-    }
-  }, [chatsWithLatestUnreadMessage]);
+    return () => {
+      isSubscribed = false;
+    };
+  }, [user]);
 
   const redirectToChat = async (chatId, messageId) => {
     try {
@@ -126,7 +126,7 @@ export default function Page() {
       console.error("Error marking message as read or redirecting:", error);
     }
   };
-  
+
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return "No date";
 

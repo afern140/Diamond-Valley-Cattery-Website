@@ -170,8 +170,10 @@ export default function CatList() {
 							</select>
 							{/*<input type="text" name="gender" placeholder="Gender" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />*/}
 
-							<h3 className="py-2 text-lg">Age</h3>
-							<input type="text" name="age" placeholder="Age" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
+							{/*<h3 className="py-2 text-lg">Age</h3>
+							<input type="text" name="age" placeholder="Age" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />*/}
+							<h3 className="py-2 text-lg">Birthdate</h3>
+							<input type="date" name="birthdate" placeholder="Birthdate" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />
 
 							<h3 className="py-2 text-lg">Color</h3>
 							<input type="text" name="color" placeholder="Color" className="border border-black rounded-xl text-xl pl-4 w-full h-10" />

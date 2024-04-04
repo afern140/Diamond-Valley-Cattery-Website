@@ -223,11 +223,14 @@ export default function Page() {
 							</div>
 							
 						</div>
-						<Link href="/addcat">
-							<button className="w-full bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative">
-								<div className="relative w-full h-full">
+						<Link className="relative z-40" href="/addcat">
+							<button className="w-full bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative z-40">
+								<div className="relative w-full h-full z-40">
 									{/*<Image className="absolute mt-5" alt="o" src="/img/circle.svg" width={96} height={96} />*/}
-									<span className=" -translate-x-10 relative">+</span>
+									{/*<span className=" -translate-x-10 relative z-40">+</span>*/}
+									<div className=" ml-10 mr-10">
+										<span className="bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left">+</span>
+									</div>
 								</div>
 							</button>
 						</Link>

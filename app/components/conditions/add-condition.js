@@ -7,7 +7,7 @@ export default function AddCondition({ newCondition, handleConditionChange, hand
 				placeholder="Name"
 				value={newCondition.name}
 				onChange={(e) => handleConditionChange(e, newCondition.id)}
-				className="border border-gray-300 rounded-md p-2 mb-2"
+				className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 			/>
 			<input
 				type="text"
@@ -15,7 +15,7 @@ export default function AddCondition({ newCondition, handleConditionChange, hand
 				placeholder="Description"
 				value={newCondition.description}
 				onChange={(e) => handleConditionChange(e, newCondition.id)}
-				className="border border-gray-300 rounded-md p-2 mb-2"
+				className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 			/>
 			<input
 				type="text"
@@ -23,17 +23,17 @@ export default function AddCondition({ newCondition, handleConditionChange, hand
 				placeholder="Treatment"
 				value={newCondition.treatment}
 				onChange={(e) => handleConditionChange(e, newCondition.id)}
-				className="border border-gray-300 rounded-md p-2 mb-2"
+				className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 			/>
 			<select
 				value={newCondition.treated ? "finished" : "inProgress"}
 				onChange={(e) => handleTreatedChange(e, newCondition.id)}
-				className="border border-gray-300 rounded-md p-2 mb-2"
+				className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 			>
 				<option value="finished">Finished</option>
 				<option value="inProgress">In Progress</option>
 			</select>
-			<button onClick={() => handleAddCondition()} className="bg-slate-200 border border-gray-300 rounded-md p-2 mb-2">Add Condition</button>
+			<button onClick={() => handleAddCondition()} className="  drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300">Add Condition</button>
 		</div>
 	)
 }

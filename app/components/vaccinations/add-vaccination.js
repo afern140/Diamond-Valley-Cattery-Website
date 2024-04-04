@@ -9,7 +9,7 @@ export default function AddVaccination({ newVaccine, newDate, setNewDate, showTa
 				placeholder="Name"
 				value={newVaccine.name}
 				onChange={(e) => handleVaccinationChange(e, newVaccine.id)}
-				className="border border-gray-300 rounded-md p-2 mb-2"
+				className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 			/>
 			<input
 				type="text"
@@ -17,13 +17,13 @@ export default function AddVaccination({ newVaccine, newDate, setNewDate, showTa
 				placeholder="Description"
 				value={newVaccine.description}
 				onChange={(e) => handleVaccinationChange(e, newVaccine.id)}
-				className="border border-gray-300 rounded-md p-2 mb-2"
+				className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 			/>
 			<select
 				name="completed"
 				value={newVaccine.completed ? "true" : "false"}
 				onChange={(e) => handleVaccinationChange(e, newVaccine.id)}
-				className="border border-gray-300 rounded-md p-2 mb-2"
+				className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 			>
 				<option value="true">Finished</option>
 				<option value="false">In Progress</option>
@@ -34,7 +34,7 @@ export default function AddVaccination({ newVaccine, newDate, setNewDate, showTa
 				placeholder="Doses Taken"
 				value={newVaccine.dosesTaken}
 				onChange={(e) => handleVaccinationChange(e, newVaccine.id)}
-				className="border border-gray-300 rounded-md p-2 mb-2"
+				className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 			/>
 			<h4>Doses Taken Dates:</h4>
 			<ul>
@@ -44,12 +44,12 @@ export default function AddVaccination({ newVaccine, newDate, setNewDate, showTa
 							type="date"
 							value={new Date(date.toDate()).toISOString().split('T')[0]}
 							onChange={(e) => handleVaccinationDateChange(e, newVaccine.id, index, 'datesTaken')}
-							className="border border-gray-300 rounded-md p-2 mb-2"
+							className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 						/>
-						<button onClick={() => handleRemoveDate('datesTaken', newVaccine.id, index)} className="bg-slate-200 border border-gray-300 rounded-md p-2 m-2">Remove Date</button>
+						<button onClick={() => handleRemoveDate('datesTaken', newVaccine.id, index)} className=" border border-gray-300 rounded-md p-2 m-2">Remove Date</button>
 					</li>
 				))}
-				<button onClick={() => setShowTakenDateSelection(true)} className="bg-slate-200 border border-gray-300 rounded-md p-2 mb-2">Add Date</button>
+				<button onClick={() => setShowTakenDateSelection(true)} className="  drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300">Add Date</button>
 			</ul>
 			{showTakenDateSelection && (
 				<DateSelection type="datesTaken" setVisible={setShowTakenDateSelection} vaccination={newVaccine} newDate={newDate} setNewDate={setNewDate} handleAddDate={handleAddDate}/>
@@ -60,7 +60,7 @@ export default function AddVaccination({ newVaccine, newDate, setNewDate, showTa
 				placeholder="Doses Remaining"
 				value={newVaccine.dosesRemaining}
 				onChange={(e) => handleVaccinationChange(e, newVaccine.id)}
-				className="border border-gray-300 rounded-md p-2 mb-2"
+				className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 			/>
 			<h4>Planned Dosage Dates:</h4>
 			<ul>
@@ -70,17 +70,17 @@ export default function AddVaccination({ newVaccine, newDate, setNewDate, showTa
 							type="date"
 							value={new Date(date.toDate()).toISOString().split('T')[0]}
 							onChange={(e) => handleVaccinationDateChange(e, newVaccine.id, index, 'futureDates')}
-							className="border border-gray-300 rounded-md p-2 mb-2"
+							className=" drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300"
 						/>
-						<button onClick={() => handleRemoveDate('futureDates', newVaccine.id, index)} className="bg-slate-200 border border-gray-300 rounded-md p-2 m-2">Remove Date</button>
+						<button onClick={() => handleRemoveDate('futureDates', newVaccine.id, index)} className=" border border-gray-300 rounded-md p-2 m-2">Remove Date</button>
 					</li>
 				))}
-				<button onClick={() => setShowPlannedDateSelection(true)} className="bg-slate-200 border border-gray-300 rounded-md p-2 mb-2">Add Date</button>
+				<button onClick={() => setShowPlannedDateSelection(true)} className="  drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300">Add Date</button>
 			</ul>
 			{showPlannedDateSelection && (
 				<DateSelection type="futureDates" setVisible={setShowPlannedDateSelection} vaccination={newVaccine} newDate={newDate} setNewDate={setNewDate} handleAddDate={handleAddDate}/>
 			)}
-			<button onClick={handleAddVaccine} className="bg-slate-200 border border-gray-300 rounded-md p-2 mb-2">Add Vaccine</button>
+			<button onClick={handleAddVaccine} className="  drop-shadow-md rounded-xl text-xl pl-4 w-full h-10 bg-[#BDB2FF] text-gray-700 border border-gray-300">Add Vaccine</button>
 		</div>
 	)
 }

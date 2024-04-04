@@ -135,10 +135,15 @@ export default function Page() {
   };
 
   return (
-    <main className="bg-white min-h-screen text-black">
-      <h1 className="text-black text-4xl text-center font-bold pt-8 pb-4">
-        Dashboard
-      </h1>
+    <main className="min-h-screen text-gray-700">
+			<div className="size-full absolute -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
+      
+      <div className="pt-20 flex pb-10">
+        <div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
+          <span className="text-6xl pb-10 font-extrabold uppercase">Dashboard</span>
+        </div>
+      </div>
+
       {filteredUser ? (
         <div>
           <div className="flex flex-row justify-center items-center bg-cat-gray-1 p-5 m-10 rounded-lg text-left">

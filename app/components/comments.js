@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import ApiDataContext from "../_utils/api_context";
 import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
-import {collection,addDoc,query,getDocs} from "firebase/firestore";
+import {collection,addDoc,query,getDocs,Timestamp} from "firebase/firestore";
 
 export default function Comments(cat) {
    const dbdata = React.useContext(ApiDataContext);
@@ -13,7 +13,8 @@ export default function Comments(cat) {
     console.log("No cats are good cats.")
       try {
          getComments(cat).then((comments) => {
-            setComments(comments);
+            const sortedComments = comments.sort((a, b) => b.createTime - a.createTime);
+            setComments(sortedComments);
          });
       }
       catch (error) {
@@ -26,11 +27,13 @@ export default function Comments(cat) {
       <main className="text-black">
          <h1 className="text-5xl font-bold">Comments</h1>
          Hello this is a test of the comments system.   
-            {comments.map((comments) => (
+            {comments.map((comment) => (
             <Comment 
-            catName={comments.catName}
-            message={comments.message}
-            createName={comments.createName}
+            key={comment.id}
+            createTime={new Date(comment.createTime.toDate().toISOString().split('T'[0]))}
+            catName={comment.catName}
+            message={comment.message}
+            createName={comment.createName}
             />
             ))}
          <NewComment cat={cat.cat} setComments={setComments}/>
@@ -63,12 +66,15 @@ function NewComment(cat,setComments) {
    
 async function handleAddComment(e){
     e.preventDefault();
+    const date = new Date.now;
+    const timestamp = Timestamp.fromDate(date);
     const commentDoc = {
         message: message,
         createUID: auth.currentUser.uid,
         createName: auth.currentUser.displayName,
         catID: currentCat.id,
-        catName: currentCat.name
+        catName: currentCat.name,
+        createTime: timestamp
     };
     await addComment(commentDoc,cat);
     setMessage("");
@@ -95,12 +101,15 @@ async function handleAddComment(e){
    );
 }
 
-function Comment({catName, message, createName}) {
+function Comment({catName, message, createName,createTime}) {
+    console.log("Entered Comment.");
+    console.log(createTime);
    return (
       <div className="text-black">
          <h2 className="text-3xl">{catName}</h2>
          <p>{message}</p>
          <p>Created by: {createName}</p>
+         <p>Posted on: {createTime.toISOString()}</p>
       </div>
    );
 }

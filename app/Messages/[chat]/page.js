@@ -122,7 +122,7 @@ export default function page({ params }) {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type a message..."
-                  className=" mx-4 px-2 rounded-3xl w-full"
+                  className=" mx-4 px-2 rounded-3xl w-full text-black"
                 />
                 <button type="submit" className={"rounded-full bg-gradient-to-r inline-block py-2 px-4" + currentTheme}>Send</button>
               </div>

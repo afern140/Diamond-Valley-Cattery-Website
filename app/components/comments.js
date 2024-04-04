@@ -1,7 +1,5 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import ApiDataProvider from "../_utils/api_provider";
 import ApiDataContext from "../_utils/api_context";
 import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
@@ -12,6 +10,7 @@ export default function Comments(cat) {
    const [comments, setComments] = useState([]);
 
    useEffect(() => {
+    console.log("No cats are good cats.")
       try {
          getComments(cat).then((comments) => {
             setComments(comments);
@@ -34,7 +33,7 @@ export default function Comments(cat) {
             createName={comments.createName}
             />
             ))}
-         <NewComment cat={cat.cat}/>
+         <NewComment cat={cat.cat} setComments={setComments}/>
       </main>
    );
 }
@@ -58,22 +57,24 @@ async function addComment(commentDoc,cat){
    return docRef.id;
 }
 
-function NewComment(cat) {
+function NewComment(cat,setComments) {
    const [message, setMessage] = useState("");
    const currentCat = cat.cat;
    
-   async function handleAddComment(e){
-      e.preventDefault();
-      const commentDoc = {
-         message: message,
-         createUID: auth.currentUser.uid,
-         createName: auth.currentUser.displayName,
-         catID: currentCat.id,
-         catName: currentCat.name
-      };
-      await addComment(commentDoc,cat);
-      //window.location.reload();
-   }
+async function handleAddComment(e){
+    e.preventDefault();
+    const commentDoc = {
+        message: message,
+        createUID: auth.currentUser.uid,
+        createName: auth.currentUser.displayName,
+        catID: currentCat.id,
+        catName: currentCat.name
+    };
+    await addComment(commentDoc,cat);
+    setMessage("");
+    setComments((prevComments) => [...prevComments, commentDoc]);
+    //window.location.reload();
+}
 
    return(
       <div className="text-black">

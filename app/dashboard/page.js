@@ -11,6 +11,7 @@ import {
   useUser,
 } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
+import BackgroundUnderlay from "@/app/components/background-underlay";
 // const getUser = async(userAuth) => {
 // 	const usersCollection = await getDocs(collection(db, 'users'));
 // 	const usersDataPromise = usersCollection.docs.map(async (userDoc) => {
@@ -136,8 +137,8 @@ export default function Page() {
 
   return (
     <main className="min-h-screen text-gray-700">
-			<div className="size-full absolute -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
-      
+      <BackgroundUnderlay />
+
       <div className="pt-20 flex pb-10">
         <div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
           <span className="text-6xl pb-10 font-extrabold uppercase">Dashboard</span>

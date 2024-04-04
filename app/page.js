@@ -2,14 +2,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import CarouselDefault from './components/carousel';
 import Button from './components/displaybutton'
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Home() {
   return (
     <main className="w-screen  relative overflow-hidden">
       <div className="relative size-full">
-        {/* Background Underlay */}
-        <div className="size-full absolute -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
-        
+        <BackgroundUnderlay />
+
         {/* Paw Prints */}
         <div className="absolute z-10 opacity-10 size-full">
           <Image className="absolute top-0 right-0 -translate-x-16 translate-y-10 rotate-[45deg]" alt="" src="/img/Paw-print.svg" width={40} height={40} />        

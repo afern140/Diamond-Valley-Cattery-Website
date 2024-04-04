@@ -7,6 +7,7 @@ import { getObjects, getObject } from "../_utils/firebase_services";
 import Dropdown from "@/app/components/dropdown";
 import CatButton from "@/app/components/cats/catbutton";
 import BackButton from "@/app/components/BackToTopButton"
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page() {
 	//Holds data that the page can display. Uses backup data until database is loaded
@@ -166,9 +167,8 @@ export default function Page() {
 		<main className="w-full flex-col justify-center pointer-events-auto text-black text-xl font-normal overflow-hidden relative">
 			<BackButton url="#Navbar" />
 
-			{/* Background Underlay */}
-			<div className="size-full absolute pointer-events-none -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
-			
+			<BackgroundUnderlay />
+
 			<div className="pt-20 flex pb-10">
 				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
 					<span className="text-6xl pb-10 font-extrabold">CATS</span> <br />

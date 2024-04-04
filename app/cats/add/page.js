@@ -14,7 +14,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { imageDb, db } from "../../_utils/firebase";
 import ImageUploader from "@/app/addcat/ImageUploader";
 import { doc, collection, getDocs, addDoc, query, Timestamp } from "firebase/firestore";
-
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page() {
 	const [cat, setCat] = useState({
@@ -176,8 +176,7 @@ export default function Page() {
 
 	return(
 		<main className="w-full flex-col relative justify-center text-black text-xl font-normal">
-			{/* Background Underlay */}
-			<div className="size-full absolute -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
+			<BackgroundUnderlay />
 						
 			<div className="pt-20 flex pb-10">
 				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">

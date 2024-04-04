@@ -55,7 +55,7 @@ const Navbar = () => {
   }, [pathname])
 
   return (
-    <div className="font-sans text-black font-normal text-base pt-10 bg-[#EBB7A6] z-40 relative">
+    <div className="font-sans text-black font-normal text-base pt-10 bg-[#EBB7A6] dark:bg-[#704f43] z-40 relative">
     <div className="w-full h-24 sticky mx-auto p-2">
     <div className="size-[400px] absolute -top-10 right-0 z-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#E29DA7] via-[#00000000] to-[#00000000]" />
 

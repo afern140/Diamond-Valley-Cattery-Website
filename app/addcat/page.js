@@ -15,6 +15,7 @@ import { imageDb, db } from "../_utils/firebase";
 import ImageUploader from "./ImageUploader";
 import { doc, collection, getDocs, addDoc, query, Timestamp } from "firebase/firestore";
 import BackButton from "@/app/components/BackToTopButton";
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function CatList() {
 	const { cats, addCatToList } = React.useContext(ApiDataContext);
@@ -151,9 +152,8 @@ export default function CatList() {
 		<main className="w-full flex-col relative justify-center text-black text-xl font-normal">
 			<BackButton url="#Navbar" />
 			
-			{/* Background Underlay */}
-			<div className="size-full absolute -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
-						
+			<BackgroundUnderlay />
+
 			<div className="pt-20 flex pb-10">
 				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
 					<span className="text-6xl pb-10 font-extrabold">ADD CAT</span> <br />

@@ -8,6 +8,7 @@ import { getObject, getObjects } from "@/app/_utils/firebase_services";
 import Carousel from "@/app/components/carousel"
 import CatButton from "@/app/components/cats/catbutton";
 import CatSelection from "@/app/components/cats/cat-selection";
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({ params }) {
 	const [litter, setLitter] = useState();
@@ -55,7 +56,7 @@ export default function Page({ params }) {
 		<main className=" text-gray-700">
 			{litter ? (
 				<section className="relative">
-					<div className="w-full h-full grow absolute -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
+					<BackgroundUnderlay />
 
 					<div className="pt-20 flex pb-10">
 						<div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">

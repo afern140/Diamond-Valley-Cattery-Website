@@ -314,7 +314,7 @@ export default function Page({params}) {
 					<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
 						{/*<Addimg onImageUpload={handleImageUpload} />*/}
 					</div>
-					<Comments/>
+					<Comments cat={cat}/>
 				</section>
 			) : (
 				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>

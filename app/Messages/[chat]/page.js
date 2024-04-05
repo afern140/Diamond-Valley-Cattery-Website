@@ -15,6 +15,7 @@ export default function page({ params }) {
   const chatId = params.chat;
 
   useEffect(() => {
+    console.log("chatpage no leaks");
     if (chatId) {
       loadChatMessages(chatId, setCurrentMessages);
     }

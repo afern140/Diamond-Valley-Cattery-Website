@@ -158,7 +158,7 @@ export default function Page({params}) {
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
 								{/*<h3>Age: <span className="font-normal">{cat.age}</span></h3>*/}
-								<h3>Birthdate: <span className="font-normal">{new Date(cat.birthdate.seconds * 1000).toLocaleDateString()}</span></h3>
+								<h3>Birthdate: <span className="font-normal">{new Date(cat.birthdate.toDate()).toISOString().split('T')[0]}</span></h3>
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>

@@ -1,12 +1,10 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import ApiDataContext from "../_utils/api_context";
 import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
 import {collection,addDoc,query,getDocs,Timestamp} from "firebase/firestore";
 
 export default function Comments(cat) {
-   const dbdata = React.useContext(ApiDataContext);
    const [comments, setComments] = useState([]);
 
    useEffect(() => {
@@ -20,7 +18,7 @@ export default function Comments(cat) {
       catch (error) {
          console.error("Error getting comments: ", error);
       }
-   }, [dbdata]);
+   }, );
 
 
    return (

@@ -35,24 +35,24 @@ const Logo = () => {
   }, []);
 
   return (
-    <>
-      <Link href="/" style={{ display: showButton ? "none" : "block" }}>
+    <div className="flex m-auto">
+      <Link onClick={() => callback("Home")} href="/" className="flex">
         <Image
           src="/img/Placeholder.png"
           alt="Logo"
-          width={width < 1024 ? "50" : "50"}
-          height={width < 1024 ? "55" : "50"}
+          width={width < 1024 ? "60" : "50"}
+          height={width < 1024 ? "60" : "50"}
           className="relative"
         />
+        <h1 className="ml-2 text-md m-auto">Diamond Valley Cattery</h1>
       </Link>
       <div
         style={{
           display: showButton ? "block" : "none",
         }}
       >
-        <Button />
       </div>
-    </>
+    </div>
   );
 };
 

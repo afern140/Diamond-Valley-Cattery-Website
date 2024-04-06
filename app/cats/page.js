@@ -2,9 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { getObjects, getObject } from "../_utils/firebase_services";
 import Dropdown from "@/app/components/dropdown";
 import CatButton from "@/app/components/cats/catbutton";
+import BackButton from "@/app/components/BackToTopButton"
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page() {
 	//Holds data that the page can display. Uses backup data until database is loaded
@@ -31,6 +34,7 @@ export default function Page() {
 	//Search field handler
 	const searchItems = (value) => {
 		setFieldInput(value);
+		setActiveAutocomplete(true);
 	}
 
 	//Filter handler
@@ -159,71 +163,125 @@ export default function Page() {
 		console.log(filteredData);
 	}, [fieldInput, filters, sortingMethod, cats]);
 
+	// Tooltips
+	const [addTooltip, setAddTooltip] = useState(false);
+	const [activeAutocomplete, setActiveAutocomplete] = useState(false);
+
+	function completeAutocomplete(field) {
+		setActiveAutocomplete(false);
+		setFieldInput(field);
+	}
+
 	return (
-		<main className="w-full flex-col justify-center text-black text-xl font-normal bg-white">
-	<div>
-		<div className=" grid grid-flow-col">
-		<div className="" />
-		<h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
-		<div className="pt-12 flex">
-			<Link href="/cats/add/" className="m-auto">
-			<button className=" bg-cat-gray-1 p-3 rounded-3xl text-white">Add Cat</button>
-			</Link>
-		</div>
-		</div>
-		{/* Search Field */}
-		<div className="align-middle justify-center flex">
-			<input type="text"
-				name="catlist-search"
-				placeholder="Search"
-				className=" border border-black rounded-3xl text-xl pl-4 w-4/5 h-10"
-				onChange = { (Event) => searchItems(Event.target.value, "") } />
-			
-			{/* Insert icon here... */}
-		</div>
-	</div>
+		<main className="w-full flex-col justify-center pointer-events-auto text-black text-xl font-normal overflow-hidden relative">
+			<BackButton url="#Navbar" />
+			<BackgroundUnderlay />
+
+			<div className="pt-20 flex pb-10">
+				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-header-text-0 dark:bg-dark-header-text-0 text-transparent bg-clip-text">
+					<span className="text-6xl pb-10 font-extrabold">CATS</span> <br />
+					<div className="mt-8 pointer-events-auto"><span className="">DISCOVER YOUR NEW BEST FRIEND AT DIAMOND VALLEY CATTERY. BROWSE OUR ADORABLE CATS AVAILABLE FOR PURCHASE.</span></div>
+				</div>
+			</div>
+
+			<div>
+				{/* Search Field */}
+				<div className="align-middle justify-center flex translate-x-6">
+					<input type="text"
+						name="catlist-search"
+						placeholder="Search"
+						value={fieldInput}
+						className=" bg-purple-100 bg-opacity-50 border-2 placeholder-gray-700 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
+						onChange = { (Event) => searchItems(Event.target.value, "") }>
+					</input>
+					
+					<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
+				</div>
+				{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
+					<div className="absolute z-40 bg-purple-100 bg-opacity-50 border-2 placeholder-gray-700 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+						{
+							filteredResults.map((cat) => (
+								<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
+							))
+						}
+					</div> : <div />
+				}
+			</div>
 
 	<div className="flex py-6 w-full justify-center">
-		<div className="flex w-4/5">
+		<div className="flex w-full">
 		{/* First split of the page */}
-		<div className=" w-1/3 mr-6 align-middle justify-start flex-col flex items-center">
-			<h2 className="py-6 text-2xl font-semibold">Filters</h2>
+		<div className=" w-1/3 mr-6 ml-20 align-middle justify-start flex-col flex items-center relative z-20">
+			<div className="p-6 w-full bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] text-gray-700 rounded-xl relative -z-20">
+				<h2 className="py-6 text-2xl font-semibold text-center drop-shadow-md">Filters</h2>
+				<h3 className="py-2 text-lg">Breed</h3>
+				<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				<h3 className="py-2 text-lg">Gender</h3>
+				<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				<h3 className="py-2 text-lg">Age</h3>
+				<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				<h3 className="py-2 text-lg">Color</h3>
+				<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>
 
-			<h3 className="py-2 text-lg">Breed</h3>
-			<Dropdown queryType="breed" callback={filterItems} cats={cats}/>
-			<h3 className="py-2 text-lg">Gender</h3>
-			<Dropdown queryType="gender" callback={filterItems} cats={cats}/>
-			<h3 className="py-2 text-lg">Age</h3>
-			<Dropdown queryType="age" callback={filterItems} cats={cats}/>
-			<h3 className="py-2 text-lg">Color</h3>
-			<Dropdown queryType="color" callback={filterItems} cats={cats}/>
-
-			<button onClick={clearFilters} className=" py-2 px-4 mt-10 bg-slate-300 rounded-xl font-semibold">Clear Filters</button>
+				<div className="w-fit z-10">
+					<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-gradient-to-r from-[#F492F0] to-[#A18DCE] text-gray-700 rounded-xl font-semibold">Clear Filters</button>
+					{/*<div className="p-4 bg-yellow-700 rounded-xl absolute h-10 -translate-y-[36px] -z-10 w-full" />*/}
+				</div>
+			</div>
 		</div>
 
 		{/* Second split of the page */}
-		<div className="w-full flex-col">
-			<div className="flex">
-			<div className=" w-1/4 ml-auto mr-full justify-end flex-col">
-				<h2 className="flex justify-end font-bold text-xl">Sort by:</h2>
-				<Dropdown queryType="sort" callback={sortItems} />
-			</div>
+		<div className="w-full flex-col mr-16">
+			<div className="flex space-x-6">
+				<div className=" w-full justify-end flex-col bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-xl py-2 px-2">
+					<h2 className="flex justify-start font-bold text-xl text-gray-700 drop-shadow-md">Sort by:</h2>
+					<div className=" pt-4">
+						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
+					</div>
+					
+				</div>
+				<div className="relative">
+					<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)}
+						className="relative z-40" href="/add">
+						<div className="w-full bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative z-40">
+							<div className="relative w-full h-full z-40">
+								{/*<Image className="absolute mt-5" alt="o" src="/img/circle.svg" width={96} height={96} />*/}
+								{/*<span className=" -translate-x-10 relative z-40">+</span>*/}
+								<div className=" ml-10 mr-10">
+									<span className="bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left">+</span>
+								</div>
+							</div>
+						</div>
+					</Link>
+					{ addTooltip &&
+					<div className="absolute size-[128px] top-[100px] right-[20px]">
+						<div className="w-full bg-gray-700 border-4 border-gray-500 h-8 rounded-full drop-shadow">
+							<p className="flex size-full text-center text-lg text-white justify-center align-middle">Add Cat</p>
+						</div>
+					</div>}
+				</div>
 			</div>
 			<div className="h-6"/>
-			<div className="grid w-full grid-cols-3">
-				{/* Populating the list with cats */}
-				{filteredResults ?
-				filteredResults.map((cat) => (
-					<div>
-						<CatButton cat={cat}/>
-					</div>
-				))
-				: "Awaiting cats"
-				}
+			<div className="scroll-auto">
+				<div className="grid w-full grid-cols-3 bg-white bg-opacity-40 border-2 rounded-xl">
+					{/* Populating the list with cats */}
+					{filteredResults ? (
+						filteredResults.length > 0 ?
+							filteredResults.map((cat) => (
+								<div>
+									<CatButton cat={cat}/>
+								</div>
+							))
+						:
+							<div className="w-full col-span-3 p-4">No cats found with search parameters "{fieldInput}".</div>
+					)
+					: <div className="p-4">Awaiting cats</div>
+					}
+				</div>
 			</div>
-		</div>  
+		</div>    
+			</div>
 		</div>
-	</div>
 	</main>
 	)
 }

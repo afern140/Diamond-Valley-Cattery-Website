@@ -22,7 +22,7 @@ export default function Comments(cat) {
 
 
    return (
-      <main className="text-black">
+      /*<main className="text-black">
          <h1 className="text-5xl font-bold">Comments</h1>
          Hello this is a test of the comments system.   
             {comments.map((comment) => (
@@ -35,7 +35,20 @@ export default function Comments(cat) {
             />
             ))}
          <NewComment cat={cat.cat} setComments={setComments}/>
-      </main>
+      </main>*/
+      <section className="text-gray-800 pt-4 border-t-2 border-[#AE87D8] bg-gradient-to-t from-[#F1C4EA] to-[#ff97ef]">
+         <h1 className="text-5xl font-bold text-center text-gray-500 drop-shadow">Comments</h1>
+         <div className="mx-40 m-auto flex justify-center bg-white bg-opacity-40 mt-10 rounded-xl border-2 border-white overflow-hidden">
+            {comments.map((comments) => (
+               <Comment 
+               catName={comments.catName}
+               message={comments.message}
+               createName={comments.createName}
+               />
+            ))}
+            <NewComment cat={cat.cat}/>
+         </div>
+      </section>
    );
 }
 
@@ -81,19 +94,20 @@ async function handleAddComment(e){
 }
 
    return(
-      <div className="text-black">
-         <h2 className="text-3xl flex flex-col items-center">New Comment</h2>
+      <div className="w-full">
          <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
-            <input  
-               type="text"
-               placeholder="Comment Here"
-               value = {message}
-               onChange={(e) => setMessage(e.target.value)}
-               className="border-s-4 border-slate-300 p-2 mb-4 text-black"
-            />
-            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-black p-2">
-               Submit
-            </button>
+            <div className="w-full bg-white flex">
+               <input  
+                  type="text"
+                  placeholder="New Comment"
+                  value = {message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="border-s-4 border-e-4 border-slate-300 p-2 text-black w-full placeholder:italic"
+               />
+               <button type="submit" className="bg-slate-400 active:bg-slate-600 text-black px-2">
+                  Submit
+               </button>
+            </div>
          </form>
       </div>
    );

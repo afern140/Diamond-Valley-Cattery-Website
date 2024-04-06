@@ -7,6 +7,7 @@ import { db } from "../_utils/firebase";
 export const getObjects = async (type) => {
 	const documents = await getDocs(collection(db, type));
 	const data = documents.docs.map((doc) => ({docId: doc.id, ...doc.data(),}));
+	console.log(`Fetched ${type} objects`)
 	return data;
 }
 
@@ -14,6 +15,7 @@ export const getObject = async (type, id) => {
 	const documents = await getDocs(collection(db, type));
 	const data = documents.docs.map((doc) => ({docId: doc.id, ...doc.data(),}));
 	const object = data.find(item => item.id == id);
+	console.log(`Fetched ${type} object`)
 	return object;
 }
 

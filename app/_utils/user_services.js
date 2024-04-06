@@ -7,6 +7,7 @@ export const getUser = async (userAuth) => {
 	const usersCollection = await getDocs(collection(db, 'users'));
 	const usersData = usersCollection.docs.map((doc) => ({id: doc.id, ...doc.data(),}));
 	const user = usersData.find(userItem => userItem.uid == userAuth.uid)
+	console.log(`Fetched ${user.name}`)
 	return user;
 }
 
@@ -15,6 +16,7 @@ export const getUserCats = async (filteredUser) => {
 		const catDoc = await getDoc(catRef);
 		return { ...catDoc.data() };
 	}));
+	console.log(`Fetched ${filteredUser.name}'s favorite cats`)
 	return usersCatData
 }
 

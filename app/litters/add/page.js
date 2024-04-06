@@ -27,11 +27,11 @@ export default function Page() {
 	const [showChildSelection, setShowChildSelection] = useState(false);
 
 	useEffect(() => {
-		const fetchCats = async () => {
+		const fetchLitters = async () => {
 			const litters = await getObjects('litters');
 			setLitters(litters);
 		};
-		fetchCats();
+		fetchLitters();
 	}, []);
 
 	useEffect(() => {

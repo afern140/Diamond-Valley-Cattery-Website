@@ -166,7 +166,7 @@ export default function Page() {
 		<div className="" />
 		<h1 className=" font-normal m-auto text-4xl flex text-center justify-center text-black pt-16 pb-4">Cats</h1>
 		<div className="pt-12 flex">
-			<Link href="/addcat" className="m-auto">
+			<Link href="/cats/add/" className="m-auto">
 			<button className=" bg-cat-gray-1 p-3 rounded-3xl text-white">Add Cat</button>
 			</Link>
 		</div>

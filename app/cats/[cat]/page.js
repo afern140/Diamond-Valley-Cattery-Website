@@ -12,7 +12,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
 import Comments from "@/app/components/comments";
-import ApiDataProvider from "@/app/_utils/api_provider";
 
 export default function Page({params}) {
 
@@ -145,7 +144,6 @@ export default function Page({params}) {
 	};
      
 	return(
-		<ApiDataProvider>
 		<main className="bg-gray-100">
 			{cat ? (
 				<section>
@@ -158,7 +156,7 @@ export default function Page({params}) {
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
 								{/*<h3>Age: <span className="font-normal">{cat.age}</span></h3>*/}
-								<h3>Birthdate: <span className="font-normal">{new Date(cat.birthdate.toDate()).toISOString().split('T')[0]}</span></h3>
+								<h3>Birthdate: <span className="font-normal">{new Date(cat.birthdate.toDate()).toLocaleDateString()}</span></h3>
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>
@@ -289,7 +287,6 @@ export default function Page({params}) {
 				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>
 			)}
 		</main>
-		</ApiDataProvider>
 	)
     //No cats are goods cats
 }

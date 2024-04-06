@@ -17,6 +17,9 @@ module.exports = {
         "cat-blue-dark-1": "#1f2937",
         "cat-gray-0": "#94b3c7bf",
         "cat-gray-1": "#94B3C7",
+
+        "header-text-0": "#673a35",
+        "dark-header-text-0": "#ea9087",
       },
       boxShadow: {
         "cat-default": "0px 5px 5px 0px rgba(0, 0, 0, 0.25)",

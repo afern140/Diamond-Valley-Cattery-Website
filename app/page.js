@@ -28,11 +28,11 @@ export default function Home() {
 
         {/* Bottom Part */}
         <div className="w-full m-auto pt-40 pb-40 relative flex flex-col z-10">
-          <div className="pb-52 mx-auto inline-block text-4xl font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
+          <div className="pb-52 mx-auto inline-block text-4xl font-bold bg-[#6b3c37] dark:bg-[#ea9087]  text-transparent bg-clip-text">
             Welcome to Diamond Valley Cattery
           </div>
 
-          <div className="pb-24 mx-auto inline-block text-4xl font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
+          <div className="pb-24 mx-auto inline-block text-4xl font-bold bg-[#673a35] dark:bg-[#ea9087] text-transparent bg-clip-text">
             Announcements!
           </div>
           <div className="w-4/5 mx-auto container flex justify-evenly py-6 items-start space-x-4">

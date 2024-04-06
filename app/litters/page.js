@@ -50,6 +50,8 @@ export default function Page() {
 		return 0;
 	});
 
+	const [addTooltip, setAddTooltip] = useState(false);
+
 	return (
 		<main className={"text-gray-700 h-full relative" + (sortedLitters.length > 0 ? "" : " h-screen")}>
 			<div className="h-full">
@@ -72,7 +74,13 @@ export default function Page() {
 							</select>
 						</div>
 						<div className=" ml-10 mr-10">
-							<Link href="litters/add" className="bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left">+</Link>
+							<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left">+</Link>
+							{ addTooltip &&
+							<div className="absolute size-[128px] top-[340px] right-[40px]">
+								<div className="w-full bg-gray-700 border-4 border-gray-500 h-8 rounded-full drop-shadow">
+									<p className="flex size-full text-center text-lg text-white justify-center align-middle">Add Cat</p>
+								</div>
+							</div>}
 						</div>
 					</div>
 					<div className={"p-4 bg-white bg-opacity-20 mt-6 border-2 border-opacity-50 border-white rounded-xl" + (sortedLitters && sortedLitters.length > 0 ? " h-[100vh]" : "")}>

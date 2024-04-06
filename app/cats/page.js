@@ -163,6 +163,9 @@ export default function Page() {
 	}, [fieldInput, filters, sortingMethod, cats]);
 
 
+	// Tooltips
+	const [addTooltip, setAddTooltip] = useState(false);
+
 	return (
 		<main className="w-full flex-col justify-center pointer-events-auto text-black text-xl font-normal overflow-hidden relative">
 			<BackButton url="#Navbar" />
@@ -170,7 +173,7 @@ export default function Page() {
 			<BackgroundUnderlay />
 
 			<div className="pt-20 flex pb-10">
-				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
+				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-header-text-0 dark:bg-dark-header-text-0 text-transparent bg-clip-text">
 					<span className="text-6xl pb-10 font-extrabold">CATS</span> <br />
 					<div className="mt-8 pointer-events-auto"><span className="">DISCOVER YOUR NEW BEST FRIEND AT DIAMOND VALLEY CATTERY. BROWSE OUR ADORABLE CATS AVAILABLE FOR PURCHASE.</span></div>
 				</div>
@@ -223,17 +226,26 @@ export default function Page() {
 							</div>
 							
 						</div>
-						<Link className="relative z-40" href="/addcat">
-							<button className="w-full bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative z-40">
-								<div className="relative w-full h-full z-40">
-									{/*<Image className="absolute mt-5" alt="o" src="/img/circle.svg" width={96} height={96} />*/}
-									{/*<span className=" -translate-x-10 relative z-40">+</span>*/}
-									<div className=" ml-10 mr-10">
-										<span className="bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left">+</span>
+						<div className="relative">
+							<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)}
+							 className="relative z-40" href="/addcat">
+								<div className="w-full bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative z-40">
+									<div className="relative w-full h-full z-40">
+										{/*<Image className="absolute mt-5" alt="o" src="/img/circle.svg" width={96} height={96} />*/}
+										{/*<span className=" -translate-x-10 relative z-40">+</span>*/}
+										<div className=" ml-10 mr-10">
+											<span className="bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left">+</span>
+										</div>
 									</div>
 								</div>
-							</button>
-						</Link>
+							</Link>
+							{ addTooltip &&
+							<div className="absolute size-[128px] top-[100px] right-[20px]">
+								<div className="w-full bg-gray-700 border-4 border-gray-500 h-8 rounded-full drop-shadow">
+									<p className="flex size-full text-center text-lg text-white justify-center align-middle">Add Cat</p>
+								</div>
+							</div>}
+						</div>
 					</div>
 					<div className="h-6"/>
 					<div className="scroll-auto">

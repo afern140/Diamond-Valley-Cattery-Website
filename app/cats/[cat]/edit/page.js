@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { doc, getDoc, Timestamp } from "firebase/firestore"
 import { db } from "@/app/_utils/firebase"
 import { useUserAuth } from "@/app/_utils/auth-context"
@@ -47,6 +47,78 @@ export default function Page({params}){
 		futureDates: []
 	});
 
+	// For Drag and Drop Picture
+	const [dragActive, setDragActive] = useState(false);
+	const inputRef = useRef(null);
+	const [files, setFiles] = useState([]);
+	const [image, setImage] = useState("/img/Placeholder.png");
+
+	function handleChangeDragDrop(e) {
+	e.preventDefault();
+	console.log("File has been added");
+	if (e.target.files && e.target.files[0]) {
+		for (let i = 0; i < e.target.files["length"]; i++) {
+			setFiles((prevState) => [...prevState, e.target.files[i]]);
+		}
+		setImage(URL.createObjectURL(e.dataTransfer.files[0]));
+	}
+	}
+
+	function handleSubmitFile(e) {
+	if (files.length === 0) {
+		// no file has been submitted
+	} else {
+		// write submit logic here
+	}
+	}
+
+	function handleDrop(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	setDragActive(false);
+	if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+		for (let i = 0; i < e.dataTransfer.files["length"]; i++) {
+			setFiles((prevState) => [...prevState, e.dataTransfer.files[i]]);
+		}
+		setImage(URL.createObjectURL(e.dataTransfer.files[0]));
+		console.log(image);
+		}
+	}
+
+	function handleDragLeave(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	setDragActive(false);
+	}
+
+	function handleDragOver(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	setDragActive(true);
+	}
+
+	function handleDragEnter(e) {
+	e.preventDefault();
+	e.stopPropagation();
+	setDragActive(true);
+	}
+
+	function removeFile(fileName, id) {
+	const newArr = [...files];
+	newArr.splice(id, 1);
+	setFiles([]);
+	setFiles(newArr);
+	}
+
+	function openFileExplorer() {
+	inputRef.current.value = "";
+	inputRef.current.click();
+	}
+
+	const handleImageChange = (e) => {
+		setImage(URL.createObjectURL(e));
+	};
+
 
 	useEffect(() => {
 		const fetchCat = async () => {
@@ -85,6 +157,11 @@ export default function Page({params}){
 				cat.vaccinations = vaccinationsData;
 			}
 			setCat(cat);
+
+			if (cat) {}
+			else {
+				setCat({age: "3", birthdate: new Date(), breed: "Instructor", children: null, color: "Blue", conditions: "Ref", eye_color: "Red", father: "Father", gender: "Male", id: 1, mother: "Mother", name: "Anwar", owner: "Owner", vaccinations: "Vaccinations"})
+			}
 		};
 		fetchCat();
 	}, [params]);
@@ -594,7 +671,96 @@ export default function Page({params}){
 						<button onClick={handleSubmit} className=" flex mx-auto z-10 relative px-8 py-4 mt-10 bg-gradient-to-r from-[#F492F0] to-[#A18DCE] text-gray-700 rounded-xl font-semibold text-3xl">Submit</button>
 					</div>
 				) : (
-					<h1>Loading</h1>
+					<div>
+						<h1>Loading</h1>
+						<form className="max-w-[300px] m-auto relative rounded-2xl overflow-hidden"
+							onDragEnter={handleDragEnter}
+							onSubmit={(e) => e.preventDefault()}
+							onDrop={handleDrop}
+							onDragLeave={handleDragLeave}
+							onDragOver={handleDragOver}
+							>
+							<input
+							placeholder="fileInput"
+							className="hidden"
+							ref={inputRef}
+							type="file"
+							multiple={false}
+							onChange={handleChangeDragDrop}
+							accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+							/>
+							<div>
+								{ files.length > 0 ? files.map((file, index) => (
+									<Image alt="Cat Picture" src={image}
+										width={0}
+										height={0}
+										sizes="100vw"
+										style={{width: "100%", height: "auto"}}
+									/>
+									)) : (
+										<Image alt="Cat Picture" src="/img/Placeholder.png"
+										width={0}
+										height={0}
+										sizes="100vw"
+										style={{width: "100%", height: "auto"}}
+										/>
+									)
+								}
+								<div className=" absolute size-full bg-black hover:bg-opacity-50 hover:opacity-100 bg-opacity-0 opacity-0 top-0 transition duration-300">
+									<button className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 text-xl text-white border-2 border-gray-800 bg-black bg-opacity-70 px-4 py-2 rounded-xl"
+											onClick={openFileExplorer}
+											>Edit Icon</button>
+								</div>
+							</div>
+						</form>
+						{/*<form
+							className={`${
+								dragActive ? "bg-blue-400" : "bg-blue-100"
+							  }  p-4 w-1/3 rounded-lg  min-h-[10rem] text-center flex flex-col items-center justify-center`}
+							  onDragEnter={handleDragEnter}
+							  onSubmit={(e) => e.preventDefault()}
+							  onDrop={handleDrop}
+							  onDragLeave={handleDragLeave}
+							  onDragOver={handleDragOver}
+							>
+					  
+							 <input
+								placeholder="fileInput"
+								className="hidden"
+								ref={inputRef}
+								type="file"
+								multiple={true}
+								onChange={handleChangeDragDrop}
+								accept=".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+							  />
+					  
+							  <p>
+								Drag & Drop files or{" "}
+								<span
+								  className="font-bold text-blue-600 cursor-pointer"
+								  onClick={openFileExplorer}
+								>
+								  <u>Select files</u>
+								</span>{" "}
+								to upload
+							  </p>
+					  
+							<div className="flex flex-col items-center p-3">
+								{files.map((file, idx) => (
+								  <div key={idx} className="flex flex-row space-x-5">
+									<span>{file.name}</span>
+									<span
+									  className="text-red-500 cursor-pointer"
+									  onClick={() => removeFile(file.name, idx)}
+									>
+									  remove
+									</span>
+								  </div>
+								))}
+							  </div>
+					   
+							</form>*/}
+					</div>
 				)}
 			</div>
 		</main>

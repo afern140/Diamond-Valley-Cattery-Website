@@ -90,6 +90,7 @@ export default function Page() {
 
   // Recent message
   useEffect(() => {
+    console.log("No loops or leaks");
     let isSubscribed = true;
 
     const fetchAndSetChats = async () => {

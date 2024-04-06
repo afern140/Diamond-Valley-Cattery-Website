@@ -179,7 +179,7 @@ export default function Page({params}) {
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
-								<h3>Birthdate: <span className="font-normal">{new Date(cat.birthdate.toDate()).toLocaleDateString()}</span></h3>
+								<h3>Birthdate: <span className="font-normal">{cat.birthdate ? new Date(cat.birthdate.toDate()).toLocaleDateString() : ""}</span></h3>
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>

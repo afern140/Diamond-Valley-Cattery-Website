@@ -148,7 +148,7 @@ export default function Page() {
 	}
 
 	return (
-		<main className={"text-gray-700 h-full relative" + (filteredResults.length > 0 ? "" : " h-screen")}>
+		<main className={"text-gray-700 h-full relative" + (filteredResults && filteredResults.length > 0 ? "" : " h-screen")}>
 			<div className="h-full">
 				<BackgroundUnderlay />
 

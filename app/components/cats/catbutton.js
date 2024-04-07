@@ -6,7 +6,7 @@ export default function CatButton({ cat }) {
 		<Link href={`/cats/${cat.id}`} className="w-full flex justify-center flex-col font-bold p-2 text-black place-items-center">
 			<Image
 				alt="Cat"
-				src={cat.id % 2 === 0 ? "/img/Kitty_1.png" : "/img/Kitty_2.png"}
+				src={cat.thumbnail}
 				width={300}
 				height={300}
 				className="justify-center align-center place-items-center"

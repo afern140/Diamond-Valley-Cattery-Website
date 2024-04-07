@@ -13,8 +13,11 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
+import ImageUploader from "./ImageUploader";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function Page({params}){
+	const [thumbnail, setThumbnail] = useState(null);
 	const {user} = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
@@ -344,6 +347,14 @@ export default function Page({params}){
 		const vaccinationRefs = cat.vaccinations.map(vaccination => doc(db, 'vaccinations', vaccination.docId));
 		const childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		const updatedCat = { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs }
+		const storage = getStorage();
+  if (thumbnail) {
+    const thumbnailRef = ref(storage, `thumbnails/${cat.id}`);
+    await uploadBytes(thumbnailRef, thumbnail);
+    const thumbnailUrl = await getDownloadURL(thumbnailRef);
+    updatedCat.thumbnail = thumbnailUrl;
+  }
+
 		await updateObject('cats', updatedCat, true);
 	}
 
@@ -362,6 +373,9 @@ export default function Page({params}){
 					<h1 className="text-3xl font-bold mb-4 text-center">Edit {cat.name}</h1>
 					<h2 className="text-xl font-bold mb-4">Details</h2>
 					<div className="flex flex-col mb-4 border border-black-300 rounded-md p-2 max-w-md">
+					<ImageUploader onImageSelected={setThumbnail} inputKey="thumbnail-uploader" />
+		
+
 						<input
 							type="text"
 							name="name"

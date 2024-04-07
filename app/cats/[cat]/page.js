@@ -11,7 +11,7 @@ import { db } from "@/app/_utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
-//import Comments from "@/app/components/comments";
+import Comments from "@/app/components/comments";
 
 export default function Page({params}) {
 
@@ -273,7 +273,7 @@ export default function Page({params}) {
 					<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
 					<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />
 					</div>
-					{/*<Comments cat={cat}/>*/}
+					<Comments cat={cat}/>
 				</section>
 			) : (
 				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>

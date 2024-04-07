@@ -1,40 +1,40 @@
 "use client"
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import ApiDataProvider from "../_utils/api_provider";
-import ApiDataContext from "../_utils/api_context";
 import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
-import {collection,addDoc,query,getDocs} from "firebase/firestore";
+import {collection,addDoc,query,getDocs,Timestamp} from "firebase/firestore";
 
 export default function Comments(cat) {
-   const dbdata = React.useContext(ApiDataContext);
    const [comments, setComments] = useState([]);
 
    useEffect(() => {
+    console.log("No cats are good cats.")
       try {
          getComments(cat).then((comments) => {
-            setComments(comments);
+            const sortedComments = comments.sort((a, b) => b.createTime - a.createTime);
+            setComments(sortedComments);
          });
       }
       catch (error) {
          console.error("Error getting comments: ", error);
       }
-   }, [dbdata]);
+   }, );
 
 
    return (
       <main className="text-black">
          <h1 className="text-5xl font-bold">Comments</h1>
          Hello this is a test of the comments system.   
-            {comments.map((comments) => (
+            {comments.map((comment) => (
             <Comment 
-            catName={comments.catName}
-            message={comments.message}
-            createName={comments.createName}
+            key={comment.id}
+            createTime={new Date(comment.createTime.toDate().toISOString().split('T'[0]))}
+            catName={comment.catName}
+            message={comment.message}
+            createName={comment.createName}
             />
             ))}
-         <NewComment cat={cat.cat}/>
+         <NewComment cat={cat.cat} setComments={setComments}/>
       </main>
    );
 }
@@ -58,22 +58,27 @@ async function addComment(commentDoc,cat){
    return docRef.id;
 }
 
-function NewComment(cat) {
+function NewComment(cat,setComments) {
    const [message, setMessage] = useState("");
    const currentCat = cat.cat;
    
-   async function handleAddComment(e){
-      e.preventDefault();
-      const commentDoc = {
-         message: message,
-         createUID: auth.currentUser.uid,
-         createName: auth.currentUser.displayName,
-         catID: currentCat.id,
-         catName: currentCat.name
-      };
-      await addComment(commentDoc,cat);
-      //window.location.reload();
-   }
+async function handleAddComment(e){
+    e.preventDefault();
+    const date = new Date.now;
+    const timestamp = Timestamp.fromDate(date);
+    const commentDoc = {
+        message: message,
+        createUID: auth.currentUser.uid,
+        createName: auth.currentUser.displayName,
+        catID: currentCat.id,
+        catName: currentCat.name,
+        createTime: timestamp
+    };
+    await addComment(commentDoc,cat);
+    setMessage("");
+    setComments((prevComments) => [...prevComments, commentDoc]);
+    //window.location.reload();
+}
 
    return(
       <div className="text-black">
@@ -94,12 +99,15 @@ function NewComment(cat) {
    );
 }
 
-function Comment({catName, message, createName}) {
+function Comment({catName, message, createName,createTime}) {
+    console.log("Entered Comment.");
+    console.log(createTime);
    return (
       <div className="text-black">
          <h2 className="text-3xl">{catName}</h2>
          <p>{message}</p>
          <p>Created by: {createName}</p>
+         <p>Posted on: {createTime.toISOString()}</p>
       </div>
    );
 }

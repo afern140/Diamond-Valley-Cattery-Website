@@ -10,11 +10,13 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "./firebase";
+import {getUser} from "./user_services";
  
 const AuthContext = createContext();
  
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [dbUser, setDBUser] = useState(null);
  
   const gitHubSignIn = () => {
     const provider = new GithubAuthProvider();
@@ -40,8 +42,16 @@ export const AuthContextProvider = ({ children }) => {
     return () => unsubscribe();
   }, [user]);
  
+  useEffect(() => {
+    const fetchUser = async () => {
+      const newUser = await getUser(user);
+      setDBUser(newUser);
+    };
+    fetchUser();
+  }, [user]);
+
   return (
-    <AuthContext.Provider value={{ user, gitHubSignIn, firebaseSignOut, emailPasswordSignIn, emailPasswordSignUp }}>
+    <AuthContext.Provider value={{dbUser, user, gitHubSignIn, firebaseSignOut, emailPasswordSignIn, emailPasswordSignUp }}>
       {children}
     </AuthContext.Provider>
   );

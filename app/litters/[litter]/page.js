@@ -11,8 +11,6 @@ import CatSelection from "@/app/components/cats/cat-selection";
 
 export default function Page({ params }) {
 	const [litter, setLitter] = useState();
-	const [cats, setCats] = useState([]);
-	const [showChildSelection, setShowChildSelection] = useState(false);
 
 	useEffect(() => {
 		const fetchLitter = async () => {
@@ -42,14 +40,6 @@ export default function Page({ params }) {
 		};
 		fetchLitter();
 	}, [params]);
-
-	useEffect(() => {
-		const fetchCats = async () => {
-			const cats = await getObjects('cats');
-			setCats(cats);
-		};
-		fetchCats();
-	}, []);
 
 	return (
 		<main className="bg-white text-black">

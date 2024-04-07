@@ -61,6 +61,7 @@ export const ChatProvider = ({ children }) => {
 
   //Function to load chat messages given a chat ID
   const loadChatMessages = (chatId, callback) => {
+    console.log("Load onces");
     const fetchMessages = async () => {
       const chatRef = doc(db, "chats", chatId);
       const chatSnap = await getDoc(chatRef);

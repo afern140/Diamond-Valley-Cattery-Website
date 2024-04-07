@@ -1,5 +1,4 @@
 import { AuthContextProvider } from "../_utils/auth-context";
-import { UserProvider } from "../_utils/user_services";
 
 export const metadata = {
 	title: 'Diamond Valley Cattery - Dashboard',
@@ -7,7 +6,7 @@ export const metadata = {
 	}
  
 const Layout = ({ children }) => {
-  return <AuthContextProvider><UserProvider>{children}</UserProvider></AuthContextProvider>;
+  return <AuthContextProvider>{children}</AuthContextProvider>;
 };
  
 export default Layout;

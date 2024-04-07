@@ -11,6 +11,8 @@ import {
   useUser,
 } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
+import ImageUploader from "./ImageUploader";
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 // const getUser = async(userAuth) => {
 // 	const usersCollection = await getDocs(collection(db, 'users'));
 // 	const usersDataPromise = usersCollection.docs.map(async (userDoc) => {
@@ -42,6 +44,7 @@ import { useChat } from "@/app/_utils/chat-context";
 // }
 // Dashboard
 export default function Page() {
+  const [userImageFile, setUserImageFile] = useState(null);
   const { user } = useUserAuth();
   const [filteredUser, setFilteredUser] = useState();
   const [favoriteCats, setFavoriteCats] = useState();
@@ -78,15 +81,40 @@ export default function Page() {
     setEdit(true);
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(URL.createObjectURL(file));
-  };
+  
 
   const handleSubmit = async () => {
-    await updateUser(updatedUser);
+    if (userImageFile && user) {
+      const storage = getStorage();
+      const storageRef = ref(storage, `users/${user.uid}/profileImage`);
+  
+      try {
+        const uploadResult = await uploadBytes(storageRef, userImageFile);
+        const imageUrl = await getDownloadURL(uploadResult.ref);
+  
+        const updatedUserData = {
+          ...updatedUser,
+          userImage: imageUrl,
+        };
+  
+        await updateUser(updatedUserData);
+        setFilteredUser(updatedUserData);
+        setImage(imageUrl);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        // Handle any errors here, such as showing a message to the user
+        return; // Exit the function if there was an error
+      }
+    } else {
+      // If there is no image file to upload, just update the user with the other data
+      await updateUser(updatedUser);
+    }
+    
+    // Clear the temporary image file state and exit the edit mode
+    setUserImageFile(null);
     setEdit(false);
   };
+  
 
   // Recent message
   useEffect(() => {
@@ -144,22 +172,18 @@ export default function Page() {
         <div>
           <div className="flex flex-row justify-center items-center bg-cat-gray-1 p-5 m-10 rounded-lg text-left">
             <div className="text-center m-auto">
-              <Image
-                src={image}
-                alt="Profile Picture"
-                width={100}
-                height={100}
-                className="border-2 border-black m-5 mb-2"
-              />
+            <img
+              src={filteredUser.userImage || '/img/Placeholder.png'}
+              alt="Profile Picture"
+              width={100}
+              height={100}
+              className="border-2 border-black m-5 mb-2"
+            />
               <h2>Role: {filteredUser.role}</h2>
             </div>
             {edit ? (
               <div className="flex flex-col">
-                <input
-                  type="file"
-                  accept="image/"
-                  onChange={handleImageChange}
-                ></input>
+                <ImageUploader onImageSelected={(file) => setUserImageFile(file)} />
                 <input
                   type="text"
                   name="name"
@@ -236,13 +260,13 @@ export default function Page() {
                 <h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-black text-xl font-bold text-center">
                   {cat.name}
                   <Link href={`./cats/${cat.id}`}>
-                    <Image
-                      src="/img/Placeholder.png"
-                      alt="Cat"
-                      width={200}
-                      height={100}
-                      className="border-2 border-black m-5"
-                    />
+                  <img
+                    src={filteredUser.userImage || '/img/Placeholder.png'}
+                    alt="Profile Picture"
+                    width={100}
+                    height={100}
+                    className="border-2 border-black m-5 mb-2"
+                  />
                   </Link>
                 </h3>
               ))

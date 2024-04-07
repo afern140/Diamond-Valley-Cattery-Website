@@ -5,13 +5,13 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Carousel from "@/app/components/carousel"
 import { useUserAuth } from "@/app/_utils/auth-context";
-import Addimg from "@/app/components/addCatCarousel";
+import CatCarouselController from "@/app/components/CatCarouselController";
 import { getUser, updateUser, useUser } from "@/app/_utils/user_services";
 import { db } from "@/app/_utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
-import Comments from "@/app/components/comments";
+//import Comments from "@/app/components/comments";
 
 export default function Page({params}) {
 
@@ -21,56 +21,57 @@ export default function Page({params}) {
 	const [cat, setCat] = useState();
 	const [favorite, setFavorite] = useState(false);
 
-	useEffect(() => {
-		const fetchCat = async () => {
-			const cat = await getObject('cats', parseInt(params.cat));
-			console.log('Cat Data', cat);
-			if (cat.mother) {
-				const motherDoc = await getDoc(cat.mother);
-				cat.mother = motherDoc.data();
-			} else {
-				cat.mother = null;
-			}
-			if (cat.father) {
-				const fatherDoc = await getDoc(cat.father);
-				cat.father = fatherDoc.data();
-			} else {
-				cat.father = null;
-			}
-			if (cat.owner) {
-				const ownerDoc = await getDoc(cat.owner);
-				cat.owner = ownerDoc.data();
-			} else {
-				cat.owner = null;
-			}
-			if (cat.children) {
-				const childrenData = await Promise.all(cat.children.map(async (childRef) => {
-					const childDoc = await getDoc(childRef);
-					return childDoc.data();
-				}));
-				cat.children = childrenData;
-			}
-			if (cat.conditions && Array.isArray(cat.conditions)) {
-				const conditionsData = await Promise.all(cat.conditions.map(async (conditionRef) => {
-					const conditionDoc = await getDoc(conditionRef);
-					return conditionDoc.data();
-				}));
-				cat.conditions = conditionsData;
-			}
-			else
-				cat.conditions = [];
+	const fetchCat = async () => {
+		const cat = await getObject('cats', parseInt(params.cat));
+		console.log('Cat Data', cat);
+		if (cat.mother) {
+			const motherDoc = await getDoc(cat.mother);
+			cat.mother = motherDoc.data();
+		} else {
+			cat.mother = null;
+		}
+		if (cat.father) {
+			const fatherDoc = await getDoc(cat.father);
+			cat.father = fatherDoc.data();
+		} else {
+			cat.father = null;
+		}
+		if (cat.owner) {
+			const ownerDoc = await getDoc(cat.owner);
+			cat.owner = ownerDoc.data();
+		} else {
+			cat.owner = null;
+		}
+		if (cat.children) {
+			const childrenData = await Promise.all(cat.children.map(async (childRef) => {
+				const childDoc = await getDoc(childRef);
+				return childDoc.data();
+			}));
+			cat.children = childrenData;
+		}
+		if (cat.conditions && Array.isArray(cat.conditions)) {
+			const conditionsData = await Promise.all(cat.conditions.map(async (conditionRef) => {
+				const conditionDoc = await getDoc(conditionRef);
+				return conditionDoc.data();
+			}));
+			cat.conditions = conditionsData;
+		}
+		else
+			cat.conditions = [];
 
-			if (cat.vaccinations && Array.isArray(cat.vaccinations)) {
-				const vaccinationsData = await Promise.all(cat.vaccinations.map(async (vaccinationRef) => {
-					const vaccinationDoc = await getDoc(vaccinationRef);
-					return vaccinationDoc.data();
-				}));
-				cat.vaccinations = vaccinationsData;
-			}
-			else
-				cat.vaccinations = [];
-			setCat(cat);
-		};
+		if (cat.vaccinations && Array.isArray(cat.vaccinations)) {
+			const vaccinationsData = await Promise.all(cat.vaccinations.map(async (vaccinationRef) => {
+				const vaccinationDoc = await getDoc(vaccinationRef);
+				return vaccinationDoc.data();
+			}));
+			cat.vaccinations = vaccinationsData;
+		}
+		else
+			cat.vaccinations = [];
+		setCat(cat);
+	};
+
+	useEffect(() => {
 		fetchCat();
 	}, [params]);
 
@@ -94,9 +95,9 @@ export default function Page({params}) {
 	//Changes the page title when the cat is loaded
 	useEffect(() => {
 		if (cat) 
-			document.title = "Diamond Valley Cattery - " + cat.name + "'s page";
+			document.title = "testing Cattery - " + cat.name + "'s page";
 		else
-			document.title = "Diamond Valley Cattery - Cat page";
+			document.title = "testing Cattery - Cat page";
 	}, [cat]);
 
 	const handleFavoriteButton = async () => {
@@ -128,16 +129,7 @@ export default function Page({params}) {
     };
 	const handleImageUpload = async (imageUrl) => {
 		try {
-			let updatedCat = { ...cat };
-			if (!updatedCat || !updatedCat.carouselImage) {
-				updatedCat = { ...updatedCat, carouselImage: [] };
-			}
-
-			if (!updatedCat.carouselImage.includes(imageUrl)) {
-				updatedCat.carouselImage.push(imageUrl);
-			}
-
-			setCat(updatedCat);
+			fetchCat()
 		} catch (error) {
 			console.error("Error handling image upload:", error);
 		}
@@ -279,9 +271,9 @@ export default function Page({params}) {
 						</div>
 					</div>
 					<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
-						<Addimg onImageUpload={handleImageUpload} cat={cat} />
+					<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />
 					</div>
-					<Comments cat={cat}/>
+					{/*<Comments cat={cat}/>*/}
 				</section>
 			) : (
 				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>

@@ -199,7 +199,7 @@ export default function Page() {
 					<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
 				</div>
 				{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-					<div className="absolute z-50 bg-purple-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+					<div className="absolute z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
 						{
 							filteredResults.map((cat) => (
 								<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
@@ -213,7 +213,7 @@ export default function Page() {
 		<div className="flex w-full">
 		{/* First split of the page */}
 		<div className=" w-1/3 mr-6 ml-20 align-middle justify-start flex-col flex items-center relative z-20">
-			<div className="p-6 w-full text-text-header-0 rounded-xl relative -z-20 bg-white  drop-shadow-lg">
+			<div className="p-6 w-full text-text-header-0 rounded-xl relative -z-20 bg-white dark:bg-gray-500  drop-shadow-lg">
 				<h2 className="py-6 text-2xl font-semibold text-center drop-shadow-md">Filters</h2>
 				<h3 className="py-2 text-lg">Breed</h3>
 				<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>
@@ -234,7 +234,7 @@ export default function Page() {
 		{/* Second split of the page */}
 		<div className="w-full flex-col mr-16">
 			<div className="flex w-full">
-				<div className=" w-full justify-end flex-col bg-white rounded-xl p-4 drop-shadow-lg">
+				<div className=" w-full justify-end flex-col bg-white dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg">
 					<h2 className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort by:</h2>
 					<div className=" pt-4">
 						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
@@ -256,7 +256,7 @@ export default function Page() {
 
 					{/* Tooltip */}
 					<div className={"absolute size-[128px] top-[110px] right-[20px] transition duration-500 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (addTooltip ? " opacity-100" : " opacity-0")}>
-						<div className="w-full bg-text-header-0 border-[3px] border-navbar-body-2 h-8 rounded-full drop-shadow">
+						<div className="w-full bg-text-header-0 border-[3px] h-8 rounded-full drop-shadow">
 							<p className="flex size-full text-center text-lg text-white justify-center align-middle">Add Cat</p>
 						</div>
 					</div>
@@ -264,7 +264,7 @@ export default function Page() {
 			</div>
 			<div className="h-6"/>
 			<div className="scroll-auto">
-				<div className="grid w-full grid-cols-3 bg-white bg-opacity-40 border-2 rounded-xl">
+				<div className="grid w-full grid-cols-3 bg-white dark:bg-gray-500 bg-opacity-100 drop-shadow-lg rounded-xl">
 					{/* Populating the list with cats */}
 					{filteredResults ? (
 						filteredResults.length > 0 ?

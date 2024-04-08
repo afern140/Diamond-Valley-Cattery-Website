@@ -17,6 +17,7 @@ import CatSelection from "@/app/components/cats/cat-selection"
 import ImageUploader from "@/app/components/ImageUploader"
 
 export default function Page() {
+	const [carouselImages, setCarouselImages] = useState([]);
 	const {user} = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
 	const [cats, setCats] = useState([]);
@@ -316,18 +317,20 @@ export default function Page() {
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
-	const handleImageSelected = async (files) => {
-		const carouselImages = await Promise.all(Array.from(files).map(async (file) => {
-			const imgRef = ref(imageDb, `carouselImages/${v4()}`);
-			const snapshot = await uploadBytes(imgRef, file);
-			const url = await getDownloadURL(snapshot.ref);
-			return { 
-				storagePath: snapshot.metadata.fullPath,
-				url: url
-			};
+	const handleImageSelected = async (event) => {
+		const files = event.target.files;
+		const images = await Promise.all(Array.from(files).map(async (file) => {
+		  const imgRef = ref(imageDb, `carouselImages/${v4()}`);
+		  const snapshot = await uploadBytes(imgRef, file);
+		  const url = await getDownloadURL(snapshot.ref);
+		  return {
+			storagePath: snapshot.metadata.fullPath,
+			url: url
+		  };
 		}));
-		setCat((prevCat) => ({ ...prevCat, carouselImages }));
-	};
+		setCarouselImages(images);
+	  };
+	  
 
 	const handleSubmit = async () => {
 		const newId = cats.reduce((max, cat) => Math.max(max, cat.id), 0) + 1;
@@ -387,6 +390,9 @@ export default function Page() {
 		if (thumbnailUrl) {
 			newCat.thumbnail = thumbnailUrl;
 		}
+		if (carouselImages.length > 0) {
+			newCat.carouselImages = carouselImages;
+		}
 		console.log(newCat);
 		await createObject('cats', newCat);
 	}
@@ -397,6 +403,13 @@ export default function Page() {
 				<div>
 					<h1 className="text-3xl font-bold mb-4 text-center">Add Cat</h1>
 					<div className="flex flex-col mb-4 border border-black-300 rounded-md p-2 max-w-md">
+					<input
+  type="file"
+  multiple
+  onChange={handleImageSelected}
+  className="border border-gray-300 rounded-md p-2 mb-2"
+/>
+
 						<input
 							type="text"
 							name="name"

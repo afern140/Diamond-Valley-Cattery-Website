@@ -22,13 +22,13 @@ export default function Page({ params }) {
 			const litter = await getObject('litters', parseInt(params.litter));
 			if (litter.mother) {
 				const mother = await getDoc(litter.mother);
-				litter.mother = mother.data();
+				litter.mother = { docId: litter.mother.id, ...mother.data() };
 			} else {
 				litter.mother = null;
 			}
 			if (litter.father) {
 				const father = await getDoc(litter.father);
-				litter.father = father.data();
+				litter.father = { docId: litter.father.id, ...father.data() };
 			} else {
 				litter.father = null;
 			}

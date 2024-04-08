@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { auth } from "../_utils/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import Link from "next/link";
  
 
@@ -17,7 +17,18 @@ function handleSignOut(){
 
 function handleEmailPasswordSignIn(e){
     e.preventDefault();
+	
     signInWithEmailAndPassword(auth, email, password)
+	.then((userCredential) => {
+		//Only allow logging in if email is verified
+		if(userCredential.user.emailVerified){
+			console.log("Email is verified.");
+		}
+		else{
+			alert("Email is not verified.");
+			signOut(auth);
+		}
+	})
       .catch((error) => {
         // Handle Errors here.
         var errorCode = error.code;

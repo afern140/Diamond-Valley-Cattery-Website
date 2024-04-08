@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { auth } from "../_utils/firebase";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, getAuth, sendPasswordResetEmail } from "firebase/auth";
 import Link from "next/link";
  
 
@@ -13,6 +13,19 @@ const [password, setPassword] = useState('');
 
 function handleSignOut(){
      firebaseSignOut();
+}
+
+//Handles password reset
+function handlePasswordReset(){
+	const auth = getAuth();
+
+	sendPasswordResetEmail(auth, email)
+	.then(() => {
+		alert("Password reset email sent.");
+	})
+	.catch((error) => {
+		console.log("Error sending password reset email: " + error.message);
+	});
 }
 
 function handleEmailPasswordSignIn(e){
@@ -53,7 +66,7 @@ function handleEmailPasswordSignIn(e){
             <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">Sign In with Email</button>
         </form>
         <div>
-          <button onClick={() => auth.sendPasswordResetEmail(email)} className="text-slate-500 mb-2">Forgot Password</button>
+          <button onClick={() => handlePasswordReset()} className="text-slate-500 mb-2">Forgot Password</button>
           <Link href='login/signup' className="text-slate-500  ml-6">Sign Up</Link>
         </div>
       </div>

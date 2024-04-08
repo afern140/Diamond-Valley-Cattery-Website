@@ -358,10 +358,10 @@ export default function Page({params}){
 	}, [cat]);
 
 	return(
-		<main className=" min-h-screen text-[#092C48]">
+		<main className=" min-h-screen relative text-[#092C48] pb-16">
 			<BackgroundUnderlay />
 			{cat ? (
-				<div>
+				<div className="">
 					<div className="pt-20 flex pb-10">
 						<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
 							<span className="text-6xl pb-10 font-extrabold">Edit {cat.name}</span> <br />
@@ -383,7 +383,7 @@ export default function Page({params}){
 							/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Name: </h3>
+								<h3 className="my-auto">Breed: </h3>
 								<input
 								className="p-1 rounded-xl"
 								type="text"
@@ -394,7 +394,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Name: </h3>
+								<h3 className="my-auto">Gender: </h3>
 								<input
 								className="p-1 rounded-xl"
 								type="text"
@@ -405,7 +405,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Name: </h3>
+								<h3 className="my-auto">Age: </h3>
 								<input
 								className="p-1 rounded-xl"
 								type="number"
@@ -416,7 +416,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Name: </h3>
+								<h3 className="my-auto">Color: </h3>
 								<input
 								className="p-1 rounded-xl"
 								type="text"
@@ -427,7 +427,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Name: </h3>
+								<h3 className="my-auto">Eye Color: </h3>
 								<input
 								className="p-1 rounded-xl"
 								type="text"
@@ -494,99 +494,105 @@ export default function Page({params}){
 							<AddCondition newCondition={newCondition} handleConditionChange={handleConditionChange} handleTreatedChange={handleTreatedChange} handleAddCondition={handleAddCondition}/>
 						</div>
 					</div>
-					<div>
-						<h2 className="text-xl font-bold mb-4">Vaccinations</h2>
-						<div className="flex flex-wrap">
-							{cat.vaccinations ? (
-								cat.vaccinations.map((vaccination) => (
-									<EditVaccination vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleVaccinationChange={handleVaccinationChange} handleStatusChange={handleStatusChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleRemoveVaccination={handleRemoveVaccination} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection}/>
-								)
-							)) : (<h2>None</h2>)}
-							<div className="flex flex-col mb-4 border border-black-300 rounded-md p-2">
-								{selectedVaccine ? (
-								<>
+
+					<h2 className="text-xl font-bold mb-4 mt-6 px-10">Vaccinations</h2>
+					<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48]">
+						<div>
+							<div className="flex flex-wrap">
+								{cat.vaccinations ? (
+									cat.vaccinations.map((vaccination) => (
+										<EditVaccination vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleVaccinationChange={handleVaccinationChange} handleStatusChange={handleStatusChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleRemoveVaccination={handleRemoveVaccination} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection}/>
+									)
+								)) : (<h2>None</h2>)}
+								<div className="flex flex-col mb-4 border border-black-300 rounded-md p-2">
+									{selectedVaccine ? (
+									<>
+										<select
+											onChange={(e) => handleSelectVaccine(e)}
+											className="border border-gray-300 rounded-md p-2 mb-2"
+										>
+											<option value="">Select a vaccine</option>
+											{vaccinations.map((vaccine) => (
+												<option key={vaccine.id} value={vaccine.id}>{vaccine.name}</option>
+											))}
+										</select>
+										<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedVaccine.description}</h3>
+										<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedVaccine.completed ? "Finished" : "In Progress"}</h3>
+										<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedVaccine.dosesTaken}</h3>
+									</>
+									) : (
 									<select
 										onChange={(e) => handleSelectVaccine(e)}
 										className="border border-gray-300 rounded-md p-2 mb-2"
 									>
 										<option value="">Select a vaccine</option>
 										{vaccinations.map((vaccine) => (
-											<option key={vaccine.id} value={vaccine.id}>{vaccine.name}</option>
+										<option key={vaccine.id} value={vaccine.id}>{vaccine.name}</option>
 										))}
 									</select>
-									<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedVaccine.description}</h3>
-									<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedVaccine.completed ? "Finished" : "In Progress"}</h3>
-									<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedVaccine.dosesTaken}</h3>
-								</>
-								) : (
-								<select
-									onChange={(e) => handleSelectVaccine(e)}
-									className="border border-gray-300 rounded-md p-2 mb-2"
-								>
-									<option value="">Select a vaccine</option>
-									{vaccinations.map((vaccine) => (
-									<option key={vaccine.id} value={vaccine.id}>{vaccine.name}</option>
-									))}
-								</select>
-								)}
-								<button onClick={handleAddSelectedVaccine} className="bg-slate-200 border border-gray-300 rounded-md p-2 mb-2">Select Vaccine</button>
+									)}
+									<button onClick={handleAddSelectedVaccine} className="bg-slate-200 border border-gray-300 rounded-md p-2 mb-2">Select Vaccine</button>
+								</div>
+								<AddVaccination newVaccine={newVaccine} newDate={newDate} setNewDate={setNewDate} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection} handleVaccinationChange={handleVaccinationChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleAddVaccine={handleAddVaccine}/>
 							</div>
-							<AddVaccination newVaccine={newVaccine} newDate={newDate} setNewDate={setNewDate} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection} handleVaccinationChange={handleVaccinationChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleAddVaccine={handleAddVaccine}/>
 						</div>
 					</div>
 					<div>
-						<h2 className="text-xl font-bold mb-4">Parents</h2>
-						<div className="flex flex-wrap">
+						<h2 className="text-xl font-bold mb-4 mt-6 px-10">Parents</h2>
+						<div className="flex px-10 space-x-10 mt-6 flex-wrap">
 							{cat.father ? (
-								<div className="border border-gray-300 p-5 mb-2 rounded-lg text-center">
+								<div className=" flex justify-center flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
 									{cat.father.name}
 									<Image
 										src="/img/Placeholder.png"
 										alt="Cat"
-										width={200}
-										height={100}
-										className="border-2 border-black m-5"
+										width={300}
+										height={300}
+										className="justify-center align-center place-items-center"
+										objectFit="contain"
 									/>
 									<h2 className="font-normal">Father</h2>
-									<button onClick={() => handleSelectParentToUpdate('father')} className="bg-slate-200 py-2 px-4 rounded mt-4">Replace Father</button>
+									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6">Replace Father</button>
 								</div>
 							) : (<></>)}
 							{cat.mother ? (
-								<div className="border border-gray-300 p-5 mb-2 rounded-lg text-center">
+								<div className=" flex justify-center flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
 									{cat.mother.name}
 									<Image
 										src="/img/Placeholder.png"
 										alt="Cat"
-										width={200}
-										height={100}
-										className="border-2 border-black m-5"
+										width={300}
+										height={300}
+										className="justify-center align-center place-items-center"
+										objectFit="contain"
 									/>
 									<h2 className="font-normal">Mother</h2>
-									<button onClick={() => handleSelectParentToUpdate('mother')} className="bg-slate-200 py-2 px-4 rounded mt-4">Replace Mother</button>
+									<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6">Replace Mother</button>
 								</div>
 							) : (<></>)}
 						</div>
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 					</div>
-					<div>
+					<div className="px-10 mt-10">
 						<h2 className="text-xl font-bold mb-4">Children</h2>
 						<div className="flex flex-wrap">
 							{cat.children ? (
 								cat.children.map((child) =>(
-									<div className="border border-gray-300 p-5 rounded-lg text-center">
+									<div className=" flex justify-center flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
 										{child.name}
 										<Image
 											src="/img/Placeholder.png"
 											alt="Cat"
-											width={200}
-											height={100}
-											className="border-2 border-black m-5"
+											width={300}
+											height={300}
+											className="justify-center align-center place-items-center"
+											objectFit="contain"
 										/>
-										<button onClick={() => handleRemoveChild(child)} className="bg-slate-200 py-2 px-4 rounded mt-4">Remove {child.name}</button>
+										<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6">Remove {child.name}</button>
 									</div>
 								))
 							) : (<></>)}
-							<div className="border border-gray-300 p-5 rounded-lg text-center">
+							<div className=" flex justify-center flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
 								<Image
 									src="/img/Placeholder.png"
 									alt="Cat"
@@ -594,12 +600,12 @@ export default function Page({params}){
 									height={100}
 									className="border-2 border-black m-5"
 								/>
-								<button onClick={() => handleAddChild()} className="bg-slate-200 py-2 px-4 rounded mt-4">Select Child</button>
+								<button onClick={() => handleAddChild()} className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6">Select Child</button>
 							</div>
 						</div>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
-					<button onClick={handleSubmit} className="bg-slate-200 py-2 px-4 rounded mt-4">Submit</button>
+					<button onClick={handleSubmit} className="flex m-auto px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-16 text-2xl">Submit</button>
 				</div>
 			) : (
 				<h1>Loading</h1>

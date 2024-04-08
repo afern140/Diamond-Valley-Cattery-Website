@@ -316,7 +316,17 @@ export default function Page() {
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
-	const handleImageSelected = async (file) => {
+	const handleImageSelected = async (files) => {
+		const carouselImages = await Promise.all(Array.from(files).map(async (file) => {
+			const imgRef = ref(imageDb, `carouselImages/${v4()}`);
+			const snapshot = await uploadBytes(imgRef, file);
+			const url = await getDownloadURL(snapshot.ref);
+			return { 
+				storagePath: snapshot.metadata.fullPath,
+				url: url
+			};
+		}));
+		setCat((prevCat) => ({ ...prevCat, carouselImages }));
 	};
 
 	const handleSubmit = async () => {
@@ -326,6 +336,7 @@ export default function Page() {
 		let conditionRefs = [];
 		let vaccinationRefs = [];
 		let childrenRefs = [];
+		
 
 		cat.conditions.map(async (condition) => {
 			await updateObject('conditions', condition, false)
@@ -350,17 +361,32 @@ export default function Page() {
 			childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		}
 
-		const fileInput = document.querySelector('input[type="file"]');
-		const imgFile = fileInput.files[0];
-		if (!imgFile) {
-			alert("Please select an image for upload.");
-			return;
-		}
+		let thumbnailUrl = null;
+    	const fileInput = document.querySelector('input[type="file"]');
+    	const imgFile = fileInput.files[0];
+    	if (imgFile) {
+        	const imgRef = ref(imageDb, `images/${v4()}`);
+        	const snapshot = await uploadBytes(imgRef, imgFile);
+        	thumbnailUrl = await getDownloadURL(snapshot.ref);
+    	}
 		const imgRef = ref(imageDb, `images/${v4()}`);
 		const snapshot = await uploadBytes(imgRef, imgFile);
 		const url = await getDownloadURL(snapshot.ref);
 
-		const newCat = { ...cat, id: newId, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: url }
+		const newCat = {
+			...cat, 
+			id: newId, 
+			conditions: conditionRefs, 
+			vaccinations: vaccinationRefs, 
+			owner: ownerRef, 
+			mother: motherRef, 
+			father: fatherRef, 
+			children: childrenRefs, 
+			carouselImages: cat.carouselImages || [] // Add the carouselImages array to the newCat object
+		};
+		if (thumbnailUrl) {
+			newCat.thumbnail = thumbnailUrl;
+		}
 		console.log(newCat);
 		await createObject('cats', newCat);
 	}

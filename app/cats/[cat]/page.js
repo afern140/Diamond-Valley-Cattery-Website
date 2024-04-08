@@ -149,7 +149,7 @@ export default function Page({params}) {
 			{cat ? (
 				<section className="relative z-20 pb-16">
 					<div className="pt-20 flex pb-10 relative z-20">
-						<div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-[#092C48] text-transparent bg-clip-text">
+						<div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
 							<span className="text-6xl pb-10 font-extrabold uppercase">{cat.name}</span>
 							<button onClick={() => handleFavoriteButton()} className={"m-auto mt-2"}>
 								<div className={"relative m-auto flex rounded-full " + (favorite ? "bg-red-600" : "")}>
@@ -236,7 +236,7 @@ export default function Page({params}) {
 						<div className="flex flex-col ml-auto mx-10 mb-auto mt-10">
 							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
-								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-4 text-xl" >
+								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-navbar-body-1 dark:bg-gray-500 drop-shadow-lg rounded-xl p-4 text-xl" >
 									<div className="relative flex">
 										<span className="my-auto flex">Request a Meeting</span>
 										<div className="flex mx-3 w-1 bg-[#092C48] rounded-full" />

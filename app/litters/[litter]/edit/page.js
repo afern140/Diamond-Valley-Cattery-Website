@@ -100,7 +100,6 @@ export default function Page({ params }) {
 	};
 
 	const handleSubmit = async () => {
-		console.log(litter.mother)
 		const motherRef = doc(db, 'cats', litter.mother.docId);
 		const fatherRef = doc(db, 'cats', litter.father.docId);
 		let childrenRefs = [];

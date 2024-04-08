@@ -3,12 +3,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { doc, Timestamp } from "firebase/firestore";
-import { db } from "@/app/_utils/firebase";
+import { doc, Timestamp, collection, addDoc } from "firebase/firestore";
+import { imageDb, db } from "@/app/_utils/firebase";
 import { getObjects, createObject } from "@/app/_utils/firebase_services";
 import CatSelection from "@/app/components/cats/cat-selection";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import ImageUploader from "@/app/components/ImageUploader";
 
 export default function Page() {
+	const [thumbnail, setThumbnail] = useState(null);
+	const handleImageSelected = (file) => {
+		setThumbnail(file);
+	  };
+	  
+
 	const [litter, setLitter] = useState({
 		id: null,
 		name: null,
@@ -88,22 +97,31 @@ export default function Page() {
 	};
 
 	const handleSubmit = async () => {
+		let thumbnailUrl = null;
+		if (thumbnail) {
+		  const storageRef = ref(imageDb, `thumbnails/${v4()}`);
+		  const uploadResult = await uploadBytes(storageRef, thumbnail);
+		  thumbnailUrl = await getDownloadURL(uploadResult.ref);
+		}
+	  
 		const newId = litters.reduce((max, litter) => Math.max(max, litter.id), 0) + 1;
 		const motherRef = doc(db, 'cats', litter.mother.docId);
 		const fatherRef = doc(db, 'cats', litter.father.docId);
 		let childrenRefs = [];
 		if (litter.completed) {
-			childrenRefs = litter.children.map(child => doc(db, 'cats', child.docId));
+		  childrenRefs = litter.children.map(child => doc(db, 'cats', child.docId));
 		}
-		const updatedLitter = { ...litter, id: newId, mother: motherRef, father: fatherRef, children: childrenRefs }
-		await createObject('litters', updatedLitter)
-	};
+		const updatedLitter = { ...litter, id: newId, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: thumbnailUrl };
+		await createObject('litters', updatedLitter);
+	  };
+	  
 
 	return (
 		<main className="bg-white text-black">
 			<h1>Add Litter</h1>
 			<div>
 				<h2>Details</h2>
+				<ImageUploader onImageSelected={handleImageSelected} inputKey="litter-thumbnail" />
 				<input
 					type="text"
 					name="name"

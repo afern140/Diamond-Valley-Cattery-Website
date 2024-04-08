@@ -11,7 +11,7 @@ import {
   useUser,
 } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "@/app/components/ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import BackgroundUnderlay from "@/app/components/background-underlay";
 

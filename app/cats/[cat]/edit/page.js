@@ -13,7 +13,7 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "@/app/components/ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";

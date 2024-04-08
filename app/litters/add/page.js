@@ -3,14 +3,23 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { doc, Timestamp } from "firebase/firestore";
-import { db } from "@/app/_utils/firebase";
+import { doc, Timestamp, collection, addDoc } from "firebase/firestore";
+import { imageDb, db } from "@/app/_utils/firebase";
 import { getObjects, createObject } from "@/app/_utils/firebase_services";
 import CatSelection from "@/app/components/cats/cat-selection";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import ImageUploader from "@/app/components/ImageUploader";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page() {
+	const [thumbnail, setThumbnail] = useState(null);
+	const handleImageSelected = (file) => {
+		setThumbnail(file);
+	  };
+	  
+
 	const [litter, setLitter] = useState({
 		id: null,
 		name: null,
@@ -90,25 +99,51 @@ export default function Page() {
 	};
 
 	const handleSubmit = async () => {
+		let thumbnailUrl = null;
+		if (thumbnail) {
+		  const storageRef = ref(imageDb, `thumbnails/${v4()}`);
+		  const uploadResult = await uploadBytes(storageRef, thumbnail);
+		  thumbnailUrl = await getDownloadURL(uploadResult.ref);
+		}
+	  
 		const newId = litters.reduce((max, litter) => Math.max(max, litter.id), 0) + 1;
 		const motherRef = doc(db, 'cats', litter.mother.docId);
 		const fatherRef = doc(db, 'cats', litter.father.docId);
 		let childrenRefs = [];
 		if (litter.completed) {
-			childrenRefs = litter.children.map(child => doc(db, 'cats', child.docId));
+		  childrenRefs = litter.children.map(child => doc(db, 'cats', child.docId));
 		}
-		const updatedLitter = { ...litter, id: newId, mother: motherRef, father: fatherRef, children: childrenRefs }
-		await createObject('litters', updatedLitter)
-	};
+		const updatedLitter = { ...litter, id: newId, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: thumbnailUrl };
+		await createObject('litters', updatedLitter);
+	  };
+	  
 
 	return (
-		<main className=" text-[#092C48] relative pb-16">
-			<BackgroundUnderlay />
-
-			<div className="pt-20 flex pb-10">
-				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
-					<span className="text-6xl pb-10 font-extrabold">Add Litter</span> <br />
-				</div>
+		<main className="bg-white text-black">
+			<h1>Add Litter</h1>
+			<div>
+				<h2>Details</h2>
+				<ImageUploader onImageSelected={handleImageSelected} inputKey="litter-thumbnail" />
+				<input
+					type="text"
+					name="name"
+					placeholder={litter.name ? litter.name : "Name"}
+					value={litter.name}
+					onChange={handleChange}
+				/>
+				<input
+					type="text"
+					name="description"
+					placeholder={litter.description ? litter.description : "Description"}
+					value={litter.description}
+					onChange={handleChange}
+				/>
+				<input
+					type="date"
+					name="expDate"
+					value={litter.expDate ? new Date(litter.expDate.toDate()).toISOString().split('T')[0] : ""}
+					onChange={handleDateChange}
+				/>
 			</div>
 
 			<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg text-[#092C48]">

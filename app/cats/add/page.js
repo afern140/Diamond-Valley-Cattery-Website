@@ -14,7 +14,7 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
-import ImageUploader from "@/app/components/images/ImageUploader"
+import ImageUploader from "@/app/components/ImageUploader"
 
 export default function Page() {
 	const {user} = useUserAuth();
@@ -517,7 +517,7 @@ export default function Page() {
 									<div className="border border-gray-300 p-5 mb-2 rounded-lg text-center">
 										{cat.mother.name}
 										<Image
-											src="/img/Placeholder.png"
+											src={cat.mother.thumbnail || "/img/Placeholder.png"}
 											alt="Cat"
 											width={200}
 											height={100}
@@ -531,7 +531,7 @@ export default function Page() {
 									<div className="border border-gray-300 p-5 mb-2 rounded-lg text-center">
 										{cat.father.name}
 										<Image
-											src="/img/Placeholder.png"
+											src={cat.father.thumbnail || "/img/Placeholder.png"}
 											alt="Cat"
 											width={200}
 											height={100}
@@ -552,7 +552,7 @@ export default function Page() {
 										<div className="border border-gray-300 p-5 rounded-lg text-center">
 											{child.name}
 											<Image
-												src="/img/Placeholder.png"
+												src={cat.children.thumbnail || "/img/Placeholder.png"}
 												alt="Cat"
 												width={200}
 												height={100}

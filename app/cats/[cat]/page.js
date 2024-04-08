@@ -257,7 +257,7 @@ export default function Page({params}) {
 						</div>
 					</div>
 					<div className="text-black text-xl font-bold p-10">
-						<h2 className="text-2xl mx-10 mt-10">Parents</h2>
+						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex flex-wrap">
 							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								{cat.father.name}
@@ -286,7 +286,7 @@ export default function Page({params}) {
 								</Link>
 							</div>
 						</div>
-						<h2 className="text-2xl mx-10 mt-10">Children</h2>
+						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
 						<div className="flex flex-wrap">
 							{cat.children ? (
 								cat.children.map((child, index) => (

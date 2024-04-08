@@ -541,7 +541,7 @@ export default function Page({params}){
 					</div>
 
 					<div>
-						<h2 className="text-xl font-bold mb-4 mt-6 px-10">Parents</h2>
+						<h2 className="text-xl font-bold mb-4 mt-6 px-10 dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex px-10 space-x-10 mt-6 flex-wrap">
 							{cat.father ? (
 								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
@@ -577,7 +577,7 @@ export default function Page({params}){
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 					</div>
 					<div className="px-10 mt-10">
-						<h2 className="text-xl font-bold mb-4">Children</h2>
+						<h2 className="text-xl font-bold mb-4 dark:text-dark-header-text-0">Children</h2>
 						<div className="flex flex-wrap">
 							{cat.children ? (
 								cat.children.map((child) =>(

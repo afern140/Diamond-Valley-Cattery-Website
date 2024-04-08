@@ -70,7 +70,7 @@ export default function Page({ params }) {
 					</div>
 
 					<div className="text-black text-xl font-bold p-10">
-						<h2 className="text-2xl mx-10 mt-10">Parents</h2>
+						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex flex-wrap">
 							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								<CatButton cat={litter.father} />
@@ -82,7 +82,7 @@ export default function Page({ params }) {
 						{litter.completed && litter.children ? (
 							litter.children.map((child, index) => (
 								<div>
-									<h2 className="text-2xl mx-10 mt-10">Children</h2>
+									<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
 									<div className="flex flex-wrap">
 										<div key={index} className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 											<CatButton cat={child} />

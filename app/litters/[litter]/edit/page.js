@@ -124,7 +124,7 @@ export default function Page({ params }) {
 
 					<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg text-[#092C48]">
 						<div className="w-full flex-col space-y-2">
-							<h2 className="text-2xl mb-2">Details</h2>
+							<h2 className="text-2xl mb-2 dark:text-dark-header-text-0">Details</h2>
 							<div className="flex space-x-3">
 								<h3 className="my-auto">Name: </h3>
 								<input
@@ -163,7 +163,7 @@ export default function Page({ params }) {
 						</div>
 					</div>
 
-					<h2 className="text-2xl mx-10 mt-10">Parents</h2>
+					<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
 					<div className="flex px-10 space-x-10 mt-6">
 						{litter.mother ? (
 							<div className=" flex justify-center flex-col font-bold p-4 bg-white drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
@@ -198,7 +198,7 @@ export default function Page({ params }) {
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 					</div>
 
-					<h2 className="text-2xl mx-10 mt-10">Children</h2>
+					<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
 					{litter.completed ? (
 						<div className="flex px-10 space-x-10 mt-6">
 							{litter.children.map((child) => (

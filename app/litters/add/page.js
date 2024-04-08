@@ -141,7 +141,7 @@ export default function Page() {
 					<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 					<div className="size-full">
 						<textarea
-							className="p-1 rounded-xl bg-[#e5e5ff] p-2 size-full drop-shadow-lg"
+							className=" rounded-xl bg-[#e5e5ff] p-2 size-full drop-shadow-lg"
 							type="text"
 							name="description"
 							placeholder={litter.description ? litter.description : "Description"}
@@ -153,7 +153,7 @@ export default function Page() {
 			</div>
 
 			<div>
-				<h2 className="text-2xl mx-10 mt-10">Parents</h2>
+				<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
 				<div className="flex px-10 space-x-10 mt-6">
 					{litter.mother ? (
 						<div className=" flex justify-center flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
@@ -189,7 +189,7 @@ export default function Page() {
 				<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 			</div>
 			<div>
-				<h2 className="text-2xl mx-10 mt-10">Children</h2>
+				<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
 				{litter.completed ? (
 					<div className="flex px-10 space-x-10 mt-6">
 						{litter.children.map((child) => (

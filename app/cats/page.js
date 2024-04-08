@@ -192,7 +192,7 @@ export default function Page() {
 						name="catlist-search"
 						placeholder="Search"
 						value={fieldInput}
-						className=" bg-[#e5e5ff] bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
+						className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-4/5 h-10"
 						onChange = { (Event) => searchItems(Event.target.value, "") }>
 					</input>
 					

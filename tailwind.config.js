@@ -27,10 +27,10 @@ module.exports = {
         "background-gradient-1": "#e5e5ff",
         "dark-background-gradient-1": "#222831",
 
-        "navbar-body-0": "#e5e5ff",
-        "dark-navbar-body-0": "#e5e5ff",
-        "navbar-body-1": "#DECBE3",
-        "dark-navbar-body-1": "#76ABAE",
+        "navbar-body-0": "#5D6E9E",
+        "dark-navbar-body-0": "#111720",
+        "navbar-body-1": "#e5e5ff",
+        "dark-navbar-body-1": "#e5e5ff",
         "navbar-body-2": "#5D6E9E",
         "dark-navbar-body-2": "#7b5451",
 

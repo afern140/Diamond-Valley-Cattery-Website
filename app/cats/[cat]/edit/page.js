@@ -13,10 +13,13 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
+import ImageUploader from "./ImageUploader";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({params}){
+	const [thumbnail, setThumbnail] = useState(null);
 	const {user} = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
@@ -346,6 +349,14 @@ export default function Page({params}){
 		const vaccinationRefs = cat.vaccinations.map(vaccination => doc(db, 'vaccinations', vaccination.docId));
 		const childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		const updatedCat = { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs }
+		const storage = getStorage();
+  if (thumbnail) {
+    const thumbnailRef = ref(storage, `thumbnails/${cat.id}`);
+    await uploadBytes(thumbnailRef, thumbnail);
+    const thumbnailUrl = await getDownloadURL(thumbnailRef);
+    updatedCat.thumbnail = thumbnailUrl;
+  }
+
 		await updateObject('cats', updatedCat, true);
 	}
 

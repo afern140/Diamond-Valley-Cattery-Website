@@ -11,39 +11,12 @@ import {
   useUser,
 } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
+import ImageUploader from "./ImageUploader";
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
-// const getUser = async(userAuth) => {
-// 	const usersCollection = await getDocs(collection(db, 'users'));
-// 	const usersDataPromise = usersCollection.docs.map(async (userDoc) => {
-// 		const userData = {id: userDoc.id, ...userDoc.data() };
-// 		const subCollections = await userDoc.ref.listCollections();
-// 		await Promise.all(subCollections.map(async (subCollection) => {
-// 			const subCollectionDocs = await getDocs(subCollection);
-// 			const subCollectionData = subCollectionDocs.map((doc) => ({ id: doc.id, ...doc.data() }));
-// 			userData[subCollection.id] = subCollectionData;
-// 		}));
-// 		return userData;});
-
-// 	const usersData = await Promise.all(usersDataPromise);
-// 	const user = usersData.find(userItem => userItem.uid == userAuth.uid)
-// 	return user;
-// }
-
-// const getUser = async(userAuth) => {
-// 	const usersCollection = await getDocs(collection(db, 'users'));
-// 	const usersDataPromise = usersCollection.docs.map(async (userDoc) => {
-// 		const userData = {id: userDoc.id, ...userDoc.data()};
-// 		const favoritesCollection = await getDocs(collection(userDoc.ref, 'favorites'));
-// 		const favoritesData = Object.fromEntries(favoritesCollection.docs.map((favoritesDoc) => [favoritesDoc.id, { id: favoritesDoc.id, ...favoritesDoc.data() }]));
-// 		userData.favorites = favoritesData;
-// 		return userData;});
-// 	const usersData = await Promise.all(usersDataPromise);
-// 	const user = usersData.find(userItem => userItem.uid == userAuth.uid)
-// 	return user;
-// }
-// Dashboard
 export default function Page() {
+  const [userImageFile, setUserImageFile] = useState(null);
   const { user } = useUserAuth();
   const [filteredUser, setFilteredUser] = useState({role: "role", name: "name", username: "username", email: "randomemail@gmail.com", phone: "123-456-7890"});
   const [favoriteCats, setFavoriteCats] = useState();
@@ -80,15 +53,40 @@ export default function Page() {
     setEdit(true);
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(URL.createObjectURL(file));
-  };
+  
 
   const handleSubmit = async () => {
-    await updateUser(updatedUser);
+    if (userImageFile && user) {
+      const storage = getStorage();
+      const storageRef = ref(storage, `users/${user.uid}/profileImage`);
+  
+      try {
+        const uploadResult = await uploadBytes(storageRef, userImageFile);
+        const imageUrl = await getDownloadURL(uploadResult.ref);
+  
+        const updatedUserData = {
+          ...updatedUser,
+          userImage: imageUrl,
+        };
+  
+        await updateUser(updatedUserData);
+        setFilteredUser(updatedUserData);
+        setImage(imageUrl);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        // Handle any errors here, such as showing a message to the user
+        return; // Exit the function if there was an error
+      }
+    } else {
+      // If there is no image file to upload, just update the user with the other data
+      await updateUser(updatedUser);
+    }
+    
+    // Clear the temporary image file state and exit the edit mode
+    setUserImageFile(null);
     setEdit(false);
   };
+  
 
   // Recent message
   useEffect(() => {
@@ -328,7 +326,7 @@ export default function Page() {
           <div className="flex flex-row justify-center items-center bg-cat-gray-1 p-5 m-10 rounded-lg text-left">
             <div className="text-center m-auto">
               <Image
-                src={"/img/Placeholder.png"}
+                src={filteredUser.userImage || "/img/Placeholder.png"}
                 alt="Profile Picture"
                 width={100}
                 height={100}
@@ -338,11 +336,7 @@ export default function Page() {
             </div>
             {edit ? (
               <div className="flex flex-col">
-                <input
-                  type="file"
-                  accept="image/"
-                  onChange={handleImageChange}
-                ></input>
+                <ImageUploader onImageSelected={(file) => setUserImageFile(file)} />
                 <input
                   type="text"
                   name="name"
@@ -419,13 +413,13 @@ export default function Page() {
                 <h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-black text-xl font-bold text-center">
                   {cat.name}
                   <Link href={`./cats/${cat.id}`}>
-                    <Image
-                      src="/img/Placeholder.png"
-                      alt="Cat"
-                      width={200}
-                      height={100}
-                      className="border-2 border-black m-5"
-                    />
+                  <img
+                    src={filteredUser.userImage || '/img/Placeholder.png'}
+                    alt="Profile Picture"
+                    width={100}
+                    height={100}
+                    className="border-2 border-black m-5 mb-2"
+                  />
                   </Link>
                 </h3>
               ))

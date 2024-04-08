@@ -18,7 +18,7 @@ export default function Comments(cat) {
       catch (error) {
          console.error("Error getting comments: ", error);
       }
-   }, );
+   }, [] );
 
 
    return (
@@ -28,7 +28,7 @@ export default function Comments(cat) {
             {comments.map((comment) => (
             <Comment 
             key={comment.id}
-            createTime={new Date(comment.createTime.toDate().toISOString().split('T'[0]))}
+            createTime={comment.createTime ? new Date(comment.createTime.toDate().toISOString().split('T'[0])) : new Date() }
             catName={comment.catName}
             message={comment.message}
             createName={comment.createName}

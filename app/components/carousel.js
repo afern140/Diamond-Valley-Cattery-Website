@@ -3,7 +3,7 @@ import { Carousel } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { getObjects } from "../_utils/firebase_services";
 
-export default function CarouselDefault({ images }) {
+export default function CarouselDefault({ images, iscatpage }) {
 	const theme = {
 		carousel: {
 			defaultProps: {
@@ -72,7 +72,7 @@ export default function CarouselDefault({ images }) {
 	const [imgUrl, setImgUrl] = useState([]);
 
 	const getAllImg = () => {
-		getObjects('img').then((obj) => {
+		getObjects('HomeCarousel').then((obj) => {
 			let arr = obj.map((item) => {
 				return item.url
 			})
@@ -83,11 +83,15 @@ export default function CarouselDefault({ images }) {
 
 	useEffect(() => {
 		if (images && images.length > 0) {
-			setImgUrl(images);
-		} else {
+			let arr = images.map((item) => {
+				return item.url
+			})
+			setImgUrl(arr);
+		} else if (!iscatpage) {
 			getAllImg();
 		}
 	}, [images])
+
 
 	return (
 		<div className="grid max-h-[440px] w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">

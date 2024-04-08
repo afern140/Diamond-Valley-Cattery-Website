@@ -33,6 +33,12 @@ export default function Page() {
 	const { user } = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState({role: "role", name: "name", username: "username", email: "randomemail@gmail.com", phone: "123-456-7890"});
 
+	const [breedType, setBreedType] = useState("");
+	const [genderType, setGenderType] = useState("");
+	const [ageType, setAgeType] = useState("");
+	const [colorType, setColorType] = useState("");
+	const [sortbyType, setSortbyType] = useState("");
+
 	/*useEffect(() => {
 		const fetchUser = async () => {
 		const newUser = await getUser(user);
@@ -223,13 +229,33 @@ export default function Page() {
 			<div className="p-6 w-full text-text-header-0 rounded-xl relative -z-20 bg-white dark:bg-gray-500  drop-shadow-lg">
 				<h2 className="py-6 text-2xl font-semibold text-center drop-shadow-md">Filters</h2>
 				<h3 className="py-2 text-lg">Breed</h3>
-				<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={breedType} onChange={(e) => setBreedType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					<option value="breed">Name</option>
+					<option value="expDate">Expected Date</option>
+				</select>
 				<h3 className="py-2 text-lg">Gender</h3>
-				<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={genderType} onChange={(e) => setGenderType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					{ filteredResults && filteredResults.map((cat) => (
+							<option value=""></option>
+						))
+					}
+				</select>
 				<h3 className="py-2 text-lg">Age</h3>
-				<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={ageType} onChange={(e) => setAgeType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					<option value="breed">Name</option>
+					<option value="expDate">Expected Date</option>
+				</select>
 				<h3 className="py-2 text-lg">Color</h3>
-				<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={colorType} onChange={(e) => setColorType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					<option value="breed">Name</option>
+					<option value="expDate">Expected Date</option>
+				</select>
+				
+
 
 				<div className="w-fit z-10">
 					<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-background-gradient-1 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>

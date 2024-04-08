@@ -383,7 +383,7 @@ export default function Page({params}){
 						<div className="w-full flex-col space-y-2">
 							<h2 className="text-2xl mb-2">Details</h2>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Name: </h3>
+								<h3 className="my-auto w-20 text-right">Name: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -394,7 +394,7 @@ export default function Page({params}){
 							/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Breed: </h3>
+								<h3 className="my-auto w-20 text-right">Breed: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -405,7 +405,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Gender: </h3>
+								<h3 className="my-auto w-20 text-right">Gender: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -416,7 +416,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Age: </h3>
+								<h3 className="my-auto w-20 text-right">Age: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="number"
@@ -427,7 +427,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Color: </h3>
+								<h3 className="my-auto w-20 text-right">Color: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -438,7 +438,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Eye Color: </h3>
+								<h3 className="my-auto w-22 text-right">Eye Color: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"

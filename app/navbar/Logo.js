@@ -44,7 +44,7 @@ const Logo = () => {
           height={width < 1024 ? "60" : "50"}
           className="relative"
         />
-        <h1 className="ml-2 text-md m-auto">Diamond Valley Cattery</h1>
+        <h1 className="ml-2 text-md m-auto text-white">Diamond Valley Cattery</h1>
       </Link>
       <div
         style={{

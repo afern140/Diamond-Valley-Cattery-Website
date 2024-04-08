@@ -5,7 +5,7 @@ import Button from "@/app/navbar/Button";
 
 const Footer = () => {
   return (
-    <div className=" text-2xl border-t-2 border-[#eecbc7] text-white  bg-navbar-body-0 dark:bg-dark-navbar-body-0 left-0 bottom-0 right-0">
+    <div className=" text-2xl border-t-2 border-navbar-body-1 text-white  bg-navbar-body-0 dark:bg-dark-navbar-body-0 left-0 bottom-0 right-0">
         <div className="w-full h-10">
             <div className="flex mx-auto px-8 h-full py-4">
                 <button className="grow hover:underline">...</button>

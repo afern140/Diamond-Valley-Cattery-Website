@@ -168,14 +168,14 @@ export default function Page() {
 									name="litterlist-search"
 									placeholder="Search"
 									value={fieldInput}
-									className=" bg-[#e5e5ff] bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
+									className=" bg-[#e5e5ff] dark:bg-gray-300 bg-opacity-100 drop-shadow-lg placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
 									onChange = { (Event) => searchItems(Event.target.value, "") }>
 								</input>
 								
 								<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
 							</div>
 							{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-								<div className="absolute z-40 bg-white bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+								<div className="absolute z-40 bg-white bg-opacity-100 dark:bg-gray-500 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
 									{
 										filteredResults.map((litter) => (
 											<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(litter.name)}>{litter.name}</button>
@@ -186,7 +186,7 @@ export default function Page() {
 						</div>
 
 						<div className="flex mt-10">
-							<div className="w-full bg-white text-text-header-0 rounded-xl relative p-4 drop-shadow-lg">
+							<div className="w-full bg-white dark:bg-gray-500 text-text-header-0 rounded-xl relative p-4 drop-shadow-lg">
 								<label className="font-bold text-2xl align-middle" htmlFor="sort">Sort By:</label>
 								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-[#e5e5ff] border-2 bg-opacity-100">
 									<option value="name">Name</option>
@@ -203,7 +203,7 @@ export default function Page() {
 							</div>
 						</div>
 					</div>
-					<div className={"p-4 bg-white bg-opacity-80 drop-shadow-lg mt-6 border-2 border-opacity-50 border-white rounded-xl" + (filteredResults && filteredResults.length > 0 ? " h-[100vh]" : "")}>
+					<div className={"p-4 bg-white dark:bg-gray-500 bg-opacity-80 drop-shadow-lg mt-6 rounded-xl" + (filteredResults && filteredResults.length > 0 ? " h-[100vh]" : "")}>
 						<div className="h-full scroll-auto overflow-y-scroll overflow-hidden">
 							{filteredResults && filteredResults.length > 0 ? (
 								filteredResults.map((litter) => (

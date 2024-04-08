@@ -9,6 +9,10 @@ import {
   getUserCats,
   updateUser,
   useUser,
+  updateUserProfile,
+  changeEmail,
+  changePassword,
+  
 } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
 import ImageUploader from "./ImageUploader";
@@ -55,6 +59,7 @@ export default function Page() {
     useState([]);
   const { fetchChatsWithLatestMessage, markMessageAsRead } = useChat();
   const [unreadMessageIds, setUnreadMessageIds] = useState(new Set());
+
   useEffect(() => {
     const fetchUser = async () => {
       const newUser = await getUser(user);
@@ -84,10 +89,11 @@ export default function Page() {
   
 
   const handleSubmit = async () => {
+    //Block handles updating the user in the database
     if (userImageFile && user) {
       const storage = getStorage();
       const storageRef = ref(storage, `users/${user.uid}/profileImage`);
-  
+      //Block handles image uploading
       try {
         const uploadResult = await uploadBytes(storageRef, userImageFile);
         const imageUrl = await getDownloadURL(uploadResult.ref);
@@ -109,6 +115,85 @@ export default function Page() {
       // If there is no image file to upload, just update the user with the other data
       await updateUser(updatedUser);
     }
+
+    //Block handles updating the user in auth
+    //If there is a user image file, update the user profile with the image URL then try to update the user in the database if the username has changed
+    let message = "Changes made: ";
+    let changesMade = false;
+
+    if (userImageFile) {
+      //Replace with generic image upload function later
+      const storage = getStorage();
+      const storageRef = ref(storage, `users/${user.uid}/profileImage`);
+      imageUrl = null;
+      //Block handles image uploading
+      try {
+        const uploadResult = await uploadBytes(storageRef, userImageFile);
+        imageUrl = await getDownloadURL(uploadResult.ref);
+      }catch (error) {
+        console.error('Error uploading image:', error);
+        // Handle any errors here, such as showing a message to the user
+        return; // Exit the function if there was an error
+      }
+      //End of block to replace with generic image upload function
+      if (updatedUser.username !== filteredUser.username) {
+        try {
+          updateUserProfile(updatedUser.name,imageUrl);
+          changedImage = true;
+          message += "image, ";
+          message += "username, ";
+        } catch (error) {
+          console.error('Error updating user profile:', error);
+        }
+      }
+      else {
+        try {
+          await updateUserProfile(null,imageUrl);        
+          changedImage = true;
+          message += "image, ";
+        } catch (error) {
+          console.error('Error updating user profile:', error);
+        }
+
+      }
+    }
+    // If the username has changed and there is no image file, update the user profile
+    if (updatedUser.username !== filteredUser.username && !userImageFile) {
+      try {
+        updateUserProfile(updatedUser.name,null);
+        message += "username, ";
+      } catch (error) {
+        console.error('Error updating user profile:', error);
+      }
+
+    }
+    // If the email has changed, update the user email
+    if (updatedUser.email !== filteredUser.email) {
+      try {
+        changeEmail(updatedUser.email);
+        message += "email, ";
+      } catch (error) {
+        console.error('Error updating user email:', error);
+      }
+    }
+    // If the password has changed, update the user password
+    if (updatedUser.password !== filteredUser.password) {
+      try {
+        changePassword(updatedUser.password);
+        message += "password, ";
+      } catch (error) {
+        console.error('Error updating user password:', error);
+      }
+    }
+
+    if (changesMade) {
+      // Remove the trailing comma and space
+      message = message.slice(0, -2);
+      alert(message);
+    } else {
+      alert("No changes were made.");
+    }
+
     
     // Clear the temporary image file state and exit the edit mode
     setUserImageFile(null);

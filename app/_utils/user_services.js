@@ -35,10 +35,10 @@ export const updateUser = async (updatedUser) => {
   * @param {string} newPhotoURL - The new photo URL for the user. Use dowlnoadURL from firebase storage.
   * 
   * If either parameter is provided, it will update the corresponding field in the user's profile.
-  * If the update is successful, an alert will be shown with the message "Profile updated".
-  * If the update fails, an alert will be shown with the message "Profile update failed".
+  * If the update is successful, it will return a true (1) value.
+  * If the update fails, it will return a false (0) value.
 */
-export function upateUserProfile(newDisplayName, newPhotoURL){
+export function updateUserProfile(newDisplayName, newPhotoURL){
 	const updateObject = {};
 	if (newDisplayName) {
 	  updateObject.displayName = newDisplayName;
@@ -49,11 +49,11 @@ export function upateUserProfile(newDisplayName, newPhotoURL){
 	if (newDisplayName || newPhotoURL) {
 	  updateProfile(auth.currentUser, updateObject)
 		.then(() => {
-		  alert ("Profile updated");
+			return 1;
 		})
 		.catch((error) => {
-		  console.log(error);
-		  alert("Profile update failed");
+		  console.error('User profile update error', error);
+		  return 0;
 		});
 	}
   }
@@ -62,17 +62,17 @@ export function upateUserProfile(newDisplayName, newPhotoURL){
 *
 * @param {string} newEmail - The new email for the user.
 *
-* If the update is successful, an alert will be shown with the message "Email updated".
-* If the update fails, an alert will be shown with the message "Email update failed".
+* If the update is successful, it will return a true (1) value.
+* If the update fails, it will return a false (0) value.
 */
 export function changeEmail(newEmail){
 	updateEmail(auth.currentUser, newEmail)
 	.then(() => {
-		alert("Email updated");
+		return 1;
 	})
 	.catch((error) => {
-		console.log(error);
-		alert("Email update failed");
+		console.error('User email change error', error);
+		return 0;
 	});
 }
 
@@ -81,16 +81,16 @@ export function changeEmail(newEmail){
 *
 * @param {string} newPassword - The new password for the user.
 *
-* If the update is successful, an alert will be shown with the message "Password updated".
-* If the update fails, an alert will be shown with the message "Password update failed".
+* If the update is successful, it will return a true (1) value.
+* If the update fails, it will return a false (0) value.
 */
 export function changePassword(newPassword){
 	updatePassword(auth.currentUser, newPassword)
 	.then(() => {
-		alert("Password updated");
+		return;
 	})
 	.catch((error) => {
-		console.log(error);
-		alert("Password update failed");
+		console.error('Password change not possible', error);
+		return error;
 	});
 }

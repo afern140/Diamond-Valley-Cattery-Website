@@ -151,10 +151,10 @@ export default function Page({params}) {
 					<div className="pt-20 flex pb-10 relative z-20">
 						<div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
 							<span className="text-6xl pb-10 font-extrabold uppercase">{cat.name}</span>
-							<button onClick={() => handleFavoriteButton()} className={"m-auto mt-2"}>
+							<button onClick={() => handleFavoriteButton()} className={"m-auto translate-y-2"}>
 								<div className={"relative m-auto flex rounded-full " + (favorite ? "bg-red-600" : "")}>
 									<Image alt="Favorite" src="/img/circle.svg" width={64} height={64} />
-									<Image className="absolute top-[18px] right-4" alt="Heart" src="/img/heart.svg" width={32} height={32} />
+									<Image className="absolute top-[18px] right-4" alt="Heart" src={"/img/heart.svg"} width={32} height={32} />
 								</div>
 							</button>
 							<Link className="relative pointer-events-auto" href={`/cats/${cat.id}/edit`}>

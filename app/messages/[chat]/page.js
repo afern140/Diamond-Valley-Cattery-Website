@@ -5,6 +5,7 @@ import { useChat } from "@/app/_utils/chat-context";
 import { useUserAuth } from "@/app/_utils/auth-context";
 
 import GradientColorButton from "@/app/components/gradientColor";
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 //Message
 export default function page({ params }) {
@@ -70,16 +71,16 @@ export default function page({ params }) {
 
   return (
     <main className="relative">
-      <div className="w-full h-full grow absolute -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
-      
+      <BackgroundUnderlay />
+
       <div className="pt-20 flex pb-10">
-        <div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
+        <div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-[#092C48] text-transparent bg-clip-text">
           <span className="text-6xl pb-10 font-extrabold uppercase">Messages</span>
         </div>
       </div>
 
       <div className=" px-20 pb-20">
-        <div className="p-4 border-2 flex flex-col bg-white bg-opacity-30 rounded-xl">
+        <div className="p-4 border-[3px] border-[#092C48] flex flex-col bg-white bg-opacity-30 rounded-xl">
           {currentMessages.map((msg, index) => (
             <div key={index} className={"flex flex-col mb-2 justify-end items-end w-full " + (user ? " justify-end items-end mr-auto ml-full" : " justify-start items-start mr-full ml-auto")}>
               <div className={"flex p-2 justify-end rounded-xl bg-gradient-to-r" + currentTheme + (user ? " justify-end" : " justify-start")}>

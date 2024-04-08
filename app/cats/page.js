@@ -179,7 +179,7 @@ export default function Page() {
 			<BackgroundUnderlay />
 
 			<div className="pt-20 flex pb-10">
-				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-header-text-0 dark:bg-dark-header-text-0 text-transparent bg-clip-text">
+				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
 					<span className="text-6xl pb-10 font-extrabold">CATS</span> <br />
 					<div className="mt-8 pointer-events-auto"><span className="">DISCOVER YOUR NEW BEST FRIEND AT DIAMOND VALLEY CATTERY. BROWSE OUR ADORABLE CATS AVAILABLE FOR PURCHASE.</span></div>
 				</div>
@@ -199,7 +199,7 @@ export default function Page() {
 					<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
 				</div>
 				{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-					<div className="absolute z-40 bg-purple-100 bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+					<div className="absolute z-50 bg-purple-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
 						{
 							filteredResults.map((cat) => (
 								<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
@@ -213,7 +213,7 @@ export default function Page() {
 		<div className="flex w-full">
 		{/* First split of the page */}
 		<div className=" w-1/3 mr-6 ml-20 align-middle justify-start flex-col flex items-center relative z-20">
-			<div className="p-6 w-full bg-gradient-to-b from-[#ca8076] to-[#9d5850] text-text-header-0 rounded-xl relative -z-20 border-[3px] border-text-header-0 drop-shadow-lg">
+			<div className="p-6 w-full bg-gradient-to-b from-white to-navbar-body-1 text-text-header-0 rounded-xl relative -z-20 border-[3px] border-navbar-body-2 drop-shadow-lg">
 				<h2 className="py-6 text-2xl font-semibold text-center drop-shadow-md">Filters</h2>
 				<h3 className="py-2 text-lg">Breed</h3>
 				<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>
@@ -225,7 +225,7 @@ export default function Page() {
 				<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>
 
 				<div className="w-fit z-10">
-					<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-gradient-to-r from-[#ca8076] to-[#c86a5f] border border-text-header-0 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>
+					<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-gradient-to-r from-white bg-navbar-body-1 border border-navbar-body-2 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>
 					{/*<div className="p-4 bg-yellow-700 rounded-xl absolute h-10 -translate-y-[36px] -z-10 w-full" />*/}
 				</div>
 			</div>
@@ -234,7 +234,7 @@ export default function Page() {
 		{/* Second split of the page */}
 		<div className="w-full flex-col mr-16">
 			<div className="flex w-full">
-				<div className=" w-full justify-end flex-col bg-gradient-to-b from-[#ca8076] to-[#9d5850] rounded-xl py-2 px-2 border-[3px] border-text-header-0">
+				<div className=" w-full justify-end flex-col bg-gradient-to-b from-white to-navbar-body-1 rounded-xl py-2 px-2 border-[3px] border-navbar-body-2">
 					<h2 className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort by:</h2>
 					<div className=" pt-4">
 						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
@@ -243,18 +243,20 @@ export default function Page() {
 				<div className="relative ">
 					<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)}
 						className="relative z-40 size-fit" href="/add">
-						<div className="w-full bg-gradient-to-b from-[#ca8076] to-[#9d5850] p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative z-40">
+						<div className="w-full bg-gradient-to-b from-white to-navbar-body-1 p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative z-40">
 							<div className="relative size-fit z-40 transition duration-300 hover:scale-125">
 								{/*<Image className="absolute mt-5" alt="o" src="/img/circle.svg" width={96} height={96} />*/}
 								{/*<span className=" -translate-x-10 relative z-40">+</span>*/}
 								<div className=" ml-10 mr-10">
-									<span className="bg-gradient-to-b from-[#ca8076] to-[#9d5850] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</span>
+									<span className="bg-gradient-to-b from-white to-navbar-body-0 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</span>
 								</div>
 							</div>
 						</div>
 					</Link>
+
+					{/* Tooltip */}
 					<div className={"absolute size-[128px] top-[110px] right-[20px] transition duration-500 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (addTooltip ? " opacity-100" : " opacity-0")}>
-						<div className="w-full bg-text-header-0 border-[3px] border-gray-500 h-8 rounded-full drop-shadow">
+						<div className="w-full bg-text-header-0 border-[3px] border-navbar-body-2 h-8 rounded-full drop-shadow">
 							<p className="flex size-full text-center text-lg text-white justify-center align-middle">Add Cat</p>
 						</div>
 					</div>

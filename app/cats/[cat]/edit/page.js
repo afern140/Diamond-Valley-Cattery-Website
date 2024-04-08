@@ -14,6 +14,8 @@ import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
 
+import BackgroundUnderlay from "@/app/components/background-underlay";
+
 export default function Page({params}){
 	const {user} = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
@@ -356,71 +358,104 @@ export default function Page({params}){
 	}, [cat]);
 
 	return(
-		<main className="bg-white min-h-screen text-black p-4">
+		<main className=" min-h-screen text-[#092C48]">
+			<BackgroundUnderlay />
 			{cat ? (
 				<div>
-					<h1 className="text-3xl font-bold mb-4 text-center">Edit {cat.name}</h1>
-					<h2 className="text-xl font-bold mb-4">Details</h2>
-					<div className="flex flex-col mb-4 border border-black-300 rounded-md p-2 max-w-md">
-						<input
-							type="text"
-							name="name"
-							placeholder={cat.name}
-							value={cat.name}
-							onChange={handleChange}
-							className="border border-gray-300 rounded-md p-2 mb-2"
-						/>
-						<input
-							type="text"
-							name="breed"
-							placeholder={cat.breed}
-							value={cat.breed}
-							onChange={handleChange}
-							className="border border-gray-300 rounded-md p-2 mb-2"
-						/>
-						<input
-							type="text"
-							name="gender"
-							placeholder={cat.gender}
-							value={cat.gender}
-							onChange={handleChange}
-							className="border border-gray-300 rounded-md p-2 mb-2"
-						/>
-						<input
-							type="number"
-							name="age"
-							placeholder={cat.age}
-							value={cat.age}
-							onChange={handleChange}
-							className="border border-gray-300 rounded-md p-2 mb-2"
-						/>
-						<input
-							type="text"
-							name="color"
-							placeholder={cat.color}
-							value={cat.color}
-							onChange={handleChange}
-							className="border border-gray-300 rounded-md p-2 mb-2"
-						/>
-						<input
-							type="text"
-							name="eye_color"
-							placeholder={cat.eye_color}
-							value={cat.eye_color}
-							onChange={handleChange}
-							className="border border-gray-300 rounded-md p-2 mb-2"
-						/>
-						<input
-							type="text"
-							name="description"
-							placeholder={cat.description}
-							value={cat.description}
-							onChange={handleChange}
-							className="border border-gray-300 rounded-md p-2 mb-2"
-						/>
+					<div className="pt-20 flex pb-10">
+						<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
+							<span className="text-6xl pb-10 font-extrabold">Edit {cat.name}</span> <br />
+						</div>
 					</div>
-					<div>
-						<h2 className="text-xl font-bold mb-4">Conditions</h2>
+
+					<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48]">
+						<div className="w-full flex-col space-y-2">
+							<h2 className="text-2xl mb-2">Details</h2>
+							<div className="flex space-x-3">
+								<h3 className="my-auto">Name: </h3>
+								<input
+								className="p-1 rounded-xl"
+								type="text"
+								name="name"
+								placeholder={cat.name}
+								value={cat.name}
+								onChange={handleChange}
+							/>
+							</div>
+							<div className="flex space-x-3">
+								<h3 className="my-auto">Name: </h3>
+								<input
+								className="p-1 rounded-xl"
+								type="text"
+								name="breed"
+								placeholder={cat.breed}
+								value={cat.breed}
+								onChange={handleChange}
+								/>
+							</div>
+							<div className="flex space-x-3">
+								<h3 className="my-auto">Name: </h3>
+								<input
+								className="p-1 rounded-xl"
+								type="text"
+								name="gender"
+								placeholder={cat.gender}
+								value={cat.gender}
+								onChange={handleChange}
+								/>
+							</div>
+							<div className="flex space-x-3">
+								<h3 className="my-auto">Name: </h3>
+								<input
+								className="p-1 rounded-xl"
+								type="number"
+								name="age"
+								placeholder={cat.age}
+								value={cat.age}
+								onChange={handleChange}
+								/>
+							</div>
+							<div className="flex space-x-3">
+								<h3 className="my-auto">Name: </h3>
+								<input
+								className="p-1 rounded-xl"
+								type="text"
+								name="color"
+								placeholder={cat.color}
+								value={cat.color}
+								onChange={handleChange}
+								/>
+							</div>
+							<div className="flex space-x-3">
+								<h3 className="my-auto">Name: </h3>
+								<input
+								className="p-1 rounded-xl"
+								type="text"
+								name="eye_color"
+								placeholder={cat.eye_color}
+								value={cat.eye_color}
+								onChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="bg-[#092C48] w-4 h-4/5 rounded-full relative" />
+						<div className="size-full">	
+							<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
+							<div className="size-full">
+								<textarea
+									className="size-full rounded-xl p-2"
+									type="text"
+									name="description"
+									placeholder={cat.description}
+									value={cat.description}
+									onChange={handleChange}
+								/>
+							</div>
+						</div>
+					</div>
+					
+					<h2 className="text-xl font-bold mb-4 mt-6 px-10">Conditions</h2>
+					<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48]">
 						<div className="flex flex-wrap">
 							{cat.conditions ? (
 								cat.conditions.map((condition) => (

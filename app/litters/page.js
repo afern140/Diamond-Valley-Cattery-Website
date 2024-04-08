@@ -153,7 +153,7 @@ export default function Page() {
 				<BackgroundUnderlay />
 
 				<div className="pt-20 flex pb-10">
-					<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
+					<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] text-transparent bg-clip-text">
 						<span className="text-6xl pb-10 font-extrabold">LITTERS</span> <br />
 						<div className="mt-8"><span className="">DISCOVER YOUR NEW BEST FRIENDS AT DIAMOND VALLEY CATTERY. BROWSE OUR ADORABLE LITTERS AVAILABLE FOR PURCHASE.</span></div>
 					</div>
@@ -186,7 +186,7 @@ export default function Page() {
 						</div>
 
 						<div className="flex mt-10">
-							<div className="w-full bg-gradient-to-b from-[#ca8076] to-[#9d5850] text-text-header-0 rounded-xl relative p-4 border-[3px] border-text-header-0">
+							<div className="w-full bg-gradient-to-b from-white to-navbar-body-1 text-text-header-0 rounded-xl relative p-4 border-[3px] border-text-header-0">
 								<label className="font-bold text-2xl align-middle" htmlFor="sort">Sort By:</label>
 								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-white border-2 bg-opacity-30">
 									<option value="name">Name</option>
@@ -194,9 +194,9 @@ export default function Page() {
 								</select>
 							</div>
 							<div className=" ml-10 mr-10">
-								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-gradient-to-b from-[#ca8076] to-[#9d5850] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</Link>
+								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-gradient-to-b from-white to-navbar-body-0 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</Link>
 								<div className={"absolute size-[128px] top-[430px] right-[40px] transition duration-500 " + (addTooltip ? " opacity-100" : "opacity-0")}>
-									<div className="w-full bg-text-header-0 border-4 border-gray-500 h-8 rounded-full drop-shadow">
+									<div className="w-full bg-text-header-0 border-4 border-[#092C48] h-8 rounded-full drop-shadow">
 										<p className="flex size-full text-center text-lg text-white justify-center align-middle">Add Cat</p>
 									</div>
 								</div>

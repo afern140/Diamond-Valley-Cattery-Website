@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 const DisplayButton = () => {
     return (
-        <button className="w-full bg-[#e1b2ad] dark:bg-[#8b615c] shadow-cat-default p-6 rounded-2xl text-black">
+        <button className="w-full bg-navbar-body-1 dark:bg-dark-navbar-body-1 shadow-cat-default p-6 rounded-2xl text-black">
             <div className="pb-6 relative size-full max-w-[200px] m-auto">
                 <Image className=""
                        alt="Placeholder"

@@ -17,13 +17,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
-
+  let contrastVal = 1;
 
   return (
     <AuthContextProvider>
       <ChatProvider>
         <html lang="en">
-          <body id="body" className={inter.className + " "}>
+          <body id="body" className={inter.className + ` contrast-[${contrastVal}]`}>
             <ThemeProvider
             attribute="class"
             enableSystem="false">

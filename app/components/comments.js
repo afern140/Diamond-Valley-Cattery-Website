@@ -22,7 +22,7 @@ export default function Comments(cat) {
 
 
    return (
-      <section className="text-gray-800 pt-4 border-t-2 border-[#AE87D8] bg-gradient-to-t from-[#F1C4EA] to-[#ff97ef]">
+      <section className="text-gray-800 pt-4 border-t-4 border-[#092C48] bg-gradient-to-b from-[#c1b0c5] to-navbar-body-1">
          <h1 className="text-5xl font-bold text-center text-gray-500 drop-shadow">Comments</h1>
          <div className="mx-40 m-auto flex-col justify-center bg-white bg-opacity-40 mt-10 rounded-xl border-2 border-white overflow-hidden">
             {comments.map((comment) => (

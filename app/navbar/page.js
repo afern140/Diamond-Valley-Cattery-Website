@@ -19,12 +19,12 @@ const Navbar = () => {
       firebaseSignOut();
  }
 
+ const [expandUser, setExpandUser] = useState(false);
  const [expandSettings, setExpandSettings] = useState(false);
  const { theme, setTheme } = useTheme("light");
  const pathname = usePathname();
  const [toggleLargeCursor, setToggleLargeCursor] = useState(false);
 
- const [expandNotifications, setExpandNotifications] = useState(false);
 
  const [aboutSelected, setAboutSelected] = useState(false);
  const [catsSelected, setCatsSelected] = useState(false);
@@ -117,7 +117,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="font-sans text-black font-normal text-base pt-6 bg-[#9d5850] dark:bg-[#bc745a] z-40 relative">
+    <div className="font-sans text-black font-normal text-base pt-6 bg-navbar-body-0 dark:bg-dark-navbar-body-0 z-40 relative">
     {toggleLargeCursor ? <CustomCursor /> : null}
 
     <div className="w-full sticky mx-auto p-2 z-0">
@@ -131,71 +131,65 @@ const Navbar = () => {
 
           {/* Right-hand side button split */}
           <div className="w-full flex">
-            {/* Notifications */}
-            <div className="relative w-full flex m-auto justify-end">
-              <button onClick={() => setExpandNotifications(!expandNotifications)}
-              className="relative flex p-2 border-4 border-black hover:border-gray-700 rounded-full bg-white bg-opacity-70 hover:bg-opacity-90 transition duration-300 hover:scale-110 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                <Image className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]" alt="Notifications" src="/img/notification-icon.svg" width={40} height={40} />
-              </button>
-
-              { expandNotifications && 
-              <div className="bg-white w-[400px] absolute top-16 border-4 rounded-xl p-2 overflow-hidden">
-                <div className="h-10">
-                  <p>Hello World </p>
-                </div>
-              </div>
-              }
-            </div>
-
             {/* Settings */}
-            <div id="mousemove" className="relative justify-end px-10 z-40">
-              <button className={"p-4 rounded-full relative transition duration-300 text-black z-10 border-4 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (expandSettings ? " bg-white bg-opacity-90 hover:scale-110 hover:bg-white hover:bg-opacity-100 border-gray-500 hover:border-gray-700" : " hover:bg-white hover:bg-opacity-90 bg-white bg-opacity-70 hover:scale-110 border-black hover:border-gray-700")}
-                                onClick={() => setExpandSettings(!expandSettings)}><p className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Settings</p></button>
+            <div id="mousemove" className="relative justify-end flex m-auto w-full px-10 z-40">
+              <button className={"p-2 rounded-full relative transition duration-300 text-black z-10 border-2 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (expandUser ? " bg-white bg-opacity-90 hover:scale-110 hover:bg-white hover:bg-opacity-100 border-gray-500 hover:border-gray-700" : " hover:bg-white hover:bg-opacity-90 bg-white bg-opacity-70 hover:scale-110 border-black hover:border-gray-700")}
+                                onClick={() => setExpandUser(!expandUser)}><Image alt="user" src="/img/userprofile.png" width={48} height={48} /></button>
               {/*<div className="bg-yellow-700 p-3 rounded-xl -translate-y-[21px] -z-20"/>*/}
 
-              { expandSettings &&
-                (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-1 -translate-x-6 shadow transition duration-300 overflow-clip">
-                  <div className="flex p-2 space-x-4 text-black dark:text-white">
-                    <p>Dark Theme</p>
-                    <button className="rounded-full" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-                      <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 bg-gray-700 dark:bg-green-400"} >
-                        <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 -translate-x-3 dark:translate-x-3"} />
+              { expandUser &&
+                (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-6 shadow transition duration-300 overflow-clip">
+                  <div className="relative w-full z-40">
+                    <button className="relative w-full z-40 " onClick={() => setExpandSettings(!expandSettings)}>
+                      <div className={"relative z-40 flex p-2 w-full text-black dark:text-white dark:hover:bg-gray-700 hover:bg-gray-200 size-full text-left" + (expandSettings ? " bg-gray-200 hover:bg-gray-300 active:bg-gray-400" : " dark:hover:bg-gray-700 hover:bg-gray-200 active:bg-gray-400")}>
+                        <Image alt="Settings" src="/img/settings.svg" width={32} height={32} />
+                        <span className="my-auto pl-2">Settings</span>
                       </div>
                     </button>
                   </div>
-                  <div className="flex p-2 space-x-4 text-black dark:text-white relative">
-                    <p>Contrast</p>
-                    <div className="rounded-full w-full pr-2">
-                      <div className={"w-full h-6 rounded-full border-2 flex transition duration-200 bg-gray-700 dark:bg-green-400"} >
-                        <button onClick={() => handleContrastEdit()}
-                          style={{left: `${returnPositionLogic(contrastStartPos, [0, 0], true).x}%`}}
-                          className={"absolute bg-gray-300 dark:bg-white size-4 rounded-full m-auto translate-x-1 translate-y-[2px]"} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex p-2 space-x-4 text-black dark:text-white">
-                    <p>Large Cursor</p>
-                    <button className="rounded-full" onClick={() => setToggleLargeCursor(!toggleLargeCursor)}>
-                      <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 bg-gray-700 dark:bg-green-400"} >
-                        <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 " + (toggleLargeCursor ? " translate-x-3" : " -translate-x-3")} />
-                      </div>
-                    </button>
-                  </div>
-                  {user && <div className="relative z-40">
+                  {user && <div className="relative z-40 border-y">
                     <Link className="relative z-40 " href={"/dashboard"}>
-                      <div className="relative z-40 flex p-2 w-full text-black dark:text-white dark:hover:bg-gray-700 hover:bg-gray-200 size-full text-left">
-                        <span>Dashboard</span>
+                      <div className="relative z-40 flex p-2 w-full text-black dark:text-white dark:hover:bg-gray-700 hover:bg-gray-200 active:bg-gray-400 size-full text-left">
+                        <Image alt="Settings" src="/img/dashboard.png" width={32} height={32} />
+                        <span className="my-auto pl-2">Dashboard</span>
                       </div>
                     </Link>
                   </div>}
                   <div className="relative z-40">
                     <Link className="relative z-40" onClick={handleSignOut} href={user ? "" : "../login"}>
-                      <div className="relative z-40 flex p-2 w-full text-black dark:text-white dark:hover:bg-gray-700 hover:bg-gray-200 size-full text-left" onClick={() => handleSignOut}>
-                        {user ? <span>Sign Out</span> : <span>Sign In</span>}
+                      <div className="relative z-40 flex p-2 w-full text-black dark:text-white dark:hover:bg-gray-700 hover:bg-gray-200 active:bg-gray-400 size-full text-left" onClick={() => handleSignOut}>
+                        <Image className="-translate-x-1" alt="Settings" src="/img/sign-in.png" width={32} height={32} />
+                        {user ? <span className="my-auto pl-2">Sign Out</span> : <span className="my-auto pl-2">Sign In</span>}
                       </div>
                     </Link>
                   </div>
                 </div>)
+              }
+              {expandSettings && expandUser && 
+                (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-[344px] shadow transition duration-300 overflow-clip">
+                <div className="flex p-2 space-x-4 text-black dark:text-white">
+                  <p>Dark Theme</p>
+                  <button className="rounded-full" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+                    <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 bg-gray-700 dark:bg-green-400"} >
+                      <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 -translate-x-3 dark:translate-x-3"} />
+                    </div>
+                  </button>
+                </div>
+                <div className="flex p-2 space-x-4 text-black dark:text-white relative border-y">
+                  <p>Contrast</p>
+                  <div className="rounded-full w-full pr-2">
+                    <input className=" bg-gray-700 dark:bg-gray-500 border-2 my-auto h-6 p-1 rounded-full appearance-none" type="range" min="0" max="2" step="0.1" id="contrast-slider"/>
+                  </div>
+                </div>
+                <div className="flex p-2 space-x-4 text-black dark:text-white">
+                  <p>Large Cursor</p>
+                  <button className="rounded-full" onClick={() => setToggleLargeCursor(!toggleLargeCursor)}>
+                    <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 " + (toggleLargeCursor ? " bg-green-400 " : " bg-gray-700 dark:bg-gray-500")} >
+                      <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 " + (toggleLargeCursor ? " translate-x-3" : " -translate-x-3")} />
+                    </div>
+                  </button>
+                </div>
+              </div>)
               }
             </div>
           </div>
@@ -204,10 +198,10 @@ const Navbar = () => {
       </div>
     </div>
         {/* Navigation Buttons */}
-        <div className="w-full h-full flex m-auto mt-2 relative border border-[#eecbc7] dark:border-[#6f403a] -z-10">
-          <div className="border-r border-[#eecbc7] dark:border-[#6f403a] w-full flex justify-center"><LinkButton text="About" selected={aboutSelected} callback={choosePage} /></div>
-          <div className="border-r border-[#eecbc7] dark:border-[#6f403a] w-full flex justify-center"><LinkButton text="Cats" href="/cats" selected={catsSelected} callback={choosePage} /></div>
-          <div className="border-r border-[#eecbc7] dark:border-[#6f403a] w-full flex justify-center"><LinkButton text="Litters" href="/litters" selected={littersSelected} callback={choosePage} /></div>
+        <div className="w-full h-full flex m-auto mt-2 relative border border-navbar-body-2 dark:border-[#eecbc7] -z-10">
+          <div className="border-r border-navbar-body-2 dark:border-[#eecbc7] w-full flex justify-center"><LinkButton text="About" selected={aboutSelected} callback={choosePage} /></div>
+          <div className="border-r border-navbar-body-2 dark:border-[#eecbc7] w-full flex justify-center"><LinkButton text="Cats" href="/cats" selected={catsSelected} callback={choosePage} /></div>
+          <div className="border-r border-navbar-body-2 dark:border-[#eecbc7] w-full flex justify-center"><LinkButton text="Litters" href="/litters" selected={littersSelected} callback={choosePage} /></div>
           <div className="w-full flex justify-center"><LinkButton text="Contact" href="/virtualcatroom" selected={contactSelected} callback={choosePage} /></div>
         </div>
     </div>

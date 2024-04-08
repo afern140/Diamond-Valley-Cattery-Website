@@ -13,6 +13,8 @@ import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
 import Comments from "@/app/components/comments";
 import BackButton from "@/app/components/BackToTopButton";
+import BackgroundUnderlay from "@/app/components/background-underlay";
+
 
 export default function Page({params}) {
 
@@ -147,16 +149,17 @@ export default function Page({params}) {
      
 	return(
 		<main className={"relative" + (cat ? "" : " h-screen")}>
+			<BackgroundUnderlay />
+
 			{/* Back to top function */}
 			<BackButton url="#Navbar" />
 
-			<div className="w-full h-full grow absolute pointer-events-none -z-10 bg-gradient-to-b from-[#EBB7A6] to-[#F1C4EA]"/>
 			{cat ? (
 				<section className="relative z-20">
 					<div className="pt-20 flex pb-10 relative z-20">
-						<div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-gradient-to-r from-[#A783D5] via-[#EB9839] to-[#E37B87] text-transparent bg-clip-text">
+						<div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-[#092C48] text-transparent bg-clip-text">
 							<span className="text-6xl pb-10 font-extrabold uppercase">{cat.name}</span>
-							<button onClick={handleFavoriteButton} className={"m-auto mt-2"}>
+							<button onClick={() => handleFavoriteButton()} className={"m-auto mt-2"}>
 								<div className={"relative m-auto flex rounded-full " + (favorite ? "bg-red-600" : "")}>
 									<Image alt="Favorite" src="/img/circle.svg" width={64} height={64} />
 									<Image className="absolute top-[18px] right-4" alt="Heart" src="/img/heart.svg" width={32} height={32} />
@@ -175,7 +178,7 @@ export default function Page({params}) {
 					</div>
 					<div className="flex flex-row w-full px-10 xl:px-20">
 						<div className="flex flex-col text-black text-xl font-bold text-left">
-							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] text-gray-700">
+							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48]">
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
@@ -183,12 +186,12 @@ export default function Page({params}) {
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>
-							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] text-gray-700">
+							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48]">
 								<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 								<p className="font-normal">{cat.description}</p>
 							</div>
 							<div className="flex flex-col xl:flex-row mx-10 xl:space-x-6 space-y-6 xl:space-y-0 mt-6 rounded-lg min-w-64">
-								<div className=" bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] text-gray-700 rounded-xl p-10">
+								<div className=" bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48] rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Conditions</h2>
 									{cat.conditions ? (
 										cat.conditions.map((condition) => (
@@ -201,7 +204,7 @@ export default function Page({params}) {
 										) : (<div>None</div>)
 									}
 								</div>
-								<div className=" bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] text-gray-700 rounded-xl p-10">
+								<div className=" bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48] rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Vaccinations</h2>
 									{cat.vaccinations ? (
 										cat.vaccinations.map((vaccination) => (
@@ -239,12 +242,12 @@ export default function Page({params}) {
 							</div>
 						</div>
 						<div className="flex flex-col ml-auto mx-10 mb-auto mt-10">
-							<div className="text-gray-700 font-bold">
+							<div className="text-[#092C48] font-bold">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
-								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-xl p-4 text-xl" >
+								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-gradient-to-b from-white to-navbar-body-1 border-[3px] border-[#092C48] rounded-xl p-4 text-xl" >
 									<div className="relative flex">
 										<span className="my-auto flex">Request a Meeting</span>
-										<div className="flex mx-3 w-1 bg-gray-700 rounded-full" />
+										<div className="flex mx-3 w-1 bg-[#092C48] rounded-full" />
 										<button onClick={handleMeetingButton} className="bg-white bg-opacity-0 hover:bg-opacity-50 active:bg-opacity-80 transition duration-100 p-2 rounded-full">
 											<Image alt=">" src="/img/right-arrow.svg" width={32} height={32} />
 										</button>

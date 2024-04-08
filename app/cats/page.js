@@ -234,7 +234,7 @@ export default function Page() {
 		{/* Second split of the page */}
 		<div className="w-full flex-col mr-16">
 			<div className="flex w-full">
-				<div className=" w-full max-w-[400px] mr-full ml-auto justify-end flex-col bg-white dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg">
+				<div className=" w-full max-w-[200px] mr-full ml-auto justify-end flex-col bg-white dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg">
 					<h2 className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort by:</h2>
 					<div className=" pt-4">
 						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>

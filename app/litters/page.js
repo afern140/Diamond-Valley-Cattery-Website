@@ -186,9 +186,9 @@ export default function Page() {
 						</div>
 
 						<div className="flex mt-10">
-							<div className="max-w-[400px] mr-full ml-auto bg-white dark:bg-gray-500 text-text-header-0 rounded-xl relative p-4 drop-shadow-lg">
-								<label className="font-bold text-2xl align-middle" htmlFor="sort">Sort By:</label>
-								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-[#e5e5ff] border-2 bg-opacity-100">
+							<div className="max-w-[220px] mr-full ml-auto bg-white dark:bg-gray-500 text-text-header-0 rounded-xl relative p-4 drop-shadow-lg">
+								<label className="font-bold text-xl align-middle pb-8" htmlFor="sort">Sort By:</label>
+								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
 									<option value="name">Name</option>
 									<option value="expDate">Expected Date</option>
 								</select>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, React } from "react";
+import React, { useState, useRef, useEffect } from "react";
 //import cats from "@/app/cats/[cat]/cat.json"
 
 function Dropdown({queryType, callback, cats, isInsidePanel}) {
@@ -56,16 +56,32 @@ function Dropdown({queryType, callback, cats, isInsidePanel}) {
     }
 
 
+    const dropdown = useRef(null);
+
+    useEffect(() => {
+        // only add the event listener when the dropdown is opened
+        if (!isOpen) return;
+
+        function handleClick(event) {
+            if (dropdown.current && !dropdown.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        }
+
+        window.addEventListener("mousedown", handleClick);
+        return () => { window.removeEventListener("mousedown", handleClick); }
+    }, [isOpen]);
+
     return (
-        <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
+        <div className="relative flex flex-col items-center w-full h-auto rounded-xl">
             <button onClick={() => setIsOpen((prev) => !prev)}
-                className={"h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border duration-300 drop-shadow-lg active:text-white " + (isInsidePanel ? "bg-[#e5e5ff] bg-opacity-100 text-gray-700 border-white" : "bg-white text-black border-black")}>
-                <span className={"text-sm"}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
+                className={"h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-xl tracking-wider border duration-300 drop-shadow-lg active:text-white " + (isInsidePanel ? "bg-[#e5e5ff] bg-opacity-100 text-gray-700" : "bg-white text-black")}>
+                <span className={"text-normal font-normal"}>{(dropdownValue === "" ? "None" : dropdownValue)}</span>
             </button>
             
             { /* When we press the dropdown button, we change the state to 'Open' and populate the list with the appropriate values. */}
             { isOpen && (
-                <div className=" bg-[#EFEFEF] text-gray-700 border border-gray-300 absolute top-10 right-0 flex flex-col items-start rounded-lg p-2 w-full h-96 z-20 overflow-auto">
+                <div ref={dropdown} className=" bg-[#EFEFEF] text-gray-700 border border-gray-300 absolute top-10 right-0 flex flex-col items-start rounded-lg p-2 w-full h-96 z-20 overflow-auto">
                     {/* "None" button that goes on top to clear the filter */}
                     <button onClick={(e) => handleCallback("")} className="font-bold w-full flex">None</button>
                     {list.map((item, index) => (

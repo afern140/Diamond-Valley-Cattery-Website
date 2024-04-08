@@ -9,6 +9,14 @@ import CatButton from "@/app/components/cats/catbutton";
 import BackButton from "@/app/components/BackToTopButton"
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
+import { useUserAuth } from "../_utils/auth-context";
+import {
+  getUser,
+  getUserCats,
+  updateUser,
+  useUser,
+} from "../_utils/user_services";
+
 export default function Page() {
 	//Holds data that the page can display. Uses backup data until database is loaded
 	const [cats, setCats] = useState();
@@ -22,10 +30,37 @@ export default function Page() {
 	//Sorting method
 	const [sortingMethod, setSortingMethod] = useState("");
 
+	const { user } = useUserAuth();
+	const [filteredUser, setFilteredUser] = useState({role: "role", name: "name", username: "username", email: "randomemail@gmail.com", phone: "123-456-7890"});
+
+	const [breedType, setBreedType] = useState("");
+	const [genderType, setGenderType] = useState("");
+	const [ageType, setAgeType] = useState("");
+	const [colorType, setColorType] = useState("");
+	const [sortbyType, setSortbyType] = useState("");
+
+	/*useEffect(() => {
+		const fetchUser = async () => {
+		const newUser = await getUser(user);
+		setFilteredUser(newUser);
+		setUpdatedUser(newUser);
+		};
+		fetchUser();
+	}, [user]);
+
+	useEffect(() => {
+		const fetchUserCats = async () => {
+		const favoriteCats = await getUserCats(filteredUser);
+		setFavoriteCats(favoriteCats);
+		};
+		fetchUserCats();
+	}, [filteredUser]);*/
+
 	//Replaces the cats list with the database data when it is loaded
 	useEffect(() => {
 		const fetchCats = async () => {
 			const cats = await getObjects('cats');
+			console.log(cats);
 			setCats(cats);
 		};
 		fetchCats();
@@ -185,29 +220,7 @@ export default function Page() {
 				</div>
 			</div>
 
-			<div>
-				{/* Search Field */}
-				<div className="align-middle justify-center flex translate-x-6">
-					<input type="text"
-						name="catlist-search"
-						placeholder="Search"
-						value={fieldInput}
-						className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-3/5 h-16"
-						onChange = { (Event) => searchItems(Event.target.value, "") }>
-					</input>
-					
-					<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
-				</div>
-				{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-					<div className="absolute z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
-						{
-							filteredResults.map((cat) => (
-								<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
-							))
-						}
-					</div> : <div />
-				}
-			</div>
+			
 
 	<div className="flex py-6 w-full justify-center">
 		<div className="flex w-full">
@@ -216,13 +229,33 @@ export default function Page() {
 			<div className="p-6 w-full text-text-header-0 rounded-xl relative -z-20 bg-white dark:bg-gray-500  drop-shadow-lg">
 				<h2 className="py-6 text-2xl font-semibold text-center drop-shadow-md">Filters</h2>
 				<h3 className="py-2 text-lg">Breed</h3>
-				<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={breedType} onChange={(e) => setBreedType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					<option value="breed">Name</option>
+					<option value="expDate">Expected Date</option>
+				</select>
 				<h3 className="py-2 text-lg">Gender</h3>
-				<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={genderType} onChange={(e) => setGenderType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					{ filteredResults && filteredResults.map((cat) => (
+							<option value=""></option>
+						))
+					}
+				</select>
 				<h3 className="py-2 text-lg">Age</h3>
-				<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={ageType} onChange={(e) => setAgeType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					<option value="breed">Name</option>
+					<option value="expDate">Expected Date</option>
+				</select>
 				<h3 className="py-2 text-lg">Color</h3>
-				<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={colorType} onChange={(e) => setColorType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					<option value="breed">Name</option>
+					<option value="expDate">Expected Date</option>
+				</select>
+				
+
 
 				<div className="w-fit z-10">
 					<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-background-gradient-1 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>
@@ -234,12 +267,38 @@ export default function Page() {
 		{/* Second split of the page */}
 		<div className="w-full flex-col mr-16">
 			<div className="flex w-full">
+
+				<div className="w-full h-full">
+					{/* Search Field */}
+					<div className="align-middle justify-center w-full flex">
+						<input type="text"
+							name="catlist-search"
+							placeholder="Search"
+							value={fieldInput}
+							className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-full h-16"
+							onChange = { (Event) => searchItems(Event.target.value, "") }>
+						</input>
+						
+						<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
+					</div>
+					{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
+						<div className="absolute z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+							{
+								filteredResults.map((cat) => (
+									<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
+								))
+							}
+						</div> : <div />
+					}
+				</div>
+
 				<div className=" w-full max-w-[200px] mr-full ml-auto justify-end flex-col bg-white dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg">
 					<h2 className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort by:</h2>
 					<div className=" pt-4">
 						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
 					</div>
 				</div>
+				{filteredUser && filteredUser.role === "breeder" &&
 				<div className="absolute size-fit right-0 top-[40px]">
 					<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)}
 						className="relative z-40 size-fit" href="cats/add">
@@ -261,10 +320,11 @@ export default function Page() {
 						</div>
 					</div>
 				</div>
+				}
 			</div>
 			<div className="h-6"/>
 			<div className="scroll-auto">
-				<div className="grid w-full grid-cols-3 bg-white dark:bg-gray-500 bg-opacity-100 drop-shadow-lg rounded-xl">
+				<div className="grid w-full grid-cols-3 p-4 bg-white dark:bg-gray-500 bg-opacity-100 drop-shadow-lg rounded-xl">
 					{/* Populating the list with cats */}
 					{filteredResults ? (
 						filteredResults.length > 0 ?

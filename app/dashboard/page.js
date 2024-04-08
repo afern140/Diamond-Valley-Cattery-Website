@@ -164,7 +164,7 @@ export default function Page() {
         </div>
       {filteredUser ? (
         <div>
-          <div className="flex flex-row justify-center items-center bg-gradient-to-b from-white to-navbar-body-1 border-[3px] border-text-header-0 p-5 m-10 rounded-xl text-left">
+          <div className="flex flex-row justify-center items-center bg-white dark:bg-gray-500 drop-shadow-lg p-5 m-10 rounded-xl text-left">
             {edit ? (
               <div className="flex w-full">
                 <div
@@ -204,7 +204,7 @@ export default function Page() {
                       placeholder={filteredUser.name}
                       value={updatedUser.name}
                       onChange={handleChange}
-                      className="pl-2 ml-2 p-1 rounded-xl border "
+                      className="pl-2 ml-2 p-1 rounded-xl bg-navbar-body-1 drop-shadow-lg "
                     />
                   </div>
                   <div className="w-full flex">
@@ -215,7 +215,7 @@ export default function Page() {
                       placeholder={filteredUser.username}
                       value={updatedUser.username}
                       onChange={handleChange}
-                      className="pl-2 ml-2 p-1 rounded-xl border"
+                      className="pl-2 ml-2 p-1 rounded-xl bg-navbar-body-1 drop-shadow-lg "
                     />
                   </div>
                   <div className="w-full flex">
@@ -226,7 +226,7 @@ export default function Page() {
                       placeholder={filteredUser.email}
                       value={updatedUser.email}
                       onChange={handleChange}
-                      className="pl-2 ml-2 p-1 rounded-xl border w-2/3"
+                      className="pl-2 ml-2 p-1 rounded-xl bg-navbar-body-1 drop-shadow-lg "
                     />
                   </div>
                   <div className="w-full flex mb-12">
@@ -237,10 +237,10 @@ export default function Page() {
                       placeholder={filteredUser.phone}
                       value={parseInt(updatedUser.phone)}
                       onChange={handleChange}
-                      className="pl-2 ml-2 p-1 rounded-xl border"
+                      className="pl-2 ml-2 p-1 rounded-xl bg-navbar-body-1 drop-shadow-lg "
                     />
                   </div>
-                  <button className=" px-4 py-2 border-[3px] border-gray-700 size-fit mx-auto bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg rounded-xl" onClick={handleSubmit}>Submit</button>
+                  <button className=" px-4 py-2 bg-navbar-body-1 size-fit mx-auto drop-shadow-lg rounded-xl" onClick={handleSubmit}>Submit</button>
                 </div>
               </div>
             ) : (
@@ -267,7 +267,7 @@ export default function Page() {
               </div>
             )}
           </div>
-          <div className="bg-gradient-to-b from-white to-navbar-body-1 border-[3px] border-text-header-0 p-2 mx-10 rounded-xl">
+          <div className="bg-white dark:bg-gray-500 drop-shadow-lg p-2 mx-10 rounded-xl">
             <h2 className="text-black text-2xl text-left font-bold pb-4 m-10 mb-0">
               Recent Message
             </h2>
@@ -292,7 +292,7 @@ export default function Page() {
               )}
             </div>
           </div>
-          <div className="mt-10 bg-gradient-to-b from-white to-navbar-body-1 border-[3px] border-text-header-0 p-2 mx-10 rounded-xl">
+          <div className="mt-10 bg-white dark:bg-gray-500 drop-shadow-lg p-2 mx-10 rounded-xl">
             <h2 className="text-black text-2xl text-left font-bold pb-4 m-10 mb-0">
               Favorite Cats
             </h2>
@@ -381,7 +381,7 @@ export default function Page() {
               </>
             )}
           </div>
-          <h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
+          <h2 className=" text-header-text-0 dark:text-dark-header-text-0 text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
             Recent Message
           </h2>
           <div className="mx-10 my-4">
@@ -401,10 +401,10 @@ export default function Page() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500">No recent messages.</p>
+              <p className="text-gray-500 dark:text-gray-800">No recent messages.</p>
             )}
           </div>
-          <h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
+          <h2 className=" text-header-text-0 dark:text-dark-header-text-0 text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
             Favorite Cats
           </h2>
           <div className="flex">
@@ -424,7 +424,7 @@ export default function Page() {
                 </h3>
               ))
             ) : (
-              <h2>Add cats to your favorites list to have them appear here</h2>
+              <h2 className="text-gray-500 dark:text-gray-800">Add cats to your favorites list to have them appear here</h2>
             )}
           </div>
         </div>

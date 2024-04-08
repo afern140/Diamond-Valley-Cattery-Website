@@ -6,10 +6,10 @@ export default function CatButton({ cat }) {
 		<Link href={`/cats/${cat.id}`} className="w-full flex justify-center flex-col font-bold p-2 text-black place-items-center">
 			<Image
 				alt="Cat"
-				src={cat.thumbnail ?cat.thumbnail : "/img/Placeholder.png"}
-				width={300}
-				height={300}
-				className="justify-center align-center place-items-center"
+				src={cat.thumbnail ? cat.thumbnail : "/img/Placeholder.png"}
+				width={200}
+				height={200}
+				className="justify-center align-center place-items-center border border-black rounded-xl drop-shadow-lg"
 				objectFit="contain"/>
 			<p className=" mt-1">{cat.name}</p>
 			<p className=" text-sm font-medium">{cat.breed}</p>

@@ -23,8 +23,8 @@ export default function Comments(cat) {
 
    return (
       <section className="text-gray-800 pt-4 ">
-         <h1 className="text-5xl font-bold text-center text-gray-500 drop-shadow">Comments</h1>
-         <div className="mx-40 m-auto flex-col justify-center bg-white bg-opacity-100 mt-10 p-4 drop-shadow-lg rounded-xl border-2 border-white overflow-hidden">
+         <h1 className="text-5xl font-bold text-center text-gray-700 dark:text-dark-header-text-0 drop-shadow">Comments</h1>
+         <div className="mx-40 m-auto flex-col justify-center bg-white dark:bg-gray-500 bg-opacity-100 mt-10 p-4 drop-shadow-lg rounded-xl  overflow-hidden">
             {comments.map((comment) => (
             <Comment 
             key={comment.id}
@@ -59,27 +59,27 @@ async function addComment(commentDoc,cat){
    return docRef.id;
 }
 
-function NewComment(cat,setComments) {
+function NewComment(cat, setComments) {
    const [message, setMessage] = useState("");
    const currentCat = cat.cat;
    
-async function handleAddComment(e){
-    e.preventDefault();
-    const date = new Date.now;
-    const timestamp = Timestamp.fromDate(date);
-    const commentDoc = {
-        message: message,
-        createUID: auth.currentUser.uid,
-        createName: auth.currentUser.displayName,
-        catID: currentCat.id,
-        catName: currentCat.name,
-        createTime: timestamp
-    };
-    await addComment(commentDoc,cat);
-    setMessage("");
-    setComments((prevComments) => [...prevComments, commentDoc]);
-    //window.location.reload();
-}
+   async function handleAddComment(e){
+      e.preventDefault();
+      const date = new Date();
+      const timestamp = Timestamp.fromDate(date);
+      const commentDoc = {
+         message: message,
+         createUID: auth.currentUser.uid,
+         createName: auth.currentUser.displayName,
+         catID: currentCat.id,
+         catName: currentCat.name,
+         createTime: timestamp
+      };
+      await addComment(commentDoc,cat);
+      setMessage("");
+      setComments((prevComments) => [...prevComments, commentDoc]);
+      //window.location.reload();
+   }
 
    return(
       <div className="text-black mt-8">
@@ -90,9 +90,9 @@ async function handleAddComment(e){
                placeholder="Comment Here"
                value = {message}
                onChange={(e) => setMessage(e.target.value)}
-               className="border-s-4 border-[#e5e5ff] p-2 mb-16 w-[400px] drop-shadow-lg text-black"
+               className="border-s-4 border-[#c7c7e1] p-2 mb-16 w-[400px] drop-shadow-lg text-black bg-navbar-body-1"
             />
-            <button type="submit" className=" drop-shadow-lg bg-[#e5e5ff] rounded text-black py-2 text-2xl px-4">
+            <button type="submit" className=" drop-shadow-lg bg-[#e5e5ff] rounded text-black py-4 text-2xl px-6 transition duration-300 hover:scale-110">
                Submit
             </button>
          </form>

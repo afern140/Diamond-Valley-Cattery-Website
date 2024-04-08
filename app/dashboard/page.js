@@ -11,7 +11,7 @@ import {
   useUser,
 } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "@/app/components/ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 // const getUser = async(userAuth) => {
 // 	const usersCollection = await getDocs(collection(db, 'users'));

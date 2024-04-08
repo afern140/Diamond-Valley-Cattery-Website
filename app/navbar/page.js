@@ -198,10 +198,10 @@ const Navbar = () => {
       </div>
     </div>
         {/* Navigation Buttons */}
-        <div className="w-full h-full flex m-auto mt-2 relative border border-navbar-body-2 dark:border-[#eecbc7] -z-10">
-          <div className="border-r border-navbar-body-2 dark:border-[#eecbc7] w-full flex justify-center"><LinkButton text="About" selected={aboutSelected} callback={choosePage} /></div>
-          <div className="border-r border-navbar-body-2 dark:border-[#eecbc7] w-full flex justify-center"><LinkButton text="Cats" href="/cats" selected={catsSelected} callback={choosePage} /></div>
-          <div className="border-r border-navbar-body-2 dark:border-[#eecbc7] w-full flex justify-center"><LinkButton text="Litters" href="/litters" selected={littersSelected} callback={choosePage} /></div>
+        <div className="w-full h-full flex m-auto mt-2 relative border border-navbar-body-2  -z-10">
+          <div className="border-r border-navbar-body-2  w-full flex justify-center"><LinkButton text="About" selected={aboutSelected} callback={choosePage} /></div>
+          <div className="border-r border-navbar-body-2  w-full flex justify-center"><LinkButton text="Cats" href="/cats" selected={catsSelected} callback={choosePage} /></div>
+          <div className="border-r border-navbar-body-2  w-full flex justify-center"><LinkButton text="Litters" href="/litters" selected={littersSelected} callback={choosePage} /></div>
           <div className="w-full flex justify-center"><LinkButton text="Contact" href="/virtualcatroom" selected={contactSelected} callback={choosePage} /></div>
         </div>
     </div>

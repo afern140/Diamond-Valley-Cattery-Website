@@ -182,13 +182,13 @@ export default function Page({params}) {
 								<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 								<p className="font-normal">{cat.description}</p>
 							</div>
-							<div className="flex flex-col xl:flex-row mx-10 xl:space-x-6 space-y-6 xl:space-y-0 mt-6 rounded-lg min-w-64">
+							<div className="flex flex-col mx-10 space-y-6 mt-6 rounded-lg min-w-64">
 								<div className=" bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Conditions</h2>
-									<div className="overflow-y-scroll h-72 dark:bg-gray-400 drop-shadow-lg rounded-xl">
+									<div className="overflow-x-scroll flex max-w-[40vw] dark:bg-gray-400 drop-shadow-lg rounded-xl">
 										{cat.conditions ? (
 											cat.conditions.map((condition) => (
-												<div key={condition.id} className="flex flex-col rounded-md p-4 m-4 ml-0">
+												<div key={condition.id} className="flex flex-col rounded-md p-4 m-4 ml-0 w-[300px]">
 													<h3>{condition.name}</h3>
 													<p>Description: <span className="font-normal">{condition.description}</span></p>
 													<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
@@ -200,7 +200,7 @@ export default function Page({params}) {
 								</div>
 								<div className=" bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Vaccinations</h2>
-									<div className=" overflow-x-scroll flex w-[300px] space-x-6 p-4 rounded-xl dark:bg-gray-400">
+									<div className=" overflow-x-scroll flex max-w-[40vw] space-x-6 p-4 rounded-xl dark:bg-gray-400">
 										{cat.vaccinations ? (
 											cat.vaccinations.map((vaccination) => (
 												<div className="flex flex-col rounded-md p-4 m-4 ml-0">
@@ -231,6 +231,7 @@ export default function Page({params}) {
 															</li>
 														))}
 													</ul>
+													<div className="h-[90%] w-2 bg-white relative m-auto" />
 												</div>))) : (<div></div>)
 										}
 									</div>

@@ -3,7 +3,7 @@
 import { useState, React } from "react";
 //import cats from "@/app/cats/[cat]/cat.json"
 
-function Dropdown({queryType, callback, cats}) {
+function Dropdown({queryType, callback, cats, isInsidePanel}) {
     const [isOpen, setIsOpen] = useState(false)
     const [query, setQuery] = useState("")
 	const [dropdownValue, setDropdownValue] = useState("")
@@ -57,20 +57,20 @@ function Dropdown({queryType, callback, cats}) {
 
 
     return (
-    <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
-        <button onClick={() => setIsOpen((prev) => !prev)}
-                className="bg-white text-black h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border border-black duration-300 active:text-white">
-                    <span className={"text-sm"}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
-                </button>
+        <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
+            <button onClick={() => setIsOpen((prev) => !prev)}
+                className={"h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border duration-300 drop-shadow-lg active:text-white " + (isInsidePanel ? "bg-[#e5e5ff] bg-opacity-100 text-gray-700 border-white" : "bg-white text-black border-black")}>
+                <span className={"text-sm"}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
+            </button>
             
             { /* When we press the dropdown button, we change the state to 'Open' and populate the list with the appropriate values. */}
             { isOpen && (
-                <div className=" bg-slate-200 absolute top-10 right-0 flex flex-col items-start rounded-lg p-2 w-full h-96 z-20 overflow-auto">
-					{/* "None" button that goes on top to clear the filter */}
-					<button onClick={(e) => handleCallback("")} className="font-bold w-full flex">None</button>
+                <div className=" bg-[#EFEFEF] text-gray-700 border border-gray-300 absolute top-10 right-0 flex flex-col items-start rounded-lg p-2 w-full h-96 z-20 overflow-auto">
+                    {/* "None" button that goes on top to clear the filter */}
+                    <button onClick={(e) => handleCallback("")} className="font-bold w-full flex">None</button>
                     {list.map((item, index) => (
-                        <div className=" flex w-full justify-between hover:bg-slate-100 cursor-pointer rounded-r-lg border-l-transparent hover:border-l-slate-400 border-l-4 pl-1" 
-                             key={index}>
+                        <div className=" flex w-full justify-between hover:bg-gray-100 cursor-pointer rounded-r-lg border-l-transparent hover:border-l-slate-400 border-l-4 pl-1" 
+                            key={index}>
                             
                             {queryType === "breed" && (<button onClick={(e) => handleCallback(item.breed)} className="font-bold w-full flex">{item.breed}</button>)}
                             {queryType === "gender" && (<button onClick={(e) => handleCallback(item.gender)} className="font-bold w-full flex">{item.gender}</button>)}
@@ -82,7 +82,7 @@ function Dropdown({queryType, callback, cats}) {
                     ))}
                 </div>
             )}
-    </div>
+        </div>
     );
 }
 

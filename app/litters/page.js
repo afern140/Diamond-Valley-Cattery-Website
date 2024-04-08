@@ -7,6 +7,14 @@ import { getObject, getObjects } from "../_utils/firebase_services"
 import { getDoc } from "firebase/firestore"
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
+import { useUserAuth } from "../_utils/auth-context";
+import {
+  getUser,
+  getUserCats,
+  updateUser,
+  useUser,
+} from "../_utils/user_services";
+
 export default function Page() {
 	const [litters, setLitters] = useState([]);
 	const [sortBy, setSortBy] = useState("name");
@@ -14,6 +22,26 @@ export default function Page() {
 	const [filters, setFilters] = useState(["", "", "", ""]);
 	const [sortingMethod, setSortingMethod] = useState("");
 	const [filteredResults, setFilteredResults] = useState();
+
+	const { user } = useUserAuth();
+	const [filteredUser, setFilteredUser] = useState({role: "role", name: "name", username: "username", email: "randomemail@gmail.com", phone: "123-456-7890"});
+	
+	/*useEffect(() => {
+		const fetchUser = async () => {
+		const newUser = await getUser(user);
+		setFilteredUser(newUser);
+		setUpdatedUser(newUser);
+		};
+		fetchUser();
+	}, [user]);
+
+	useEffect(() => {
+		const fetchUserCats = async () => {
+		const favoriteCats = await getUserCats(filteredUser);
+		setFavoriteCats(favoriteCats);
+		};
+		fetchUserCats();
+	}, [filteredUser]);*/
 
 	useEffect(() => {
 		const fetchLitters = async () => {
@@ -193,6 +221,7 @@ export default function Page() {
 									<option value="expDate">Expected Date</option>
 								</select>
 							</div>
+							{filteredUser && filteredUser.role === "breeder" &&
 							<div className="absolute top-[50px] right-[40px]">
 								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-background-gradient-1 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] hover:scale-125 transition duration-300">+</Link>
 								<div className={"absolute size-[128px] top-[86px] right-[-30px] transition duration-500 z-10 " + (addTooltip ? " opacity-100" : "opacity-0")}>
@@ -200,7 +229,7 @@ export default function Page() {
 										<p className="relative flex size-full text-center text-lg text-white justify-center align-middle">Add Litter</p>
 									</div>
 								</div>
-							</div>
+							</div>}
 						</div>
 					</div>
 					<div className={"p-4 bg-white dark:bg-gray-500 bg-opacity-80 drop-shadow-lg mt-6 rounded-xl" + (filteredResults && filteredResults.length > 0 ? " h-[100vh]" : "")}>

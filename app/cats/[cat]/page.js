@@ -170,7 +170,7 @@ export default function Page({params}) {
 					</div>
 					<div className="flex flex-row w-full px-10 xl:px-20">
 						<div className="flex flex-col text-black text-xl font-bold text-left">
-							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-white drop-shadow-lg">
+							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg">
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
@@ -178,12 +178,12 @@ export default function Page({params}) {
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>
-							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-white drop-shadow-lg">
+							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg">
 								<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 								<p className="font-normal">{cat.description}</p>
 							</div>
 							<div className="flex flex-col xl:flex-row mx-10 xl:space-x-6 space-y-6 xl:space-y-0 mt-6 rounded-lg min-w-64">
-								<div className=" bg-white drop-shadow-lg rounded-xl p-10">
+								<div className=" bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Conditions</h2>
 									{cat.conditions ? (
 										cat.conditions.map((condition) => (
@@ -196,7 +196,7 @@ export default function Page({params}) {
 										) : (<div>None</div>)
 									}
 								</div>
-								<div className=" bg-white drop-shadow-lg rounded-xl p-10">
+								<div className=" bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Vaccinations</h2>
 									{cat.vaccinations ? (
 										cat.vaccinations.map((vaccination) => (
@@ -236,7 +236,7 @@ export default function Page({params}) {
 						<div className="flex flex-col ml-auto mx-10 mb-auto mt-10">
 							<div className="text-[#092C48] font-bold">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
-								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-white drop-shadow-lg rounded-xl p-4 text-xl" >
+								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-4 text-xl" >
 									<div className="relative flex">
 										<span className="my-auto flex">Request a Meeting</span>
 										<div className="flex mx-3 w-1 bg-[#092C48] rounded-full" />

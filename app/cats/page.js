@@ -9,6 +9,14 @@ import CatButton from "@/app/components/cats/catbutton";
 import BackButton from "@/app/components/BackToTopButton"
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
+import { useUserAuth } from "../_utils/auth-context";
+import {
+  getUser,
+  getUserCats,
+  updateUser,
+  useUser,
+} from "../_utils/user_services";
+
 export default function Page() {
 	//Holds data that the page can display. Uses backup data until database is loaded
 	const [cats, setCats] = useState();
@@ -22,10 +30,31 @@ export default function Page() {
 	//Sorting method
 	const [sortingMethod, setSortingMethod] = useState("");
 
+	const { user } = useUserAuth();
+	const [filteredUser, setFilteredUser] = useState({role: "role", name: "name", username: "username", email: "randomemail@gmail.com", phone: "123-456-7890"});
+
+	/*useEffect(() => {
+		const fetchUser = async () => {
+		const newUser = await getUser(user);
+		setFilteredUser(newUser);
+		setUpdatedUser(newUser);
+		};
+		fetchUser();
+	}, [user]);
+
+	useEffect(() => {
+		const fetchUserCats = async () => {
+		const favoriteCats = await getUserCats(filteredUser);
+		setFavoriteCats(favoriteCats);
+		};
+		fetchUserCats();
+	}, [filteredUser]);*/
+
 	//Replaces the cats list with the database data when it is loaded
 	useEffect(() => {
 		const fetchCats = async () => {
 			const cats = await getObjects('cats');
+			console.log(cats);
 			setCats(cats);
 		};
 		fetchCats();
@@ -240,6 +269,7 @@ export default function Page() {
 						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
 					</div>
 				</div>
+				{filteredUser && filteredUser.role === "breeder" &&
 				<div className="absolute size-fit right-0 top-[40px]">
 					<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)}
 						className="relative z-40 size-fit" href="cats/add">
@@ -261,6 +291,7 @@ export default function Page() {
 						</div>
 					</div>
 				</div>
+				}
 			</div>
 			<div className="h-6"/>
 			<div className="scroll-auto">

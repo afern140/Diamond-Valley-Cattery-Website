@@ -59,27 +59,27 @@ async function addComment(commentDoc,cat){
    return docRef.id;
 }
 
-function NewComment(cat,setComments) {
+function NewComment(cat, setComments) {
    const [message, setMessage] = useState("");
    const currentCat = cat.cat;
    
-async function handleAddComment(e){
-    e.preventDefault();
-    const date = new Date.now;
-    const timestamp = Timestamp.fromDate(date);
-    const commentDoc = {
-        message: message,
-        createUID: auth.currentUser.uid,
-        createName: auth.currentUser.displayName,
-        catID: currentCat.id,
-        catName: currentCat.name,
-        createTime: timestamp
-    };
-    await addComment(commentDoc,cat);
-    setMessage("");
-    setComments((prevComments) => [...prevComments, commentDoc]);
-    //window.location.reload();
-}
+   async function handleAddComment(e){
+      e.preventDefault();
+      const date = new Date();
+      const timestamp = Timestamp.fromDate(date);
+      const commentDoc = {
+         message: message,
+         createUID: auth.currentUser.uid,
+         createName: auth.currentUser.displayName,
+         catID: currentCat.id,
+         catName: currentCat.name,
+         createTime: timestamp
+      };
+      await addComment(commentDoc,cat);
+      setMessage("");
+      setComments((prevComments) => [...prevComments, commentDoc]);
+      //window.location.reload();
+   }
 
    return(
       <div className="text-black mt-8">

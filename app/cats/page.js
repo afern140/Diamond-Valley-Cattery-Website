@@ -214,29 +214,7 @@ export default function Page() {
 				</div>
 			</div>
 
-			<div>
-				{/* Search Field */}
-				<div className="align-middle justify-center flex translate-x-6">
-					<input type="text"
-						name="catlist-search"
-						placeholder="Search"
-						value={fieldInput}
-						className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-3/5 h-16"
-						onChange = { (Event) => searchItems(Event.target.value, "") }>
-					</input>
-					
-					<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
-				</div>
-				{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-					<div className="absolute z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
-						{
-							filteredResults.map((cat) => (
-								<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
-							))
-						}
-					</div> : <div />
-				}
-			</div>
+			
 
 	<div className="flex py-6 w-full justify-center">
 		<div className="flex w-full">
@@ -263,6 +241,31 @@ export default function Page() {
 		{/* Second split of the page */}
 		<div className="w-full flex-col mr-16">
 			<div className="flex w-full">
+
+				<div className="w-full h-full">
+					{/* Search Field */}
+					<div className="align-middle justify-center w-full flex">
+						<input type="text"
+							name="catlist-search"
+							placeholder="Search"
+							value={fieldInput}
+							className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-full h-16"
+							onChange = { (Event) => searchItems(Event.target.value, "") }>
+						</input>
+						
+						<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
+					</div>
+					{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
+						<div className="absolute z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+							{
+								filteredResults.map((cat) => (
+									<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
+								))
+							}
+						</div> : <div />
+					}
+				</div>
+
 				<div className=" w-full max-w-[200px] mr-full ml-auto justify-end flex-col bg-white dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg">
 					<h2 className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort by:</h2>
 					<div className=" pt-4">

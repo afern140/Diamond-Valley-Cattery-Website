@@ -168,7 +168,7 @@ export default function Page() {
 									name="litterlist-search"
 									placeholder="Search"
 									value={fieldInput}
-									className=" bg-[#e5e5ff] dark:bg-gray-300 bg-opacity-100 drop-shadow-lg placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
+									className=" bg-[#e5e5ff] dark:bg-gray-300 bg-opacity-100 drop-shadow-lg placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-3/5 h-16"
 									onChange = { (Event) => searchItems(Event.target.value, "") }>
 								</input>
 								
@@ -186,15 +186,15 @@ export default function Page() {
 						</div>
 
 						<div className="flex mt-10">
-							<div className="w-full bg-white dark:bg-gray-500 text-text-header-0 rounded-xl relative p-4 drop-shadow-lg">
+							<div className="max-w-[400px] mr-full ml-auto bg-white dark:bg-gray-500 text-text-header-0 rounded-xl relative p-4 drop-shadow-lg">
 								<label className="font-bold text-2xl align-middle" htmlFor="sort">Sort By:</label>
 								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-[#e5e5ff] border-2 bg-opacity-100">
 									<option value="name">Name</option>
 									<option value="expDate">Expected Date</option>
 								</select>
 							</div>
-							<div className="relative ml-10 mr-10">
-								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-background-gradient-1 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</Link>
+							<div className="absolute top-[50px] right-[40px]">
+								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-background-gradient-1 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] hover:scale-125 transition duration-300">+</Link>
 								<div className={"absolute size-[128px] top-[86px] right-[-30px] transition duration-500 z-10 " + (addTooltip ? " opacity-100" : "opacity-0")}>
 									<div className="w-full relative bg-text-header-0 border-4 border-[#092C48] h-8 rounded-full drop-shadow">
 										<p className="relative flex size-full text-center text-lg text-white justify-center align-middle">Add Litter</p>

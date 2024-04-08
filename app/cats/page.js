@@ -192,7 +192,7 @@ export default function Page() {
 						name="catlist-search"
 						placeholder="Search"
 						value={fieldInput}
-						className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-4/5 h-10"
+						className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-3/5 h-16"
 						onChange = { (Event) => searchItems(Event.target.value, "") }>
 					</input>
 					
@@ -234,13 +234,13 @@ export default function Page() {
 		{/* Second split of the page */}
 		<div className="w-full flex-col mr-16">
 			<div className="flex w-full">
-				<div className=" w-full justify-end flex-col bg-white dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg">
+				<div className=" w-full max-w-[400px] mr-full ml-auto justify-end flex-col bg-white dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg">
 					<h2 className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort by:</h2>
 					<div className=" pt-4">
 						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
 					</div>
 				</div>
-				<div className="relative ">
+				<div className="absolute size-fit right-0 top-[40px]">
 					<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)}
 						className="relative z-40 size-fit" href="/add">
 						<div className="w-full bg-gradient-to-b from-white to-navbar-body-1 p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative z-40">

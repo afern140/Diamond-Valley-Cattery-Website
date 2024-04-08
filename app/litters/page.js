@@ -18,10 +18,6 @@ import {
 export default function Page() {
 	const [litters, setLitters] = useState([]);
 	const [sortBy, setSortBy] = useState("name");
-	const [fieldInput, setFieldInput] = useState("");
-	const [filters, setFilters] = useState(["", "", "", ""]);
-	const [sortingMethod, setSortingMethod] = useState("");
-	const [filteredResults, setFilteredResults] = useState();
 
 	const { user } = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState({role: "role", name: "name", username: "username", email: "randomemail@gmail.com", phone: "123-456-7890"});
@@ -69,91 +65,6 @@ export default function Page() {
 		fetchLitters();
 	}, []);
 
-	//When search, filters, or sorting method change, update the list of litters
-	useEffect(() => {
-		console.log("Beginning data filtering")
-		let filteredData = litters;
-
-		if (litters === undefined || litters === null) {
-			filteredData = litters;
-		}
-		//Filter by search field
-		if (fieldInput !== "") {
-			filteredData = filteredData.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(fieldInput.toLowerCase()) );
-		}
-		//Filter by breed
-		if (filters[0] !== "") {
-			//filteredData = filteredData.filter((cat) => Object.values(cat.breed).join('').toLowerCase().includes(filters[0].toLowerCase()) );
-			filteredData = filteredData.filter((cat) => cat.breed == filters[0])
-		}
-		//Filter by gender
-		if (filters[1] !== "") {
-			//filteredData = filteredData.filter((cat) => Object.values(cat.gender).join('').toLowerCase().includes(filters[1].toLowerCase()) );
-			//Can't do this for gender because "Female" contains "Male"
-			//Instead, this field will use an exact match
-			filteredData = filteredData.filter((cat) => cat.gender.toLowerCase() == filters[1].toLowerCase());
-		}
-		//Filter by age
-		if (filters[2] !== "") {
-			//console.log("[Filter] Age: " + filters[2])
-			//filteredData = filteredData.filter((cat) => Object.values(cat.age).join('').toLowerCase().includes(filters[2].toLowerCase()) );
-			//birthdate is stored in epoch time, so we need to convert it to years
-			// Kittens
-			if (filters[2] == "Kitten") {
-				filteredData = filteredData.filter((cat) => cat.birthdate && cat.birthdate.seconds * 1000 >= Date.now() - 15778463000)
-			}
-			// Young
-			else if (filters[2] == "Young") {
-				filteredData = filteredData.filter((cat) => cat.birthdate && cat.birthdate.seconds * 1000 < Date.now() - 15778463000 && cat.birthdate.seconds * 1000 >= Date.now() - 31556926000)
-			}
-			// Adult
-			else if (filters[2] == "Adult") {
-				filteredData = filteredData.filter((cat) => cat.birthdate && cat.birthdate.seconds * 1000 < Date.now() - 31556926000)
-			}
-		}
-		//Filter by color
-		if (filters[3] !== "") {
-			filteredData = filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(filters[3].toLowerCase()) );
-		}
-		//Sort
-		//Because React won't actually update data that is simply sorted, we need to create a new array
-		let sortedData;
-		if (sortingMethod !== "") {
-			console.log("Sorting by " + sortingMethod);
-			switch (sortingMethod) {
-				case "Name":
-					sortedData = [...filteredData.sort((a, b) => a.name > b.name)];
-					break;
-				case "Breed":
-					sortedData = [...filteredData.sort((a, b) => a.breed > b.breed)];
-					break;
-				case "Gender":
-					sortedData = [...filteredData.sort((a, b) => a.gender > b.gender)];
-					break;
-				case "Age":
-					sortedData = [...filteredData.sort((a, b) => a.age - b.age)];
-					break;
-				case "Color":
-					sortedData = [...filteredData.sort((a, b) => a.color > b.color)];
-					break;
-				default:
-					sortedData = [...filteredData.sort((a, b) => a.color > b.color)];
-					break;
-			}
-		}
-		else if (filteredData != null && filteredData != undefined)
-			sortedData = [...filteredData.sort((a, b) => a.id > b.id)];
-		//Update the list
-		setFilteredResults(sortedData);
-		console.log("Filtered Data: ");
-		console.log(filteredData);
-	}, [fieldInput, filters, sortingMethod, litters]);
-
-	const searchItems = (value) => {
-		setFieldInput(value);
-		setActiveAutocomplete(true);
-	}
-
 	const handleSortChange = (event) => {
 		setSortBy(event.target.value);
 	};
@@ -167,26 +78,52 @@ export default function Page() {
 		return 0;
 	});
 
-	const [addTooltip, setAddTooltip] = useState(false);
-	const [activeAutocomplete, setActiveAutocomplete] = useState(false);
-
-	function completeAutocomplete(field) {
-		setActiveAutocomplete(false);
-		setFieldInput(field);
-	}
-
 	return (
-		<main className={"text-text-header-0 h-full relative" + (filteredResults && filteredResults.length > 0 ? "" : " h-screen")}>
-			<div className="h-full">
-				<BackgroundUnderlay />
-
-				<div className="pt-20 flex pb-10">
-					<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
-						<span className="text-6xl pb-10 font-extrabold">LITTERS</span> <br />
-						<div className="mt-8"><span className="">DISCOVER YOUR NEW BEST FRIENDS AT DIAMOND VALLEY CATTERY. BROWSE OUR ADORABLE LITTERS AVAILABLE FOR PURCHASE.</span></div>
-					</div>
+		<main className="bg-white text-black">
+			<h1 className="text-3xl font-bold p-4 text-center">Litters</h1>
+			<div>
+				<div className="border border-black-300 rounded-md m-5 p-2">
+					<label htmlFor="sort">Sort By:</label>
+					<select id="sort" value={sortBy} onChange={handleSortChange} className="ml-2 p-2">
+						<option value="name">Name</option>
+						<option value="expDate">Expected Date</option>
+					</select>
 				</div>
-				
+				<Link href="litters/add" className="border border-black-300 rounded-md m-5 p-2">Add Litter</Link>
+				{sortedLitters ? (
+					sortedLitters.map((litter) => (
+						<div className="flex flex-row border border-black-300 rounded-md m-5 p-5">
+							<Link href={`/litters/${litter.id}`} className="text-center">
+								<h2 className="text-xl mb-2">{litter.name}</h2>
+								<Image
+									alt="litter"
+									src={litter.thumbnail ? litter.thumbnail : "/img/Placeholder.png"}
+									width={250}
+									height={250}
+									className="border border-black-300 mr-5"
+								/>
+							</Link>
+							<div>
+								<h2>Expected Date: {new Date(litter.expDate.toDate()).toISOString().split('T')[0]}</h2>
+								<h2>Mother: <Link href={`/cats/${litter.mother.id}`}>{litter.mother.name}</Link></h2>
+								<h2>Father: <Link href={`/cats/${litter.father.id}`}>{litter.father.name}</Link></h2>
+								<h2>Completed: {litter.completed ? "Completed" : "Not Completed"}</h2>
+								{litter.completed ? (
+									<div>
+										<h2>Kittens:</h2>
+										<div className="flex">
+											{litter.children.map((child) => (
+												<Link href={`/cats/${child.id}`} className="text-center mr-5">
+													<Image
+														alt="kitten"
+														src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}
+														width={100}
+														height={100}
+														className="border border-black-300 justify-center align-center place-items-center"
+													/>
+													<h3>{child.name}</h3>
+												</Link>
+											))}
 				<div className="px-10 xl:px-20">
 					<div className="flex-col w-full items-center">
 						<div className="flex mt-10">
@@ -272,12 +209,11 @@ export default function Page() {
 											) : (<></>)}
 										</div>
 									</div>
-								))
-							) : (<h2>Loading litters...</h2>)}
+								) : (<></>)}
+							</div>
 						</div>
-					</div>
-					<div className="h-10"/>
-				</div>
+					))
+				) : (<h2>Loading litters...</h2>)}
 			</div>
 		</main>
 	)

@@ -12,9 +12,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
 import Comments from "@/app/components/comments";
-import BackButton from "@/app/components/BackToTopButton";
-import BackgroundUnderlay from "@/app/components/background-underlay";
-
 
 export default function Page({params}) {
 
@@ -130,7 +127,6 @@ export default function Page({params}) {
             }
         }
     };
-
 	const handleImageUpload = async (imageUrl) => {
 		try {
 			fetchCat()
@@ -140,12 +136,7 @@ export default function Page({params}) {
 	};
      
 	return(
-		<main className={"relative" + (cat ? "" : " h-screen")}>
-			<BackgroundUnderlay />
-
-			{/* Back to top function */}
-			<BackButton url="#Navbar" />
-
+		<main className="bg-gray-100">
 			{cat ? (
 				<section className="relative z-20 pb-16">
 					<div className="pt-20 flex pb-10 relative z-20">
@@ -166,7 +157,7 @@ export default function Page({params}) {
 					</div>
 					
 					<div className="px-20 w-full flex">
-						<Carousel />
+						<Carousel images={cat.carouselImage} />
 					</div>
 					<div className="flex flex-row w-full px-10 xl:px-20">
 						<div className="flex flex-col text-black text-xl font-bold text-left">
@@ -174,7 +165,8 @@ export default function Page({params}) {
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
-								<h3>Birthdate: <span className="font-normal">{cat.birthdate ? new Date(cat.birthdate.toDate()).toLocaleDateString() : ""}</span></h3>
+								{/*<h3>Age: <span className="font-normal">{cat.age}</span></h3>*/}
+								<h3>Birthdate: <span className="font-normal">{new Date(cat.birthdate.toDate()).toLocaleDateString()}</span></h3>
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>
@@ -251,10 +243,18 @@ export default function Page({params}) {
 									</div>
 								</button>
 							</div>
+							{user ? (
+								<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
+									<h2>{favorite ? `Remove ${cat.name} from Favorites?` : `Add ${cat.name} to Favorites?`}</h2>
+									<button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md" onClick={handleFavoriteButton}>
+										{favorite ? "Remove from Favorites" : "Add to Favorites"}
+									</button>
+								</div>
+							) : (<></>)}
 						</div>
 					</div>
 					<div className="text-black text-xl font-bold p-10">
-						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
+						<h2 className="text-2xl mx-10 mt-10">Parents</h2>
 						<div className="flex flex-wrap">
 							<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								{cat.father.name}
@@ -283,13 +283,13 @@ export default function Page({params}) {
 								</Link>
 							</div>
 						</div>
-						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
+						<h2 className="text-2xl mx-10 mt-10">Children</h2>
 						<div className="flex flex-wrap">
 							{cat.children ? (
 								cat.children.map((child, index) => (
-									<div key={index} className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
+									<div key={child.id} className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
 										{child.name}
-										<Link href={`./${index}`}>
+										<Link href={`./${child.id}`}>
 											<Image
 												src="/img/Placeholder.png"
 												alt="Cat"
@@ -299,8 +299,8 @@ export default function Page({params}) {
 											/>
 										</Link>
 									</div>
-								))) : null
-							}
+								))
+							) : null}
 						</div>
 					</div>
 					<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">

@@ -189,31 +189,30 @@ export default function Page() {
 				
 				<div className="px-10 xl:px-20">
 					<div className="flex-col w-full items-center">
-						<div>
-							{/* Search Field */}
-							<div className="align-middle justify-center flex translate-x-6">
-								<input type="text"
-									name="litterlist-search"
-									placeholder="Search"
-									value={fieldInput}
-									className=" bg-[#e5e5ff] dark:bg-gray-300 bg-opacity-100 drop-shadow-lg placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-3/5 h-16"
-									onChange = { (Event) => searchItems(Event.target.value, "") }>
-								</input>
-								
-								<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
-							</div>
-							{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-								<div className="absolute z-40 bg-white bg-opacity-100 dark:bg-gray-500 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
-									{
-										filteredResults.map((litter) => (
-											<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(litter.name)}>{litter.name}</button>
-										))
-									}
-								</div> : <div />
-							}
-						</div>
-
 						<div className="flex mt-10">
+							<div className="w-full">
+								{/* Search Field */}
+								<div className="align-middle justify-center flex relative">
+									<input type="text"
+										name="litterlist-search"
+										placeholder="Search"
+										value={fieldInput}
+										className=" bg-[#e5e5ff] dark:bg-gray-300 bg-opacity-100 drop-shadow-lg placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-full h-16"
+										onChange = { (Event) => searchItems(Event.target.value, "") }>
+									</input>
+									
+									<Image className="relative -translate-x-12 z-10" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
+								</div>
+								{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
+									<div className="absolute z-40 bg-white bg-opacity-100 dark:bg-gray-500 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+										{
+											filteredResults.map((litter) => (
+												<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(litter.name)}>{litter.name}</button>
+											))
+										}
+									</div> : <div />
+								}
+							</div>
 							<div className="max-w-[220px] mr-full ml-auto bg-white dark:bg-gray-500 text-text-header-0 rounded-xl relative p-4 drop-shadow-lg">
 								<label className="font-bold text-xl align-middle pb-8" htmlFor="sort">Sort By:</label>
 								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">

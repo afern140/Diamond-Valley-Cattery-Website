@@ -84,37 +84,39 @@ export const ChatProvider = ({ children }) => {
   };
 
   // Function to fetch the latest messages for each chat
-  const fetchChatsWithLatestMessage = async (userId) => {
+  const fetchChatsWithLatestUnreadMessage = async (userId) => {
     const chatsQuery = query(
       collection(db, "chats"),
       where("users", "array-contains", userId)
     );
     const chatsSnapshot = await getDocs(chatsQuery);
 
-    const chatsWithLatestMessage = await Promise.all(
-      chatsSnapshot.docs.map(async (chatDoc) => {
-        const messagesQuery = query(
-          collection(db, "messages"),
-          where("chatId", "==", chatDoc.id),
-          orderBy("timestamp", "desc"),
-          limit(1)
-        );
-        const messagesSnapshot = await getDocs(messagesQuery);
-        if (!messagesSnapshot.empty) {
-          const messageDoc = messagesSnapshot.docs[0];
-          return {
-            chatId: chatDoc.id,
-            lastMessage: {
-              id: messageDoc.id,
-              ...messageDoc.data(),
-            },
-          };
-        }
-        return null;
-      })
-    );
+    // Holds the final list of chats with the latest unread message
+    const chatsWithLatestUnreadMessage = [];
 
-    return chatsWithLatestMessage.filter((chat) => chat != null);
+    for (const chatDoc of chatsSnapshot.docs) {
+      // Query for the latest unread message in this chat
+      const messagesQuery = query(
+        collection(db, "messages"),
+        where("chatId", "==", chatDoc.id),
+        where("read", "==", false),
+        orderBy("timestamp", "desc"),
+        limit(1)
+      );
+      const messagesSnapshot = await getDocs(messagesQuery);
+      if (!messagesSnapshot.empty) {
+        const messageDoc = messagesSnapshot.docs[0];
+        chatsWithLatestUnreadMessage.push({
+          chatId: chatDoc.id,
+          lastMessage: {
+            id: messageDoc.id,
+            ...messageDoc.data(),
+          },
+        });
+      }
+    }
+
+    return chatsWithLatestUnreadMessage;
   };
 
   // Function to listen to the latest unread messages for a specific chat
@@ -135,16 +137,50 @@ export const ChatProvider = ({ children }) => {
       }
     });
 
-    return unsubscribe; 
+    return unsubscribe;
   };
 
-  const markMessageAsRead = async (messageId) => {
+  const markMessageAsRead = async (messageId, currentUserId) => {
     const messageRef = doc(db, "messages", messageId);
+    const messageDoc = await getDoc(messageRef);
 
-    // Firestore call to update the message's read status
-    await updateDoc(messageRef, {
-      read: true,
-    });
+    // Check if the message was sent by another user before marking as read
+    if (messageDoc.exists() && messageDoc.data().userId !== currentUserId) {
+      await updateDoc(messageRef, {
+        read: true,
+      });
+    }
+  };
+
+  // Function to fetch all the chat that the user creates
+  const fetchAllMessagesForUser = async (userId) => {
+    const chatsQuery = query(
+      collection(db, "chats"),
+      where("users", "array-contains", userId)
+    );
+    const chatsSnapshot = await getDocs(chatsQuery);
+
+    const allMessagesForUser = [];
+
+    for (const chatDoc of chatsSnapshot.docs) {
+      const messagesQuery = query(
+        collection(db, "messages"),
+        where("chatId", "==", chatDoc.id),
+        orderBy("timestamp", "desc")
+      );
+      const messagesSnapshot = await getDocs(messagesQuery);
+      const messages = messagesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      allMessagesForUser.push({
+        chatId: chatDoc.id,
+        messages,
+      });
+    }
+
+    return allMessagesForUser;
   };
 
   return (
@@ -154,9 +190,10 @@ export const ChatProvider = ({ children }) => {
         sendMessage,
         loadChatMessages,
         currentChatId,
-        fetchChatsWithLatestMessage,
+        fetchChatsWithLatestUnreadMessage,
         listenToLatestUnreadMessage,
         markMessageAsRead,
+        fetchAllMessagesForUser,
       }}
     >
       {children}

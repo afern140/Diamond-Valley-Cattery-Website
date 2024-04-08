@@ -15,11 +15,29 @@ export default function page({ params }) {
   const chatId = params.chat;
 
   useEffect(() => {
-    console.log("chatpage no leaks");
-    if (chatId) {
-      loadChatMessages(chatId, setCurrentMessages);
-    }
-    
+    console.log("Component mounted - should log only once");
+
+    let isSubscribed = true;
+
+    const fetchMessages = async () => {
+      console.log(
+        "Fetching messages - should log only once if component doesn't remount"
+      );
+      if (chatId) {
+        await loadChatMessages(chatId, (msgs) => {
+          if (isSubscribed) {
+            setCurrentMessages(msgs);
+          }
+        });
+      }
+    };
+
+    fetchMessages();
+
+    return () => {
+      isSubscribed = false;
+      console.log("Component unmounted - should log only on component unmount");
+    };
   }, []);
 
   // This function is called when the user sends a message.

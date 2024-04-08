@@ -185,51 +185,55 @@ export default function Page({params}) {
 							<div className="flex flex-col xl:flex-row mx-10 xl:space-x-6 space-y-6 xl:space-y-0 mt-6 rounded-lg min-w-64">
 								<div className=" bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Conditions</h2>
-									{cat.conditions ? (
-										cat.conditions.map((condition) => (
-											<div key={condition.id} className="flex flex-col rounded-md p-4 m-4 ml-0">
-												<h3>{condition.name}</h3>
-												<p>Description: <span className="font-normal">{condition.description}</span></p>
-												<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
-												<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
-											</div>))
-										) : (<div>None</div>)
-									}
+									<div className="overflow-y-scroll h-72 dark:bg-gray-400 drop-shadow-lg rounded-xl">
+										{cat.conditions ? (
+											cat.conditions.map((condition) => (
+												<div key={condition.id} className="flex flex-col rounded-md p-4 m-4 ml-0">
+													<h3>{condition.name}</h3>
+													<p>Description: <span className="font-normal">{condition.description}</span></p>
+													<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
+													<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
+												</div>))
+											) : (<div>None</div>)
+										}
+									</div>
 								</div>
 								<div className=" bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Vaccinations</h2>
-									{cat.vaccinations ? (
-										cat.vaccinations.map((vaccination) => (
-											<div className="flex flex-col rounded-md p-4 m-4 ml-0">
-												<h3>{vaccination.name}</h3>
-												<p>Description: <span className="font-normal">{vaccination.description}</span></p>
-												<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
-												<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
-												<h4>Doses Taken Dates:</h4>
-												<ul className="list-none">
-													{vaccination.datesTaken.map((date, index) => (
-														<li key={index} className="font-normal">
-															<div className="flex space-x-2">
-																<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
-																{new Date(date.toDate()).toISOString().split('T')[0]}
-															</div>
-														</li>
-													))}
-												</ul>
-												<h4>Doses Remaining: <span className="font-normal">{vaccination.dosesRemaining}</span></h4>
-												<h4>Planned Dosage Dates:</h4>
-												<ul className="list-none">
-													{vaccination.futureDates.fill().map((date, index) => (
-														<li key={index} className="font-normal">
-															<div className="flex space-x-2">
-																<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
-																<span>{date && new Date(date.toDate()).toISOString().split('T')[0]}</span>
-															</div>
-														</li>
-													))}
-												</ul>
-											</div>))) : (<div></div>)
-									}
+									<div className=" overflow-x-scroll flex w-[300px] space-x-6 p-4 rounded-xl dark:bg-gray-400">
+										{cat.vaccinations ? (
+											cat.vaccinations.map((vaccination) => (
+												<div className="flex flex-col rounded-md p-4 m-4 ml-0">
+													<h3>{vaccination.name}</h3>
+													<p>Description: <span className="font-normal">{vaccination.description}</span></p>
+													<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
+													<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
+													<h4>Doses Taken Dates:</h4>
+													<ul className="list-none">
+														{vaccination.datesTaken.map((date, index) => (
+															<li key={index} className="font-normal">
+																<div className="flex space-x-2">
+																	<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
+																	{new Date(date.toDate()).toISOString().split('T')[0]}
+																</div>
+															</li>
+														))}
+													</ul>
+													<h4>Doses Remaining: <span className="font-normal">{vaccination.dosesRemaining}</span></h4>
+													<h4>Planned Dosage Dates:</h4>
+													<ul className="list-none">
+														{vaccination.futureDates.fill().map((date, index) => (
+															<li key={index} className="font-normal">
+																<div className="flex space-x-2">
+																	<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
+																	<span>{date && new Date(date.toDate()).toISOString().split('T')[0]}</span>
+																</div>
+															</li>
+														))}
+													</ul>
+												</div>))) : (<div></div>)
+										}
+									</div>
 								</div>
 							</div>
 						</div>

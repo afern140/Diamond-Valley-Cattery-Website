@@ -295,7 +295,7 @@ export default function Page() {
 			</div>
 			<div className="h-6"/>
 			<div className="scroll-auto">
-				<div className="grid w-full grid-cols-3 bg-white dark:bg-gray-500 bg-opacity-100 drop-shadow-lg rounded-xl">
+				<div className="grid w-full grid-cols-3 p-4 bg-white dark:bg-gray-500 bg-opacity-100 drop-shadow-lg rounded-xl">
 					{/* Populating the list with cats */}
 					{filteredResults ? (
 						filteredResults.length > 0 ?

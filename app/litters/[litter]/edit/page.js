@@ -122,7 +122,7 @@ export default function Page({ params }) {
 						</div>
 					</div>
 
-					<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg text-[#092C48]">
+					<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg text-[#092C48]">
 						<div className="w-full flex-col space-y-2">
 							<h2 className="text-2xl mb-2 dark:text-dark-header-text-0">Details</h2>
 							<div className="flex space-x-3">

@@ -5,6 +5,9 @@ import Footer from "./footer/page";
 import { AuthContextProvider } from "./_utils/auth-context";
 import { ChatProvider } from "./_utils/chat-context";
 
+import { ThemeProvider } from "next-themes";
+import CustomCursor from "@/app/components/CustomCursor";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -13,19 +16,24 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
+  let contrastVal = 1;
+
   return (
     <AuthContextProvider>
-
-        <ChatProvider>
-          <html lang="en">
-            <body className={inter.className}>
+      <ChatProvider>
+        <html lang="en">
+          <body id="body" className={inter.className + ` contrast-[${contrastVal}]`}>
+            <ThemeProvider
+            attribute="class"
+            enableSystem="false">
               <Navigation />
               {children}
               <Footer />
-            </body>
-          </html>
-        </ChatProvider>
-
+            </ThemeProvider>
+          </body>
+        </html>
+      </ChatProvider>
     </AuthContextProvider>
   );
 }

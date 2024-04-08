@@ -234,7 +234,7 @@ export default function Page({params}) {
 							</div>
 						</div>
 						<div className="flex flex-col ml-auto mx-10 mb-auto mt-10">
-							<div className="text-[#092C48] font-bold">
+							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
 								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-4 text-xl" >
 									<div className="relative flex">
@@ -251,7 +251,7 @@ export default function Page({params}) {
 					<div className="text-black text-xl font-bold p-10">
 						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex flex-wrap">
-							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								{cat.father.name}
 								<Link href={`./${2}`}>
 									<Image
@@ -264,7 +264,7 @@ export default function Page({params}) {
 									<h2 className="font-normal">Father</h2>
 								</Link>
 							</div>
-							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								{cat.mother.name}
 								<Link href={`./${3}`}>
 									<Image
@@ -282,7 +282,7 @@ export default function Page({params}) {
 						<div className="flex flex-wrap">
 							{cat.children ? (
 								cat.children.map((child, index) => (
-									<div key={index} className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+									<div key={index} className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
 										{child.name}
 										<Link href={`./${index}`}>
 											<Image

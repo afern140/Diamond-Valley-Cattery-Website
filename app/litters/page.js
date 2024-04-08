@@ -153,7 +153,7 @@ export default function Page() {
 				<BackgroundUnderlay />
 
 				<div className="pt-20 flex pb-10">
-					<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] text-transparent bg-clip-text">
+					<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
 						<span className="text-6xl pb-10 font-extrabold">LITTERS</span> <br />
 						<div className="mt-8"><span className="">DISCOVER YOUR NEW BEST FRIENDS AT DIAMOND VALLEY CATTERY. BROWSE OUR ADORABLE LITTERS AVAILABLE FOR PURCHASE.</span></div>
 					</div>
@@ -168,7 +168,7 @@ export default function Page() {
 									name="litterlist-search"
 									placeholder="Search"
 									value={fieldInput}
-									className=" bg-[#fff4f9] bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
+									className=" bg-[#e5e5ff] bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
 									onChange = { (Event) => searchItems(Event.target.value, "") }>
 								</input>
 								
@@ -188,16 +188,16 @@ export default function Page() {
 						<div className="flex mt-10">
 							<div className="w-full bg-white text-text-header-0 rounded-xl relative p-4 drop-shadow-lg">
 								<label className="font-bold text-2xl align-middle" htmlFor="sort">Sort By:</label>
-								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-[#fff4f9] border-2 bg-opacity-100">
+								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-[#e5e5ff] border-2 bg-opacity-100">
 									<option value="name">Name</option>
 									<option value="expDate">Expected Date</option>
 								</select>
 							</div>
-							<div className=" ml-10 mr-10">
+							<div className="relative ml-10 mr-10">
 								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-background-gradient-1 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</Link>
-								<div className={"absolute size-[128px] top-[430px] right-[40px] transition duration-500 " + (addTooltip ? " opacity-100" : "opacity-0")}>
-									<div className="w-full bg-text-header-0 border-4 border-[#092C48] h-8 rounded-full drop-shadow">
-										<p className="flex size-full text-center text-lg text-white justify-center align-middle">Add Cat</p>
+								<div className={"absolute size-[128px] top-[86px] right-[-30px] transition duration-500 z-10 " + (addTooltip ? " opacity-100" : "opacity-0")}>
+									<div className="w-full relative bg-text-header-0 border-4 border-[#092C48] h-8 rounded-full drop-shadow">
+										<p className="relative flex size-full text-center text-lg text-white justify-center align-middle">Add Litter</p>
 									</div>
 								</div>
 							</div>

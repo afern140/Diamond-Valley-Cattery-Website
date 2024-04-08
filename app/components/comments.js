@@ -90,9 +90,9 @@ async function handleAddComment(e){
                placeholder="Comment Here"
                value = {message}
                onChange={(e) => setMessage(e.target.value)}
-               className="border-s-4 border-[#fff4f9] p-2 mb-16 w-[400px] drop-shadow-lg text-black"
+               className="border-s-4 border-[#e5e5ff] p-2 mb-16 w-[400px] drop-shadow-lg text-black"
             />
-            <button type="submit" className=" drop-shadow-lg bg-[#fff4f9] rounded text-black py-2 text-2xl px-4">
+            <button type="submit" className=" drop-shadow-lg bg-[#e5e5ff] rounded text-black py-2 text-2xl px-4">
                Submit
             </button>
          </form>

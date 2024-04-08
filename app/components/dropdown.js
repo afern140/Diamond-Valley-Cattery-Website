@@ -59,7 +59,7 @@ function Dropdown({queryType, callback, cats, isInsidePanel}) {
     return (
         <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
             <button onClick={() => setIsOpen((prev) => !prev)}
-                className={"h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border duration-300 drop-shadow-lg active:text-white " + (isInsidePanel ? "bg-[#fff4f9] bg-opacity-100 text-gray-700 border-white" : "bg-white text-black border-black")}>
+                className={"h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border duration-300 drop-shadow-lg active:text-white " + (isInsidePanel ? "bg-[#e5e5ff] bg-opacity-100 text-gray-700 border-white" : "bg-white text-black border-black")}>
                 <span className={"text-sm"}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
             </button>
             

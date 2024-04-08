@@ -10,7 +10,7 @@ export default function DateSelection({ type, setVisible, vaccination, newDate, 
 					onChange={(e) => setNewDate(e.target.value)}
 					className="bg-white drop-shadow-lg rounded-md p-2 m-2"
 				/>
-				<button onClick={() => handleAddDate(type, vaccination.id)} className="bg-[#fff4f9] drop-shadow-lg rounded-md p-2 m-2">Submit</button>
+				<button onClick={() => handleAddDate(type, vaccination.id)} className="bg-[#e5e5ff] drop-shadow-lg rounded-md p-2 m-2">Submit</button>
 			</div>
 		</div>
 	)

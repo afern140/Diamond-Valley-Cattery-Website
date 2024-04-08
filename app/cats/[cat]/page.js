@@ -259,7 +259,7 @@ export default function Page({params}) {
 					<div className="text-black text-xl font-bold p-10">
 						<h2 className="text-2xl mx-10 mt-10">Parents</h2>
 						<div className="flex flex-wrap">
-							<div className="bg-[#fff4f9] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								{cat.father.name}
 								<Link href={`./${2}`}>
 									<Image
@@ -272,7 +272,7 @@ export default function Page({params}) {
 									<h2 className="font-normal">Father</h2>
 								</Link>
 							</div>
-							<div className="bg-[#fff4f9] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								{cat.mother.name}
 								<Link href={`./${3}`}>
 									<Image
@@ -290,7 +290,7 @@ export default function Page({params}) {
 						<div className="flex flex-wrap">
 							{cat.children ? (
 								cat.children.map((child, index) => (
-									<div key={index} className="bg-[#fff4f9] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+									<div key={index} className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 										{child.name}
 										<Link href={`./${index}`}>
 											<Image

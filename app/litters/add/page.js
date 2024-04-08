@@ -117,7 +117,7 @@ export default function Page() {
 					<div className="flex space-x-3">
 						<h3 className="my-auto">Name: </h3>
 						<input
-						className="p-1 rounded-xl bg-[#fff4f9] pl-2 drop-shadow-lg"
+						className="p-1 rounded-xl bg-[#d8d8ff] pl-2 drop-shadow-lg"
 						type="text"
 						name="name"
 						placeholder={litter.name ? litter.name : "Name"}
@@ -128,7 +128,7 @@ export default function Page() {
 					<div className="flex space-x-3">
 						<h3 className="my-auto">Date Expected: </h3>
 						<input
-							className="p-1 rounded-xl bg-[#fff4f9] pl-2 drop-shadow-lg"
+							className="p-1 rounded-xl bg-[#e5e5ff] pl-2 drop-shadow-lg"
 							type="date"
 							name="expDate"
 							value={litter.expDate ? new Date(litter.expDate.toDate()).toISOString().split('T')[0] : ""}
@@ -141,7 +141,7 @@ export default function Page() {
 					<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 					<div className="size-full">
 						<textarea
-							className="p-1 rounded-xl bg-[#fff4f9] p-2 size-full drop-shadow-lg"
+							className="p-1 rounded-xl bg-[#e5e5ff] p-2 size-full drop-shadow-lg"
 							type="text"
 							name="description"
 							placeholder={litter.description ? litter.description : "Description"}

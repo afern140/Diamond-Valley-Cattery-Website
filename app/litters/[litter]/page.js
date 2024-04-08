@@ -72,10 +72,10 @@ export default function Page({ params }) {
 					<div className="text-black text-xl font-bold p-10">
 						<h2 className="text-2xl mx-10 mt-10">Parents</h2>
 						<div className="flex flex-wrap">
-							<div className="bg-[#fff4f9] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								<CatButton cat={litter.father} />
 							</div>
-							<div className="bg-[#fff4f9] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								<CatButton cat={litter.mother} />
 							</div>
 						</div>
@@ -84,7 +84,7 @@ export default function Page({ params }) {
 								<div>
 									<h2 className="text-2xl mx-10 mt-10">Children</h2>
 									<div className="flex flex-wrap">
-										<div key={index} className="bg-[#fff4f9] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+										<div key={index} className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 											<CatButton cat={child} />
 										</div>
 									</div>

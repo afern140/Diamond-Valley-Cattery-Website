@@ -141,7 +141,7 @@ const Navbar = () => {
                 (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-6 shadow transition duration-300 overflow-clip">
                   <div className="relative w-full z-40">
                     <button className="relative w-full z-40 " onClick={() => setExpandSettings(!expandSettings)}>
-                      <div className={"relative z-40 flex p-2 w-full text-black dark:text-white dark:hover:bg-gray-700 hover:bg-gray-200 size-full text-left" + (expandSettings ? " bg-gray-200 hover:bg-gray-300 active:bg-gray-400" : " dark:hover:bg-gray-700 hover:bg-gray-200 active:bg-gray-400")}>
+                      <div className={"relative z-40 flex p-2 w-full text-black dark:text-white dark:hover:bg-gray-700 hover:bg-gray-200 size-full text-left" + (expandSettings ? " bg-gray-200 dark:bg-gray-400 hover:bg-gray-300 active:bg-gray-400" : " dark:hover:bg-gray-700 hover:bg-gray-200 active:bg-gray-400")}>
                         <Image alt="Settings" src="/img/settings.svg" width={32} height={32} />
                         <span className="my-auto pl-2">Settings</span>
                       </div>

@@ -374,7 +374,7 @@ export default function Page({params}){
 							<div className="flex space-x-3">
 								<h3 className="my-auto">Name: </h3>
 								<input
-								className="p-1 rounded-xl pl-2 bg-[#fff4f9] drop-shadow-lg"
+								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
 								name="name"
 								placeholder={cat.name}
@@ -385,7 +385,7 @@ export default function Page({params}){
 							<div className="flex space-x-3">
 								<h3 className="my-auto">Breed: </h3>
 								<input
-								className="p-1 rounded-xl pl-2 bg-[#fff4f9] drop-shadow-lg"
+								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
 								name="breed"
 								placeholder={cat.breed}
@@ -396,7 +396,7 @@ export default function Page({params}){
 							<div className="flex space-x-3">
 								<h3 className="my-auto">Gender: </h3>
 								<input
-								className="p-1 rounded-xl pl-2 bg-[#fff4f9] drop-shadow-lg"
+								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
 								name="gender"
 								placeholder={cat.gender}
@@ -407,7 +407,7 @@ export default function Page({params}){
 							<div className="flex space-x-3">
 								<h3 className="my-auto">Age: </h3>
 								<input
-								className="p-1 rounded-xl pl-2 bg-[#fff4f9] drop-shadow-lg"
+								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="number"
 								name="age"
 								placeholder={cat.age}
@@ -418,7 +418,7 @@ export default function Page({params}){
 							<div className="flex space-x-3">
 								<h3 className="my-auto">Color: </h3>
 								<input
-								className="p-1 rounded-xl pl-2 bg-[#fff4f9] drop-shadow-lg"
+								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
 								name="color"
 								placeholder={cat.color}
@@ -429,7 +429,7 @@ export default function Page({params}){
 							<div className="flex space-x-3">
 								<h3 className="my-auto">Eye Color: </h3>
 								<input
-								className="p-1 rounded-xl pl-2 bg-[#fff4f9] drop-shadow-lg"
+								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
 								name="eye_color"
 								placeholder={cat.eye_color}
@@ -443,7 +443,7 @@ export default function Page({params}){
 							<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 							<div className="size-full">
 								<textarea
-									className="p-1 rounded-xl pl-2 size-full bg-[#fff4f9] drop-shadow-lg"
+									className="p-1 rounded-xl pl-2 size-full bg-[#e5e5ff] drop-shadow-lg"
 									type="text"
 									name="description"
 									placeholder={cat.description}
@@ -544,7 +544,7 @@ export default function Page({params}){
 						<h2 className="text-xl font-bold mb-4 mt-6 px-10">Parents</h2>
 						<div className="flex px-10 space-x-10 mt-6 flex-wrap">
 							{cat.father ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-[#fff4f9] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 									{cat.father.name}
 									<Image
 										src="/img/Placeholder.png"
@@ -559,7 +559,7 @@ export default function Page({params}){
 								</div>
 							) : (<></>)}
 							{cat.mother ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-[#fff4f9] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 									{cat.mother.name}
 									<Image
 										src="/img/Placeholder.png"
@@ -581,7 +581,7 @@ export default function Page({params}){
 						<div className="flex flex-wrap">
 							{cat.children ? (
 								cat.children.map((child) =>(
-									<div className=" flex justify-center flex-col font-bold p-4 bg-[#fff4f9] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+									<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 										{child.name}
 										<Image
 											src="/img/Placeholder.png"
@@ -595,7 +595,7 @@ export default function Page({params}){
 									</div>
 								))
 							) : (<></>)}
-							<div className=" flex justify-center flex-col font-bold p-4 bg-[#fff4f9] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+							<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 								<Image
 									src="/img/Placeholder.png"
 									alt="Cat"
@@ -608,7 +608,7 @@ export default function Page({params}){
 						</div>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
-					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-[#fff4f9] rounded-xl mt-16 text-2xl">Submit</button>
+					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-[#e5e5ff] rounded-xl mt-16 text-2xl">Submit</button>
 				</div>
 			) : (
 				<h1>Loading</h1>

@@ -18,13 +18,13 @@ module.exports = {
         "cat-gray-0": "#94b3c7bf",
         "cat-gray-1": "#94B3C7",
 
-        "header-text-0": "#673a35",
-        "dark-header-text-0": "#ea9087",
+        "header-text-0": "#092C48",
+        "dark-header-text-0": "#EEEEEE",
         "panel-gradient-0": "#ca8076",
         "panel-gradient-1": "#9d5850",
         "background-gradient-0": "#FFFFFF",
         "dark-background-gradient-0": "#31363F",
-        "background-gradient-1": "#FADFE2",
+        "background-gradient-1": "#e5e5ff",
         "dark-background-gradient-1": "#222831",
 
         "navbar-body-0": "#5D6E9E",

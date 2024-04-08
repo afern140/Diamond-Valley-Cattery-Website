@@ -22,9 +22,9 @@ export default function Comments(cat) {
 
 
    return (
-      <section className="text-gray-800 pt-4 border-t-4 border-[#092C48] bg-gradient-to-b from-[#c1b0c5] to-navbar-body-1">
+      <section className="text-gray-800 pt-4 ">
          <h1 className="text-5xl font-bold text-center text-gray-500 drop-shadow">Comments</h1>
-         <div className="mx-40 m-auto flex-col justify-center bg-white bg-opacity-40 mt-10 rounded-xl border-2 border-white overflow-hidden">
+         <div className="mx-40 m-auto flex-col justify-center bg-white bg-opacity-100 mt-10 p-4 drop-shadow-lg rounded-xl border-2 border-white overflow-hidden">
             {comments.map((comment) => (
             <Comment 
             key={comment.id}
@@ -82,17 +82,17 @@ async function handleAddComment(e){
 }
 
    return(
-      <div className="text-black">
-         <h2 className="text-3xl flex flex-col items-center">New Comment</h2>
+      <div className="text-black mt-8">
+         <h2 className="text-3xl flex flex-col items-center pb-4">New Comment</h2>
          <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
             <input  
                type="text"
                placeholder="Comment Here"
                value = {message}
                onChange={(e) => setMessage(e.target.value)}
-               className="border-s-4 border-slate-300 p-2 mb-4 text-black"
+               className="border-s-4 border-[#fff4f9] p-2 mb-16 w-[400px] drop-shadow-lg text-black"
             />
-            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-black p-2">
+            <button type="submit" className=" drop-shadow-lg bg-[#fff4f9] rounded text-black py-2 text-2xl px-4">
                Submit
             </button>
          </form>

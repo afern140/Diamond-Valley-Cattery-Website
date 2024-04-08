@@ -168,14 +168,14 @@ export default function Page() {
 									name="litterlist-search"
 									placeholder="Search"
 									value={fieldInput}
-									className=" bg-purple-100 bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
+									className=" bg-[#fff4f9] bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
 									onChange = { (Event) => searchItems(Event.target.value, "") }>
 								</input>
 								
 								<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
 							</div>
 							{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-								<div className="absolute z-40 bg-purple-100 bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+								<div className="absolute z-40 bg-white bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
 									{
 										filteredResults.map((litter) => (
 											<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(litter.name)}>{litter.name}</button>
@@ -186,15 +186,15 @@ export default function Page() {
 						</div>
 
 						<div className="flex mt-10">
-							<div className="w-full bg-gradient-to-b from-white to-navbar-body-1 text-text-header-0 rounded-xl relative p-4 border-[3px] border-text-header-0">
+							<div className="w-full bg-white text-text-header-0 rounded-xl relative p-4 drop-shadow-lg">
 								<label className="font-bold text-2xl align-middle" htmlFor="sort">Sort By:</label>
-								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-white border-2 bg-opacity-30">
+								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-[#fff4f9] border-2 bg-opacity-100">
 									<option value="name">Name</option>
 									<option value="expDate">Expected Date</option>
 								</select>
 							</div>
 							<div className=" ml-10 mr-10">
-								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-gradient-to-b from-white to-navbar-body-0 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</Link>
+								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-background-gradient-1 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</Link>
 								<div className={"absolute size-[128px] top-[430px] right-[40px] transition duration-500 " + (addTooltip ? " opacity-100" : "opacity-0")}>
 									<div className="w-full bg-text-header-0 border-4 border-[#092C48] h-8 rounded-full drop-shadow">
 										<p className="flex size-full text-center text-lg text-white justify-center align-middle">Add Cat</p>
@@ -203,7 +203,7 @@ export default function Page() {
 							</div>
 						</div>
 					</div>
-					<div className={"p-4 bg-white bg-opacity-20 mt-6 border-2 border-opacity-50 border-white rounded-xl" + (filteredResults && filteredResults.length > 0 ? " h-[100vh]" : "")}>
+					<div className={"p-4 bg-white bg-opacity-80 drop-shadow-lg mt-6 border-2 border-opacity-50 border-white rounded-xl" + (filteredResults && filteredResults.length > 0 ? " h-[100vh]" : "")}>
 						<div className="h-full scroll-auto overflow-y-scroll overflow-hidden">
 							{filteredResults && filteredResults.length > 0 ? (
 								filteredResults.map((litter) => (

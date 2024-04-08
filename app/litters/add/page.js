@@ -111,13 +111,13 @@ export default function Page() {
 				</div>
 			</div>
 
-			<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48]">
+			<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg text-[#092C48]">
 				<div className="w-full flex-col space-y-2">
 					<h2 className="text-2xl mb-2">Details</h2>
 					<div className="flex space-x-3">
 						<h3 className="my-auto">Name: </h3>
 						<input
-						className="p-1 rounded-xl"
+						className="p-1 rounded-xl bg-[#fff4f9] pl-2 drop-shadow-lg"
 						type="text"
 						name="name"
 						placeholder={litter.name ? litter.name : "Name"}
@@ -128,7 +128,7 @@ export default function Page() {
 					<div className="flex space-x-3">
 						<h3 className="my-auto">Date Expected: </h3>
 						<input
-							className="p-1 rounded-xl"
+							className="p-1 rounded-xl bg-[#fff4f9] pl-2 drop-shadow-lg"
 							type="date"
 							name="expDate"
 							value={litter.expDate ? new Date(litter.expDate.toDate()).toISOString().split('T')[0] : ""}
@@ -141,7 +141,7 @@ export default function Page() {
 					<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 					<div className="size-full">
 						<textarea
-							className="size-full rounded-xl p-2"
+							className="p-1 rounded-xl bg-[#fff4f9] p-2 size-full drop-shadow-lg"
 							type="text"
 							name="description"
 							placeholder={litter.description ? litter.description : "Description"}
@@ -167,9 +167,9 @@ export default function Page() {
 								className="justify-center align-center place-items-center"
 								objectFit="contain"
 							/>
-							<button className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Mother</button>
+							<button className="px-4 py-2 bg-white drop-shadow-lg rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Mother</button>
 						</div>
-					) : (<button className="px-4 py-2 bg-gradient-to-r mb-auto from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl" onClick={() => handleSelectParentToUpdate('mother')}>Add Mother</button>)}
+					) : (<button className="px-4 py-2 bg-gradient-to-r mb-auto bg-white drop-shadow-lg rounded-xl" onClick={() => handleSelectParentToUpdate('mother')}>Add Mother</button>)}
 					{litter.father ? (
 						<div>
 							<h2>Father</h2>
@@ -182,9 +182,9 @@ export default function Page() {
 								className="justify-center align-center place-items-center"
 								objectFit="contain"
 							/>
-							<button className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('father')}>Replace Father</button>
+							<button className="px-4 py-2 bg-white drop-shadow-lg rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('father')}>Replace Father</button>
 						</div>
-					) : (<button className="px-4 py-2 bg-gradient-to-r mb-auto from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl" onClick={() => handleSelectParentToUpdate('father')}>Add Father</button>)}
+					) : (<button className="px-4 py-2 bg-gradient-to-r mb-auto bg-white drop-shadow-lg rounded-xl" onClick={() => handleSelectParentToUpdate('father')}>Add Father</button>)}
 				</div>
 				<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 			</div>
@@ -203,7 +203,7 @@ export default function Page() {
 									className="justify-center align-center place-items-center"
 									objectFit="contain"
 								/>
-								<button className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
+								<button className="px-4 py-2 bg-white drop-shadow-lg rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 							</div>
 						))}
 						<div className=" flex justify-center flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
@@ -215,16 +215,16 @@ export default function Page() {
 									className="justify-center align-center place-items-center"
 									objectFit="contain"
 							/>
-							<button className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6" onClick={() => handleAddChild()}>Select Child</button>
+							<button className="px-4 py-2 bg-white drop-shadow-lg rounded-xl mt-6" onClick={() => handleAddChild()}>Select Child</button>
 						</div>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
 				) : (<div className="p-4 px-10">
-						<button className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl" onClick={handleMarkAsComplete}>Mark as Complete</button>
+						<button className="px-4 py-2 bg-white drop-shadow-lg rounded-xl" onClick={handleMarkAsComplete}>Mark as Complete</button>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
 				)}
-				<button className="flex m-auto px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-16 text-2xl" onClick={handleSubmit}>Submit</button>
+				<button className="flex m-auto px-6 py-4 bg-white drop-shadow-lg rounded-xl mt-16 text-2xl" onClick={handleSubmit}>Submit</button>
 			</div>
 		</main>
 	)

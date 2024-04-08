@@ -192,7 +192,7 @@ export default function Page() {
 						name="catlist-search"
 						placeholder="Search"
 						value={fieldInput}
-						className=" bg-purple-100 bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
+						className=" bg-[#fff4f9] bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
 						onChange = { (Event) => searchItems(Event.target.value, "") }>
 					</input>
 					
@@ -213,7 +213,7 @@ export default function Page() {
 		<div className="flex w-full">
 		{/* First split of the page */}
 		<div className=" w-1/3 mr-6 ml-20 align-middle justify-start flex-col flex items-center relative z-20">
-			<div className="p-6 w-full bg-gradient-to-b from-white to-navbar-body-1 text-text-header-0 rounded-xl relative -z-20 border-[3px] border-navbar-body-2 drop-shadow-lg">
+			<div className="p-6 w-full text-text-header-0 rounded-xl relative -z-20 bg-white  drop-shadow-lg">
 				<h2 className="py-6 text-2xl font-semibold text-center drop-shadow-md">Filters</h2>
 				<h3 className="py-2 text-lg">Breed</h3>
 				<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>
@@ -225,7 +225,7 @@ export default function Page() {
 				<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>
 
 				<div className="w-fit z-10">
-					<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-gradient-to-r from-white bg-navbar-body-1 border border-navbar-body-2 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>
+					<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-background-gradient-1 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>
 					{/*<div className="p-4 bg-yellow-700 rounded-xl absolute h-10 -translate-y-[36px] -z-10 w-full" />*/}
 				</div>
 			</div>
@@ -234,7 +234,7 @@ export default function Page() {
 		{/* Second split of the page */}
 		<div className="w-full flex-col mr-16">
 			<div className="flex w-full">
-				<div className=" w-full justify-end flex-col bg-gradient-to-b from-white to-navbar-body-1 rounded-xl py-2 px-2 border-[3px] border-navbar-body-2">
+				<div className=" w-full justify-end flex-col bg-white rounded-xl p-4 drop-shadow-lg">
 					<h2 className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort by:</h2>
 					<div className=" pt-4">
 						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
@@ -248,7 +248,7 @@ export default function Page() {
 								{/*<Image className="absolute mt-5" alt="o" src="/img/circle.svg" width={96} height={96} />*/}
 								{/*<span className=" -translate-x-10 relative z-40">+</span>*/}
 								<div className=" ml-10 mr-10">
-									<span className="bg-gradient-to-b from-white to-navbar-body-0 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</span>
+									<span className=" bg-background-gradient-1 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</span>
 								</div>
 							</div>
 						</div>
@@ -269,7 +269,7 @@ export default function Page() {
 					{filteredResults ? (
 						filteredResults.length > 0 ?
 							filteredResults.map((cat) => (
-								<div>
+								<div className="hover:scale-110 transition duration-300">
 									<CatButton cat={cat}/>
 								</div>
 							))

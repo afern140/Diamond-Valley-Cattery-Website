@@ -57,13 +57,13 @@ export default function Page({ params }) {
 					<Carousel/>
 
 					<div className="flex w-full">
-						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48]">
+						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-white text-[#092C48] drop-shadow-lg">
 							<h2 className="text-2xl mb-2">Details</h2>
 							<h3>Expected Date: <span className="font-normal">{new Date(litter.expDate.toDate()).toISOString().split('T')[0]}</span></h3>
 							<h3>Completed: <span className="font-normal">{litter.completed ? "Completed" : "Not Completed"}</span></h3>
 						</div>
 
-						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-gradient-to-b from-white to-navbar-body-1 text-[#092C48] border-[3px] border-[#092C48]">
+						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-white drop-shadow-lg text-[#092C48]">
 							<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 							<p className="font-normal">{litter.description}</p>
 						</div>
@@ -72,10 +72,10 @@ export default function Page({ params }) {
 					<div className="text-black text-xl font-bold p-10">
 						<h2 className="text-2xl mx-10 mt-10">Parents</h2>
 						<div className="flex flex-wrap">
-							<div className="bg-[#F6DCE6] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							<div className="bg-[#fff4f9] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								<CatButton cat={litter.father} />
 							</div>
-							<div className="bg-[#F6DCE6] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							<div className="bg-[#fff4f9] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								<CatButton cat={litter.mother} />
 							</div>
 						</div>
@@ -84,7 +84,7 @@ export default function Page({ params }) {
 								<div>
 									<h2 className="text-2xl mx-10 mt-10">Children</h2>
 									<div className="flex flex-wrap">
-										<div key={index} className="bg-[#F6DCE6] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+										<div key={index} className="bg-[#fff4f9] drop-shadow-lg p-10 m-10 rounded-lg text-center">
 											<CatButton cat={child} />
 										</div>
 									</div>
@@ -94,7 +94,7 @@ export default function Page({ params }) {
 					</div>
 
 					<div className="w-full flex justify-center">
-						<Link className=" flex justify-center m-auto px-4 py-2 text-2xl text-[#092C48] border-[3px] border-[#092C48] rounded-xl bg-gradient-to-b from-white to-navbar-body-1" href={`./${litter.id}/edit`}>Edit {litter.name}</Link>
+						<Link className=" flex justify-center m-auto px-4 py-2 text-2xl text-[#092C48] rounded-xl bg-white drop-shadow-lg" href={`./${litter.id}/edit`}>Edit {litter.name}</Link>
 					</div>
 				</div>
 			) : (

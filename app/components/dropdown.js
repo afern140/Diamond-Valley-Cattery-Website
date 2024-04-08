@@ -59,13 +59,13 @@ function Dropdown({queryType, callback, cats, isInsidePanel}) {
     return (
         <div className="relative flex flex-col items-center w-full h-auto rounded-lg">
             <button onClick={() => setIsOpen((prev) => !prev)}
-                className={"h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border duration-300 active:text-white " + (isInsidePanel ? "bg-white bg-opacity-40 text-gray-700 border-white" : "bg-white text-black border-black")}>
+                className={"h-10 p-4 w-full flex items-center justify-between font-bold text-lg rounded-lg tracking-wider border duration-300 drop-shadow-lg active:text-white " + (isInsidePanel ? "bg-[#fff4f9] bg-opacity-100 text-gray-700 border-white" : "bg-white text-black border-black")}>
                 <span className={"text-sm"}>{(dropdownValue === "" ? "Select..." : dropdownValue)}</span>
             </button>
             
             { /* When we press the dropdown button, we change the state to 'Open' and populate the list with the appropriate values. */}
             { isOpen && (
-                <div className=" bg-[#BDB2FF] text-gray-700 border border-gray-300 absolute top-10 right-0 flex flex-col items-start rounded-lg p-2 w-full h-96 z-20 overflow-auto">
+                <div className=" bg-[#EFEFEF] text-gray-700 border border-gray-300 absolute top-10 right-0 flex flex-col items-start rounded-lg p-2 w-full h-96 z-20 overflow-auto">
                     {/* "None" button that goes on top to clear the filter */}
                     <button onClick={(e) => handleCallback("")} className="font-bold w-full flex">None</button>
                     {list.map((item, index) => (

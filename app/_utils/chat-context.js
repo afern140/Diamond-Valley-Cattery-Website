@@ -42,6 +42,21 @@ export const ChatProvider = ({ children }) => {
 
   //Function to send a message in a chat
   const sendMessage = async (chatId, message) => {
+    
+    // Validate chatId and message fields
+    if (typeof chatId !== "string" || chatId.trim().length === 0) {
+      throw new Error("Invalid chat ID");
+    }
+    if (typeof message.text !== "string" || message.text.trim().length === 0) {
+      throw new Error("Message text must be a non-empty string");
+    }
+    if (
+      typeof message.userId !== "string" ||
+      message.userId.trim().length === 0
+    ) {
+      throw new Error("User ID must be a non-empty string");
+    }
+    
     const messageDoc = {
       ...message,
       chatId: chatId,

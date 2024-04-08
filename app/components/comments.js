@@ -18,7 +18,8 @@ export default function Comments(cat) {
       catch (error) {
          console.error("Error getting comments: ", error);
       }
-   }, );
+   },[]
+);
 
 
    return (

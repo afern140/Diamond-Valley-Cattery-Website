@@ -242,7 +242,7 @@ export default function Page() {
 				</div>
 				<div className="absolute size-fit right-0 top-[40px]">
 					<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)}
-						className="relative z-40 size-fit" href="/add">
+						className="relative z-40 size-fit" href="cats/add">
 						<div className="w-full bg-gradient-to-b from-white to-navbar-body-1 p-4 rounded-full text-transparent bg-clip-text text-8xl inline-block relative z-40">
 							<div className="relative size-fit z-40 transition duration-300 hover:scale-125">
 								{/*<Image className="absolute mt-5" alt="o" src="/img/circle.svg" width={96} height={96} />*/}

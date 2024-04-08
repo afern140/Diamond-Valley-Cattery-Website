@@ -148,7 +148,7 @@ export default function Page() {
 	}
 
 	return (
-		<main className={"text-gray-700 h-full relative" + (filteredResults && filteredResults.length > 0 ? "" : " h-screen")}>
+		<main className={"text-text-header-0 h-full relative" + (filteredResults && filteredResults.length > 0 ? "" : " h-screen")}>
 			<div className="h-full">
 				<BackgroundUnderlay />
 
@@ -168,14 +168,14 @@ export default function Page() {
 									name="litterlist-search"
 									placeholder="Search"
 									value={fieldInput}
-									className=" bg-purple-100 bg-opacity-50 border-2 placeholder-gray-700 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
+									className=" bg-purple-100 bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl pl-4 w-4/5 h-10"
 									onChange = { (Event) => searchItems(Event.target.value, "") }>
 								</input>
 								
 								<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
 							</div>
 							{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-								<div className="absolute z-40 bg-purple-100 bg-opacity-50 border-2 placeholder-gray-700 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+								<div className="absolute z-40 bg-purple-100 bg-opacity-50 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
 									{
 										filteredResults.map((litter) => (
 											<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(litter.name)}>{litter.name}</button>
@@ -186,21 +186,20 @@ export default function Page() {
 						</div>
 
 						<div className="flex mt-10">
-							<div className="w-full bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] text-gray-700 rounded-xl relative p-4">
+							<div className="w-full bg-gradient-to-b from-[#ca8076] to-[#9d5850] text-text-header-0 rounded-xl relative p-4 border-[3px] border-text-header-0">
 								<label className="font-bold text-2xl align-middle" htmlFor="sort">Sort By:</label>
-								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-[#ae9afdb8] border-2">
+								<select id="sort" value={sortBy} onChange={handleSortChange} className=" drop-shadow-md ml-4 p-2 text-xl rounded-xl bg-white border-2 bg-opacity-30">
 									<option value="name">Name</option>
 									<option value="expDate">Expected Date</option>
 								</select>
 							</div>
 							<div className=" ml-10 mr-10">
-								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-gradient-to-b from-[#696EFF] to-[#F8ACFF] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left">+</Link>
-								{ addTooltip &&
-								<div className="absolute size-[128px] top-[420px] right-[40px]">
-									<div className="w-full bg-gray-700 border-4 border-gray-500 h-8 rounded-full drop-shadow">
+								<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)} href="litters/add" className="bg-gradient-to-b from-[#ca8076] to-[#9d5850] rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</Link>
+								<div className={"absolute size-[128px] top-[430px] right-[40px] transition duration-500 " + (addTooltip ? " opacity-100" : "opacity-0")}>
+									<div className="w-full bg-text-header-0 border-4 border-gray-500 h-8 rounded-full drop-shadow">
 										<p className="flex size-full text-center text-lg text-white justify-center align-middle">Add Cat</p>
 									</div>
-								</div>}
+								</div>
 							</div>
 						</div>
 					</div>

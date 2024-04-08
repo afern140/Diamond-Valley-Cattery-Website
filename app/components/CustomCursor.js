@@ -1,4 +1,7 @@
+"use client"
+
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 // This functional component represents a custom cursor with a flare effect.
 function CustomCursor() {
@@ -31,15 +34,28 @@ function CustomCursor() {
   }, []); // The empty dependency array ensures that this effect runs only once on mount.
 
   // Calculate the size of the flare based on whether the cursor is over a clickable element.
-  const flareSize = isPointer ? 0 : 30;
+  const flareSize = isPointer ? 48 : 64;
 
   // Adjust the cursor position to create a visual effect when over a clickable element.
-  const cursorStyle = isPointer ? { left: "-100px", top: "-100px" } : {};
+  const cursorStyle = isPointer ? { left: "-100px", top: "-100px" } : { left: "-100px", top: "-100px" };
+
+  function changeCursor(cursor) {
+    document.getElementById("body").style.cursor = cursor;
+  }
+
+  useEffect(() => {
+    console.log("Hiding cursor!");
+    changeCursor("none");
+
+    return () => {
+      changeCursor("auto");
+    };
+  }, []);
 
   // Render the custom cursor element with dynamic styles based on cursor state.
   return (
     <div
-      className={" fixed border-2 mix-blend-screen pointer-events-none -translate-x-1/2 -translate-y-1/2 z-[100] backdrop-blur-[1px] bg-[#0000005e] transition duration-100 cursor-none" + (isPointer ? " opacity-0" : "")}
+      className={" fixed pointer-events-none -translate-x-1/3 z-50 transition cursor-none " + (isPointer ? " opacity-100 -translate-y-[10%]" : " -translate-y-[20%]")}
       style={{
         ...cursorStyle,
         left: `${position.x}px`,
@@ -47,7 +63,10 @@ function CustomCursor() {
         width: `${flareSize}px`,
         height: `${flareSize}px`,
       }}
-    ></div>
+    >
+      {isPointer ? <Image alt="cursor-hover" src="/img/big-cursor-hover.svg" width={512} height={512} />
+                 : <Image alt="cursor" src="/img/big-cursor.svg" width={512} height={512} />}
+    </div>
   );
 }
 

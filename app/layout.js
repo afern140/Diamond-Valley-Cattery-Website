@@ -6,7 +6,7 @@ import { AuthContextProvider } from "./_utils/auth-context";
 import { ChatProvider } from "./_utils/chat-context";
 
 import { ThemeProvider } from "next-themes";
-
+import CustomCursor from "@/app/components/CustomCursor";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,11 +16,14 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
+
+
   return (
     <AuthContextProvider>
       <ChatProvider>
         <html lang="en">
-          <body className={inter.className}>
+          <body id="body" className={inter.className + " "}>
             <ThemeProvider
             attribute="class"
             enableSystem="false">

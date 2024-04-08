@@ -22,6 +22,7 @@ const Navbar = () => {
  const [expandSettings, setExpandSettings] = useState(false);
  const { theme, setTheme } = useTheme("light");
  const pathname = usePathname();
+ const [toggleLargeCursor, setToggleLargeCursor] = useState(false);
 
  const [expandNotifications, setExpandNotifications] = useState(false);
 
@@ -105,8 +106,11 @@ const Navbar = () => {
 
   const returnPositionLogic = (ePos, offset, useAbsolutePos) => {
     if (contrastActive) {
-      var pos = (useAbsolutePos) ? {x: position.x + offset[0], y: position.y + offset[1]} : {x: (ePos.x - position.x + offset[0]), y: (ePos.y - position.y + offset[1])};
-      console.log("returning: " + pos.x);
+      var pos = (useAbsolutePos) ? {x: Math.min(Math.max((position.x + offset[0]), 0), 100),
+                                    y: Math.min(Math.max(position.y + offset[1], 0), 100)}
+                                 : {x: Math.min(Math.max((ePos.x - position.x + offset[0]), 0), 100),
+                                    y: Math.min(Math.max((ePos.y - position.y + offset[1]), 0), 100)};
+      console.log("returning: " + pos.x + "; " + pos.y);
       return pos;
     }
     return [null, null]
@@ -114,7 +118,8 @@ const Navbar = () => {
 
   return (
     <div className="font-sans text-black font-normal text-base pt-6 bg-[#9d5850] dark:bg-[#bc745a] z-40 relative">
-    
+    {toggleLargeCursor ? <CustomCursor /> : null}
+
     <div className="w-full sticky mx-auto p-2 z-0">
     {/*<div className="size-[400px] absolute -top-10 right-0 -z-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#E29DA7] via-[#00000000] to-[#00000000]" />*/}
 
@@ -129,8 +134,8 @@ const Navbar = () => {
             {/* Notifications */}
             <div className="relative w-full flex m-auto justify-end">
               <button onClick={() => setExpandNotifications(!expandNotifications)}
-              className="relative flex p-2 border-4 border-black rounded-full bg-white bg-opacity-0 hover:bg-opacity-30 transition duration-300 hover:scale-110">
-                <Image alt="Notifications" src="/img/notification-icon.svg" width={40} height={40} />
+              className="relative flex p-2 border-4 border-black hover:border-gray-700 rounded-full bg-white bg-opacity-70 hover:bg-opacity-90 transition duration-300 hover:scale-110 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                <Image className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]" alt="Notifications" src="/img/notification-icon.svg" width={40} height={40} />
               </button>
 
               { expandNotifications && 
@@ -144,32 +149,40 @@ const Navbar = () => {
 
             {/* Settings */}
             <div id="mousemove" className="relative justify-end px-10 z-40">
-              <button className={"p-4 rounded-full relative transition duration-300 text-black border-black z-10 border-4 " + (expandSettings ? " bg-black bg-opacity-30 hover:scale-110 hover:bg-white hover:bg-opacity-30" : " hover:bg-white hover:bg-opacity-30 hover:scale-110")}
-                                onClick={() => setExpandSettings(!expandSettings)}>Settings</button>
+              <button className={"p-4 rounded-full relative transition duration-300 text-black z-10 border-4 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (expandSettings ? " bg-white bg-opacity-90 hover:scale-110 hover:bg-white hover:bg-opacity-100 border-gray-500 hover:border-gray-700" : " hover:bg-white hover:bg-opacity-90 bg-white bg-opacity-70 hover:scale-110 border-black hover:border-gray-700")}
+                                onClick={() => setExpandSettings(!expandSettings)}><p className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Settings</p></button>
               {/*<div className="bg-yellow-700 p-3 rounded-xl -translate-y-[21px] -z-20"/>*/}
 
               { expandSettings &&
                 (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-1 -translate-x-6 shadow transition duration-300 overflow-clip">
                   <div className="flex p-2 space-x-4 text-black dark:text-white">
                     <p>Dark Theme</p>
-                    <div className="rounded-full" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+                    <button className="rounded-full" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
                       <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 bg-gray-700 dark:bg-green-400"} >
                         <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 -translate-x-3 dark:translate-x-3"} />
                       </div>
-                    </div>
+                    </button>
                   </div>
                   <div className="flex p-2 space-x-4 text-black dark:text-white relative">
                     <p>Contrast</p>
                     <div className="rounded-full w-full pr-2">
                       <div className={"w-full h-6 rounded-full border-2 flex transition duration-200 bg-gray-700 dark:bg-green-400"} >
                         <button onClick={() => handleContrastEdit()}
-                          style={{left: `${returnPositionLogic(contrastStartPos, [-610, 0], true).x}px`}}
+                          style={{left: `${returnPositionLogic(contrastStartPos, [0, 0], true).x}%`}}
                           className={"absolute bg-gray-300 dark:bg-white size-4 rounded-full m-auto translate-x-1 translate-y-[2px]"} />
                       </div>
                     </div>
                   </div>
+                  <div className="flex p-2 space-x-4 text-black dark:text-white">
+                    <p>Large Cursor</p>
+                    <button className="rounded-full" onClick={() => setToggleLargeCursor(!toggleLargeCursor)}>
+                      <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 bg-gray-700 dark:bg-green-400"} >
+                        <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 " + (toggleLargeCursor ? " translate-x-3" : " -translate-x-3")} />
+                      </div>
+                    </button>
+                  </div>
                   {user && <div className="relative z-40">
-                    <Link className="relative z-40" href={"/dashboard"}>
+                    <Link className="relative z-40 " href={"/dashboard"}>
                       <div className="relative z-40 flex p-2 w-full text-black dark:text-white dark:hover:bg-gray-700 hover:bg-gray-200 size-full text-left">
                         <span>Dashboard</span>
                       </div>

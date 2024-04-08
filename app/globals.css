@@ -12,6 +12,8 @@ body, main, p, span, h1, h2, h3, h4, h5, h6, li, button {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --cursor-show: auto;
+  --cursor-none: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,6 +22,14 @@ body, main, p, span, h1, h2, h3, h4, h5, h6, li, button {
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
+}
+
+.show-cursor {
+  cursor: auto;
+}
+
+.hide-cursor {
+  cursor: none;
 }
 
 body {

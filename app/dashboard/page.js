@@ -13,36 +13,7 @@ import {
 import { useChat } from "@/app/_utils/chat-context";
 import ImageUploader from "./ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-// const getUser = async(userAuth) => {
-// 	const usersCollection = await getDocs(collection(db, 'users'));
-// 	const usersDataPromise = usersCollection.docs.map(async (userDoc) => {
-// 		const userData = {id: userDoc.id, ...userDoc.data() };
-// 		const subCollections = await userDoc.ref.listCollections();
-// 		await Promise.all(subCollections.map(async (subCollection) => {
-// 			const subCollectionDocs = await getDocs(subCollection);
-// 			const subCollectionData = subCollectionDocs.map((doc) => ({ id: doc.id, ...doc.data() }));
-// 			userData[subCollection.id] = subCollectionData;
-// 		}));
-// 		return userData;});
 
-// 	const usersData = await Promise.all(usersDataPromise);
-// 	const user = usersData.find(userItem => userItem.uid == userAuth.uid)
-// 	return user;
-// }
-
-// const getUser = async(userAuth) => {
-// 	const usersCollection = await getDocs(collection(db, 'users'));
-// 	const usersDataPromise = usersCollection.docs.map(async (userDoc) => {
-// 		const userData = {id: userDoc.id, ...userDoc.data()};
-// 		const favoritesCollection = await getDocs(collection(userDoc.ref, 'favorites'));
-// 		const favoritesData = Object.fromEntries(favoritesCollection.docs.map((favoritesDoc) => [favoritesDoc.id, { id: favoritesDoc.id, ...favoritesDoc.data() }]));
-// 		userData.favorites = favoritesData;
-// 		return userData;});
-// 	const usersData = await Promise.all(usersDataPromise);
-// 	const user = usersData.find(userItem => userItem.uid == userAuth.uid)
-// 	return user;
-// }
-// Dashboard
 export default function Page() {
   const [userImageFile, setUserImageFile] = useState(null);
   const { user } = useUserAuth();

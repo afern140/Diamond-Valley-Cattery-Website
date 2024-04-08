@@ -271,7 +271,7 @@ export default function Page({params}) {
 						</div>
 					</div>
 					<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
-					<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />
+					{/*<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />*/}
 					</div>
 					<Comments cat={cat}/>
 				</section>

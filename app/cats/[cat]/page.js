@@ -236,9 +236,9 @@ export default function Page({params}) {
 						<div className="flex flex-col ml-auto mx-10 mb-auto mt-10">
 							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
-								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-navbar-body-1 dark:bg-gray-500 drop-shadow-lg rounded-xl p-4 text-xl" >
+								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-navbar-body-1 drop-shadow-lg rounded-xl p-4 text-xl" >
 									<div className="relative flex">
-										<span className="my-auto flex">Request a Meeting</span>
+										<span className="my-auto flex text-header-text-0">Request a Meeting</span>
 										<div className="flex mx-3 w-1 bg-[#092C48] rounded-full" />
 										<button onClick={handleMeetingButton} className="bg-white bg-opacity-0 hover:bg-opacity-50 active:bg-opacity-80 transition duration-100 p-2 rounded-full">
 											<Image alt=">" src="/img/right-arrow.svg" width={32} height={32} />

@@ -13,6 +13,7 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
+import CatButton from "@/app/components/cats/catbutton"
 import ImageUploader from "@/app/components/ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import CatCarouselController from "@/app/components/CatCarouselController";
@@ -562,36 +563,20 @@ export default function Page({params}){
 					<div>
 						<h2 className="text-xl font-bold mb-4 mt-6 px-10 dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex px-10 space-x-10 mt-6 flex-wrap">
-							{cat.father ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
-									{cat.father.name}
-									<Image
-										src="/img/Placeholder.png"
-										alt="Cat"
-										width={300}
-										height={300}
-										className="justify-center align-center place-items-center"
-										objectFit="contain"
-									/>
-									<h2 className="font-normal">Father</h2>
-									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Father</button>
-								</div>
-							) : (<></>)}
 							{cat.mother ? (
 								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
-									{cat.mother.name}
-									<Image
-										src="/img/Placeholder.png"
-										alt="Cat"
-										width={300}
-										height={300}
-										className="justify-center align-center place-items-center"
-										objectFit="contain"
-									/>
 									<h2 className="font-normal">Mother</h2>
+									<CatButton cat={cat.mother} />
 									<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Mother</button>
 								</div>
-							) : (<></>)}
+							) : (<button onClick={() => handleSelectParentToUpdate('mother')}>Add Mother</button>)}
+							{cat.father ? (
+								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+									<h2 className="font-normal">Father</h2>
+									<CatButton cat={cat.father} />
+									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Father</button>
+								</div>
+							) : (<button onClick={() => handleSelectParentToUpdate('father')}>Add Father</button>)}
 						</div>
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 					</div>
@@ -601,15 +586,7 @@ export default function Page({params}){
 							{cat.children ? (
 								cat.children.map((child) =>(
 									<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
-										{child.name}
-										<Image
-											src="/img/Placeholder.png"
-											alt="Cat"
-											width={300}
-											height={300}
-											className="justify-center align-center place-items-center"
-											objectFit="contain"
-										/>
+										<CatButton cat={child} />
 										<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Remove {child.name}</button>
 									</div>
 								))

@@ -15,10 +15,18 @@ import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
 import ImageUploader from "@/app/components/ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import CatCarouselController from "@/app/components/CatCarouselController";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({params}){
+	const handleImageUpload = async (imageUrl) => {
+		try {
+			fetchCat()
+		} catch (error) {
+			console.error("Error handling image upload:", error);
+		}
+	};
 	const [thumbnail, setThumbnail] = useState(null);
 	const {user} = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
@@ -464,7 +472,7 @@ export default function Page({params}){
 							</div>
 						</div>
 					</div>
-					
+					<ImageUploader onImageSelected={setThumbnail} inputKey="thumbnail-uploader" />
 					<div className="">
 						<h2 className="text-xl font-bold mb-4 mt-6 px-10 text-center">Conditions</h2>
 						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
@@ -619,6 +627,7 @@ export default function Page({params}){
 						</div>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
+					<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />
 					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-[#e5e5ff] rounded-xl mt-16 text-2xl">Submit</button>
 				</div>
 			) : (

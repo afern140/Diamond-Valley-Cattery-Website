@@ -7,26 +7,35 @@ import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/app/_utils/firebase";
 import { getObject, getObjects, updateObject } from "@/app/_utils/firebase_services";
 import CatSelection from "@/app/components/cats/cat-selection";
+import ImageUploader from "@/app/components/ImageUploader";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({ params }) {
+	const [imageFile, setImageFile] = useState(null);
 	const [litter, setLitter] = useState();
 	const [cats, setCats] = useState([]);
 	const [selectedParent, setSelectedParent] = useState();
 	const [showParentSelection, setShowParentSelection] = useState(false);
 	const [showChildSelection, setShowChildSelection] = useState(false);
+	const handleImageSelected = (file) => {
+		setImageFile(file);
+	  };	  
+	
 
 	useEffect(() => {
 		const fetchLitter = async () => {
 			const litter = await getObject('litters', parseInt(params.litter));
 			if (litter.mother) {
 				const mother = await getDoc(litter.mother);
-				litter.mother = mother.data();
+				litter.mother = { docId: litter.mother.id, ...mother.data() };
 			} else {
 				litter.mother = null;
 			}
 			if (litter.father) {
 				const father = await getDoc(litter.father);
-				litter.father = father.data();
+				litter.father = { docId: litter.father.id, ...father.data() };
 			} else {
 				litter.father = null;
 			}
@@ -98,109 +107,163 @@ export default function Page({ params }) {
 	};
 
 	const handleSubmit = async () => {
+		// Upload the image to Firebase Storage if an image is selected
+		let imageUrl = litter.thumbnail; // Default to the existing thumbnail URL
+		if (imageFile) {
+		  const storage = getStorage();
+		  const imageRef = ref(storage, `litters/${litter.id}/thumbnail`);
+		  await uploadBytes(imageRef, imageFile);
+		  imageUrl = await getDownloadURL(imageRef);
+		}
+	  
+		// Update the Firestore document
 		const motherRef = doc(db, 'cats', litter.mother.docId);
 		const fatherRef = doc(db, 'cats', litter.father.docId);
 		let childrenRefs = [];
 		if (litter.completed) {
-			childrenRefs = litter.children.map(child => doc(db, 'cats', child.docId));
+		  childrenRefs = litter.children.map(child => doc(db, 'cats', child.docId));
 		}
-		const updatedLitter = { ...litter, mother: motherRef, father: fatherRef, children: childrenRefs }
-		await updateObject('litters', updatedLitter, true)
-	};
+		const updatedLitter = {
+		  ...litter,
+		  mother: motherRef,
+		  father: fatherRef,
+		  children: childrenRefs,
+		  thumbnail: imageUrl // Set the new thumbnail URL
+		};
+		await updateObject('litters', updatedLitter, true);
+	  };
+	  
 
 	return (
-		<main className="bg-white text-black">
+		<main className="relative text-[#092C48] pb-12">
+			<BackgroundUnderlay />
+			<ImageUploader onImageSelected={handleImageSelected} />
 			{litter ? (
 				<div>
-					<h1>Edit {litter.name}</h1>
-					<h2>Details</h2>
-					<div>
-						<input
-							type="text"
-							name="name"
-							placeholder={litter.name}
-							value={litter.name}
-							onChange={handleChange}
-						/>
-						<input
-							type="text"
-							name="description"
-							placeholder={litter.description}
-							value={litter.description}
-							onChange={handleChange}
-						/>
-						<input
-							type="date"
-							name="expDate"
-							value={new Date(litter.expDate.toDate()).toISOString().split('T')[0]}
-							onChange={handleDateChange}
-						/>
+					<div className="pt-20 flex pb-10">
+						<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
+							<span className="text-6xl pb-10 font-extrabold">Edit {litter.name}</span> <br />
+						</div>
 					</div>
-					<h2>Parents</h2>
-					<div>
+
+					<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg text-[#092C48]">
+						<div className="w-full flex-col space-y-2">
+							<h2 className="text-2xl mb-2 dark:text-dark-header-text-0">Details</h2>
+							<div className="flex space-x-3">
+								<h3 className="my-auto">Name: </h3>
+								<input
+								className="p-1 rounded-xl bg-[#e5e5ff] drop-shadow-lg"
+								type="text"
+								name="name"
+								placeholder={litter.name}
+								value={litter.name}
+								onChange={handleChange}
+							/>
+							</div>
+							<div className="flex space-x-3">
+								<h3 className="my-auto">Date Expected: </h3>
+								<input
+									className="p-1 rounded-xl bg-[#e5e5ff] drop-shadow-lg"
+									type="date"
+									name="expDate"
+									value={new Date(litter.expDate.toDate()).toISOString().split('T')[0]}
+									onChange={handleDateChange}
+								/>
+							</div>
+						</div>
+						<div className="bg-[#092C48] w-4 h-4/5 rounded-full relative" />
+						<div className="size-full">	
+							<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
+							<div className="size-full">
+								<textarea
+									className="size-full rounded-xl p-2 bg-[#e5e5ff] drop-shadow-lg"
+									type="text"
+									name="description"
+									placeholder={litter.description}
+									value={litter.description}
+									onChange={handleChange}
+								/>
+							</div>
+						</div>
+					</div>
+
+					<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
+					<div className="flex px-10 space-x-10 mt-6">
 						{litter.mother ? (
-							<div>
+							<div className=" flex justify-center flex-col font-bold p-4 bg-white drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
 								<h2>Mother</h2>
 								<h3>{litter.mother.name}</h3>
 								<Image
-									src={litter.mother.thumbnail ? litter.mother.thumbnail : "/img/Placeholder.png"}
 									alt="Cat"
-									width={200}
-									height={100}
+									src={litter.mother.thumbnail ? litter.mother.thumbnail : "/img/Placeholder.png"}
+									width={300}
+									height={300}
+									className="justify-center align-center place-items-center"
+									objectFit="contain"
 								/>
-								<button onClick={() => handleSelectParentToUpdate('mother')}>Replace Mother</button>
+								<button className="px-4 py-2 bg-gradient-to-r  drop-shadow-lg bg-[#e5e5ff] rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Mother</button>
 							</div>
 						) : (<></>)}
 						{litter.father ? (
-							<div>
+								<div className=" flex justify-center flex-col font-bold p-4 bg-white drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
 								<h2>Father</h2>
 								<h3>{litter.father.name}</h3>
 								<Image
-									src={litter.father.thumbnail ? litter.father.thumbnail : "/img/Placeholder.png"}
 									alt="Cat"
-									width={200}
-									height={100}
+									src={litter.father.thumbnail ? litter.father.thumbnail : "/img/Placeholder.png"}
+									width={300}
+									height={300}
+									className="justify-center align-center place-items-center"
+									objectFit="contain"
 								/>
-								<button onClick={() => handleSelectParentToUpdate('father')}>Replace Father</button>
+								<button className="px-4 py-2 bg-[#e5e5ff] drop-shadow-lg border rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Father</button>
 							</div>
 						) : (<></>)}
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 					</div>
-					<h2>Children</h2>
+
+					<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
 					{litter.completed ? (
-						<div>
+						<div className="flex px-10 space-x-10 mt-6">
 							{litter.children.map((child) => (
-								<div>
+								<div className=" flex justify-center flex-col font-bold p-4 drop-shadow-lg bg-white rounded-xl text-[#092C48] place-items-center">
 									<h3>{child.name}</h3>
 									<Image
-										src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}
 										alt="Cat"
-										width={200}
-										height={100}
+										src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}
+										width={300}
+										height={300}
+										className="justify-center align-center place-items-center"
+										objectFit="contain"
 									/>
-									<button onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
+									<button className="px-4 py-2 bg-gradient-to-r drop-shadow-lg bg-[#e5e5ff] rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 								</div>
 							))}
-							<div>
+							<div className=" flex justify-center flex-col font-bold p-4 bg-white drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
 								<Image
-									src="/img/Placeholder.png"
 									alt="Cat"
-									width={200}
-									height={100}
+									src={"/img/Placeholder.png"}
+									width={300}
+									height={300}
+									className="justify-center align-center place-items-center"
+									objectFit="contain"
 								/>
-								<button onClick={() => handleAddChild()}>Select Child</button>
+								<button className="px-4 py-2 bg-[#e5e5ff] drop-shadow-lg rounded-xl mt-6" onClick={() => handleAddChild()}>Select Child</button>
 							</div>
 							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 						</div>
-					) : (<div>
-							<button onClick={handleMarkAsComplete}>Mark as Complete</button>
+					) : (
+						<div className=" size-fit mx-10 mt-6 flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
+							<button className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6" onClick={handleMarkAsComplete}>Mark as Complete</button>
 							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 						</div>
 					)}
-					<button onClick={handleSubmit}>Submit</button>
+					<button className="flex m-auto px-6 py-4 bg-white drop-shadow-lg rounded-xl mt-16 text-2xl" onClick={handleSubmit}>Submit</button>
 				</div>
 			) : (
-				<h1>Loading...</h1>
+				<div className="h-screen">
+					<h1>Loading...</h1>
+				</div>
 			)}
 		</main>
 	)

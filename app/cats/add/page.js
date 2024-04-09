@@ -14,9 +14,11 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
-import ImageUploader from "@/app/components/images/ImageUploader"
+import ImageUploader from "@/app/components/ImageUploader"
 
 export default function Page() {
+	const [fileInputs, setFileInputs] = useState([{ id: v4(), file: null }]);
+	const [carouselImages, setCarouselImages] = useState([]);
 	const {user} = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
 	const [cats, setCats] = useState([]);
@@ -316,8 +318,55 @@ export default function Page() {
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
-	const handleImageSelected = async (file) => {
-	};
+	const handleImageSelected = async (event, id) => {
+		const file = event.target.files[0];
+		if (file) {
+		  // Upload the file as soon as it is selected
+		  const imgRef = ref(imageDb, `carouselImages/${id}`);
+		  const snapshot = await uploadBytes(imgRef, file);
+		  const url = await getDownloadURL(snapshot.ref);
+		  const newImage = {
+			storagePath: snapshot.metadata.fullPath,
+			url: url
+		  };
+	  
+		  // Update the carouselImages state with the new image URL
+		  setCarouselImages(currentImages => [...currentImages, newImage]);
+	  
+		  // Replace the current input with one that has a file, and add a new file input placeholder
+		  setFileInputs(currentInputs => {
+			const updatedInputs = currentInputs.map(input => {
+			  if (input.id === id) {
+				return { ...input, file: file };
+			  }
+			  return input;
+			});
+			// Only add a new input placeholder if the current one is being used
+			if (currentInputs.some(input => input.id === id && input.file === null)) {
+			  updatedInputs.push({ id: v4(), file: null });
+			}
+			return updatedInputs;
+		  });
+		}
+	  };
+	  
+	  
+
+	  const uploadFiles = async () => {
+		const imageUploadPromises = fileInputs
+		  .filter(input => input.file !== null)
+		  .map(input => {
+			const imgRef = ref(imageDb, `carouselImages/${input.id}`);
+			return uploadBytes(imgRef, input.file).then((snapshot) => getDownloadURL(snapshot.ref));
+		  });
+	  
+		const imageUrls = await Promise.all(imageUploadPromises);
+		return imageUrls.map((url, index) => ({
+		  storagePath: `carouselImages/${fileInputs[index].id}`,
+		  url: url,
+		}));
+	  };
+	  
 
 	const handleSubmit = async () => {
 		const newId = cats.reduce((max, cat) => Math.max(max, cat.id), 0) + 1;
@@ -326,6 +375,7 @@ export default function Page() {
 		let conditionRefs = [];
 		let vaccinationRefs = [];
 		let childrenRefs = [];
+		
 
 		cat.conditions.map(async (condition) => {
 			await updateObject('conditions', condition, false)
@@ -350,20 +400,40 @@ export default function Page() {
 			childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		}
 
-		const fileInput = document.querySelector('input[type="file"]');
-		const imgFile = fileInput.files[0];
-		if (!imgFile) {
-			alert("Please select an image for upload.");
-			return;
-		}
-		const imgRef = ref(imageDb, `images/${v4()}`);
-		const snapshot = await uploadBytes(imgRef, imgFile);
-		const url = await getDownloadURL(snapshot.ref);
+		let thumbnailUrl = null;
+    	const fileInput = document.querySelector('input[type="file"]');
+    	const imgFile = fileInput.files[0];
+    	if (imgFile) {
+        	const imgRef = ref(imageDb, `images/${v4()}`);
+        	const snapshot = await uploadBytes(imgRef, imgFile);
+        	thumbnailUrl = await getDownloadURL(snapshot.ref);
+    	}
+		
+		const carouselImageObjects = await uploadFiles();
 
-		const newCat = { ...cat, id: newId, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: url }
-		console.log(newCat);
+	try {
+
+		const uploadedImageUrls = await uploadFiles();
+
+		const newCat = {
+			...cat, 
+			id: newId, 
+			conditions: conditionRefs, 
+			vaccinations: vaccinationRefs, 
+			owner: ownerRef, 
+			mother: motherRef, 
+			father: fatherRef, 
+			children: childrenRefs, 
+			carouselImages: uploadedImageUrls,
+		};
+		console.log('newCat to be saved:', newCat);
 		await createObject('cats', newCat);
-	}
+		console.log('Cat saved successfully!');
+	
+	  } catch (error) {
+		console.error('Error during submission:', error);
+	  }
+	};
 
 	return(
 		<main className="bg-white min-h-screen text-black p-4">
@@ -371,6 +441,20 @@ export default function Page() {
 				<div>
 					<h1 className="text-3xl font-bold mb-4 text-center">Add Cat</h1>
 					<div className="flex flex-col mb-4 border border-black-300 rounded-md p-2 max-w-md">
+					<div>
+  {fileInputs.map((input, index) => (
+    <input
+      key={input.id}
+      type="file"
+      onChange={(event) => handleImageSelected(event, input.id)}
+      className={`border border-gray-300 rounded-md p-2 mb-2 ${index > 0 ? 'mt-2' : ''}`}
+    />
+  ))}
+</div>
+
+
+
+
 						<input
 							type="text"
 							name="name"
@@ -511,13 +595,13 @@ export default function Page() {
 							</div>
 						</div>
 						<div>
-							<h2 className="text-xl font-bold mb-4">Parents</h2>
+							<h2 className="text-xl font-bold mb-4 dark:text-dark-header-text-0">Parents</h2>
 							<div className="flex flex-wrap">
 								{cat.mother ? (
 									<div className="border border-gray-300 p-5 mb-2 rounded-lg text-center">
 										{cat.mother.name}
 										<Image
-											src="/img/Placeholder.png"
+											src={cat.mother.thumbnail || "/img/Placeholder.png"}
 											alt="Cat"
 											width={200}
 											height={100}
@@ -531,7 +615,7 @@ export default function Page() {
 									<div className="border border-gray-300 p-5 mb-2 rounded-lg text-center">
 										{cat.father.name}
 										<Image
-											src="/img/Placeholder.png"
+											src={cat.father.thumbnail || "/img/Placeholder.png"}
 											alt="Cat"
 											width={200}
 											height={100}
@@ -545,14 +629,14 @@ export default function Page() {
 							<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 						</div>
 						<div>
-							<h2 className="text-xl font-bold mb-4">Children</h2>
+							<h2 className="text-xl font-bold mb-4 dark:text-dark-header-text-0">Children</h2>
 							<div className="flex flex-wrap">
 								{cat.children ? (
 									cat.children.map((child) =>(
 										<div className="border border-gray-300 p-5 rounded-lg text-center">
 											{child.name}
 											<Image
-												src="/img/Placeholder.png"
+												src={cat.children.thumbnail || "/img/Placeholder.png"}
 												alt="Cat"
 												width={200}
 												height={100}

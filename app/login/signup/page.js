@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { auth } from '../../_utils/firebase';
-import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, signOut, updateProfile } from 'firebase/auth';
 import { useUserAuth } from "../../_utils/auth-context";
 import {collection,addDoc} from "firebase/firestore";
 import {db} from "../../_utils/firebase";
@@ -31,6 +31,13 @@ export default function page() {
         //Create user
         console.log("Creating user.");
         await createUserWithEmailAndPassword(auth, email, password)
+		.then((userCredential) => {
+			//Add user data to database
+			//alert(userCredential.user)
+			//addUserData(userCredential.user);
+			//Don't log in yet, wait for email verification
+			//signOut(auth);
+		})
           .catch((error) => {
             // Handle Errors here.
             var errorCode = error.code;
@@ -42,6 +49,14 @@ export default function page() {
              console.log(errorCode, errorMessage);
             }
           });
+		//Send email verification
+		await sendEmailVerification(auth.currentUser)
+			.then(() => {
+				console.log("Email verification sent.");
+			})
+			.catch((error) => {
+				console.log("Error sending email verification.: " + error.message);
+			});
         //Add user name
         //console.log("Adding username.");
         await updateProfile(auth.currentUser, {displayName: displayName})
@@ -51,6 +66,8 @@ export default function page() {
             console.log(errorCode, errorMessage);
           });
         await addUserData(auth.currentUser);
+
+		signOut(auth);
         handleRedirect();
       }
 
@@ -69,6 +86,8 @@ export default function page() {
             uid: user.uid,
             email: user.email,
             name: name,
+
+			favorites: {cats: []},
         };
         
        /*

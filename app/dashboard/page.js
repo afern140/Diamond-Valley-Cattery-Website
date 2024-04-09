@@ -5,10 +5,10 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import {
-  getUser,
-  getUserCats,
-  updateUser,
-  useUser,
+getUser,
+getUserCats,
+updateUser,
+useUser,
 } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
 import ImageUploader from "./ImageUploader";

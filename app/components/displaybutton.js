@@ -2,15 +2,20 @@ import Image from 'next/image'
 
 const DisplayButton = () => {
     return (
-        <button className=" rounded-2xl bg-cat-gray-0 shadow-cat-default p-6 text-black mx-8 align-middle content-center items-center flex-col justify-center flex h-full grow">
-            <div>
-                <Image
-                    alt="Placeholder"
-                    src="/img/Placeholder.png"
-                    width={128}
-                    height={128}/>
+        <button className="w-full bg-navbar-body-1 shadow-cat-default p-6 rounded-2xl text-black">
+            <div className="pb-6 relative size-full max-w-[200px] m-auto">
+                <Image className=""
+                       alt="Placeholder"
+                       src="/img/Placeholder.png"
+                       width={0}
+                       height={0}
+                       sizes="100vw"
+                       style={{width: "100%", height: "auto"}}
+                       />
             </div>
-            <p className=" font-sans text-black font-normal mt-2.5">Announcements</p>
+
+            <h3 className="">Announcement</h3>
+            <p className=" text-sm">Description</p>
         </button>
     );
   };

@@ -18,25 +18,25 @@ export default function Comments(cat) {
       catch (error) {
          console.error("Error getting comments: ", error);
       }
-   },[]
-);
+   }, [] );
 
 
    return (
-      <main className="text-black">
-         <h1 className="text-5xl font-bold">Comments</h1>
-         Hello this is a test of the comments system.   
+      <section className="text-gray-800 pt-4 ">
+         <h1 className="text-5xl font-bold text-center text-gray-700 dark:text-dark-header-text-0 drop-shadow">Comments</h1>
+         <div className="mx-40 m-auto flex-col justify-center bg-white dark:bg-gray-500 bg-opacity-100 mt-10 p-4 drop-shadow-lg rounded-xl  overflow-hidden">
             {comments.map((comment) => (
             <Comment 
             key={comment.id}
-            createTime={new Date(comment.createTime.toDate().toISOString().split('T'[0]))}
+            createTime={comment.createTime ? new Date(comment.createTime.toDate().toISOString().split('T'[0])) : new Date() }
             catName={comment.catName}
             message={comment.message}
             createName={comment.createName}
             />
             ))}
-         <NewComment cat={cat.cat} setComments={setComments}/>
-      </main>
+            <NewComment cat={cat.cat} setComments={setComments}/>
+         </div>
+      </section>
    );
 }
 
@@ -59,40 +59,40 @@ async function addComment(commentDoc,cat){
    return docRef.id;
 }
 
-function NewComment(cat,setComments) {
+function NewComment(cat, setComments) {
    const [message, setMessage] = useState("");
    const currentCat = cat.cat;
    
-async function handleAddComment(e){
-    e.preventDefault();
-    const date = new Date.now;
-    const timestamp = Timestamp.fromDate(date);
-    const commentDoc = {
-        message: message,
-        createUID: auth.currentUser.uid,
-        createName: auth.currentUser.displayName,
-        catID: currentCat.id,
-        catName: currentCat.name,
-        createTime: timestamp
-    };
-    await addComment(commentDoc,cat);
-    setMessage("");
-    setComments((prevComments) => [...prevComments, commentDoc]);
-    //window.location.reload();
-}
+   async function handleAddComment(e){
+      e.preventDefault();
+      const date = new Date();
+      const timestamp = Timestamp.fromDate(date);
+      const commentDoc = {
+         message: message,
+         createUID: auth.currentUser.uid,
+         createName: auth.currentUser.displayName,
+         catID: currentCat.id,
+         catName: currentCat.name,
+         createTime: timestamp
+      };
+      await addComment(commentDoc,cat);
+      setMessage("");
+      setComments((prevComments) => [...prevComments, commentDoc]);
+      //window.location.reload();
+   }
 
    return(
-      <div className="text-black">
-         <h2 className="text-3xl flex flex-col items-center">New Comment</h2>
+      <div className="text-black mt-8">
+         <h2 className="text-3xl flex flex-col items-center pb-4">New Comment</h2>
          <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
             <input  
                type="text"
                placeholder="Comment Here"
                value = {message}
                onChange={(e) => setMessage(e.target.value)}
-               className="border-s-4 border-slate-300 p-2 mb-4 text-black"
+               className="border-s-4 border-[#c7c7e1] p-2 mb-16 w-[400px] drop-shadow-lg text-black bg-navbar-body-1"
             />
-            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-black p-2">
+            <button type="submit" className=" drop-shadow-lg bg-[#e5e5ff] rounded text-black py-4 text-2xl px-6 transition duration-300 hover:scale-110">
                Submit
             </button>
          </form>

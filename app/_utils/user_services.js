@@ -12,6 +12,7 @@ export const getUser = async (userAuth) => {
 }
 
 export const getUserCats = async (filteredUser) => {
+	if (!filteredUser) return;
 	const usersCatData = Promise.all(filteredUser.favorites.cats.map(async (catRef) => {
 		const catDoc = await getDoc(catRef);
 		return { ...catDoc.data() };
@@ -21,8 +22,8 @@ export const getUserCats = async (filteredUser) => {
 }
 
 export const updateUser = async (updatedUser) => {
-	const { id, ...updatedUserPrunedID } = updatedUser;
-	const userRef = doc(db, 'users', id);
+	const { docId, ...updatedUserPrunedID } = updatedUser;
+	const userRef = doc(db, 'users', docId);
 	await updateDoc(userRef, updatedUserPrunedID);
 	alert("Updated user data");
 } 

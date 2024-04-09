@@ -8,14 +8,8 @@ import Dropdown from "@/app/components/dropdown";
 import CatButton from "@/app/components/cats/catbutton";
 import BackButton from "@/app/components/BackToTopButton"
 import BackgroundUnderlay from "@/app/components/background-underlay";
-
 import { useUserAuth } from "../_utils/auth-context";
-import {
-  getUser,
-  getUserCats,
-  updateUser,
-  useUser,
-} from "../_utils/user_services";
+import getUser from "../_utils/user_services";
 
 export default function Page() {
 	//Holds data that the page can display. Uses backup data until database is loaded
@@ -25,13 +19,12 @@ export default function Page() {
 	//Search field input
 	const [fieldInput, setFieldInput] = useState("");
 	//List of filters that are currently applied
-	//Order: Breed, Gender, Age, Color
-	const [filters, setFilters] = useState(["", "", "", ""]);
+
 	//Sorting method
 	const [sortingMethod, setSortingMethod] = useState("");
 
 	const { user } = useUserAuth();
-	const [filteredUser, setFilteredUser] = useState({role: "role", name: "name", username: "username", email: "randomemail@gmail.com", phone: "123-456-7890"});
+	const { dbUser } = useUserAuth();
 
 	const [breedType, setBreedType] = useState("");
 	const [genderType, setGenderType] = useState("");
@@ -49,23 +42,6 @@ export default function Page() {
 		{age: "Young (6 months - 1 year)"},
 		{age: "Adult (1 year+)"}
 	];
-
-	/*useEffect(() => {
-		const fetchUser = async () => {
-		const newUser = await getUser(user);
-		setFilteredUser(newUser);
-		setUpdatedUser(newUser);
-		};
-		fetchUser();
-	}, [user]);
-
-	useEffect(() => {
-		const fetchUserCats = async () => {
-		const favoriteCats = await getUserCats(filteredUser);
-		setFavoriteCats(favoriteCats);
-		};
-		fetchUserCats();
-	}, [filteredUser]);*/
 
 	//Replaces the cats list with the database data when it is loaded
 	useEffect(() => {
@@ -92,39 +68,6 @@ export default function Page() {
 	const searchItems = (value) => {
 		setFieldInput(value);
 		setActiveAutocomplete(true);
-	}
-
-	//Filter handler
-	const filterItems = (value) => {
-		//const filter = event.target.value;
-		//const type = event.target.name;
-		const split = value.split(" ");
-		const type = split[0];
-		const filter = split[1];
-		//Convert type into filter index based on name
-		let index = 0;
-		switch (type) {
-			case "breed":
-				index = 0;
-				console.log("Breed filter");
-				break;
-			case "gender":
-				index = 1;
-				break;
-			case "age":
-				index = 2;
-				break;
-			case "color":
-				index = 3;
-				break;
-		}
-		//const newFilters = filters;
-		//newFilters[index] = filter;
-		let newFilters = [...filters];
-		newFilters[index] = filter;
-		setFilters(newFilters);
-		console.log("Filter: " + filter + " Type: " + type);
-		console.log(filters);
 	}
 
 	//Clear filters
@@ -328,7 +271,7 @@ export default function Page() {
 						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
 					</div>
 				</div>
-				{filteredUser && filteredUser.role === "breeder" &&
+				{dbUser && dbUser.role === "breeder" &&
 				<div className="absolute size-fit right-0 top-[40px]">
 					<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)}
 						className="relative z-40 size-fit" href="cats/add">

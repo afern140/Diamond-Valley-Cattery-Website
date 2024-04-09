@@ -17,7 +17,7 @@ import CatButton from "@/app/components/cats/catbutton";
 export default function Page({params}) {
 
     const {createOrJoinChat} = useChat();
-	const {user} = useUserAuth();
+	const { user, dbUser } = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
 	const [favorite, setFavorite] = useState(false);

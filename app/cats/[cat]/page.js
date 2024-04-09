@@ -256,11 +256,13 @@ export default function Page({params}) {
 								<div className="flex flex-wrap">
 									{cat.mother ? (
 										<div>
+											<h2>Mother</h2>
 											<CatButton cat={cat.mother}/>
 										</div>
 									) : null}
 									{cat.father ? (
 										<div>
+											<h2>Father</h2>
 											<CatButton cat={cat.father}/>
 										</div>
 									) : null}

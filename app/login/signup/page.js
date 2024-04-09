@@ -86,6 +86,8 @@ export default function page() {
             uid: user.uid,
             email: user.email,
             name: name,
+
+			favorites: {cats: []},
         };
         
        /*

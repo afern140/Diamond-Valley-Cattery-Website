@@ -12,6 +12,7 @@ export const getUser = async (userAuth) => {
 }
 
 export const getUserCats = async (filteredUser) => {
+	if (!filteredUser) return;
 	const usersCatData = Promise.all(filteredUser.favorites.cats.map(async (catRef) => {
 		const catDoc = await getDoc(catRef);
 		return { ...catDoc.data() };

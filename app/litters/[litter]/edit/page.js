@@ -126,7 +126,7 @@ export default function Page({ params }) {
 						<div className="w-full flex-col space-y-2">
 							<h2 className="text-2xl mb-2 dark:text-dark-header-text-0">Details</h2>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Name: </h3>
+								<h3 className="my-auto w-32 text-right">Name: </h3>
 								<input
 								className="p-1 rounded-xl bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -137,7 +137,7 @@ export default function Page({ params }) {
 							/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Date Expected: </h3>
+								<h3 className="my-auto w-32 text-right">Date Expected: </h3>
 								<input
 									className="p-1 rounded-xl bg-[#e5e5ff] drop-shadow-lg"
 									type="date"
@@ -166,33 +166,33 @@ export default function Page({ params }) {
 					<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
 					<div className="flex px-10 space-x-10 mt-6">
 						{litter.mother ? (
-							<div className=" flex justify-center flex-col font-bold p-4 bg-white drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
+							<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
 								<h2>Mother</h2>
 								<h3>{litter.mother.name}</h3>
 								<Image
 									alt="Cat"
 									src={litter.mother.thumbnail ? litter.mother.thumbnail : "/img/Placeholder.png"}
-									width={300}
-									height={300}
+									width={200}
+									height={200}
 									className="justify-center align-center place-items-center"
 									objectFit="contain"
 								/>
-								<button className="px-4 py-2 bg-gradient-to-r  drop-shadow-lg bg-[#e5e5ff] rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Mother</button>
+								<button className="px-4 py-2 bg-gradient-to-r  drop-shadow-lg bg-white rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Mother</button>
 							</div>
 						) : (<></>)}
 						{litter.father ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-white drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
 								<h2>Father</h2>
 								<h3>{litter.father.name}</h3>
 								<Image
 									alt="Cat"
 									src={litter.father.thumbnail ? litter.father.thumbnail : "/img/Placeholder.png"}
-									width={300}
-									height={300}
+									width={200}
+									height={200}
 									className="justify-center align-center place-items-center"
 									objectFit="contain"
 								/>
-								<button className="px-4 py-2 bg-[#e5e5ff] drop-shadow-lg border rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Father</button>
+								<button className="px-4 py-2 bg-white drop-shadow-lg border rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Father</button>
 							</div>
 						) : (<></>)}
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>

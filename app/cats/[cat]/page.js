@@ -179,10 +179,15 @@ export default function Page({params}) {
 									<h2 className="text-2xl mb-2">Conditions</h2>
 									<div className="overflow-x-scroll flex max-w-[40vw] dark:bg-gray-400 drop-shadow-lg rounded-xl">
 										{cat.conditions ? (
-											cat.conditions.map((condition) => (
-												<div key={condition.id} className="flex flex-col rounded-md p-4 m-4 ml-0 w-[300px]">
+											cat.conditions.map((condition, index) => (
+												<div key={condition.id} className="flex flex-col rounded-md p-4 m-4 w-[300px] bg-navbar-body-1 drop-shadow-lg">
+													<div className="flex">
+														<div className=" bg-gray-500 h-[1px] m-auto w-full"/>
+														<p className="px-2">{index + 1}</p>
+														<div className="bg-gray-500 h-[1px] m-auto w-full"/>
+													</div>
 													<h3>{condition.name}</h3>
-													<p>Description: <span className="font-normal">{condition.description}</span></p>
+													<p className="w-[300px]">Description: <span className="font-normal">{condition.description}</span></p>
 													<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
 													<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 												</div>))
@@ -192,16 +197,21 @@ export default function Page({params}) {
 								</div>
 								<div className=" bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Vaccinations</h2>
-									<div className=" overflow-x-scroll flex max-w-[40vw] space-x-6 p-4 rounded-xl dark:bg-gray-400">
+									<div className=" overflow-x-scroll flex max-w-[40vw] p-4 rounded-xl dark:bg-gray-400">
 										{cat.vaccinations ? (
-											cat.vaccinations.map((vaccination) => (
-												<div className="flex flex-col rounded-md p-4 m-4 ml-0">
+											cat.vaccinations.map((vaccination, index) => (
+												<div className="flex flex-col rounded-xl p-4 m-4 w-[300px] bg-navbar-body-1 drop-shadow-lg ml-0">
+													<div className="flex">
+														<div className=" bg-gray-500 h-[1px] m-auto w-full"/>
+														<p className="px-2">{index + 1}</p>
+														<div className="bg-gray-500 h-[1px] m-auto w-full"/>
+													</div>
 													<h3>{vaccination.name}</h3>
 													<p>Description: <span className="font-normal">{vaccination.description}</span></p>
 													<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 													<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
 													<h4>Doses Taken Dates:</h4>
-													<ul className="list-none">
+													<ul className="list-none w-[300px]">
 														{vaccination.datesTaken.map((date, index) => (
 															<li key={index} className="font-normal">
 																<div className="flex space-x-2">

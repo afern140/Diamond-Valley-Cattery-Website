@@ -4,6 +4,7 @@ import { useUserAuth } from "../_utils/auth-context";
 import { auth } from "../_utils/firebase";
 import { signInWithEmailAndPassword, signOut, getAuth, sendPasswordResetEmail } from "firebase/auth";
 import Link from "next/link";
+import BackgroundUnderlay from "@/app/components/background-underlay";
  
 
 export default function Page() {
@@ -56,9 +57,11 @@ function handleEmailPasswordSignIn(e){
 }
 
  return(
-    <div className="bg-white min-h-screen flex items-center justify-center">
+    <div className=" min-h-screen relative flex items-center justify-center">
+        <BackgroundUnderlay />
+        
         {!user &&
-        <div dir="ltr" className="text-center">
+        <div dir="ltr" className="text-center bg-white drop-shadow-lg p-8 rounded-xl">
           <p className="text-xl text-slate-400 font-semibold mb-10">Sign in to your account</p>
           <form onSubmit={handleEmailPasswordSignIn} className="mb-8 flex flex-col items-center">
             <input type="email" value={email} className="text-black border-s-4 border-slate-300 p-2 mb-4" onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
@@ -72,7 +75,7 @@ function handleEmailPasswordSignIn(e){
       </div>
         }
         {user && (
-        <div className="text-center text-slate-500">
+        <div className="text-center bg-white drop-shadow-lg p-8 rounded-xl">
             <p>
             Welcome, {user.displayName} ({user.email})
             </p>

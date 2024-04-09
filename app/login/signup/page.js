@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification, signOut, updateP
 import { useUserAuth } from "../../_utils/auth-context";
 import {collection,addDoc} from "firebase/firestore";
 import {db} from "../../_utils/firebase";
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 //Change for user
 //Add items
@@ -111,10 +112,12 @@ export default function page() {
   }
 
   return(
-    <div>
+    <div className="relative">
+      <BackgroundUnderlay />
+
       {!user && 
-        <div className="min-h-screen flex items-center justify-center bg-white">
-          <form onSubmit={handleRegister} className="mb-8 flex flex-col items-center">
+        <div className="min-h-screen flex items-center justify-center">
+          <form onSubmit={handleRegister} className="mb-8 flex flex-col items-center p-8 bg-white rounded-xl drop-shadow-lg">
             <input
               type="email"
               value={email}
@@ -147,7 +150,7 @@ export default function page() {
                 className="text-black border-s-4 border-slate-300 p-2 mb-4"
                 
                 />
-            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">
+            <button type="submit" className="bg-navbar-body-1 active:bg-slate-600 rounded-xl text-header-text-0 drop-shadow-lg p-2">
               Sign Up with Email
             </button>
           </form>

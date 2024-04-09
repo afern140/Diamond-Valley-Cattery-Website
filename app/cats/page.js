@@ -39,6 +39,17 @@ export default function Page() {
 	const [colorType, setColorType] = useState("");
 	const [sortbyType, setSortbyType] = useState("");
 
+	//Holds data to fill filter dropdowns
+	const [breeds, setBreeds] = useState([""]);
+	const [colors, setColors] = useState([""]);
+
+	//Age is special, and holds a list of age groups
+	const ageGroups = [
+		{age: "Kitten (0-6 months)"},
+		{age: "Young (6 months - 1 year)"},
+		{age: "Adult (1 year+)"}
+	];
+
 	/*useEffect(() => {
 		const fetchUser = async () => {
 		const newUser = await getUser(user);
@@ -62,6 +73,17 @@ export default function Page() {
 			const cats = await getObjects('cats');
 			console.log(cats);
 			setCats(cats);
+			//Fill values that populate dropdowns
+			let breeds = [];
+			let colors = [];
+			cats.forEach((cat) => {
+				if (!breeds.includes(cat.breed))
+					breeds.push(cat.breed);
+				if (!colors.includes(cat.color))
+					colors.push(cat.color);
+			});
+			setBreeds(breeds);
+			setColors(colors);
 		};
 		fetchCats();
 	}, []);
@@ -107,7 +129,10 @@ export default function Page() {
 
 	//Clear filters
 	const clearFilters = () => {
-		setFilters(["", "", "", ""]);
+		setBreedType("");
+		setGenderType("");
+		setAgeType("");
+		setColorType("");
 	}
 
 	//Handle sorts
@@ -132,38 +157,38 @@ export default function Page() {
 			filteredData = filteredData.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(fieldInput.toLowerCase()) );
 		}
 		//Filter by breed
-		if (filters[0] !== "") {
+		if (breedType !== "") {
 			//filteredData = filteredData.filter((cat) => Object.values(cat.breed).join('').toLowerCase().includes(filters[0].toLowerCase()) );
-			filteredData = filteredData.filter((cat) => cat.breed == filters[0])
+			filteredData = filteredData.filter((cat) => cat.breed == breedType)
 		}
 		//Filter by gender
-		if (filters[1] !== "") {
+		if (genderType !== "") {
 			//filteredData = filteredData.filter((cat) => Object.values(cat.gender).join('').toLowerCase().includes(filters[1].toLowerCase()) );
 			//Can't do this for gender because "Female" contains "Male"
 			//Instead, this field will use an exact match
-			filteredData = filteredData.filter((cat) => cat.gender.toLowerCase() == filters[1].toLowerCase());
+			filteredData = filteredData.filter((cat) => cat.gender.toLowerCase() == genderType.toLowerCase());
 		}
 		//Filter by age
-		if (filters[2] !== "") {
+		if (ageType !== "") {
 			//console.log("[Filter] Age: " + filters[2])
 			//filteredData = filteredData.filter((cat) => Object.values(cat.age).join('').toLowerCase().includes(filters[2].toLowerCase()) );
 			//birthdate is stored in epoch time, so we need to convert it to years
 			// Kittens
-			if (filters[2] == "Kitten") {
+			if (ageType == ageGroups[0].age) {
 				filteredData = filteredData.filter((cat) => cat.birthdate && cat.birthdate.seconds * 1000 >= Date.now() - 15778463000)
 			}
 			// Young
-			else if (filters[2] == "Young") {
+			else if (ageType == ageGroups[1].age) {
 				filteredData = filteredData.filter((cat) => cat.birthdate && cat.birthdate.seconds * 1000 < Date.now() - 15778463000 && cat.birthdate.seconds * 1000 >= Date.now() - 31556926000)
 			}
 			// Adult
-			else if (filters[2] == "Adult") {
+			else if (ageType == ageGroups[2].age) {
 				filteredData = filteredData.filter((cat) => cat.birthdate && cat.birthdate.seconds * 1000 < Date.now() - 31556926000)
 			}
 		}
 		//Filter by color
-		if (filters[3] !== "") {
-			filteredData = filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(filters[3].toLowerCase()) );
+		if (colorType !== "") {
+			filteredData = filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(colorType.toLowerCase()) );
 		}
 		//Sort
 		//Because React won't actually update data that is simply sorted, we need to create a new array
@@ -197,7 +222,7 @@ export default function Page() {
 		setFilteredResults(sortedData);
 		console.log("Filtered Data: ");
 		console.log(filteredData);
-	}, [fieldInput, filters, sortingMethod, cats]);
+	}, [fieldInput, sortingMethod, cats, breedType, genderType, ageType, colorType, sortbyType]);
 
 	// Tooltips
 	const [addTooltip, setAddTooltip] = useState(false);
@@ -231,28 +256,33 @@ export default function Page() {
 				<h3 className="py-2 text-lg">Breed</h3>
 				{/*<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
 				<select id="sort" value={breedType} onChange={(e) => setBreedType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
-					<option value="breed">Name</option>
-					<option value="expDate">Expected Date</option>
+					<option value="">None</option>
+					{breeds.map((breed) => (
+						<option value={breed}>{breed}</option>
+					))}
 				</select>
 				<h3 className="py-2 text-lg">Gender</h3>
 				{/*<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
 				<select id="sort" value={genderType} onChange={(e) => setGenderType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
-					{ filteredResults && filteredResults.map((cat) => (
-							<option value=""></option>
-						))
-					}
+							<option value="">None</option>
+							<option value="Male">Male</option>
+							<option value="Female">Female</option>
 				</select>
 				<h3 className="py-2 text-lg">Age</h3>
 				{/*<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
 				<select id="sort" value={ageType} onChange={(e) => setAgeType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
-					<option value="breed">Name</option>
-					<option value="expDate">Expected Date</option>
+					<option value="">None</option>
+					{ageGroups.map((age) => (
+						<option value={age.age}>{age.age}</option>
+					))}
 				</select>
 				<h3 className="py-2 text-lg">Color</h3>
 				{/*<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
 				<select id="sort" value={colorType} onChange={(e) => setColorType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
-					<option value="breed">Name</option>
-					<option value="expDate">Expected Date</option>
+					<option value="">None</option>
+					{colors.map((color) => (
+						<option value={color}>{color}</option>
+					))}
 				</select>
 				
 

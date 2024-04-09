@@ -7,15 +7,22 @@ import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/app/_utils/firebase";
 import { getObject, getObjects, updateObject } from "@/app/_utils/firebase_services";
 import CatSelection from "@/app/components/cats/cat-selection";
+import ImageUploader from "@/app/components/ImageUploader";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({ params }) {
+	const [imageFile, setImageFile] = useState(null);
 	const [litter, setLitter] = useState();
 	const [cats, setCats] = useState([]);
 	const [selectedParent, setSelectedParent] = useState();
 	const [showParentSelection, setShowParentSelection] = useState(false);
 	const [showChildSelection, setShowChildSelection] = useState(false);
+	const handleImageSelected = (file) => {
+		setImageFile(file);
+	  };	  
+	
 
 	useEffect(() => {
 		const fetchLitter = async () => {
@@ -100,20 +107,37 @@ export default function Page({ params }) {
 	};
 
 	const handleSubmit = async () => {
+		// Upload the image to Firebase Storage if an image is selected
+		let imageUrl = litter.thumbnail; // Default to the existing thumbnail URL
+		if (imageFile) {
+		  const storage = getStorage();
+		  const imageRef = ref(storage, `litters/${litter.id}/thumbnail`);
+		  await uploadBytes(imageRef, imageFile);
+		  imageUrl = await getDownloadURL(imageRef);
+		}
+	  
+		// Update the Firestore document
 		const motherRef = doc(db, 'cats', litter.mother.docId);
 		const fatherRef = doc(db, 'cats', litter.father.docId);
 		let childrenRefs = [];
 		if (litter.completed) {
-			childrenRefs = litter.children.map(child => doc(db, 'cats', child.docId));
+		  childrenRefs = litter.children.map(child => doc(db, 'cats', child.docId));
 		}
-		const updatedLitter = { ...litter, mother: motherRef, father: fatherRef, children: childrenRefs }
-		await updateObject('litters', updatedLitter, true)
-	};
+		const updatedLitter = {
+		  ...litter,
+		  mother: motherRef,
+		  father: fatherRef,
+		  children: childrenRefs,
+		  thumbnail: imageUrl // Set the new thumbnail URL
+		};
+		await updateObject('litters', updatedLitter, true);
+	  };
+	  
 
 	return (
 		<main className="relative text-[#092C48] pb-12">
 			<BackgroundUnderlay />
-
+			<ImageUploader onImageSelected={handleImageSelected} />
 			{litter ? (
 				<div>
 					<div className="pt-20 flex pb-10">

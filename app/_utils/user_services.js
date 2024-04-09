@@ -21,8 +21,8 @@ export const getUserCats = async (filteredUser) => {
 }
 
 export const updateUser = async (updatedUser) => {
-	const { id, ...updatedUserPrunedID } = updatedUser;
-	const userRef = doc(db, 'users', id);
+	const { docId, ...updatedUserPrunedID } = updatedUser;
+	const userRef = doc(db, 'users', docId);
 	await updateDoc(userRef, updatedUserPrunedID);
 	alert("Updated user data");
 } 

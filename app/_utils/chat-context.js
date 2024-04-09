@@ -42,7 +42,6 @@ export const ChatProvider = ({ children }) => {
 
   //Function to send a message in a chat
   const sendMessage = async (chatId, message) => {
-    
     // Validate chatId and message fields
     if (typeof chatId !== "string" || chatId.trim().length === 0) {
       throw new Error("Invalid chat ID");
@@ -56,7 +55,7 @@ export const ChatProvider = ({ children }) => {
     ) {
       throw new Error("User ID must be a non-empty string");
     }
-    
+
     const messageDoc = {
       ...message,
       chatId: chatId,
@@ -175,13 +174,14 @@ export const ChatProvider = ({ children }) => {
     );
     const chatsSnapshot = await getDocs(chatsQuery);
 
-    const allMessagesForUser = [];
+    const allMessagesForUser = {};
 
     for (const chatDoc of chatsSnapshot.docs) {
       const messagesQuery = query(
         collection(db, "messages"),
         where("chatId", "==", chatDoc.id),
-        orderBy("timestamp", "desc")
+        orderBy("timestamp", "desc"),
+        limit(1)
       );
       const messagesSnapshot = await getDocs(messagesQuery);
       const messages = messagesSnapshot.docs.map((doc) => ({
@@ -189,13 +189,17 @@ export const ChatProvider = ({ children }) => {
         ...doc.data(),
       }));
 
-      allMessagesForUser.push({
-        chatId: chatDoc.id,
-        messages,
-      });
+      // Group messages by chatId
+      allMessagesForUser[chatDoc.id] = (
+        allMessagesForUser[chatDoc.id] || []
+      ).concat(messages);
     }
 
-    return allMessagesForUser;
+    // Convert the object to an array of chat objects with messages
+    return Object.entries(allMessagesForUser).map(([chatId, messages]) => ({
+      chatId,
+      messages,
+    }));
   };
 
   return (

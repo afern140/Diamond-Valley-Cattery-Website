@@ -13,10 +13,10 @@ export default function page() {
 
   useEffect(() => {
     if (user) {
-        console.log("fetches all the messages");
+      console.log("fetches all the messages");
       const fetchMessages = async () => {
-        const messages = await fetchAllMessagesForUser(user.uid);
-        setAllMessages(messages);
+        const chatList = await fetchAllMessagesForUser(user.uid);
+        setAllMessages(chatList);
       };
 
       fetchMessages();

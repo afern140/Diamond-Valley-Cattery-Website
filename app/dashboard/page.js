@@ -123,24 +123,27 @@ export default function Page() {
 			<div className="w-4/5 mx-auto">
 				<div className="flex flex-row justify-center items-center bg-white rounded-xl drop-shadow-xl w-full mx-auto p-10 text-left">
 					<div className="text-center m-auto">
-					<Image
-						src={image}
-						alt="Profile Picture"
-						width={200}
-						height={200}
-						className="border-2 border-black m-5 mb-2"
-					/>
-					<h2 className="mt-2 bg-navbar-body-1 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {filteredUser.role}</h2>
+						<div className="relative">
+							<Image
+								src={image}
+								alt="Profile Picture"
+								width={200}
+								height={200}
+								className="border-2 border-black m-5 mb-2"
+							/>
+							<input
+								type="file"
+								accept="image/"
+								onChange={handleImageChange}
+								className="bg-navbar-body-1 absolute top-0 left-0 rounded-md drop-shadow-lg"
+							/>
+						</div>
+						<h2 className="mt-2 bg-navbar-body-1 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {filteredUser.role}</h2>
 					</div>
 					
 					{edit ? (
 					<div className="flex flex-col bg-navbar-body-1 p-4 rounded-xl drop-shadow-lg space-y-2 mx-auto">
-						{/*<input
-							type="file"
-							accept="image/"
-							onChange={handleImageChange}
-							className="bg-navbar-body-1 rounded-md drop-shadow-lg"
-						/>*/}
+						
 						<h2 className="text-xl mb-4 text-center">Edit Details</h2>
 						<input
 							type="text"

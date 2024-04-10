@@ -13,6 +13,7 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
+import CatButton from "@/app/components/cats/catbutton"
 import ImageUploader from "@/app/components/ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import CatCarouselController from "@/app/components/CatCarouselController";
@@ -391,7 +392,7 @@ export default function Page({params}){
 						<div className="w-full flex-col space-y-2">
 							<h2 className="text-2xl mb-2">Details</h2>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Name: </h3>
+								<h3 className="my-auto w-20 text-right">Name: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -402,7 +403,7 @@ export default function Page({params}){
 							/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Breed: </h3>
+								<h3 className="my-auto w-20 text-right">Breed: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -413,7 +414,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Gender: </h3>
+								<h3 className="my-auto w-20 text-right">Gender: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -424,7 +425,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Age: </h3>
+								<h3 className="my-auto w-20 text-right">Age: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="number"
@@ -435,7 +436,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Color: </h3>
+								<h3 className="my-auto w-20 text-right">Color: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -446,7 +447,7 @@ export default function Page({params}){
 								/>
 							</div>
 							<div className="flex space-x-3">
-								<h3 className="my-auto">Eye Color: </h3>
+								<h3 className="my-auto w-22 text-right">Eye Color: </h3>
 								<input
 								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
 								type="text"
@@ -474,7 +475,7 @@ export default function Page({params}){
 					</div>
 					<ImageUploader onImageSelected={setThumbnail} inputKey="thumbnail-uploader" />
 					<div className="">
-						<h2 className="text-xl font-bold mb-4 mt-6 px-10 text-center">Conditions</h2>
+						<h2 className="text-2xl font-bold mb-4 mt-10 px-10 text-center dark:text-dark-header-text-0">Conditions</h2>
 						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
 							<div className="flex flex-wrap space-x-6">
 								{cat.conditions ? (
@@ -515,7 +516,7 @@ export default function Page({params}){
 							</div>
 						</div>
 
-						<h2 className="text-xl font-bold mb-4 mt-6 px-10 text-center">Vaccinations</h2>
+						<h2 className="text-2xl font-bold mb-4 mt-10 px-10 text-center dark:text-dark-header-text-0">Vaccinations</h2>
 						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
 							<div>
 								<div className="flex flex-wrap space-x-6">
@@ -562,36 +563,20 @@ export default function Page({params}){
 					<div>
 						<h2 className="text-xl font-bold mb-4 mt-6 px-10 dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex px-10 space-x-10 mt-6 flex-wrap">
-							{cat.father ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
-									{cat.father.name}
-									<Image
-										src="/img/Placeholder.png"
-										alt="Cat"
-										width={300}
-										height={300}
-										className="justify-center align-center place-items-center"
-										objectFit="contain"
-									/>
-									<h2 className="font-normal">Father</h2>
-									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Father</button>
-								</div>
-							) : (<></>)}
 							{cat.mother ? (
 								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
-									{cat.mother.name}
-									<Image
-										src="/img/Placeholder.png"
-										alt="Cat"
-										width={300}
-										height={300}
-										className="justify-center align-center place-items-center"
-										objectFit="contain"
-									/>
 									<h2 className="font-normal">Mother</h2>
+									<CatButton cat={cat.mother} />
 									<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Mother</button>
 								</div>
-							) : (<></>)}
+							) : (<button onClick={() => handleSelectParentToUpdate('mother')}>Add Mother</button>)}
+							{cat.father ? (
+								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+									<h2 className="font-normal">Father</h2>
+									<CatButton cat={cat.father} />
+									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Father</button>
+								</div>
+							) : (<button onClick={() => handleSelectParentToUpdate('father')}>Add Father</button>)}
 						</div>
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 					</div>
@@ -601,15 +586,7 @@ export default function Page({params}){
 							{cat.children ? (
 								cat.children.map((child) =>(
 									<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
-										{child.name}
-										<Image
-											src="/img/Placeholder.png"
-											alt="Cat"
-											width={300}
-											height={300}
-											className="justify-center align-center place-items-center"
-											objectFit="contain"
-										/>
+										<CatButton cat={child} />
 										<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Remove {child.name}</button>
 									</div>
 								))

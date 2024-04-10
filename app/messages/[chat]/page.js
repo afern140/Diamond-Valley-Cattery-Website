@@ -29,27 +29,58 @@ export default function page({ params }) {
   const chatId = params.chat;
 
   useEffect(() => {
-    if (chatId) {
-      loadChatMessages(chatId, setCurrentMessages);
-    }
-    
-    if (currentTheme[0] === "" && currentTheme[1] === "") {
-      setCurrentTheme([" from-[#696EFF] ", " to-[#F8ACFF]"])
-    }
-  }, [currentTheme]);
+    console.log("Component mounted - should log only once");
 
-  useEffect(() => {
-    console.log("chatpage no leaks");
-    if (chatId) {
-      loadChatMessages(chatId, setCurrentMessages);
-    }
-    
+    let isSubscribed = true;
+
+    const fetchMessages = async () => {
+      console.log(
+        "Fetching messages - should log only once if component doesn't remount"
+      );
+      if (chatId) {
+        await loadChatMessages(chatId, (msgs) => {
+          if (isSubscribed) {
+            setCurrentMessages(msgs);
+          }
+        });
+      }
+    };
+
+    fetchMessages();
+
+    return () => {
+      isSubscribed = false;
+      console.log("Component unmounted - should log only on component unmount");
+    };
   }, []);
+
+  const isProfanity = (text) => {
+    const badWords = ["smash","john"];
+    return badWords.some((word) => text.toLowerCase().includes(word.toLowerCase()));
+  };
+
 
   // This function is called when the user sends a message.
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!newMessage.trim()) return;
+
+    // Validate the new message
+    if (typeof newMessage !== "string" || !newMessage.trim()) {
+      alert("Please enter a valid message.");
+      return;
+    }
+
+    // Check message length
+    if (newMessage.length > 512) {
+      alert("Your message is too long. Please limit it to 512 characters.");
+      return;
+    }
+
+    // Check Profanity words
+    if (isProfanity(newMessage)) {
+        alert("Profanity is not allowed in the messages.");
+        return;
+    }
 
     const messageToSend = {
       text: newMessage,
@@ -57,10 +88,15 @@ export default function page({ params }) {
       displayName: user.displayName || "Anonymous",
     };
     // Send the message and store the returned new message.
-    const newMsg = await sendMessage(chatId, messageToSend);
-    setNewMessage("");
-    // Add the new message to the current messages.
-    setCurrentMessages((prevMessages) => [...prevMessages, newMsg]);
+    try {
+        const newMsg = await sendMessage(chatId, messageToSend);
+        setNewMessage("");
+        setCurrentMessages((prevMessages) => [...prevMessages, newMsg]);
+      } catch (error) {
+        // Handle sending error
+        console.error("Error sending message:", error);
+        alert("There was a problem sending your message.");
+      }
   };
 
   const handleCallback = useCallback((theme) => {

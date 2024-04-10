@@ -8,6 +8,8 @@ import Dropdown from "@/app/components/dropdown";
 import CatButton from "@/app/components/cats/catbutton";
 import BackButton from "@/app/components/BackToTopButton"
 import BackgroundUnderlay from "@/app/components/background-underlay";
+import { useUserAuth } from "../_utils/auth-context";
+import getUser from "../_utils/user_services";
 
 export default function Page() {
 	//Holds data that the page can display. Uses backup data until database is loaded
@@ -17,16 +19,47 @@ export default function Page() {
 	//Search field input
 	const [fieldInput, setFieldInput] = useState("");
 	//List of filters that are currently applied
-	//Order: Breed, Gender, Age, Color
-	const [filters, setFilters] = useState(["", "", "", ""]);
+
 	//Sorting method
 	const [sortingMethod, setSortingMethod] = useState("");
+
+	const { user } = useUserAuth();
+	const { dbUser } = useUserAuth();
+
+	const [breedType, setBreedType] = useState("");
+	const [genderType, setGenderType] = useState("");
+	const [ageType, setAgeType] = useState("");
+	const [colorType, setColorType] = useState("");
+	const [sortbyType, setSortbyType] = useState("");
+
+	//Holds data to fill filter dropdowns
+	const [breeds, setBreeds] = useState([""]);
+	const [colors, setColors] = useState([""]);
+
+	//Age is special, and holds a list of age groups
+	const ageGroups = [
+		{age: "Kitten (0-6 months)"},
+		{age: "Young (6 months - 1 year)"},
+		{age: "Adult (1 year+)"}
+	];
 
 	//Replaces the cats list with the database data when it is loaded
 	useEffect(() => {
 		const fetchCats = async () => {
 			const cats = await getObjects('cats');
+			console.log(cats);
 			setCats(cats);
+			//Fill values that populate dropdowns
+			let breeds = [];
+			let colors = [];
+			cats.forEach((cat) => {
+				if (!breeds.includes(cat.breed))
+					breeds.push(cat.breed);
+				if (!colors.includes(cat.color))
+					colors.push(cat.color);
+			});
+			setBreeds(breeds);
+			setColors(colors);
 		};
 		fetchCats();
 	}, []);
@@ -37,42 +70,12 @@ export default function Page() {
 		setActiveAutocomplete(true);
 	}
 
-	//Filter handler
-	const filterItems = (value) => {
-		//const filter = event.target.value;
-		//const type = event.target.name;
-		const split = value.split(" ");
-		const type = split[0];
-		const filter = split[1];
-		//Convert type into filter index based on name
-		let index = 0;
-		switch (type) {
-			case "breed":
-				index = 0;
-				console.log("Breed filter");
-				break;
-			case "gender":
-				index = 1;
-				break;
-			case "age":
-				index = 2;
-				break;
-			case "color":
-				index = 3;
-				break;
-		}
-		//const newFilters = filters;
-		//newFilters[index] = filter;
-		let newFilters = [...filters];
-		newFilters[index] = filter;
-		setFilters(newFilters);
-		console.log("Filter: " + filter + " Type: " + type);
-		console.log(filters);
-	}
-
 	//Clear filters
 	const clearFilters = () => {
-		setFilters(["", "", "", ""]);
+		setBreedType("");
+		setGenderType("");
+		setAgeType("");
+		setColorType("");
 	}
 
 	//Handle sorts
@@ -97,38 +100,38 @@ export default function Page() {
 			filteredData = filteredData.filter((cat) => Object.values(cat.name).join('').toLowerCase().includes(fieldInput.toLowerCase()) );
 		}
 		//Filter by breed
-		if (filters[0] !== "") {
+		if (breedType !== "") {
 			//filteredData = filteredData.filter((cat) => Object.values(cat.breed).join('').toLowerCase().includes(filters[0].toLowerCase()) );
-			filteredData = filteredData.filter((cat) => cat.breed == filters[0])
+			filteredData = filteredData.filter((cat) => cat.breed == breedType)
 		}
 		//Filter by gender
-		if (filters[1] !== "") {
+		if (genderType !== "") {
 			//filteredData = filteredData.filter((cat) => Object.values(cat.gender).join('').toLowerCase().includes(filters[1].toLowerCase()) );
 			//Can't do this for gender because "Female" contains "Male"
 			//Instead, this field will use an exact match
-			filteredData = filteredData.filter((cat) => cat.gender.toLowerCase() == filters[1].toLowerCase());
+			filteredData = filteredData.filter((cat) => cat.gender.toLowerCase() == genderType.toLowerCase());
 		}
 		//Filter by age
-		if (filters[2] !== "") {
+		if (ageType !== "") {
 			//console.log("[Filter] Age: " + filters[2])
 			//filteredData = filteredData.filter((cat) => Object.values(cat.age).join('').toLowerCase().includes(filters[2].toLowerCase()) );
 			//birthdate is stored in epoch time, so we need to convert it to years
 			// Kittens
-			if (filters[2] == "Kitten") {
+			if (ageType == ageGroups[0].age) {
 				filteredData = filteredData.filter((cat) => cat.birthdate && cat.birthdate.seconds * 1000 >= Date.now() - 15778463000)
 			}
 			// Young
-			else if (filters[2] == "Young") {
+			else if (ageType == ageGroups[1].age) {
 				filteredData = filteredData.filter((cat) => cat.birthdate && cat.birthdate.seconds * 1000 < Date.now() - 15778463000 && cat.birthdate.seconds * 1000 >= Date.now() - 31556926000)
 			}
 			// Adult
-			else if (filters[2] == "Adult") {
+			else if (ageType == ageGroups[2].age) {
 				filteredData = filteredData.filter((cat) => cat.birthdate && cat.birthdate.seconds * 1000 < Date.now() - 31556926000)
 			}
 		}
 		//Filter by color
-		if (filters[3] !== "") {
-			filteredData = filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(filters[3].toLowerCase()) );
+		if (colorType !== "") {
+			filteredData = filteredData.filter((cat) => Object.values(cat.color).join('').toLowerCase().includes(colorType.toLowerCase()) );
 		}
 		//Sort
 		//Because React won't actually update data that is simply sorted, we need to create a new array
@@ -162,7 +165,7 @@ export default function Page() {
 		setFilteredResults(sortedData);
 		console.log("Filtered Data: ");
 		console.log(filteredData);
-	}, [fieldInput, filters, sortingMethod, cats]);
+	}, [fieldInput, sortingMethod, cats, breedType, genderType, ageType, colorType, sortbyType]);
 
 	// Tooltips
 	const [addTooltip, setAddTooltip] = useState(false);
@@ -185,29 +188,7 @@ export default function Page() {
 				</div>
 			</div>
 
-			<div>
-				{/* Search Field */}
-				<div className="align-middle justify-center flex translate-x-6">
-					<input type="text"
-						name="catlist-search"
-						placeholder="Search"
-						value={fieldInput}
-						className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-3/5 h-16"
-						onChange = { (Event) => searchItems(Event.target.value, "") }>
-					</input>
-					
-					<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
-				</div>
-				{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-					<div className="absolute z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
-						{
-							filteredResults.map((cat) => (
-								<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
-							))
-						}
-					</div> : <div />
-				}
-			</div>
+			
 
 	<div className="flex py-6 w-full justify-center">
 		<div className="flex w-full">
@@ -216,13 +197,38 @@ export default function Page() {
 			<div className="p-6 w-full text-text-header-0 rounded-xl relative -z-20 bg-white dark:bg-gray-500  drop-shadow-lg">
 				<h2 className="py-6 text-2xl font-semibold text-center drop-shadow-md">Filters</h2>
 				<h3 className="py-2 text-lg">Breed</h3>
-				<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={breedType} onChange={(e) => setBreedType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					<option value="">None</option>
+					{breeds.map((breed) => (
+						<option value={breed}>{breed}</option>
+					))}
+				</select>
 				<h3 className="py-2 text-lg">Gender</h3>
-				<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={genderType} onChange={(e) => setGenderType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+							<option value="">None</option>
+							<option value="Male">Male</option>
+							<option value="Female">Female</option>
+				</select>
 				<h3 className="py-2 text-lg">Age</h3>
-				<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={ageType} onChange={(e) => setAgeType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					<option value="">None</option>
+					{ageGroups.map((age) => (
+						<option value={age.age}>{age.age}</option>
+					))}
+				</select>
 				<h3 className="py-2 text-lg">Color</h3>
-				<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>
+				{/*<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
+				<select id="sort" value={colorType} onChange={(e) => setColorType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl bg-[#e5e5ff] bg-opacity-100">
+					<option value="">None</option>
+					{colors.map((color) => (
+						<option value={color}>{color}</option>
+					))}
+				</select>
+				
+
 
 				<div className="w-fit z-10">
 					<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-background-gradient-1 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>
@@ -234,12 +240,38 @@ export default function Page() {
 		{/* Second split of the page */}
 		<div className="w-full flex-col mr-16">
 			<div className="flex w-full">
+
+				<div className="w-full h-full">
+					{/* Search Field */}
+					<div className="align-middle justify-center w-full flex">
+						<input type="text"
+							name="catlist-search"
+							placeholder="Search"
+							value={fieldInput}
+							className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-full h-16"
+							onChange = { (Event) => searchItems(Event.target.value, "") }>
+						</input>
+						
+						<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
+					</div>
+					{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
+						<div className="absolute z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl w-4/5 justify-center flex-col m-auto left-[10%] translate-x-2 translate-y-1 overflow-hidden">
+							{
+								filteredResults.map((cat) => (
+									<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
+								))
+							}
+						</div> : <div />
+					}
+				</div>
+
 				<div className=" w-full max-w-[200px] mr-full ml-auto justify-end flex-col bg-white dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg">
 					<h2 className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort by:</h2>
 					<div className=" pt-4">
 						<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
 					</div>
 				</div>
+				{dbUser && dbUser.role === "breeder" &&
 				<div className="absolute size-fit right-0 top-[40px]">
 					<Link onMouseEnter={() => setAddTooltip(true)} onMouseLeave={() => setAddTooltip(false)}
 						className="relative z-40 size-fit" href="cats/add">
@@ -261,10 +293,11 @@ export default function Page() {
 						</div>
 					</div>
 				</div>
+				}
 			</div>
 			<div className="h-6"/>
 			<div className="scroll-auto">
-				<div className="grid w-full grid-cols-3 bg-white dark:bg-gray-500 bg-opacity-100 drop-shadow-lg rounded-xl">
+				<div className="grid w-full grid-cols-3 p-4 bg-white dark:bg-gray-500 bg-opacity-100 drop-shadow-lg rounded-xl">
 					{/* Populating the list with cats */}
 					{filteredResults ? (
 						filteredResults.length > 0 ?

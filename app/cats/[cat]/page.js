@@ -12,11 +12,12 @@ import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
 import Comments from "@/app/components/comments";
+import CatButton from "@/app/components/cats/catbutton";
 
 export default function Page({params}) {
 
     const {createOrJoinChat} = useChat();
-	const {user} = useUserAuth();
+	const { user, dbUser } = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
 	const [favorite, setFavorite] = useState(false);
@@ -138,140 +139,150 @@ export default function Page({params}) {
 	return(
 		<main className="bg-gray-100">
 			{cat ? (
-				<section>
-					<h1 className="text-black text-4xl text-center font-bold pt-8 pb-4">{cat.name}</h1>
-					<Carousel images={cat.carouselImage} />
-					<div className="flex flex-row">
+				<section className="relative z-20 pb-16">
+					<div className="pt-20 flex pb-10 relative z-20">
+						<div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
+							<span className="text-6xl pb-10 font-extrabold uppercase">{cat.name}</span>
+							{user ? (
+								<button onClick={() => handleFavoriteButton()} className={"m-auto translate-y-2"}>
+									<div className={"relative m-auto flex rounded-full " + (favorite ? "bg-red-600" : "")}>
+										<Image alt="Favorite" src="/img/circle.svg" width={64} height={64} />
+										<Image className="absolute top-[18px] right-4" alt="Heart" src={"/img/heart.svg"} width={32} height={32} />
+									</div>
+								</button>
+							) : null}
+							{user && user.role === 'breeder' && cat.owner.uid === user.uid ? (
+								<Link className="relative pointer-events-auto" href={`/cats/${cat.id}/edit`}>
+									<button className="relative pointer-events-auto">
+										<Image alt="Edit" src="/img/edit.svg" width={48} height={48} />
+									</button>
+								</Link>	
+							) : null}
+						</div>
+					</div>
+					
+					<div className="px-20 w-full flex">
+						<Carousel images={cat.carouselImage} />
+					</div>
+					<div className="flex flex-row w-full px-10 xl:px-20">
 						<div className="flex flex-col text-black text-xl font-bold text-left">
-							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
+							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg">
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
-								{/*<h3>Age: <span className="font-normal">{cat.age}</span></h3>*/}
+
 								<h3>Birthdate: <span className="font-normal">{new Date(cat.birthdate.toDate()).toLocaleDateString()}</span></h3>
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>
-							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
-								<h2 className="text-2xl mb-2">Description</h2>
+							<div className="p-10 mx-10 mt-6 rounded-lg min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg">
+								<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 								<p className="font-normal">{cat.description}</p>
 							</div>
-							<div className="flex flex-row p-10 mx-10 mt-6 rounded-lg min-w-64">
-								<div>
+							<div className="flex flex-col mx-10 space-y-6 mt-6 rounded-lg min-w-64">
+								<div className=" bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Conditions</h2>
-									{cat.conditions ? (
-										cat.conditions.map((condition) => (
-											<div key={condition.id} className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
-												<h3>{condition.name}</h3>
-												<p>Description: <span className="font-normal">{condition.description}</span></p>
-												<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
-												<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
-											</div>
-										)
-									)) : (<h2>None</h2>)}
+									<div className="overflow-x-scroll flex max-w-[40vw] dark:bg-gray-400 drop-shadow-lg rounded-xl">
+										{cat.conditions && cat.conditions.length > 0 ? (
+											cat.conditions.map((condition) => (
+												<div key={condition.id} className="flex flex-col rounded-md p-4 m-4 ml-0 w-[300px]">
+													<h3>{condition.name}</h3>
+													<p>Description: <span className="font-normal">{condition.description}</span></p>
+													<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
+													<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
+												</div>))
+											) : (<div>None</div>)
+										}
+									</div>
 								</div>
-								<div>
+								<div className=" bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl p-10">
 									<h2 className="text-2xl mb-2">Vaccinations</h2>
-									{cat.vaccinations ? (
-										cat.vaccinations.map((vaccination) => (
-											<div key={vaccination.id} className="flex flex-col border border-black-300 rounded-md p-4 m-4 ml-0">
-												<h3>{vaccination.name}</h3>
-												<p>Description: <span className="font-normal">{vaccination.description}</span></p>
-												<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
-												<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
-												<h4>Doses Taken Dates:</h4>
-												<ul className="list-disc">
-													{vaccination.datesTaken.map((date, index) => (
-														<li key={index} className="font-normal">{new Date(date.toDate()).toISOString().split('T')[0]}</li>
-													))}
-												</ul>
-												<h4>Doses Remaining: <span className="font-normal">{vaccination.dosesRemaining}</span></h4>
-												<h4>Planned Dosage Dates:</h4>
-												<ul className="list-disc">
-													{vaccination.futureDates.map((date, index) => (
-														<li key={index} className="font-normal">{new Date(date.toDate()).toISOString().split('T')[0]}</li>
-													))}
-												</ul>
-											</div>
-										))
-									) : (<h2>None</h2>)}
+									<div className=" overflow-x-scroll flex max-w-[40vw] space-x-6 p-4 rounded-xl dark:bg-gray-400">
+										{cat.vaccinations && cat.vaccinations.length > 0 ? (
+											cat.vaccinations.map((vaccination) => (
+												<div className="flex flex-col rounded-md p-4 m-4 ml-0">
+													<h3>{vaccination.name}</h3>
+													<p>Description: <span className="font-normal">{vaccination.description}</span></p>
+													<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
+													<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
+													<h4>Doses Taken Dates:</h4>
+													<ul className="list-none">
+														{vaccination.datesTaken.map((date, index) => (
+															<li key={index} className="font-normal">
+																<div className="flex space-x-2">
+																	<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
+																	{new Date(date.toDate()).toISOString().split('T')[0]}
+																</div>
+															</li>
+														))}
+													</ul>
+													<h4>Doses Remaining: <span className="font-normal">{vaccination.dosesRemaining}</span></h4>
+													<h4>Planned Dosage Dates:</h4>
+													<ul className="list-none">
+														{vaccination.futureDates.fill().map((date, index) => (
+															<li key={index} className="font-normal">
+																<div className="flex space-x-2">
+																	<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
+																	<span>{date && new Date(date.toDate()).toISOString().split('T')[0]}</span>
+																</div>
+															</li>
+														))}
+													</ul>
+												</div>))) : (<div>None</div>)
+										}
+									</div>
 								</div>
 							</div>
 						</div>
-						<div className="flex flex-col ml-auto mx-10 mb-auto">
-							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
-								<h2>Want to Purchase {cat.name}?</h2>
-								<button onClick={handleMeetingButton} className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md" >Request a Meeting</button>
+						<div className="flex flex-col ml-auto mx-10 mb-auto mt-10">
+							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold">
+								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
+								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-navbar-body-1 drop-shadow-lg rounded-xl p-4 text-xl" >
+									<div className="relative flex">
+										<span className="my-auto flex text-header-text-0">Request a Meeting</span>
+										<div className="flex mx-3 w-1 bg-[#092C48] rounded-full" />
+										<button onClick={handleMeetingButton} className="bg-white bg-opacity-0 hover:bg-opacity-50 active:bg-opacity-80 transition duration-100 p-2 rounded-full">
+											<Image alt=">" src="/img/right-arrow.svg" width={32} height={32} />
+										</button>
+									</div>
+								</button>
 							</div>
-							<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
-								<Link href={`./${cat.id}/edit`}><button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md">Edit {cat.name}</button></Link>
-							</div>
-							{user ? (
-								<div className="flex flex-col ml-auto mx-10 mt-14 mb-auto text-white text-xl font-bold text-center bg-cat-gray-1 p-6 rounded-lg">
-									<h2>{favorite ? `Remove ${cat.name} from Favorites?` : `Add ${cat.name} to Favorites?`}</h2>
-									<button className="bg-white text-cat-gray-1 font-normal p-2 m-2 rounded-md" onClick={handleFavoriteButton}>
-										{favorite ? "Remove from Favorites" : "Add to Favorites"}
-									</button>
-								</div>
-							) : (<></>)}
 						</div>
 					</div>
 					<div className="text-black text-xl font-bold p-10">
-						<h2 className="text-2xl mx-10 mt-10">Parents</h2>
-						<div className="flex flex-wrap">
-							{cat.father ? (
-								<div className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
-									{cat.father.name}
-									<Link href={`./${cat.father.id}`}>
-										<Image
-											src="/img/Placeholder.png"
-											alt="Cat"
-											width={200}
-											height={100}
-											className="border-2 border-black m-5"
-										/>
-										<h2 className="font-normal">Father</h2>
-									</Link>
+						{cat.father || cat.mother ? (
+							<>
+								<h2 className="text-2xl mx-10 mt-10">Parents</h2>
+								<div className="flex flex-wrap">
+									{cat.mother ? (
+										<div>
+											<h2>Mother</h2>
+											<CatButton cat={cat.mother}/>
+										</div>
+									) : null}
+									{cat.father ? (
+										<div>
+											<h2>Father</h2>
+											<CatButton cat={cat.father}/>
+										</div>
+									) : null}
 								</div>
-							) : (<></>)}
-							{cat.mother ? (
-								<div className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
-									{cat.mother.name}
-									<Link href={`./${cat.mother.id}`}>
-										<Image
-											src="/img/Placeholder.png"
-											alt="Cat"
-											width={200}
-											height={100}
-											className="border-2 border-black m-5"
-										/>
-										<h2 className="font-normal">Mother</h2>
-									</Link>
+							</>
+						) : null}
+						{cat.children && cat.children.length > 0 ? (
+							<>
+								<h2 className="text-2xl mx-10 mt-10">Children</h2>
+								<div className="flex flex-wrap">
+									{cat.children ? (
+										cat.children.map((child) => (
+											<div key={child.id} className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
+												<CatButton cat={child}/>
+											</div>
+										))
+									) : null}
 								</div>
-							) : (<></>)}
-						</div>
-						<h2 className="text-2xl mx-10 mt-10">Children</h2>
-						<div className="flex flex-wrap">
-							{cat.children ? (
-								cat.children.map((child) => (
-									<div key={child.id} className="bg-cat-gray-1 p-10 m-10 rounded-lg text-center">
-										{child.name}
-										<Link href={`./${child.id}`}>
-											<Image
-												src="/img/Placeholder.png"
-												alt="Cat"
-												width={200}
-												height={100}
-												className="border-2 border-black m-5"
-											/>
-										</Link>
-									</div>
-								))
-							) : null}
-						</div>
-					</div>
-					<div className="p-10 mx-10 mt-6 rounded-lg min-w-64">
-					{/*<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />*/}
+							</>
+						) : null}
 					</div>
 					<Comments cat={cat}/>
 				</section>

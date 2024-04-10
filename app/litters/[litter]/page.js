@@ -57,44 +57,50 @@ export default function Page({ params }) {
 					<Carousel/>
 
 					<div className="flex w-full">
-						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-white text-[#092C48] drop-shadow-lg">
+						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-white dark:bg-gray-500 text-[#092C48] drop-shadow-lg">
 							<h2 className="text-2xl mb-2">Details</h2>
 							<h3>Expected Date: <span className="font-normal">{new Date(litter.expDate.toDate()).toISOString().split('T')[0]}</span></h3>
 							<h3>Completed: <span className="font-normal">{litter.completed ? "Completed" : "Not Completed"}</span></h3>
 						</div>
 
-						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-white drop-shadow-lg text-[#092C48]">
+						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg text-[#092C48]">
 							<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 							<p className="font-normal">{litter.description}</p>
 						</div>
 					</div>
 
 					<div className="text-black text-xl font-bold p-10">
-						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
+						{ (litter.father || litter.mother) &&
+						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>}
 						<div className="flex flex-wrap">
-							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							{litter.father &&
+							<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								<CatButton cat={litter.father} />
-							</div>
-							<div className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
+							</div>}
+							{litter.mother &&
+							<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
 								<CatButton cat={litter.mother} />
-							</div>
+							</div>}
 						</div>
 						{litter.completed && litter.children ? (
-							litter.children.map((child, index) => (
-								<div>
-									<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
-									<div className="flex flex-wrap">
-										<div key={index} className="bg-[#e5e5ff] drop-shadow-lg p-10 m-10 rounded-lg text-center">
-											<CatButton cat={child} />
+							<div className="">
+								<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
+								<div className="flex flex-wrap">
+								{litter.children.map((child, index) => (
+										<div className="flex flex-wrap">
+											<div key={index} className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
+												<CatButton cat={child} />
+											</div>
 										</div>
-									</div>
+								))}
 								</div>
-							))) : null
+							</div>
+							) : null
 						}
 					</div>
 
 					<div className="w-full flex justify-center">
-						<Link className=" flex justify-center m-auto px-4 py-2 text-2xl text-[#092C48] rounded-xl bg-white drop-shadow-lg" href={`./${litter.id}/edit`}>Edit {litter.name}</Link>
+						<Link className=" flex justify-center m-auto px-4 py-2 text-2xl text-[#092C48] rounded-xl bg-navbar-body-1 drop-shadow-lg transition duration-300 hover:scale-125" href={`./${litter.id}/edit`}>Edit {litter.name}</Link>
 					</div>
 				</div>
 			) : (

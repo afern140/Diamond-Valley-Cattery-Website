@@ -129,14 +129,24 @@ export default function Page() {
 								alt="Profile Picture"
 								width={200}
 								height={200}
-								className="border-2 border-black m-5 mb-2"
+								className="border-2 relative border-black m-5 mb-2"
 							/>
-							<input
-								type="file"
-								accept="image/"
-								onChange={handleImageChange}
-								className="bg-navbar-body-1 absolute top-0 left-0 rounded-md drop-shadow-lg"
-							/>
+							{ edit && 	// Putting another edit check here for proper positioning on window size
+							<label htmlFor="pfpImage" className="absolute top-0 left-5 size-[200px]">
+								<label htmlFor="pfpImage" className="bg-gray-700 border-[4px] border-dashed border-gray-200 size-[200px] absolute left-0 z-[100] bg-opacity-70 opacity-0 hover:opacity-100 transition duration-300">
+									<div htmlFor="pfpImage" className="size-full relative flex">
+										<p htmlFor="pfpImage" className=" m-auto px-4 py-2 border-2 border-white rounded-xl bg-gray-800 text-white">Upload Image</p>
+									</div>
+								</label>
+								<input
+									id="pfpImage"
+									type="file"
+									accept="image/"
+									onChange={handleImageChange}
+									className="bg-navbar-body-1 z-30 absolute rounded-md drop-shadow-lg size-[200px] left-0 opacity-0"
+								/>
+							</label>
+							}
 						</div>
 						<h2 className="mt-2 bg-navbar-body-1 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {filteredUser.role}</h2>
 					</div>
@@ -178,7 +188,7 @@ export default function Page() {
 							className="bg-white rounded-md drop-shadow-lg p-2"
 						/>
 						<div className="flex mr-auto ml-full justify-end w-full">
-							<button onClick={handleSubmit} className=" px-4 py-2 bg-white rounded-md drop-shadow-lg">Submit</button>
+							<button onClick={handleSubmit} className=" px-4 py-2 bg-gray-200 rounded-md drop-shadow-lg">Submit</button>
 						</div>
 					</div>
 					) : (

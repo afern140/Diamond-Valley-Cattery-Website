@@ -13,6 +13,7 @@ import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
 import Comments from "@/app/components/comments";
 import CatButton from "@/app/components/cats/catbutton";
+import { useRouter } from "next/navigation";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
@@ -138,6 +139,9 @@ export default function Page({params}) {
 		}
 	};
 
+	// -- F -- Routing
+	const signinRoute = useRouter();
+
 	return(
 		<main className="relative">
 			<BackgroundUnderlay />
@@ -192,11 +196,11 @@ export default function Page({params}) {
 						<div className="flex flex-col xl:ml-auto mx-10 mb-auto mt-6">
 							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold bg-white dark:bg-gray-500 p-8 rounded-xl drop-shadow-xl">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
-								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg rounded-xl p-4 text-xl" >
+								<button onClick={user ? handleMeetingButton : (() => signinRoute.push("../../../login"))} className="mx-auto justify-center flex bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg rounded-xl p-4 text-xl" >
 									<div className="relative flex min-w-[200px] w-[270px]">
-										<span className="my-auto flex text-header-text-0 ">Request a Meeting</span>
+										<span className="my-auto flex text-header-text-0 ">{!user ? "Sign In to" : ""} Request a Meeting</span>
 										<div className="flex mx-3 w-[3px] bg-[#092C48] rounded-full" />
-										<button onClick={handleMeetingButton} className="bg-white bg-opacity-0 hover:bg-opacity-50 active:bg-opacity-80 transition duration-100 p-2 rounded-full">
+										<button onClick={user ? handleMeetingButton : (() => signinRoute.push("../../../login"))} className="bg-white bg-opacity-0 hover:bg-opacity-50 active:bg-opacity-80 transition duration-100 p-2 rounded-full">
 											<Image alt=">" src="/img/right-arrow.svg" width={32} height={32} />
 										</button>
 									</div>

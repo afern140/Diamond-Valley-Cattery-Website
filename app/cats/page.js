@@ -243,11 +243,11 @@ export default function Page() {
 				<div className="flex w-full">
 				{/* First split of the page */}
 				<div className=" w-1/3 mr-6 ml-20 align-middle justify-start flex-col flex items-center relative z-20">
-					<div className="p-6 w-fit text-text-header-0 rounded-xl relative -z-20 bg-white dark:bg-gray-500  drop-shadow-lg">
+					<div className="p-6 w-fit text-text-header-0 rounded-xl relative -z-20 bg-navbar-body-1 dark:bg-gray-500  drop-shadow-lg">
 						<h2 className="py-6 text-2xl font-semibold dark:text-dark-header-text-0 text-center drop-shadow-md">Filters</h2>
 						<h3 className="py-2 text-lg dark:text-dark-header-text-0">Breed</h3>
 						{/*<Dropdown queryType="breed" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
-						<select id="sort" value={breedType} onChange={(e) => setBreedType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-opacity-100 w-full max-w-[300px]">
+						<select id="sort" value={breedType} onChange={(e) => setBreedType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-white bg-opacity-100 w-full max-w-[300px]">
 							<option value="">None</option>
 							{breeds.map((breed) => (
 								<option value={breed}>{breed}</option>
@@ -255,14 +255,14 @@ export default function Page() {
 						</select>
 						<h3 className="py-2 text-lg dark:text-dark-header-text-0">Gender</h3>
 						{/*<Dropdown queryType="gender" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
-						<select id="sort" value={genderType} onChange={(e) => setGenderType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-opacity-100 w-full max-w-[300px]">
+						<select id="sort" value={genderType} onChange={(e) => setGenderType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-white bg-opacity-100 w-full max-w-[300px]">
 									<option value="">None</option>
 									<option value="Male">Male</option>
 									<option value="Female">Female</option>
 						</select>
 						<h3 className="py-2 text-lg dark:text-dark-header-text-0">Age</h3>
 						{/*<Dropdown queryType="age" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
-						<select id="sort" value={ageType} onChange={(e) => setAgeType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-opacity-100 w-full max-w-[300px]">
+						<select id="sort" value={ageType} onChange={(e) => setAgeType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-white bg-opacity-100 w-full max-w-[300px]">
 							<option value="">None</option>
 							{ageGroups.map((age) => (
 								<option value={age.age}>{age.age}</option>
@@ -270,7 +270,7 @@ export default function Page() {
 						</select>
 						<h3 className="py-2 text-lg dark:text-dark-header-text-0">Color</h3>
 						{/*<Dropdown queryType="color" callback={filterItems} cats={cats} isInsidePanel={true}/>*/}
-						<select id="sort" value={colorType} onChange={(e) => setColorType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-opacity-100 w-full max-w-[300px]">
+						<select id="sort" value={colorType} onChange={(e) => setColorType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-white bg-opacity-100 w-full max-w-[300px]">
 							<option value="">None</option>
 							{colors.map((color) => (
 								<option value={color}>{color}</option>
@@ -280,7 +280,7 @@ export default function Page() {
 
 
 						<div className="w-fit z-10">
-							<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 dark:bg-gray-200 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>
+							<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-gray-200 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>
 							{/*<div className="p-4 bg-yellow-700 rounded-xl absolute h-10 -translate-y-[36px] -z-10 w-full" />*/}
 						</div>
 					</div>
@@ -318,7 +318,7 @@ export default function Page() {
 							</div>
 						</div>
 
-						<div className=" w-full max-w-[200px] mr-full ml-auto justify-end flex-col bg-white dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg z-50">
+						<div className=" w-full max-w-[200px] mr-full ml-auto justify-end flex-col bg-navbar-body-1 dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg z-50">
 							<h2 className="flex justify-start font-bold text-xl text-text-header-0 dark:text-dark-header-text-0 drop-shadow-md">Sort by:</h2>
 							
 							{/*<div className=" pt-4">

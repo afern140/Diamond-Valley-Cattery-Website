@@ -12,6 +12,8 @@ useUser,
 } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
 
+import BackgroundUnderlay from "@/app/components/background-underlay";
+
 export default function Page() {
 	const { user } = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
@@ -108,119 +110,133 @@ export default function Page() {
 	
 	return (
 		<main className="bg-white min-h-screen text-black">
-		<h1 className="text-black text-4xl text-center font-bold pt-8 pb-4">
-			Dashboard
-		</h1>
+		<BackgroundUnderlay />
+		
+		{/* Title */}
+		<div className="pt-20 flex pb-10">
+			<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
+				<span className="text-6xl pb-10 font-extrabold">Dashboard</span> <br />
+			</div>
+		</div>
+
 		{filteredUser ? (
 			<div>
-			<div className="flex flex-row justify-center items-center bg-cat-gray-1 p-5 m-10 rounded-lg text-left">
-				<div className="text-center m-auto">
-				<Image
-					src={image}
-					alt="Profile Picture"
-					width={100}
-					height={100}
-					className="border-2 border-black m-5 mb-2"
-				/>
-				<h2>Role: {filteredUser.role}</h2>
-				</div>
-				{edit ? (
-				<div className="flex flex-col">
-					<input
-					type="file"
-					accept="image/"
-					onChange={handleImageChange}
-					></input>
-					<input
-					type="text"
-					name="name"
-					placeholder={filteredUser.name}
-					value={updatedUser.name}
-					onChange={handleChange}
-					/>
-					<input
-					type="text"
-					name="username"
-					placeholder={filteredUser.username}
-					value={updatedUser.username}
-					onChange={handleChange}
-					/>
-					<input
-					type="text"
-					name="email"
-					placeholder={filteredUser.email}
-					value={updatedUser.email}
-					onChange={handleChange}
-					/>
-					<input
-					type="text"
-					name="phone"
-					placeholder={filteredUser.phone}
-					value={parseInt(updatedUser.phone)}
-					onChange={handleChange}
-					/>
-					<button onClick={handleSubmit}>Submit</button>
-				</div>
-				) : (
-				<>
-					<div className="m-auto">
-					<h2>Name: {filteredUser.name}</h2>
-					<h2>Username: {filteredUser.username}</h2>
-					<h2>Email: {filteredUser.email}</h2>
-					<h2>Phone: {filteredUser.phone}</h2>
-					</div>
-					<button onClick={handleEdit} className="m-auto">
-					Edit
-					</button>
-				</>
-				)}
-			</div>
-			<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
-				Recent Message
-			</h2>
-			<div className="mx-10 my-4">
-				{chatsWithLatestUnreadMessage.length > 0 ? (
-				chatsWithLatestUnreadMessage.map(({ chatId, lastMessage }) => (
-					<div
-					key={chatId}
-					onClick={() => redirectToChat(chatId, lastMessage.id)}
-					className="rounded-md p-4 my-2 cursor-pointer hover:bg-blue-200 transition duration-300 ease-in-out bg-blue-100"
-					>
-					<span>
-						{lastMessage.displayName || "Unknown"}: {lastMessage.text}
-					</span>
-					<span className="block text-sm text-gray-600">
-						{formatTimestamp(lastMessage.timestamp)}
-					</span>
-					</div>
-				))
-				) : (
-				<p className="text-gray-500">No recent messages.</p>
-				)}
-			</div>
-			<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
-				Favorite Cats
-			</h2>
-			<div className="flex">
-				{favoriteCats ? (
-				favoriteCats.map((cat) => (
-					<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-black text-xl font-bold text-center">
-					{cat.name}
-					<Link href={`./cats/${cat.id}`}>
-						<Image
-						src="/img/Placeholder.png"
-						alt="Cat"
+				<div className="flex flex-row justify-center items-center bg-white rounded-xl drop-shadow-xl w-4/5 mx-auto p-10 text-left">
+					<div className="text-center m-auto">
+					<Image
+						src={image}
+						alt="Profile Picture"
 						width={200}
-						height={100}
-						className="border-2 border-black m-5"
+						height={200}
+						className="border-2 border-black m-5 mb-2"
+					/>
+					<h2>Role: {filteredUser.role}</h2>
+					</div>
+					
+					<div></div>
+					{edit ? (
+					<div className="flex flex-col">
+						<input
+							type="file"
+							accept="image/"
+							onChange={handleImageChange}
+							className="bg-navbar-body-1 rounded-md drop-shadow-lg"
 						/>
-					</Link>
-					</h3>
-				))
-				) : (
-				<h2>Add cats to your favorites list to have them appear here</h2>
-				)}
-			</div>
+						<input
+							type="text"
+							name="name"
+							placeholder={filteredUser.name}
+							value={updatedUser.name}
+							onChange={handleChange}
+						/>
+						<input
+							type="text"
+							name="username"
+							placeholder={filteredUser.username}
+							value={updatedUser.username}
+							onChange={handleChange}
+						/>
+						<input
+							type="text"
+							name="email"
+							placeholder={filteredUser.email}
+							value={updatedUser.email}
+							onChange={handleChange}
+						/>
+						<input
+							type="text"
+							name="phone"
+							placeholder={filteredUser.phone}
+							value={parseInt(updatedUser.phone)}
+							onChange={handleChange}
+						/>
+						<button onClick={handleSubmit}>Submit</button>
+					</div>
+					) : (
+					<div className="m-auto space-y-2">
+						<h2 className="bg-navbar-body-1 rounded-md drop-shadow-lg p-2">Name: {filteredUser.name}</h2>
+						<h2 className="bg-navbar-body-1 rounded-md drop-shadow-lg p-2">Username: {filteredUser.username}</h2>
+						<h2 className="bg-navbar-body-1 rounded-md drop-shadow-lg p-2">Email: {filteredUser.email}</h2>
+						<h2 className="bg-navbar-body-1 rounded-md drop-shadow-lg p-2">Phone: {filteredUser.phone}</h2>
+						
+						<div className="flex mr-auto ml-full justify-end w-full">
+							<button onClick={handleEdit} className=" px-4 py-2 bg-navbar-body-1 rounded-md drop-shadow-lg">
+								Edit
+							</button>
+						</div>
+					</div>
+					)}
+				</div>
+
+				{/* Recent Messages */}
+				<div className="bg-white rounded-xl drop-shadow-lg w-4/5 mx-auto">
+					<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
+						Recent Message
+					</h2>
+					<div className="mx-10 my-4">
+						{chatsWithLatestUnreadMessage.length > 0 ? (
+						chatsWithLatestUnreadMessage.map(({ chatId, lastMessage }) => (
+							<div
+							key={chatId}
+							onClick={() => redirectToChat(chatId, lastMessage.id)}
+							className="rounded-md p-4 my-2 cursor-pointer hover:bg-blue-200 transition duration-300 ease-in-out bg-blue-100"
+							>
+							<span>
+								{lastMessage.displayName || "Unknown"}: {lastMessage.text}
+							</span>
+							<span className="block text-sm text-gray-600">
+								{formatTimestamp(lastMessage.timestamp)}
+							</span>
+							</div>
+						))
+						) : (
+						<p className="text-gray-500">No recent messages.</p>
+						)}
+					</div>
+				</div>
+				<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
+					Favorite Cats
+				</h2>
+				<div className="flex">
+					{favoriteCats ? (
+					favoriteCats.map((cat) => (
+						<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-black text-xl font-bold text-center">
+						{cat.name}
+						<Link href={`./cats/${cat.id}`}>
+							<Image
+							src="/img/Placeholder.png"
+							alt="Cat"
+							width={200}
+							height={100}
+							className="border-2 border-black m-5"
+							/>
+						</Link>
+						</h3>
+					))
+					) : (
+					<h2>Add cats to your favorites list to have them appear here</h2>
+					)}
+				</div>
 			</div>
 		) : (
 			<div>

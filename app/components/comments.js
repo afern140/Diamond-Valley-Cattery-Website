@@ -24,7 +24,7 @@ export default function Comments(cat) {
    return (
       <section className="text-gray-800 pt-4 ">
          <h1 className="text-5xl font-bold text-center text-gray-700 dark:text-dark-header-text-0 drop-shadow">Comments</h1>
-         <div className="mx-40 m-auto flex-col justify-center bg-white dark:bg-gray-500 bg-opacity-100 mt-10 p-4 drop-shadow-lg rounded-xl  overflow-hidden">
+         <div className="mx-40 m-auto flex-col justify-center bg-white dark:bg-gray-500 bg-opacity-100 mt-10 p-8 drop-shadow-lg rounded-xl  overflow-hidden">
             {comments.map((comment) => (
             <Comment 
             key={comment.id}
@@ -83,17 +83,18 @@ function NewComment(cat, setComments) {
 
    return(
       <div className="text-black mt-8">
+         <div className="w-full h-[2px] bg-gray-200 mb-6" />
          <h2 className="text-3xl flex flex-col items-center pb-4">New Comment</h2>
          <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
-            <input  
+            <textarea  
                type="text"
                placeholder="Comment Here"
                value = {message}
                onChange={(e) => setMessage(e.target.value)}
-               className="border-s-4 border-[#c7c7e1] p-2 mb-16 w-[400px] drop-shadow-lg text-black bg-navbar-body-1"
+               className="border-s-4 border-[#c7c7e1] p-2 mb-16 w-full rounded-md min-h-32 drop-shadow-lg text-black bg-navbar-body-1"
             />
             <button type="submit" className=" drop-shadow-lg bg-[#e5e5ff] rounded text-black py-4 text-2xl px-6 transition duration-300 hover:scale-110">
-               Submit
+               Comment
             </button>
          </form>
       </div>
@@ -104,9 +105,9 @@ function Comment({catName, message, createName,createTime}) {
     console.log("Entered Comment.");
     console.log(createTime);
    return (
-      <div className="text-black">
-         <h2 className="text-3xl">{catName}</h2>
-         <p>{message}</p>
+      <div className="text-black w-full bg-navbar-body-1 p-4 my-4 rounded-xl drop-shadow-lg">
+         <h2 className="text-xl mb-4">{catName}</h2>
+         <p className="mb-4 w-full text-ellipsis overflow-hidden">{message}</p>
          <p>Created by: {createName}</p>
          <p>Posted on: {createTime.toISOString()}</p>
       </div>

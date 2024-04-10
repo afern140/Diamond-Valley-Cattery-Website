@@ -1,6 +1,6 @@
 export default function AddCondition({ newCondition, handleConditionChange, handleTreatedChange, handleAddCondition }) {
 	return (
-		<div className="flex flex-col mb-4 bg-white drop-shadow-lg rounded-md p-2">
+		<div className="flex flex-col mb-4 bg-navbar-body-1 m-2 border-2 border-gray-300 border-dashed drop-shadow-lg rounded-md p-2">
 			<input
 				type="text"
 				name="name"

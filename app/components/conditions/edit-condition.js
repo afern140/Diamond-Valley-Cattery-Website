@@ -1,6 +1,6 @@
 export default function EditCondition({ condition, handleConditionChange, handleTreatedChange, handleRemoveCondition }) {
 	return (
-		<div className="flex flex-col mb-4 bg-white drop-shadow-lg rounded-md p-2">
+		<div className="flex flex-col mb-4 bg-navbar-body-1 m-2 drop-shadow-lg rounded-md p-2">
 			<input
 				type="text"
 				name="name"

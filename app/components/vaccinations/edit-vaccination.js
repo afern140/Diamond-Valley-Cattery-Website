@@ -2,7 +2,7 @@ import DateSelection from "./date-selection";
 
 export default function EditVaccination({ vaccination, newDate, setNewDate, handleVaccinationChange, handleStatusChange, handleVaccinationDateChange, handleRemoveDate, handleAddDate, handleRemoveVaccination, showTakenDateSelection, setShowTakenDateSelection, showPlannedDateSelection, setShowPlannedDateSelection }) {
 	return (
-		<div key={vaccination.id} className="flex flex-col mb-4 bg-white drop-shadow-lg rounded-md p-2">
+		<div key={vaccination.id} className="flex flex-col mb-4 bg-navbar-body-1 m-2 drop-shadow-lg rounded-md p-2">
 			<input
 				type="text"
 				name="name"
@@ -46,10 +46,10 @@ export default function EditVaccination({ vaccination, newDate, setNewDate, hand
 							onChange={(e) => handleVaccinationDateChange(e, vaccination.id, index, 'datesTaken')}
 							className="bg-white drop-shadow-lg rounded-md p-2 mb-2"
 						/>
-						<button onClick={() => handleRemoveDate('datesTaken', vaccination.id, index)} className="bg-[#e5e5ff] drop-shadow-lg rounded-md p-2 m-2">Remove Date</button>
+						<button onClick={() => handleRemoveDate('datesTaken', vaccination.id, index)} className="bg-gray-200 drop-shadow-lg rounded-md p-2 m-2">Remove Date</button>
 					</li>
 				))}
-				<button onClick={() => setShowTakenDateSelection(true)} className="bg-[#e5e5ff] drop-shadow-lg rounded-md p-2 mb-2">Add Date</button>
+				<button onClick={() => setShowTakenDateSelection(true)} className="bg-gray-200 drop-shadow-lg rounded-md p-2 mb-2">Add Date</button>
 			</ul>	
 			{showTakenDateSelection && (
 				<DateSelection type="datesTaken" setVisible={setShowTakenDateSelection} vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleAddDate={handleAddDate}/>
@@ -72,15 +72,15 @@ export default function EditVaccination({ vaccination, newDate, setNewDate, hand
 							onChange={(e) => handleVaccinationDateChange(e, vaccination.id, index, 'futureDates')}
 							className="bg-white drop-shadow-lg rounded-md p-2 mb-2"
 						/>
-						<button onClick={() => handleRemoveDate('futureDates', vaccination.id, index)} className="bg-[#e5e5ff] drop-shadow-lg rounded-md p-2 m-2">Remove Date</button>
+						<button onClick={() => handleRemoveDate('futureDates', vaccination.id, index)} className="bg-gray-200 drop-shadow-lg rounded-md p-2 m-2">Remove Date</button>
 					</li>
 				))}
-				<button onClick={() => setShowPlannedDateSelection(true)} className="bg-[#e5e5ff] drop-shadow-lg rounded-md p-2 mb-2">Add Date</button>
+				<button onClick={() => setShowPlannedDateSelection(true)} className="bg-gray-200 drop-shadow-lg rounded-md p-2 mb-2">Add Date</button>
 			</ul>
 			{showPlannedDateSelection && (
 				<DateSelection type="futureDates" setVisible={setShowPlannedDateSelection} vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleAddDate={handleAddDate}/>
 			)}
-			<button onClick={() => handleRemoveVaccination(vaccination.id)} className="bg-[#e5e5ff] drop-shadow-lg rounded-md p-2 mb-2">Remove Vaccination</button>
+			<button onClick={() => handleRemoveVaccination(vaccination.id)} className="bg-gray-200 drop-shadow-lg rounded-md p-2 mb-2">Remove Vaccination</button>
 		</div>
 	);
 }

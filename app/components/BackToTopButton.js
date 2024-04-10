@@ -1,17 +1,21 @@
 import Image from "next/image";
 import Link from "next/link"
-import { useState, useEffect } from "react";
+import { useState, useEffect, componentDidMount } from "react";
 
 export default function BackToTopButton({url}) {
 	const scrollY = useScroll();
-  
+
+	useEffect (() => {
+		
+	}, []);
+
     return (
         <main className=" fixed bottom-0 p-16 right-0 z-40">
             { scrollY > 500 &&
                 <Link href={url}>
-                    <button className="text-[#092C48] w-14 h-14 text-6xl rounded-full drop-shadow-md border-rose-300">
-                    🢁
-                    </button>
+                    <div className="text-[#092C48] bg-white size-12 text-3xl rounded-full drop-shadow-lg flex justify-center hover:scale-105 transition duration-300">
+                    	<span className=" translate-y-[3px] drop-shadow-md">🢁</span>
+                    </div>
                 </Link>
             }
         </main>

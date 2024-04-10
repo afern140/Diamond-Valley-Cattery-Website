@@ -169,10 +169,10 @@ export default function Page({params}) {
 					<div className="px-20 w-full flex">
 						<Carousel images={cat.carouselImage} />
 					</div>
-					<div className="flex flex-row w-full px-10 xl:px-20">
 						
+					<div className="flex flex-col xl:flex-row w-full px-10 xl:px-20">
 						{/* First split of the section */}
-						<div className="flex flex-col w-full text-black text-xl font-bold text-left">
+						<div className="flex flex-col w-full  text-xl font-bold text-left text-header-text-0">
 							<div className="p-10 mx-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
@@ -189,7 +189,7 @@ export default function Page({params}) {
 						</div>
 
 						{/* Second split of the section */}
-						<div className="flex flex-col ml-auto mx-10 mb-auto mt-6">
+						<div className="flex flex-col xl:ml-auto mx-10 mb-auto mt-6">
 							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold bg-white p-8 rounded-xl drop-shadow-xl">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
 								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-navbar-body-1 drop-shadow-lg rounded-xl p-4 text-xl" >

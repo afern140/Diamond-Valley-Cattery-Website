@@ -388,7 +388,6 @@ export default function Page({params}){
 						</div>
 					</div>
 
-
 					<div className=" flex flex-col xl:flex-row w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
 						{/* Thumbnail */}
 						<div className=" size-full max-w-[300px] max-h-[300px] mr-6 aspect-square">
@@ -581,20 +580,45 @@ export default function Page({params}){
 					<div className=" w-4/5 mx-auto mt-6 bg-white p-10 rounded-xl drop-shadow-lg">
 						<h2 className="text-xl font-bold mb-4 mt-6 dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex space-x-10 mt-6 flex-wrap">
+							{/* Mother */}
 							{cat.mother ? (
 								<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 									<h2 className="font-normal">Mother</h2>
 									<CatButton cat={cat.mother} />
 									<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Mother</button>
 								</div>
-							) : (<button onClick={() => handleSelectParentToUpdate('mother')}>Add Mother</button>)}
+							) : (
+								<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+								<Image
+									src="/img/Placeholder.png"
+									alt="Cat"
+									width={200}
+									height={100}
+									className="border border-black rounded-xl m-5"
+								/>
+								<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Mother</button>
+							</div>
+							)}
+							
+							{/* Father */}
 							{cat.father ? (
 								<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 									<h2 className="font-normal">Father</h2>
 									<CatButton cat={cat.father} />
 									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Father</button>
 								</div>
-							) : (<button onClick={() => handleSelectParentToUpdate('father')}>Add Father</button>)}
+							) : (
+							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+								<Image
+									src="/img/Placeholder.png"
+									alt="Cat"
+									width={200}
+									height={100}
+									className="border border-black rounded-xl m-5"
+								/>
+								<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Father</button>
+							</div>)}
+						
 						</div>
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
 					</div>

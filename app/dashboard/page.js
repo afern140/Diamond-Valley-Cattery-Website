@@ -109,19 +109,19 @@ export default function Page() {
 	};
 	
 	return (
-		<main className="bg-white min-h-screen text-black">
+		<main className=" min-h-screen text-header-text-0 relative pb-16">
 		<BackgroundUnderlay />
 		
 		{/* Title */}
 		<div className="pt-20 flex pb-10">
-			<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
+			<div className="w-full m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
 				<span className="text-6xl pb-10 font-extrabold">Dashboard</span> <br />
 			</div>
 		</div>
 
 		{filteredUser ? (
-			<div>
-				<div className="flex flex-row justify-center items-center bg-white rounded-xl drop-shadow-xl w-4/5 mx-auto p-10 text-left">
+			<div className="w-4/5 mx-auto">
+				<div className="flex flex-row justify-center items-center bg-white rounded-xl drop-shadow-xl w-full mx-auto p-10 text-left">
 					<div className="text-center m-auto">
 					<Image
 						src={image}
@@ -130,24 +130,25 @@ export default function Page() {
 						height={200}
 						className="border-2 border-black m-5 mb-2"
 					/>
-					<h2>Role: {filteredUser.role}</h2>
+					<h2 className="mt-2 bg-navbar-body-1 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {filteredUser.role}</h2>
 					</div>
 					
-					<div></div>
 					{edit ? (
-					<div className="flex flex-col">
-						<input
+					<div className="flex flex-col bg-navbar-body-1 p-4 rounded-xl drop-shadow-lg space-y-2 mx-auto">
+						{/*<input
 							type="file"
 							accept="image/"
 							onChange={handleImageChange}
 							className="bg-navbar-body-1 rounded-md drop-shadow-lg"
-						/>
+						/>*/}
+						<h2 className="text-xl mb-4 text-center">Edit Details</h2>
 						<input
 							type="text"
 							name="name"
 							placeholder={filteredUser.name}
 							value={updatedUser.name}
 							onChange={handleChange}
+							className="bg-white rounded-md drop-shadow-lg p-2"
 						/>
 						<input
 							type="text"
@@ -155,6 +156,7 @@ export default function Page() {
 							placeholder={filteredUser.username}
 							value={updatedUser.username}
 							onChange={handleChange}
+							className="bg-white rounded-md drop-shadow-lg p-2"
 						/>
 						<input
 							type="text"
@@ -162,6 +164,7 @@ export default function Page() {
 							placeholder={filteredUser.email}
 							value={updatedUser.email}
 							onChange={handleChange}
+							className="bg-white rounded-md drop-shadow-lg p-2"
 						/>
 						<input
 							type="text"
@@ -169,18 +172,22 @@ export default function Page() {
 							placeholder={filteredUser.phone}
 							value={parseInt(updatedUser.phone)}
 							onChange={handleChange}
+							className="bg-white rounded-md drop-shadow-lg p-2"
 						/>
-						<button onClick={handleSubmit}>Submit</button>
+						<div className="flex mr-auto ml-full justify-end w-full">
+							<button onClick={handleSubmit} className=" px-4 py-2 bg-white rounded-md drop-shadow-lg">Submit</button>
+						</div>
 					</div>
 					) : (
-					<div className="m-auto space-y-2">
-						<h2 className="bg-navbar-body-1 rounded-md drop-shadow-lg p-2">Name: {filteredUser.name}</h2>
-						<h2 className="bg-navbar-body-1 rounded-md drop-shadow-lg p-2">Username: {filteredUser.username}</h2>
-						<h2 className="bg-navbar-body-1 rounded-md drop-shadow-lg p-2">Email: {filteredUser.email}</h2>
-						<h2 className="bg-navbar-body-1 rounded-md drop-shadow-lg p-2">Phone: {filteredUser.phone}</h2>
+					<div className="m-auto space-y-2 bg-navbar-body-1 p-4 rounded-xl drop-shadow-lg">
+						<h2 className="text-xl mb-4 text-center">Details</h2>
+						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Name: {filteredUser.name}</h2>
+						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Username: {filteredUser.username}</h2>
+						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Email: {filteredUser.email}</h2>
+						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Phone: {filteredUser.phone}</h2>
 						
 						<div className="flex mr-auto ml-full justify-end w-full">
-							<button onClick={handleEdit} className=" px-4 py-2 bg-navbar-body-1 rounded-md drop-shadow-lg">
+							<button onClick={handleEdit} className=" px-4 py-2 bg-white rounded-md drop-shadow-lg">
 								Edit
 							</button>
 						</div>
@@ -189,9 +196,9 @@ export default function Page() {
 				</div>
 
 				{/* Recent Messages */}
-				<div className="bg-white rounded-xl drop-shadow-lg w-4/5 mx-auto">
-					<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
-						Recent Message
+				<div className="bg-white rounded-xl drop-shadow-lg p-10 mt-10">
+					<h2 className=" text-2xl text-left font-bold">
+						Recent Messages
 					</h2>
 					<div className="mx-10 my-4">
 						{chatsWithLatestUnreadMessage.length > 0 ? (
@@ -214,28 +221,33 @@ export default function Page() {
 						)}
 					</div>
 				</div>
-				<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
-					Favorite Cats
-				</h2>
-				<div className="flex">
-					{favoriteCats ? (
-					favoriteCats.map((cat) => (
-						<h3 className="bg-cat-gray-1 p-10 m-10 rounded-lg text-black text-xl font-bold text-center">
-						{cat.name}
-						<Link href={`./cats/${cat.id}`}>
-							<Image
-							src="/img/Placeholder.png"
-							alt="Cat"
-							width={200}
-							height={100}
-							className="border-2 border-black m-5"
-							/>
-						</Link>
-						</h3>
-					))
-					) : (
-					<h2>Add cats to your favorites list to have them appear here</h2>
-					)}
+				
+				{/* Favorite Cats */}
+				<div className="bg-white rounded-xl drop-shadow-lg p-10 mt-10">
+					<h2 className="text-black text-2xl text-left font-bold pb-4 ">
+						Favorite Cats
+					</h2>
+					<div className="flex">
+						{favoriteCats ? (
+						favoriteCats.map((cat) => (
+							<div className="text-center bg-navbar-body-1 p-4 rounded-xl drop-shadow-lg">
+								<Link href={`./cats/${cat.id}`}>
+									<Image
+									src="/img/Placeholder.png"
+									alt="Cat"
+									width={200}
+									height={100}
+									className="border-2 border-black m-5"
+									/>
+									<span className="text-xl">{cat.name}</span><br />
+									<span>{cat.breed}</span>
+								</Link>
+							</div>
+						))
+						) : (
+						<h2>Add cats to your favorites list to have them appear here</h2>
+						)}
+					</div>
 				</div>
 			</div>
 		) : (

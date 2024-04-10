@@ -33,7 +33,7 @@ export default function AddCondition({ newCondition, handleConditionChange, hand
 				<option value="finished">Finished</option>
 				<option value="inProgress">In Progress</option>
 			</select>
-			<button onClick={() => handleAddCondition()} className=" bg-white drop-shadow-lg rounded-md p-2 mb-2">Add Condition</button>
+			<button onClick={() => handleAddCondition()} className=" bg-gray-200 p-2 rounded-md drop-shadow-lg mb-2">Add Condition</button>
 		</div>
 	)
 }

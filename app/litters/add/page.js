@@ -125,7 +125,7 @@ export default function Page() {
 			<div className="w-4/5 mx-auto">
 				<div className="pt-20 flex pb-10">
 					<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
-						<span className="text-6xl pb-10 font-extrabold">Litters</span> <br />
+						<span className="text-6xl pb-10 font-extrabold">Add Litter</span> <br />
 					</div>
 				</div>
 

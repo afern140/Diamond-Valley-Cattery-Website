@@ -68,41 +68,13 @@ export default function Page() {
 			</div>
 
 			<div className=" w-4/5 mx-auto mt-10">
-				<div className="w-full flex relative">
-					<div className="w-full h-full">
-						{/* Search Bar -- F */}
-						<div className="align-middle justify-center  w-full flex">
-							<div className="w-full relative">
-								<input type="text"
-									name="catlist-search"
-									id="search-bar"
-									placeholder="Search"
-									value={fieldInput}
-									className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-full h-16"
-									onChange = { (Event) => searchItems(Event.target.value, "") }>
-								</input>
-
-								{ filteredResults && filteredResults.length > 0 && fieldInput.length > 0 && activeAutocomplete ? 
-								<div ref={searchbarRef} className={`absolute w-full z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl flex-col overflow-hidden`}>
-									{
-										filteredResults.map((cat) => (
-											<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
-										))
-									}
-								</div> : <div />
-								}
-							</div>
-							
-							<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
-						</div>
-					</div>
-					<div className="rounded-xl m-5 p-4 bg-white drop-shadow-lg w-fit mr-full ml-auto">
-						<label htmlFor="sort">Sort By:</label> <br/>
-						<select id="sort" value={sortBy} onChange={handleSortChange} className="ml-2 p-2 bg-navbar-body-1 rounded-xl drop-shadow-lg">
-							<option value="name">Name</option>
-							<option value="expDate">Expected Date</option>
-						</select>
-					</div>
+				
+				<div className="rounded-xl m-5 p-4 bg-white drop-shadow-lg w-fit mr-full ml-auto">
+					<label htmlFor="sort">Sort By:</label> <br/>
+					<select id="sort" value={sortBy} onChange={handleSortChange} className="ml-2 p-2 bg-navbar-body-1 rounded-xl drop-shadow-lg">
+						<option value="name">Name</option>
+						<option value="expDate">Expected Date</option>
+					</select>
 				</div>
 				
 				<div className=" m-4 p-4 bg-white rounded-xl drop-shadow-lg space-y-6 pb-8">

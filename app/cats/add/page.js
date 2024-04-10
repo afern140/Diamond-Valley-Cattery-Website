@@ -624,7 +624,7 @@ export default function Page() {
 							<h2 className="text-xl font-bold mb-4 dark:text-dark-header-text-0">Parents</h2>
 							<div className="flex flex-wrap">
 								{cat.mother ? (
-									<div className="border border-gray-300 p-5 mb-2 rounded-lg text-center">
+									<div className="m-4 p-4 bg-navbar-body-1 rounded-xl drop-shadow-lg items-center text-center">
 										{cat.mother.name}
 										<Image
 											src={cat.mother.thumbnail || "/img/Placeholder.png"}
@@ -634,10 +634,10 @@ export default function Page() {
 											className="border-2 border-black m-5"
 										/>
 										<h2 className="font-normal">Mother</h2>
-										<button onClick={() => handleSelectParentToUpdate('mother')} className="bg-slate-200 py-2 px-4 rounded mt-4">Replace Mother</button>
+										<button onClick={() => handleSelectParentToUpdate('mother')} className="bg-white drop-shadow-lg py-2 px-4 rounded mt-4">Replace Mother</button>
 									</div>
 								) : (
-									<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+									<div className=" flex justify-center flex-col m-4 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 										<Image
 											src="/img/Placeholder.png"
 											alt="Cat"
@@ -648,7 +648,7 @@ export default function Page() {
 										<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Mother</button>
 									</div>)}
 								{cat.father ? (
-									<div className="border border-gray-300 p-5 mb-2 rounded-lg text-center">
+									<div className="m-4 p-4 bg-navbar-body-1 rounded-xl drop-shadow-lg items-center text-center">
 										{cat.father.name}
 										<Image
 											src={cat.father.thumbnail || "/img/Placeholder.png"}
@@ -658,10 +658,10 @@ export default function Page() {
 											className="border-2 border-black m-5"
 										/>
 										<h2 className="font-normal">Father</h2>
-										<button onClick={() => handleSelectParentToUpdate('father')} className="bg-slate-200 py-2 px-4 rounded mt-4">Replace Father</button>
+										<button onClick={() => handleSelectParentToUpdate('father')} className="bg-white drop-shadow-lg py-2 px-4 rounded mt-4">Replace Father</button>
 									</div>
 								) : (
-									<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+									<div className=" flex justify-center flex-col m-4 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 										<Image
 											src="/img/Placeholder.png"
 											alt="Cat"
@@ -683,7 +683,7 @@ export default function Page() {
 							<div className="flex flex-wrap">
 								{cat.children ? (
 									cat.children.map((child) =>(
-										<div className="border border-gray-300 p-5 rounded-lg text-center">
+										<div className="m-4 p-4 bg-navbar-body-1 rounded-xl drop-shadow-lg items-center text-center">
 											{child.name}
 											<Image
 												src={cat.children.thumbnail || "/img/Placeholder.png"}
@@ -692,11 +692,11 @@ export default function Page() {
 												height={100}
 												className="border-2 border-black m-5"
 											/>
-											<button onClick={() => handleRemoveChild(child)} className="bg-slate-200 py-2 px-4 rounded mt-4">Remove {child.name}</button>
+											<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Remove {child.name}</button>
 										</div>
 									))
 								) : (<></>)}
-								<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+								<div className=" flex justify-center flex-col m-4 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 									<Image
 										src="/img/Placeholder.png"
 										alt="Cat"

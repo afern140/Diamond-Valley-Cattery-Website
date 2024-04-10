@@ -57,16 +57,16 @@ export default function Page({ params }) {
 					<Carousel/>
 
 					{/* Details */}
-					<div className="flex flex-col xl:flex-row w-full mx-auto text-xl font-bold text-left text-header-text-0">
+					<div className="flex flex-col xl:flex-row w-full space-x-0 xl:space-x-6 mx-auto text-xl font-bold text-left text-header-text-0">
 						<div className="p-10 mx-auto mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
 							<h2 className="text-2xl mb-2">Details</h2>
 							<h3>Expected Date: <span className="font-normal">{new Date(litter.expDate.toDate()).toISOString().split('T')[0]}</span></h3>
 							<h3>Completed: <span className="font-normal">{litter.completed ? "Completed" : "Not Completed"}</span></h3>
 						</div>
 
-						<div className="p-10 mx-auto mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
+						<div className="p-10 mx-auto mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] max-w-[80%] w-fit">
 							<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
-							<p className="font-normal">{litter.description}</p>
+							<p className="font-normal break-words">{litter.description}</p>
 						</div>
 					</div>
 

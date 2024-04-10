@@ -205,14 +205,14 @@ export default function Page() {
 						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex px-10 space-x-10 mt-6">
 							{litter.mother ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
+								<div className="m-4 p-4 bg-navbar-body-1 rounded-xl drop-shadow-lg items-center text-center">
 									<h2>Mother</h2>
 									<h3>{litter.mother.name}</h3>
 									<Image
 										src={litter.mother.thumbnail ? litter.mother.thumbnail : "/img/Placeholder.png"}
 										alt="Cat"
-										width={300}
-										height={300}
+										width={200}
+										height={100}
 										className="justify-center align-center place-items-center"
 										objectFit="contain"
 									/>
@@ -230,14 +230,14 @@ export default function Page() {
 								<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Mother</button>
 							</div>)}
 							{litter.father ? (
-								<div>
+								<div className="m-4 p-4 bg-navbar-body-1 rounded-xl drop-shadow-lg items-center text-center">
 									<h2>Father</h2>
 									<h3>{litter.father.name}</h3>
 									<Image
 										src={litter.father.thumbnail ? litter.father.thumbnail : "/img/Placeholder.png"}
 										alt="Cat"
-										width={300}
-										height={300}
+										width={200}
+										height={100}
 										className="justify-center align-center place-items-center"
 										objectFit="contain"
 									/>
@@ -265,25 +265,25 @@ export default function Page() {
 					{litter.completed ? (
 						<div className="flex px-10 space-x-10 mt-6">
 							{litter.children.map((child) => (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
+								<div className="m-4 p-4 bg-navbar-body-1 rounded-xl drop-shadow-lg items-center text-center">
 									<h3>{child.name}</h3>
 									<Image
 										src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}
 										alt="Cat"
-										width={300}
-										height={300}
+										width={200}
+										height={100}
 										className="justify-center align-center place-items-center"
 										objectFit="contain"
 									/>
 									<button className="px-4 py-2 bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 								</div>
 							))}
-							<div className=" flex justify-center flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
+							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 								<Image
 									src="/img/Placeholder.png"
 									alt="Cat"
-									width={300}
-										height={300}
+									width={200}
+										height={100}
 										className="justify-center align-center place-items-center"
 										objectFit="contain"
 								/>

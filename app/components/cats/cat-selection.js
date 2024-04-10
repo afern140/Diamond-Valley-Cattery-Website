@@ -23,7 +23,7 @@ export default function CatSelection({ cats, showCatSelection, setShowCatSelecti
 							</div>
 						)) : "Loading..."}
 					</div>
-					<div className="sticky bottom-0 right-0 bg-white rounded-lg flex justify-end mt-2">
+					<div className="absolute bottom-0 right-0 py-2 px-8 flex justify-end mt-2">
 						<button onClick={() => setShowCatSelection(false)} className=" bg-navbar-body-0 text-white font-bold py-2 px-4 rounded">Cancel</button>
 					</div>
 				</div>

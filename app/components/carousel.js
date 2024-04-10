@@ -94,7 +94,7 @@ export default function CarouselDefault({ images, iscatpage }) {
 
 
 	return (
-		<div className="grid max-h-[540px] w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
+		<div className="grid aspect-video w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
 			<Carousel
 				className="pb-5"
 				autoplay

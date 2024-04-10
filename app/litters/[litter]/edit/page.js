@@ -9,6 +9,7 @@ import { getObject, getObjects, updateObject } from "@/app/_utils/firebase_servi
 import CatSelection from "@/app/components/cats/cat-selection";
 import ImageUploader from "@/app/components/ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import LitterCarouselController from "@/app/components/LitterCarouselController";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
@@ -132,7 +133,14 @@ export default function Page({ params }) {
 		};
 		await updateObject('litters', updatedLitter, true);
 	  };
-	  
+	
+	const handleImageUpload = async (imageUrl) => {
+		try {
+			fetchCat()
+		} catch (error) {
+			console.error("Error handling image upload:", error);
+		}
+	};
 
 	return (
 		<main className="relative text-[#092C48] pb-12">
@@ -259,6 +267,7 @@ export default function Page({ params }) {
 						</div>
 					)}
 					<button className="flex m-auto px-6 py-4 bg-white drop-shadow-lg rounded-xl mt-16 text-2xl" onClick={handleSubmit}>Submit</button>
+					<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />
 				</div>
 			) : (
 				<div className="h-screen">

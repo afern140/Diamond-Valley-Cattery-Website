@@ -23,6 +23,43 @@ import BackgroundUnderlay from "@/app/components/background-underlay";
 export default function Page({params}){
 	const handleImageUpload = async (imageUrl) => {
 		try {
+			const fetchCat = async () => {
+				const cat = await getObject('cats', parseInt(params.cat));
+				if (cat.mother) {
+					const motherDoc = await getDoc(cat.mother);
+					cat.mother = { docId: cat.mother.id, ...motherDoc.data()};
+				}
+				if (cat.father) {
+					const fatherDoc = await getDoc(cat.father);
+					cat.father = { docId: cat.father.id, ...fatherDoc.data()};
+				}
+				if (cat.owner) {
+					const ownerDoc = await getDoc(cat.owner);
+					cat.owner = { docId: cat.owner.id, ...ownerDoc.data()};
+				}
+				if (cat.children) {
+					const childrenData = await Promise.all(cat.children.map(async (childRef) => {
+						const childDoc = await getDoc(childRef);
+						return { docId: childRef.id, ...childDoc.data()};
+					}));
+					cat.children = childrenData;
+				}
+				if (cat.conditions) {
+					const conditionsData = await Promise.all(cat.conditions.map(async (conditionRef) => {
+						const conditionDoc = await getDoc(conditionRef);
+						return { docId: conditionRef.id, ...conditionDoc.data()};
+					}));
+					cat.conditions = conditionsData;
+				}
+				if (cat.vaccinations) {
+					const vaccinationsData = await Promise.all(cat.vaccinations.map(async (vaccinationRef) => {
+						const vaccinationDoc = await getDoc(vaccinationRef);
+						return { docId: vaccinationRef.id, ...vaccinationDoc.data()};
+					}));
+					cat.vaccinations = vaccinationsData;
+				}
+				setCat(cat);
+			};
 			fetchCat()
 		} catch (error) {
 			console.error("Error handling image upload:", error);

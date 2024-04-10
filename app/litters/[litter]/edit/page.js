@@ -9,6 +9,7 @@ import { getObject, getObjects, updateObject } from "@/app/_utils/firebase_servi
 import CatSelection from "@/app/components/cats/cat-selection";
 import ImageUploader from "@/app/components/ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import LitterCarouselController from "@/app/components/LitterCarouselController";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
@@ -22,34 +23,33 @@ export default function Page({ params }) {
 	const handleImageSelected = (file) => {
 		setImageFile(file);
 	  };	  
-	
-
+	  const fetchLitter = async () => {
+		const litter = await getObject('litters', parseInt(params.litter));
+		if (litter.mother) {
+			const mother = await getDoc(litter.mother);
+			litter.mother = { docId: litter.mother.id, ...mother.data() };
+		} else {
+			litter.mother = null;
+		}
+		if (litter.father) {
+			const father = await getDoc(litter.father);
+			litter.father = { docId: litter.father.id, ...father.data() };
+		} else {
+			litter.father = null;
+		}
+		if (litter.children) {
+			const children = await Promise.all(litter.children.map(async (childRef) => {
+				const child = await getDoc(childRef)
+				return { docId: childRef.id, ...child.data()};
+			}));
+			litter.children = children;
+		} else {
+			litter.children = null;
+		}
+		setLitter(litter);
+	};
+    
 	useEffect(() => {
-		const fetchLitter = async () => {
-			const litter = await getObject('litters', parseInt(params.litter));
-			if (litter.mother) {
-				const mother = await getDoc(litter.mother);
-				litter.mother = { docId: litter.mother.id, ...mother.data() };
-			} else {
-				litter.mother = null;
-			}
-			if (litter.father) {
-				const father = await getDoc(litter.father);
-				litter.father = { docId: litter.father.id, ...father.data() };
-			} else {
-				litter.father = null;
-			}
-			if (litter.children) {
-				const children = await Promise.all(litter.children.map(async (childRef) => {
-					const child = await getDoc(childRef)
-					return { docId: childRef.id, ...child.data()};
-				}));
-				litter.children = children;
-			} else {
-				litter.children = null;
-			}
-			setLitter(litter);
-		};
 		fetchLitter();
 	}, [params]);
 
@@ -132,7 +132,14 @@ export default function Page({ params }) {
 		};
 		await updateObject('litters', updatedLitter, true);
 	  };
-	  
+	
+	const handleImageUpload = async (imageUrl) => {
+		try {
+			fetchCat()
+		} catch (error) {
+			console.error("Error handling image upload:", error);
+		}
+	};
 
 	return (
 		<main className="relative text-[#092C48] pb-12">
@@ -259,6 +266,7 @@ export default function Page({ params }) {
 						</div>
 					)}
 					<button className="flex m-auto px-6 py-4 bg-white drop-shadow-lg rounded-xl mt-16 text-2xl" onClick={handleSubmit}>Submit</button>
+					<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />
 				</div>
 			) : (
 				<div className="h-screen">

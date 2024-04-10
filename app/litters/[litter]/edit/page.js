@@ -131,7 +131,7 @@ export default function Page({ params }) {
 		  thumbnail: imageUrl // Set the new thumbnail URL
 		};
 		await updateObject('litters', updatedLitter, true);
-	};
+		};
 
 	const handleImageUpload = async (imageUrl) => {
 		try {

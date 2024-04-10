@@ -133,15 +133,15 @@ const Navbar = () => {
           <div className="w-full flex">
             {/* Settings */}
             <div id="mousemove" className="relative justify-end flex m-auto w-full px-10 z-40">
-              {/*<button className={"p-2 rounded-full relative transition duration-300 text-black z-10 border-2 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (expandUser ? " bg-white bg-opacity-90 hover:scale-110 hover:bg-white hover:bg-opacity-100 border-gray-500 hover:border-gray-700" : " hover:bg-white hover:bg-opacity-90 bg-white bg-opacity-70 hover:scale-110 border-black hover:border-gray-700")}
+              <button className={"p-2 rounded-full relative transition duration-300 text-black z-10 border-2 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (expandUser ? " bg-white bg-opacity-90 hover:scale-110 hover:bg-white hover:bg-opacity-100 border-gray-500 hover:border-gray-700" : " hover:bg-white hover:bg-opacity-90 bg-white bg-opacity-70 hover:scale-110 border-black hover:border-gray-700")}
                                 onClick={() => setExpandUser(!expandUser)}><Image alt="user" src="/img/userprofile.png" width={48} height={48} /></button>
               {/*<div className="bg-yellow-700 p-3 rounded-xl -translate-y-[21px] -z-20"/>*/}
 
-              <div className="absolute -z-10 bg-white size-16 rounded-full bg-opacity-80 drop-shadow-lg">
+              {/*<div className="absolute -z-10 bg-white size-16 rounded-full bg-opacity-80 drop-shadow-lg">
                 <Image alt="user" src="/img/userprofile.png" width={48} height={48} className="m-auto mt-2"/>
               </div>
 
-              {/* Blocker Element */}
+              {/* Blocker Element *//*}
               <div className=" h-16 w-32 absolute right-[105px] z-10 opacity-0"/>
               <select className=" opacity-0 h-16 w-32">
                 <option value="Settings" >
@@ -161,6 +161,7 @@ const Navbar = () => {
                 </div>
                 )}
               </select>
+              */}
               { expandUser &&
                 (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-6 shadow transition duration-300 overflow-clip">
                   <div className="relative w-full z-40">

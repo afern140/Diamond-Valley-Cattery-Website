@@ -649,7 +649,7 @@ export default function Page({params}){
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
 					<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />
-					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 rounded-xl mt-16 text-2xl text-white">Submit</button>
+					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300">Submit</button>
 				</div>
 			) : (
 				<h1>Loading</h1>

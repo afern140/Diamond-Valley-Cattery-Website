@@ -47,7 +47,7 @@ export default function Page({ params }) {
 		<main className=" text-[#092C48] size-full relative pb-16">
 			<BackgroundUnderlay />
 			{litter ? (
-				<div>
+				<div className="w-4/5 mx-auto">
 					<div className="pt-20 flex pb-10">
 						<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
 							<span className="text-6xl pb-10 font-extrabold">{litter.name}</span> <br />
@@ -56,32 +56,42 @@ export default function Page({ params }) {
 
 					<Carousel/>
 
-					<div className="flex w-full">
-						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-white dark:bg-gray-500 text-[#092C48] drop-shadow-lg">
+					{/* Details */}
+					<div className="flex flex-col xl:flex-row w-full mx-auto text-xl font-bold text-left text-header-text-0">
+						<div className="p-10 mx-auto mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
 							<h2 className="text-2xl mb-2">Details</h2>
 							<h3>Expected Date: <span className="font-normal">{new Date(litter.expDate.toDate()).toISOString().split('T')[0]}</span></h3>
 							<h3>Completed: <span className="font-normal">{litter.completed ? "Completed" : "Not Completed"}</span></h3>
 						</div>
 
-						<div className="p-10 mx-10 mt-6 rounded-lg w-1/3 min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg text-[#092C48]">
+						<div className="p-10 mx-auto mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
 							<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 							<p className="font-normal">{litter.description}</p>
 						</div>
 					</div>
 
-					<div className="text-black text-xl font-bold p-10">
-						{ (litter.father || litter.mother) &&
-						<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>}
-						<div className="flex flex-wrap">
-							{litter.father &&
-							<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
-								<CatButton cat={litter.father} />
-							</div>}
-							{litter.mother &&
-							<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
-								<CatButton cat={litter.mother} />
-							</div>}
-						</div>
+					{/* Parents */}
+					<div className=" text-header-text-0 text-xl font-bold bg-white p-10 mt-10 rounded-xl drop-shadow-lg">
+						{ (litter.father || litter.mother) ? (
+							<div>
+								<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
+								<div className="flex flex-wrap">
+									{litter.father &&
+									<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
+										<CatButton cat={litter.father} />
+									</div>}
+									{litter.mother &&
+									<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
+										<CatButton cat={litter.mother} />
+									</div>}
+								</div>
+							</div>
+							) : (<h2 className="italic text-gray-400 font-normal">No parents</h2>)
+						}
+					</div>
+
+					{/* Children */}
+					<div className=" text-header-text-0 text-xl font-bold bg-white p-10 mt-10 rounded-xl drop-shadow-lg">
 						{litter.completed && litter.children ? (
 							<div className="">
 								<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
@@ -95,12 +105,12 @@ export default function Page({ params }) {
 								))}
 								</div>
 							</div>
-							) : null
+							) : (<h2 className="italic text-gray-400 font-normal">No children</h2>)
 						}
 					</div>
 
 					<div className="w-full flex justify-center">
-						<Link className=" flex justify-center m-auto px-4 py-2 text-2xl text-[#092C48] rounded-xl bg-navbar-body-1 drop-shadow-lg transition duration-300 hover:scale-125" href={`./${litter.id}/edit`}>Edit {litter.name}</Link>
+						<Link className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300" href={`./${litter.id}/edit`}>Edit {litter.name}</Link>
 					</div>
 				</div>
 			) : (

@@ -132,7 +132,7 @@ export default function Page({ params }) {
 		};
 		await updateObject('litters', updatedLitter, true);
 	  };
-
+	
 	const handleImageUpload = async (imageUrl) => {
 		try {
 			fetchCat()
@@ -270,15 +270,13 @@ export default function Page({ params }) {
 								</div>
 								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 							</div>
+
 						) : (
-							<div className={" bg-navbar-body-1 rounded-xl drop-shadow-lg mt-6 " + (showChildSelection ? "w-full h-[460px]" : " size-fit")}>
-								<button className="size-full p-4" onClick={handleMarkAsComplete}>Mark as Complete</button>
 								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
-							</div>
 						)}
 					</div>
-					<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />
 					<button className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300" onClick={handleSubmit}>Submit</button>
+					<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />
 				</div>
 			) : (
 				<div className="h-screen">

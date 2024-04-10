@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
 import {collection,addDoc,query,getDocs,Timestamp} from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
-export default function Comments(cat) {
+export default function Comments(cat, user) {
    const [comments, setComments] = useState([]);
 
    useEffect(() => {
@@ -34,7 +35,7 @@ export default function Comments(cat) {
             createName={comment.createName}
             />
             ))}
-            <NewComment cat={cat.cat} setComments={setComments}/>
+            <NewComment cat={cat.cat} setComments={setComments} user={user}/>
          </div>
       </section>
    );
@@ -59,7 +60,7 @@ async function addComment(commentDoc,cat){
    return docRef.id;
 }
 
-function NewComment(cat, setComments) {
+function NewComment(cat, setComments, user) {
    const [message, setMessage] = useState("");
    const currentCat = cat.cat;
    
@@ -81,11 +82,13 @@ function NewComment(cat, setComments) {
       //window.location.reload();
    }
 
+   const loginRouter = useRouter();
+
    return(
       <div className="text-black mt-8">
          <div className="w-full h-[2px] bg-gray-200 mb-6" />
          <h2 className="text-3xl flex flex-col items-center pb-4">New Comment</h2>
-         <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
+         { user ? <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
             <textarea  
                type="text"
                placeholder="Comment Here"
@@ -97,6 +100,12 @@ function NewComment(cat, setComments) {
                Comment
             </button>
          </form>
+         : <div className="w-full flex">
+            <button onClick={() => loginRouter.push("../../../login")} className=" drop-shadow-lg justify-center mx-auto mt-6 bg-navbar-body-1  dark:bg-gray-300 rounded text-black py-4 text-2xl px-6 transition duration-300 hover:scale-110">
+               Sign In to Comment
+            </button>
+         </div>
+         }
       </div>
    );
 }

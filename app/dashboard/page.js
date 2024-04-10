@@ -19,11 +19,11 @@ export default function Page() {
 	const [updatedUser, setUpdatedUser] = useState();
 	const [edit, setEdit] = useState(false);
 	const [image, setImage] = useState("/img/Placeholder.png");
-	const [chatsWithLatestUnreadMessage, setChatsWithLatestUnreadMessage] =
-		useState([]);
-	const { fetchChatsWithLatestMessage, markMessageAsRead } = useChat();
-	const [unreadMessageIds, setUnreadMessageIds] = useState(new Set());
-	useEffect(() => {
+    const [chatsWithLatestUnreadMessage, setChatsWithLatestUnreadMessage] =
+    useState([]);
+  const { fetchChatsWithLatestUnreadMessage, markMessageAsRead } = useChat();
+	
+  useEffect(() => {
 		const fetchUser = async () => {
 		const newUser = await getUser(user);
 		setFilteredUser(newUser);
@@ -60,45 +60,34 @@ export default function Page() {
 	};
 	
 	// Recent message
-	useEffect(() => {
-		console.log("No loops or leaks");
-		let isSubscribed = true;
+    useEffect(() => {
+        console.log("Fetching chats with latest unread messages...");
+        let isSubscribed = true;
+    
+        const fetchAndSetChats = async () => {
+          try {
+            if (user) {
+              const chats = await fetchChatsWithLatestUnreadMessage(user.uid);
+              if (isSubscribed) {
+                setChatsWithLatestUnreadMessage(chats);
+              }
+            }
+          } catch (error) {
+            console.error("Error fetching chats:", error);
+          }
+        };
+    
+        if (user) {
+          fetchAndSetChats();
+        }
+    
+        // Cleanup function to avoid setting state after component unmount
+        return () => {
+          isSubscribed = false;
+        };
+      }, [user]);
 	
-		const fetchAndSetChats = async () => {
-		const chats = await fetchChatsWithLatestMessage(user.uid);
-		if (isSubscribed) {
-			setChatsWithLatestUnreadMessage(chats);
-		}
-		};
-	
-		if (user) {
-		fetchAndSetChats();
-		}
-	
-		return () => {
-		isSubscribed = false;
-		};
-	}, [user]);
-	
-	const redirectToChat = async (chatId, messageId) => {
-		try {
-		// Remove the message ID from the unreadMessageIds set to update the UI
-		setUnreadMessageIds((prev) => {
-			const newSet = new Set(prev);
-			newSet.delete(messageId);
-			return newSet;
-		});
-	
-		// Update the message's read status in the database
-		await markMessageAsRead(messageId);
-	
-		// Navigate to the chat page
-		window.location.href = `/messages/${chatId}`;
-		} catch (error) {
-		console.error("Error marking message as read or redirecting:", error);
-		}
-	};
-	
+      
 	const formatTimestamp = (timestamp) => {
 		if (!timestamp) return "No date";
 	
@@ -178,26 +167,37 @@ export default function Page() {
 			<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
 				Recent Message
 			</h2>
-			<div className="mx-10 my-4">
-				{chatsWithLatestUnreadMessage.length > 0 ? (
-				chatsWithLatestUnreadMessage.map(({ chatId, lastMessage }) => (
-					<div
-					key={chatId}
-					onClick={() => redirectToChat(chatId, lastMessage.id)}
-					className="rounded-md p-4 my-2 cursor-pointer hover:bg-blue-200 transition duration-300 ease-in-out bg-blue-100"
-					>
-					<span>
-						{lastMessage.displayName || "Unknown"}: {lastMessage.text}
-					</span>
-					<span className="block text-sm text-gray-600">
-						{formatTimestamp(lastMessage.timestamp)}
-					</span>
-					</div>
-				))
-				) : (
-				<p className="text-gray-500">No recent messages.</p>
-				)}
-			</div>
+            <div className="mx-10 my-4">
+            {chatsWithLatestUnreadMessage.length > 0 ? (
+              chatsWithLatestUnreadMessage.map(({ chatId, lastMessage }) => (
+                <div key={chatId} className="rounded-md p-2 my-1 bg-blue-100">
+                  <Link href={`/messages/${chatId}`}>
+                    <div
+                      className="cursor-pointer hover:bg-blue-200 transition duration-300 ease-in-out"
+                      onClick={async () => {
+                        // Check if the message is not sent by the current user
+                        if (user.uid !== lastMessage.userId) {
+                          await markMessageAsRead(lastMessage.id);
+                        }
+                        // Navigation to the chat page is handled by Link component
+                      }}
+                    >
+                      <span>
+                        {lastMessage.displayName || "Unknown"}:{" "}
+                        {lastMessage.text}
+                      </span>
+                      <span className="block text-sm text-gray-600">
+                        {formatTimestamp(lastMessage.timestamp)}
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">No recent messages.</p>
+            )}
+          </div>
+
 			<h2 className="text-black text-2xl text-left font-bold pt-8 pb-4 m-10 mb-0">
 				Favorite Cats
 			</h2>

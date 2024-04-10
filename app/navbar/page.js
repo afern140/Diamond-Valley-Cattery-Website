@@ -189,17 +189,17 @@ const Navbar = () => {
 
               {/* Blocker Element */}
               <div className=" h-16 w-32 absolute right-[105px] z-10 opacity-0"/>
-              <select value={userValue} onChange={(e) => setUserValue(e.target.value)} className=" opacity-0 h-16 w-32">
-                <option value=""></option>
-                <option value="Settings" >Settings</option>
+              <select value={userValue} onChange={(e) => setUserValue(e.target.value)} className=" opacity-0 h-16 w-32 p-4">
+                <option value="" className="hidden" disabled></option>
+                <option value="Settings" className="font-bold p-4 top-12 appearance-auto">Settings</option>
 
                 {user ? (
                 <>
-                  <option value="Dashboard" >Dashboard</option>
-                  <option value="Sign Out" >Sign Out</option>
+                  <option value="Dashboard" className="font-bold p-4">Dashboard</option>
+                  <option value="Sign Out" className="font-bold p-4">Sign Out</option>
                 </>
                 ) : (
-                  <option value="Sign In" >Sign In</option>
+                  <option value="Sign In" className="font-bold p-4">Sign In</option>
                 )}
               </select>
               

@@ -240,46 +240,57 @@ export default function Page({ params }) {
 					</div>
 
 					{/*</div><div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">*/}
-						<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 						{litter.completed ? (
-							<div className="flex">
-								{litter.children.map((child) => (
-									<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 rounded-xl text-header-text-0 place-items-center">
-										<h3>{child.name}</h3>
+							<div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">
+							<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
+								<div className="flex">
+									{litter.children.map((child) => (
+										<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 rounded-xl text-header-text-0 place-items-center">
+											<h3>{child.name}</h3>
+											<Image
+												alt="Cat"
+												src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}
+												width={200}
+												height={200}
+												className="justify-center align-center place-items-center"
+												objectFit="contain"
+											/>
+											<button className="px-4 py-2 bg-gradient-to-r drop-shadow-lg bg-white rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
+										</div>
+									))}
+									<div className=" flex justify-center flex-col font-bold p-4 m-4 bg-navbar-body-1 drop-shadow-lg rounded-xl text-header-text-0 place-items-center">
 										<Image
 											alt="Cat"
-											src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}
+											src={"/img/Placeholder.png"}
 											width={200}
 											height={200}
 											className="justify-center align-center place-items-center"
 											objectFit="contain"
 										/>
-										<button className="px-4 py-2 bg-gradient-to-r drop-shadow-lg bg-white rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
+										<button className="px-4 py-2 bg-white drop-shadow-lg rounded-xl mt-6" onClick={() => handleAddChild()}>Select Child</button>
 									</div>
-								))}
-								<div className=" flex justify-center flex-col font-bold p-4 m-4 bg-navbar-body-1 drop-shadow-lg rounded-xl text-header-text-0 place-items-center">
-									<Image
-										alt="Cat"
-										src={"/img/Placeholder.png"}
-										width={200}
-										height={200}
-										className="justify-center align-center place-items-center"
-										objectFit="contain"
-									/>
-									<button className="px-4 py-2 bg-white drop-shadow-lg rounded-xl mt-6" onClick={() => handleAddChild()}>Select Child</button>
-								</div>
-							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
+								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
+							</div>
 						</div>
 					) : (
-						<div className=" size-fit mx-10 mt-6 flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
-							<button className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6" onClick={handleMarkAsComplete}>Mark as Complete</button>
-							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
+						<div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">
+							<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
+							<div className=" size-fit mx-10 mt-6 flex-col font-bold p-4 bg-[#F6DCE6] border-[3px] border-[#092C48] drop-shadow-lg rounded-xl text-[#092C48] place-items-center">
+								<button className="px-4 py-2 bg-gradient-to-r from-white to-navbar-body-1 drop-shadow-lg border border-[#092C48] rounded-xl mt-6" onClick={handleMarkAsComplete}>Mark as Complete</button>
+								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
+							</div>
 						</div>
 					)}
+
+					{
 					<div className="">
 						<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />
 					</div>
+					}
+
+					{
 					<button className="flex m-auto px-6 py-4 bg-navbar-body-0 text-white drop-shadow-lg rounded-xl mt-16 text-2xl" onClick={handleSubmit}>Submit</button>
+					}
 				</div>
 			) : (
 				<div className="h-screen">

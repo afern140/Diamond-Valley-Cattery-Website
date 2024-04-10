@@ -191,7 +191,7 @@ const Navbar = () => {
 
               {/* Blocker Element */}
               <div className=" h-16 w-32 absolute right-[105px] z-10 opacity-0"/>
-              <select value={userValue} onChange={(e) => setUserValue(e.target.value)} className=" opacity-0 h-16 w-32 p-4">
+              <select value={userValue} onChange={(e) => setUserValue(e.target.value)} className=" opacity-0 h-16 w-32 p-4 bg-white">
                 <option value="" className="hidden" disabled></option>
                 <option value="Settings" className="font-bold p-4 top-12 appearance-auto">Settings</option>
 
@@ -237,12 +237,12 @@ const Navbar = () => {
               {/* New Settings Pop-up */}
               {expandSettings &&
                 <div ref={settingsRef} className="z-50 bg-gray-700 rounded-2xl drop-shadow-lg bg-opacity-80 w-72 h-fit py-8 fixed right-1/2 top-1/3 translate-x-1/2">
-                  <div className="relative bg-white py-4 px-2 rounded-xl drop-shadow-lg w-[80%] top-1/2 left-1/2 -translate-x-1/2">
+                  <div className="relative bg-white dark:bg-gray-300 py-4 px-2 rounded-xl drop-shadow-lg w-[80%] top-1/2 left-1/2 -translate-x-1/2">
                     <h1 className="p-3 text-2xl text-center">Settings</h1>
 
                     {/* Dark Theme */}
                     <div className="flex p-2 space-x-4 text-black dark:text-white">
-                      <p>Dark Theme</p>
+                      <p className=" dark:text-header-text-0">Dark Theme</p>
                       <button className="rounded-full" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
                         <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 bg-gray-700 dark:bg-green-400"} >
                           <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 -translate-x-3 dark:translate-x-3"} />
@@ -252,7 +252,7 @@ const Navbar = () => {
 
                     {/* Large Cursor */}
                     <div className="flex p-2 space-x-4 text-black dark:text-white">
-                      <p>Large Cursor</p>
+                      <p className=" dark:text-header-text-0">Large Cursor</p>
                       <button className="rounded-full" onClick={() => setToggleLargeCursor(!toggleLargeCursor)}>
                         <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 " + (toggleLargeCursor ? " bg-green-400 " : " bg-gray-700 dark:bg-gray-500")} >
                           <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 " + (toggleLargeCursor ? " translate-x-3" : " -translate-x-3")} />
@@ -262,7 +262,7 @@ const Navbar = () => {
 
                     {/* Close */}
                     <div className="w-full flex justify-end p-2 pt-4">
-                      <button onClick={() => handleSettingsClose()} className="bg-navbar-body-1 py-2 px-4 rounded-xl drop-shadow-lg relative justify-end">Close</button>
+                      <button onClick={() => handleSettingsClose()} className="bg-navbar-body-1 dark:bg-gray-500 dark:text-dark-header-text-0 py-2 px-4 rounded-xl drop-shadow-lg relative justify-end">Close</button>
                     </div>
                   </div>
                 </div>

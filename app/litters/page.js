@@ -128,7 +128,7 @@ export default function Page() {
 	}, [fieldInput, sortBy]);
 
 	return (
-		<main className="relative text-black pb-16">
+		<main className="relative text-header-text-0 pb-16">
 			<BackgroundUnderlay />
 
 			<div className="relative w-4/5 mx-auto">
@@ -173,9 +173,9 @@ export default function Page() {
 							<Image className="relative -translate-x-12" alt="Search..." src="/img/search-icon.svg" width={30} height={30} />
 						</div>
 					</div>
-					<div className="rounded-xl m-5 p-4 bg-white drop-shadow-lg w-fit mr-full ml-auto">
-						<label htmlFor="sort" className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort By:</label> <br/>
-						<select id="sort" value={sortBy} onChange={handleSortChange} className="ml-2 p-2 bg-navbar-body-1 rounded-xl drop-shadow-lg">
+					<div className="rounded-xl m-5 p-4 bg-white dark:bg-gray-500 drop-shadow-lg w-fit mr-full ml-auto">
+						<label htmlFor="sort" className="flex justify-start font-bold text-xl text-text-header-0 dark:text-dark-header-text-0 drop-shadow-md">Sort By:</label> <br/>
+						<select id="sort" value={sortBy} onChange={handleSortChange} className="ml-2 p-2 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg">
 							<option value="">None</option>
 							<option value="name">Name</option>
 							<option value="expDate">Expected Date</option>
@@ -183,11 +183,11 @@ export default function Page() {
 					</div>
 				</div>
 				
-				<div className=" m-4 p-4 bg-white rounded-xl drop-shadow-lg space-y-6 pb-8">
+				<div className=" m-4 p-4 bg-white dark:bg-gray-500   rounded-xl drop-shadow-lg space-y-6 pb-8">
 					{sortedLitters ? (
 						sortedLitters.length > 0 ? (
 							sortedLitters.map((litter) => (
-								<div className="flex flex-row drop-shadow-lg bg-navbar-body-1 rounded-xl m-5 p-5">
+								<div className="flex flex-row drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl m-5 p-5">
 									<div className="h-full my-auto">
 										<Link href={`/litters/${litter.id}`} className="text-center mt-full mb-full">
 											<h2 className="text-xl mb-2 font-bold">{litter.name}</h2>

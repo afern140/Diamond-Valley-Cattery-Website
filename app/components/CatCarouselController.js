@@ -84,8 +84,8 @@ function CatCarouselController({ onImageUpload, cat }) {
   }, [imgPreview]);
 
   return (
-    <div className="w-4/5 mx-auto bg-white rounded-xl drop-shadow-lg p-10 mt-6">
-      <h1 className="text-center text-2xl font-bold">Cat Images</h1>
+    <div className="w-4/5 mx-auto bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg p-10 mt-6">
+      <h1 className="text-center text-2xl dark:text-dark-header-text-0 font-bold">Cat Images</h1>
       <div className="mt-8 flex items-center">
         <label htmlFor="carouselDrop" className="h-[300px] w-auto min-w-[300px] m-4 rounded-xl border-4 border-dashed border-gray-300 hover:scale-105 hover:cursor-pointer transition duration-300">
           <input hidden id="carouselDrop" type="file" onChange={handleImageChange} className=" relative z-50 mr-4 py-2 px-4 rounded-full border-0 text-sm font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100" />

@@ -57,7 +57,7 @@ export default function Page({ params }) {
 					<Carousel/>
 
 					{/* Details */}
-					<div className="flex flex-col xl:flex-row w-full space-x-0 xl:space-x-6 mx-auto text-xl font-bold text-left text-header-text-0">
+					<div className="flex flex-col xl:flex-row w-full space-x-0 xl:space-x-6 mx-auto text-xl font-bold text-left text-header-text-0 dark:text-dark-header-text-0">
 						<div className="p-10 mx-auto mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
 							<h2 className="text-2xl mb-2">Details</h2>
 							<h3>Expected Date: <span className="font-normal">{new Date(litter.expDate.toDate()).toISOString().split('T')[0]}</span></h3>
@@ -71,7 +71,7 @@ export default function Page({ params }) {
 					</div>
 
 					{/* Parents */}
-					<div className=" text-header-text-0 text-xl font-bold bg-white p-10 mt-10 rounded-xl drop-shadow-lg">
+					<div className=" text-header-text-0 dark:text-dark-header-text-0 text-xl font-bold bg-white dark:bg-gray-500 p-10 mt-10 rounded-xl drop-shadow-lg">
 						{ (litter.father || litter.mother) ? (
 							<div>
 								<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Parents</h2>
@@ -91,7 +91,7 @@ export default function Page({ params }) {
 					</div>
 
 					{/* Children */}
-					<div className=" text-header-text-0 text-xl font-bold bg-white p-10 mt-10 rounded-xl drop-shadow-lg">
+					<div className=" text-header-text-0 dark:text-dark-header-text-0 text-xl font-bold bg-white dark:bg-gray-500 p-10 mt-10 rounded-xl drop-shadow-lg">
 						{litter.completed && litter.children ? (
 							<div className="">
 								<h2 className="text-2xl mx-10 mt-10 dark:text-dark-header-text-0">Children</h2>
@@ -110,7 +110,7 @@ export default function Page({ params }) {
 					</div>
 
 					<div className="w-full flex justify-center">
-						<Link className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300" href={`./${litter.id}/edit`}>Edit {litter.name}</Link>
+						<Link className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 dark:bg-gray-600 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300" href={`./${litter.id}/edit`}>Edit {litter.name}</Link>
 					</div>
 				</div>
 			) : (

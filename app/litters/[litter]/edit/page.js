@@ -158,8 +158,8 @@ export default function Page({ params }) {
 							<ImageUploader onImageSelected={handleImageSelected} />
 						</div>
 						
-						<div className="w-full h-fit flex-col space-y-2 bg-navbar-body-1 rounded-xl drop-shadow-lg p-4 max-w-[400px] mx-auto my-4 xl:m-4">
-							<h2 className="text-2xl mb-4 font-bold dark:text-dark-header-text-0">Details</h2>
+						<div className="w-full h-fit flex-col space-y-2 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg p-4 max-w-[400px] mx-auto my-4 xl:m-4">
+							<h2 className="text-2xl mb-4 font-bold">Details</h2>
 							<div className="flex space-x-3">
 								<h3 className="my-auto w-32 text-right">Name: </h3>
 								<input
@@ -184,7 +184,7 @@ export default function Page({ params }) {
 							<div className="pb-4" />
 						</div>
 						<div className="bg-[#092C48] w-4 h-4/5 rounded-full relative" />
-						<div className="size-full bg-navbar-body-1 p-4 rounded-xl drop-shadow-lg mx-auto my-4 xl:m-4">	
+						<div className="size-full bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg mx-auto my-4 xl:m-4">	
 							<h2 className="text-2xl mb-4 font-extrabold">Description</h2>
 							<div className="size-full">
 								<textarea
@@ -200,11 +200,11 @@ export default function Page({ params }) {
 					</div>
 
 					{/* Parents */}
-					<div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">
+					<div className="bg-white dark:bg-gray-500 p-10 rounded-xl drop-shadow-lg mt-10">
 						<h2 className="text-2xl dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex px-10 space-x-10 mt-6">
 							{litter.mother ? (
-								<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 rounded-xl text-header-text-0 place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl text-header-text-0 place-items-center">
 									<h2>Mother</h2>
 									<h3 className="font-normal mb-4">{litter.mother.name}</h3>
 									<Image
@@ -219,7 +219,7 @@ export default function Page({ params }) {
 								</div>
 							) : (<></>)}
 							{litter.father ? (
-								<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 rounded-xl text-header-text-0 place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl text-header-text-0 place-items-center">
 									<h2>Father</h2>
 									<h3 className="font-normal mb-4">{litter.father.name}</h3>
 									<Image
@@ -239,12 +239,12 @@ export default function Page({ params }) {
 						</div>
 					</div>
 
-					<div className="bg-white flex flex-wrap overflow-y-auto p-10 rounded-xl drop-shadow-lg mt-10 h-[440px]">
+					<div className="bg-white dark:bg-gray-500 flex flex-wrap overflow-y-auto p-10 rounded-xl drop-shadow-lg mt-10 h-[440px]">
 						<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 						{litter.completed ? (
 							<div className="flex flex-wrap overflow-y-auto">
 								{litter.children.map((child) => (
-									<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 rounded-xl text-header-text-0 place-items-center">
+									<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl text-header-text-0 place-items-center">
 										<h3>{child.name}</h3>
 										<Image
 											alt="Cat"
@@ -257,7 +257,7 @@ export default function Page({ params }) {
 										<button className="px-4 py-2 bg-gradient-to-r drop-shadow-lg bg-white rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 									</div>
 								))}
-								<div className=" flex justify-center flex-col font-bold p-4 m-4 bg-navbar-body-1 drop-shadow-lg rounded-xl border-2 border-gray-300 border-dashed text-header-text-0 place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 m-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg rounded-xl border-2 border-gray-300 border-dashed text-header-text-0 place-items-center">
 									<Image
 										alt="Cat"
 										src={"/img/Placeholder.png"}
@@ -272,7 +272,7 @@ export default function Page({ params }) {
 							</div>
 
 						) : (
-							<div className={" bg-navbar-body-1 rounded-xl drop-shadow-lg mt-6 " + (showChildSelection ? "w-full h-[460px]" : " size-fit")}>
+							<div className={" bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg mt-6 " + (showChildSelection ? "w-full h-[460px]" : " size-fit")}>
 								<button className="size-full p-4" onClick={handleMarkAsComplete}>Mark as Complete</button>
 								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 							</div>

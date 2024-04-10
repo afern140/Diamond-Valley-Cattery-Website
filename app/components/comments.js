@@ -91,9 +91,9 @@ function NewComment(cat, setComments) {
                placeholder="Comment Here"
                value = {message}
                onChange={(e) => setMessage(e.target.value)}
-               className="border-s-4 border-[#c7c7e1] p-2 mb-16 w-full rounded-md min-h-32 drop-shadow-lg text-black bg-navbar-body-1"
+               className="border-s-4 border-[#c7c7e1] p-2 mb-16 w-full rounded-md min-h-32 drop-shadow-lg text-black bg-navbar-body-1 dark:bg-gray-300"
             />
-            <button type="submit" className=" drop-shadow-lg bg-[#e5e5ff] rounded text-black py-4 text-2xl px-6 transition duration-300 hover:scale-110">
+            <button type="submit" className=" drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded text-black py-4 text-2xl px-6 transition duration-300 hover:scale-110">
                Comment
             </button>
          </form>
@@ -105,7 +105,7 @@ function Comment({catName, message, createName,createTime}) {
     console.log("Entered Comment.");
     console.log(createTime);
    return (
-      <div className="text-black w-full bg-navbar-body-1 p-4 my-4 rounded-xl drop-shadow-lg">
+      <div className="text-black w-full bg-navbar-body-1 dark:bg-gray-300 p-4 my-4 rounded-xl drop-shadow-lg">
          <h2 className="text-xl mb-4">{catName}</h2>
          <p className="mb-4 w-full text-ellipsis overflow-hidden">{message}</p>
          <p>Created by: {createName}</p>

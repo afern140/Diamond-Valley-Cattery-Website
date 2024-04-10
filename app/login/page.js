@@ -59,16 +59,16 @@ function handleEmailPasswordSignIn(e){
     <div className="relative min-h-screen flex items-center justify-center">
         <BackgroundUnderlay />
         {!user &&
-        <div dir="ltr" className="text-center bg-white p-8 rounded-xl drop-shadow-lg">
-          <p className="text-xl text-header-text-0 font-semibold mb-10">Sign in to your account</p>
+        <div dir="ltr" className="text-center bg-white dark:bg-gray-500 p-8 rounded-xl drop-shadow-lg">
+          <p className="text-xl text-header-text-0 font-semibold mb-10 dark:text-dark-header-text-0">Sign in to your account</p>
           <form onSubmit={handleEmailPasswordSignIn} className="mb-8 flex flex-col items-center">
             <input type="email" value={email} className="text-black border-s-4 border-slate-300 p-2 mb-4" onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
             <input type="password" value={password} className="text-black border-s-4 border-slate-300 p-2 mb-4" onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-            <button type="submit" className=" bg-navbar-body-0 active:bg-slate-600 rounded text-white p-2">Sign In with Email</button>
+            <button type="submit" className=" bg-navbar-body-0 active:bg-slate-600 rounded text-white drop-shadow-lg dark:bg-gray-600 p-2">Sign In with Email</button>
         </form>
         <div>
-          <button onClick={() => handlePasswordReset()} className=" text-navbar-body-0 mb-2">Forgot Password</button>
-          <Link href='login/signup' className="text-slate-500  ml-6">Sign Up</Link>
+          <button onClick={() => handlePasswordReset()} className=" text-navbar-body-0 mb-2 dark:text-gray-800">Forgot Password</button>
+          <Link href='login/signup' className="text-slate-500  ml-6 dark:text-gray-800">Sign Up</Link>
         </div>
       </div>
         }

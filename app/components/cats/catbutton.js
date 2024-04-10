@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function CatButton({ cat, lightText }) {
 	return (
-		<Link href={`/cats/${cat.id}`} className={"w-full flex justify-center flex-col font-bold p-2 place-items-center" + (lightText ? " text-white " : " text-black ")}>
+		<Link href={`/cats/${cat.id}`} className={"w-full flex justify-center flex-col font-bold p-2 place-items-center" + (lightText ? " text-white dark:text-header-text-0" : " text-black dark:text-white")}>
 			<Image
 				alt="Cat"
 				src={cat.thumbnail ? cat.thumbnail : "/img/Placeholder.png"}

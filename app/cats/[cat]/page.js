@@ -172,7 +172,7 @@ export default function Page({params}) {
 						
 					<div className="flex flex-col xl:flex-row w-full px-10 xl:px-20">
 						{/* First split of the section */}
-						<div className="flex flex-col w-full  text-xl font-bold text-left text-header-text-0">
+						<div className="flex flex-col w-full  text-xl font-bold text-left text-header-text-0 dark:text-dark-header-text-0">
 							<div className="p-10 mx-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
@@ -190,11 +190,11 @@ export default function Page({params}) {
 
 						{/* Second split of the section */}
 						<div className="flex flex-col xl:ml-auto mx-10 mb-auto mt-6">
-							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold bg-white p-8 rounded-xl drop-shadow-xl">
+							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold bg-white dark:bg-gray-500 p-8 rounded-xl drop-shadow-xl">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
-								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-navbar-body-1 drop-shadow-lg rounded-xl p-4 text-xl" >
+								<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg rounded-xl p-4 text-xl" >
 									<div className="relative flex min-w-[200px] w-[270px]">
-										<span className="my-auto flex text-header-text-0">Request a Meeting</span>
+										<span className="my-auto flex text-header-text-0 ">Request a Meeting</span>
 										<div className="flex mx-3 w-[3px] bg-[#092C48] rounded-full" />
 										<button onClick={handleMeetingButton} className="bg-white bg-opacity-0 hover:bg-opacity-50 active:bg-opacity-80 transition duration-100 p-2 rounded-full">
 											<Image alt=">" src="/img/right-arrow.svg" width={32} height={32} />
@@ -206,13 +206,13 @@ export default function Page({params}) {
 					</div>
 
 					{/* Conditions */}
-					<div className="flex flex-col w-fit mx-[80px] xl:mx-[120px] max-w-[88%] relative space-y-6 mt-6 rounded-lg min-w-64 text-black">
+					<div className="flex flex-col w-fit mx-[80px] xl:mx-[120px] max-w-[88%] relative space-y-6 mt-6 rounded-lg min-w-64 text-header-text-0">
 						<div className=" bg-white dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
 							<h2 className="text-2xl mb-2">Conditions</h2>
 							<div className={" relative flex flex-wrap  dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4" + (cat.conditions && cat.conditions.length > 0 ? " h-48 overflow-y-auto w-[440px] con-screen-0:w-[860px] con-screen-1:w-[1280px] con-screen-2:w-fit" : " ")}>
 								{cat.conditions && cat.conditions.length > 0 ? (
 									cat.conditions.map((condition) => (
-										<div key={condition.id} className="relative flex-col rounded-md p-4 m-4 min-h-40 w-[380px] bg-navbar-body-1">
+										<div key={condition.id} className="relative flex-col rounded-md p-4 m-4 min-h-40 w-[380px] bg-navbar-body-1 dark:bg-gray-300">
 											<h3 className="w-[300px]">{condition.name}</h3>
 											<p>Description: <span className="font-normal">{condition.description}</span></p>
 											<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
@@ -225,13 +225,13 @@ export default function Page({params}) {
 					</div>
 
 					{/* Vaccinations */}
-					<div className="flex flex-col w-fit mx-[80px] xl:mx-[120px] max-w-[88%] relative space-y-6 mt-6 rounded-lg min-w-64 text-black">
+					<div className="flex flex-col w-fit mx-[80px] xl:mx-[120px] max-w-[88%] relative space-y-6 mt-6 rounded-lg min-w-64 text-header-text-0">
 						<div className="bg-white dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
 							<h2 className="text-2xl mb-2">Vaccinations</h2>
 							<div className={" relative flex flex-wrap  dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4" + (cat.conditions && cat.conditions.length > 0 ? " h-96 overflow-y-auto w-[440px] con-screen-0:w-[860px] con-screen-1:w-[1280px] con-screen-2:w-fit" : " ")}>
 								{cat.vaccinations && cat.vaccinations.length > 0 ? (
 								cat.vaccinations.map((vaccination) => (
-									<div className="relative flex-col rounded-md p-4 m-4 min-h-64 w-[380px] bg-navbar-body-1">
+									<div className="relative flex-col rounded-md p-4 m-4 min-h-64 w-[380px] bg-navbar-body-1 dark:bg-gray-300">
 										<h3 className="w-[300px]">{vaccination.name}</h3>
 										<p>Description: <span className="font-normal">{vaccination.description}</span></p>
 										<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
@@ -266,19 +266,19 @@ export default function Page({params}) {
 						</div>
 					</div>
 
-					<div className="text-black text-xl font-bold p-10">
+					<div className="text-header-text-0 text-xl font-bold p-10">
 						{cat.father || cat.mother ? (
 							<div>
 								<h2 className="text-2xl mx-10 mt-10">Parents</h2>
 								<div className="flex flex-wrap">
 									{cat.mother ? (
-										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center text-white">
+										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center text-white dark:text-header-text-0">
 											<h2>Mother</h2>
 											<CatButton cat={cat.mother} lightText={true}/>
 										</div>
 									) : null}
 									{cat.father ? (
-										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center text-white">
+										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center text-white dark:text-header-text-0">
 											<h2>Father</h2>
 											<CatButton cat={cat.father} lightText={true}/>
 										</div>
@@ -304,7 +304,7 @@ export default function Page({params}) {
 					<Comments cat={cat}/>
 				</section>
 			) : (
-				<h1 className="text-black text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>
+				<h1 className="text-header-text-0 dark:text-dark-header-text-0 text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>
 			)}
 		</main>
 	)

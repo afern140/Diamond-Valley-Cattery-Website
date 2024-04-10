@@ -116,14 +116,14 @@ export default function page({ params }) {
       </div>
 
       <div className=" w-4/5 mx-auto">
-        <div className="bg-white p-6 rounded-xl drop-shadow-lg">
+        <div className="bg-white dark:bg-gray-600 p-6 rounded-xl drop-shadow-lg">
           {currentMessages.map((msg, index) => (
             <div key={index} className={"flex flex-col mb-2 w-full " + (user ? " justify-end items-end mr-auto ml-full" : " justify-start items-start mr-full ml-auto")}>
               <div className={"flex p-2 justify-end rounded-xl bg-gradient-to-r max-w-[70%] xl:max-w-[45%] " + currentTheme + (user ? " justify-end" : " justify-start")}>
                 <strong className="pr-2">{msg.displayName || "Unknown"}:</strong>
                 <div className="break-all">{msg.text}</div>
               </div>
-              <div className="text-gray-500 font-normal text-sm italic">
+              <div className="text-gray-500 dark:text-gray-300 font-normal text-sm italic">
                 {msg.timestamp?.toDate
                   ? msg.timestamp.toDate().toLocaleString()
                   : "Just now"}{" "}

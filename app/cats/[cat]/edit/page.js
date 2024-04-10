@@ -388,7 +388,7 @@ export default function Page({params}){
 						</div>
 					</div>
 
-					<div className=" flex flex-col xl:flex-row w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
+					<div className=" flex flex-col xl:flex-row w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white dark:bg-gray-500  drop-shadow-lg">
 						{/* Thumbnail */}
 						<div className=" size-full max-w-[300px] max-h-[300px] mr-6 aspect-square">
 							<ImageUploader onImageSelected={setThumbnail} inputKey="thumbnail-uploader" />
@@ -396,7 +396,7 @@ export default function Page({params}){
 
 						{/* Change Details */}
 						<div className="w-full flex-col  mt-6 xl:mt-0 xl:ml-10">
-							<div className="bg-navbar-body-1 rounded-xl drop-shadow-lg p-4 w-fit space-y-2">
+							<div className="bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg p-4 w-fit space-y-2">
 								<h2 className="text-2xl mb-2">Details</h2>
 								<div className="flex space-x-3">
 									<h3 className="my-auto w-20 text-right">Name: </h3>
@@ -469,7 +469,7 @@ export default function Page({params}){
 
 						{/* Change Description */}
 						<div className="size-full mt-6 xl:mt-0">
-							<div className=" bg-navbar-body-1 xl:h-[300px] p-4 rounded-xl drop-shadow-lg">	
+							<div className=" bg-navbar-body-1 dark:bg-gray-300 xl:h-[300px] p-4 rounded-xl drop-shadow-lg">	
 								<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 								<div className="size-full">
 									<textarea
@@ -490,14 +490,14 @@ export default function Page({params}){
 						
 						{/* Conditions */}
 						<h2 className="text-2xl font-bold mb-4 mt-10 px-10 text-center dark:text-dark-header-text-0">Conditions</h2>
-						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
+						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white dark:bg-gray-500  drop-shadow-lg">
 							<div className={"flex flex-wrap overflow-y-auto " + (cat.conditions && cat.conditions.length > 0 ? " h-[280px]" : " h-fit")}>
 								{cat.conditions ? (
 									cat.conditions.map((condition) => (
 										<EditCondition key={condition.id} condition={condition} handleConditionChange={handleConditionChange} handleTreatedChange={handleTreatedChange} handleRemoveCondition={handleRemoveCondition}/>
 									)
 								)) : (<h2 className="italic text-gray-500">None</h2>)}
-								<div className="flex flex-col mb-4 drop-shadow-lg bg-navbar-body-1 border-2 border-dashed border-gray-300 m-2 rounded-xl p-2">
+								<div className="flex flex-col mb-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 border-2 border-dashed border-gray-300 m-2 rounded-xl p-2">
 									{selectedCondition ? (
 										<div>
 											<select
@@ -532,7 +532,7 @@ export default function Page({params}){
 						
 						{/* Vaccinations */}
 						<h2 className="text-2xl font-bold mb-4 mt-10 px-10 text-center dark:text-dark-header-text-0">Vaccinations</h2>
-						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
+						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white dark:bg-gray-500  drop-shadow-lg">
 							<div>
 								<div className={"flex flex-wrap overflow-y-auto " + (cat.vaccinations && cat.vaccinations.length > 0 ? " h-[820px]" : " h-fit")}>
 									{cat.vaccinations ? (
@@ -540,7 +540,7 @@ export default function Page({params}){
 											<EditVaccination vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleVaccinationChange={handleVaccinationChange} handleStatusChange={handleStatusChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleRemoveVaccination={handleRemoveVaccination} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection}/>
 										)
 									)) : (<h2>None</h2>)}
-									<div className="flex flex-col mb-4 bg-navbar-body-1 m-2 drop-shadow-lg rounded-md border-2 border-dashed border-gray-300 p-2 w-[320px] h-fit">
+									<div className="flex flex-col mb-4 bg-navbar-body-1 dark:bg-gray-300 m-2 drop-shadow-lg rounded-md border-2 border-dashed border-gray-300 p-2 w-[320px] h-fit">
 										{selectedVaccine ? (
 										<div>
 											<h2 className="text-center font-bold mb-4">Select a vaccine to add</h2>
@@ -577,18 +577,18 @@ export default function Page({params}){
 					</div>
 
 					{/* Parents */}
-					<div className=" w-4/5 mx-auto mt-6 bg-white p-10 rounded-xl drop-shadow-lg">
+					<div className=" w-4/5 mx-auto mt-6 bg-white dark:bg-gray-500  p-10 rounded-xl drop-shadow-lg">
 						<h2 className="text-xl font-bold mb-4 mt-6 dark:text-dark-header-text-0">Parents</h2>
 						<div className="flex space-x-10 mt-6 flex-wrap">
 							{/* Mother */}
 							{cat.mother ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 									<h2 className="font-normal">Mother</h2>
 									<CatButton cat={cat.mother} />
 									<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Mother</button>
 								</div>
 							) : (
-								<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+								<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 								<Image
 									src="/img/Placeholder.png"
 									alt="Cat"
@@ -602,13 +602,13 @@ export default function Page({params}){
 							
 							{/* Father */}
 							{cat.father ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 									<h2 className="font-normal">Father</h2>
 									<CatButton cat={cat.father} />
 									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Father</button>
 								</div>
 							) : (
-							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 								<Image
 									src="/img/Placeholder.png"
 									alt="Cat"
@@ -624,18 +624,18 @@ export default function Page({params}){
 					</div>
 
 					{/* Children */}
-					<div className=" w-4/5 mx-auto mt-6 p-10 bg-white rounded-xl drop-shadow-lg">
+					<div className=" w-4/5 mx-auto mt-6 p-10 bg-white dark:bg-gray-500  rounded-xl drop-shadow-lg">
 						<h2 className="text-xl font-bold mb-4 dark:text-dark-header-text-0">Children</h2>
 						<div className="flex flex-wrap">
 							{cat.children ? (
 								cat.children.map((child) =>(
-									<div className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+									<div className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 										<CatButton cat={child} />
 										<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Remove {child.name}</button>
 									</div>
 								))
 							) : (<></>)}
-							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 								<Image
 									src="/img/Placeholder.png"
 									alt="Cat"
@@ -649,7 +649,7 @@ export default function Page({params}){
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
 					<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />
-					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300">Submit</button>
+					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 dark:bg-gray-600 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300">Submit</button>
 				</div>
 			) : (
 				<h1>Loading</h1>

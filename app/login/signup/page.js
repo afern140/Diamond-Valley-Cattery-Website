@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification, signOut, updateP
 import { useUserAuth } from "../../_utils/auth-context";
 import {collection,addDoc} from "firebase/firestore";
 import {db} from "../../_utils/firebase";
+import BackgroundUnderlay from "@/app/components/background-underlay";
 
 //Change for user
 //Add items
@@ -113,12 +114,14 @@ export default function page() {
   return(
     <div>
       {!user && 
-        <div className="min-h-screen flex items-center justify-center bg-white">
-          <form onSubmit={handleRegister} className="mb-8 flex flex-col items-center">
+        <div className="min-h-screen flex items-center justify-center relative">
+          <BackgroundUnderlay />
+          <form onSubmit={handleRegister} className="mb-8 flex flex-col items-center bg-white dark:bg-gray-500 p-8 rounded-xl drop-shadow-lg">
+            <p className="text-2xl text-header-text-0 dark:text-dark-header-text-0 mb-8">Sign Up</p>
             <input
               type="email"
               value={email}
-              className="text-black border-s-4 border-slate-300 p-2 mb-4"
+              className="text-black dark:text-dark-header-text-0 border-s-4 border-slate-300 p-2 mb-4"
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
               required
@@ -126,7 +129,7 @@ export default function page() {
             <input
               type="password"
               value={password}
-              className="text-black border-s-4 border-slate-300 p-2 mb-4"
+              className="text-black dark:text-dark-header-text-0 border-s-4 border-slate-300 p-2 mb-4"
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required
@@ -136,7 +139,7 @@ export default function page() {
               placeholder="Username"
               value = {displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="text-black border-s-4 border-slate-300 p-2 mb-4"
+              className="text-black dark:text-dark-header-text-0 border-s-4 border-slate-300 p-2 mb-4"
               required
             />
             <input
@@ -144,17 +147,17 @@ export default function page() {
                 placeholder="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="text-black border-s-4 border-slate-300 p-2 mb-4"
+                className="text-black dark:text-dark-header-text-0 border-s-4 border-slate-300 p-2 mb-4"
                 
                 />
-            <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">
+            <button type="submit" className=" bg-navbar-body-1 dark:bg-gray-300 text-header-text-0 active:bg-slate-600 rounded p-2">
               Sign Up with Email
             </button>
           </form>
         </div>
     }
     {user && 
-    <div className="min-h-screen flex flex-column items-center justify-center bg-white">
+    <div className="min-h-screen flex flex-column items-center justify-center bg-white dark:bg-gray-500">
       <div className="text-slate-500">Hi {user.displayName} you're already logged in.</div>
       <button onClick={handleRedirect} className="bg-slate-500 text-white p-2">Go to Login</button>
     </div>

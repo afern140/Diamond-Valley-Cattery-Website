@@ -121,7 +121,7 @@ export default function Page() {
 
 		{filteredUser ? (
 			<div className="w-4/5 mx-auto">
-				<div className="flex flex-row justify-center items-center bg-white rounded-xl drop-shadow-xl w-full mx-auto p-10 text-left">
+				<div className="flex flex-row justify-center items-center bg-white dark:bg-gray-500 rounded-xl drop-shadow-xl w-full mx-auto p-10 text-left">
 					<div className="text-center m-auto">
 						<div className="relative">
 							<Image
@@ -143,16 +143,16 @@ export default function Page() {
 									type="file"
 									accept="image/"
 									onChange={handleImageChange}
-									className="bg-navbar-body-1 z-30 absolute rounded-md drop-shadow-lg size-[200px] left-0 opacity-0"
+									className="bg-navbar-body-1 dark:bg-gray-300 z-30 absolute rounded-md drop-shadow-lg size-[200px] left-0 opacity-0"
 								/>
 							</label>
 							}
 						</div>
-						<h2 className="mt-2 bg-navbar-body-1 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {filteredUser.role}</h2>
+						<h2 className="mt-2 bg-navbar-body-1 dark:bg-gray-300 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {filteredUser.role}</h2>
 					</div>
 					
 					{edit ? (
-					<div className="flex flex-col bg-navbar-body-1 p-4 rounded-xl drop-shadow-lg space-y-2 mx-auto">
+					<div className="flex flex-col bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg space-y-2 mx-auto">
 						
 						<h2 className="text-xl mb-4 text-center">Edit Details</h2>
 						<input
@@ -188,11 +188,11 @@ export default function Page() {
 							className="bg-white rounded-md drop-shadow-lg p-2"
 						/>
 						<div className="flex mr-auto ml-full justify-end w-full">
-							<button onClick={handleSubmit} className=" px-4 py-2 bg-gray-200 rounded-md drop-shadow-lg">Submit</button>
+							<button onClick={handleSubmit} className=" px-4 py-2 bg-gray-200 dark:bg-gray-400 dark:text-dark-header-text-0 rounded-md drop-shadow-lg">Submit</button>
 						</div>
 					</div>
 					) : (
-					<div className="m-auto space-y-2 bg-navbar-body-1 p-4 rounded-xl drop-shadow-lg">
+					<div className="m-auto space-y-2 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
 						<h2 className="text-xl mb-4 text-center">Details</h2>
 						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Name: {filteredUser.name}</h2>
 						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Username: {filteredUser.username}</h2>
@@ -200,7 +200,7 @@ export default function Page() {
 						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Phone: {filteredUser.phone}</h2>
 						
 						<div className="flex mr-auto ml-full justify-end w-full">
-							<button onClick={handleEdit} className=" px-4 py-2 bg-white rounded-md drop-shadow-lg">
+							<button onClick={handleEdit} className=" px-4 py-2 bg-gray-200 dark:bg-gray-400 dark:text-dark-header-text-0 rounded-md drop-shadow-lg">
 								Edit
 							</button>
 						</div>
@@ -209,41 +209,42 @@ export default function Page() {
 				</div>
 
 				{/* Recent Messages */}
-				<div className="bg-white rounded-xl drop-shadow-lg p-10 mt-10">
-					<h2 className=" text-2xl text-left font-bold">
+				<div className="bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg p-10 mt-10">
+					<h2 className=" text-2xl text-left font-bold dark:text-dark-header-text-0">
 						Recent Messages
 					</h2>
-					<div className="mx-10 my-4">
+					<div className="mx-4 my-4">
 						{chatsWithLatestUnreadMessage.length > 0 ? (
 						chatsWithLatestUnreadMessage.map(({ chatId, lastMessage }) => (
 							<div
 							key={chatId}
 							onClick={() => redirectToChat(chatId, lastMessage.id)}
-							className="rounded-md p-4 my-2 cursor-pointer hover:bg-blue-200 transition duration-300 ease-in-out bg-blue-100"
+							className="rounded-md p-4 my-2 cursor-pointer w-full drop-shadow-lg hover:bg-blue-200 transition duration-300 ease-in-out bg-navbar-body-1 dark:bg-gray-300"
 							>
-							<span>
+							<span className=" break-all">
 								{lastMessage.displayName || "Unknown"}: {lastMessage.text}
 							</span>
-							<span className="block text-sm text-gray-600">
+							<span className="block italic text-sm text-gray-600">
 								{formatTimestamp(lastMessage.timestamp)}
 							</span>
 							</div>
 						))
 						) : (
-						<p className="text-gray-500">No recent messages.</p>
+							
+						<p className="text-gray-500 italic">No recent messages.</p>
 						)}
 					</div>
 				</div>
 				
 				{/* Favorite Cats */}
-				<div className="bg-white rounded-xl drop-shadow-lg p-10 mt-10">
-					<h2 className="text-black text-2xl text-left font-bold pb-4 ">
+				<div className="bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg p-10 mt-10">
+					<h2 className="dark:text-dark-header-text-0 text-2xl text-left font-bold pb-4 ">
 						Favorite Cats
 					</h2>
 					<div className="flex">
 						{favoriteCats ? (
 						favoriteCats.map((cat) => (
-							<div className="text-center bg-navbar-body-1 p-4 rounded-xl drop-shadow-lg">
+							<div className="text-center bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
 								<Link href={`./cats/${cat.id}`}>
 									<Image
 									src="/img/Placeholder.png"

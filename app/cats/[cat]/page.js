@@ -230,9 +230,9 @@ export default function Page({params}) {
 
 					{/* Vaccinations */}
 					<div className="flex flex-col w-fit relative space-y-6 mt-6 rounded-lg min-w-64 text-header-text-0">
-						<div className="bg-white dark:bg-gray-500 w-fit relative drop-shadow-lg rounded-xl p-10">
+						<div className="bg-white dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
 							<h2 className="text-2xl mb-2">Vaccinations</h2>
-							<div className={" relative flex flex-wrap w-fit  dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4" + (cat.conditions && cat.conditions.length > 0 ? " h-96 overflow-y-auto " : " ")}>
+							<div className={" relative flex flex-wrap dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4" + (cat.conditions && cat.conditions.length > 2 ? " h-96 overflow-y-auto w-[86%]" : " w-fit ")}>
 								{cat.vaccinations && cat.vaccinations.length > 0 ? (
 								cat.vaccinations.map((vaccination) => (
 									<div className="relative flex-col rounded-md p-4 m-4 min-h-64 w-[380px] bg-navbar-body-1 dark:bg-gray-300">
@@ -270,21 +270,21 @@ export default function Page({params}) {
 						</div>
 					</div>
 
-					<div className="text-header-text-0 text-xl font-bold p-10 bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg mt-10 w-fit">
+					<div className="text-header-text-0 text-xl font-bold">
 						{cat.father || cat.mother ? (
 							<div>
-								<h2 className="text-2xl mx-10 mt-10">Parents</h2>
+								<h2 className="text-2xl mt-10">Parents</h2>
 								<div className="flex flex-wrap">
 									{cat.mother ? (
-										<div className="bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg p-10 m-10 rounded-lg text-center dark:text-header-text-0">
+										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 my-10 mr-10 rounded-lg text-center text-white dark:text-header-text-0">
 											<h2>Mother</h2>
-											<CatButton cat={cat.mother} lightText={false}/>
+											<CatButton cat={cat.mother} lightText={true}/>
 										</div>
 									) : null}
 									{cat.father ? (
-										<div className="bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg p-10 m-10 rounded-lg text-center dark:text-header-text-0">
+										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 my-10 rounded-lg text-center text-white dark:text-header-text-0">
 											<h2>Father</h2>
-											<CatButton cat={cat.father} lightText={false}/>
+											<CatButton cat={cat.father} lightText={true}/>
 										</div>
 									) : null}
 								</div>
@@ -296,7 +296,7 @@ export default function Page({params}) {
 								<div className="flex flex-wrap">
 									{cat.children ? (
 										cat.children.map((child) => (
-											<div key={child.id} className=" bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg p-10 m-10 rounded-lg text-center">
+											<div key={child.id} className=" bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 my-10 mr-10 rounded-lg text-center">
 												<CatButton cat={child} lightText={true}/>
 											</div>
 										))

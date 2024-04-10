@@ -23,34 +23,33 @@ export default function Page({ params }) {
 	const handleImageSelected = (file) => {
 		setImageFile(file);
 	  };	  
-	
-
+	  const fetchLitter = async () => {
+		const litter = await getObject('litters', parseInt(params.litter));
+		if (litter.mother) {
+			const mother = await getDoc(litter.mother);
+			litter.mother = { docId: litter.mother.id, ...mother.data() };
+		} else {
+			litter.mother = null;
+		}
+		if (litter.father) {
+			const father = await getDoc(litter.father);
+			litter.father = { docId: litter.father.id, ...father.data() };
+		} else {
+			litter.father = null;
+		}
+		if (litter.children) {
+			const children = await Promise.all(litter.children.map(async (childRef) => {
+				const child = await getDoc(childRef)
+				return { docId: childRef.id, ...child.data()};
+			}));
+			litter.children = children;
+		} else {
+			litter.children = null;
+		}
+		setLitter(litter);
+	};
+    
 	useEffect(() => {
-		const fetchLitter = async () => {
-			const litter = await getObject('litters', parseInt(params.litter));
-			if (litter.mother) {
-				const mother = await getDoc(litter.mother);
-				litter.mother = { docId: litter.mother.id, ...mother.data() };
-			} else {
-				litter.mother = null;
-			}
-			if (litter.father) {
-				const father = await getDoc(litter.father);
-				litter.father = { docId: litter.father.id, ...father.data() };
-			} else {
-				litter.father = null;
-			}
-			if (litter.children) {
-				const children = await Promise.all(litter.children.map(async (childRef) => {
-					const child = await getDoc(childRef)
-					return { docId: childRef.id, ...child.data()};
-				}));
-				litter.children = children;
-			} else {
-				litter.children = null;
-			}
-			setLitter(litter);
-		};
 		fetchLitter();
 	}, [params]);
 
@@ -141,7 +140,6 @@ export default function Page({ params }) {
 			console.error("Error handling image upload:", error);
 		}
 	};
-	  
 
 	return (
 		<main className="relative text-[#092C48] pb-12">
@@ -272,6 +270,7 @@ export default function Page({ params }) {
 								</div>
 								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 							</div>
+
 						) : (
 							<div className={" bg-navbar-body-1 rounded-xl drop-shadow-lg mt-6 " + (showChildSelection ? "w-full h-[460px]" : " size-fit")}>
 								<button className="size-full p-4" onClick={handleMarkAsComplete}>Mark as Complete</button>

@@ -305,7 +305,11 @@ export default function Page({params}) {
 							</div>
 						) : null}
 					</div>
-					<Comments cat={cat} user={user}/>
+					{filteredUser ?
+						<Comments cat={cat} user={filteredUser}/>
+					:
+						<Comments cat={cat} user={null}/>
+					}
 				</section>
 			) : (
 				<h1 className="text-header-text-0 dark:text-dark-header-text-0 text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>

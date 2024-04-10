@@ -4,6 +4,8 @@ import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
 import {collection,addDoc,query,getDocs,Timestamp} from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { getUser, updateUser, useUser } from "@/app/_utils/user_services";
+import { useUserAuth } from "@/app/_utils/auth-context";
 
 export default function Comments(cat, user) {
    const [comments, setComments] = useState([]);
@@ -35,7 +37,7 @@ export default function Comments(cat, user) {
             createName={comment.createName}
             />
             ))}
-            <NewComment cat={cat.cat} setComments={setComments} user={user}/>
+            <NewComment cat={cat.cat} setComments={setComments}/>
          </div>
       </section>
    );
@@ -60,9 +62,11 @@ async function addComment(commentDoc,cat){
    return docRef.id;
 }
 
-function NewComment(cat, setComments, user) {
+function NewComment(cat, setComments) {
    const [message, setMessage] = useState("");
    const currentCat = cat.cat;
+   const [filteredUser, setFilteredUser] = useState();
+	const { user, dbUser } = useUserAuth();
    
    async function handleAddComment(e){
       e.preventDefault();
@@ -82,13 +86,23 @@ function NewComment(cat, setComments, user) {
       //window.location.reload();
    }
 
+   // -- F -- Changes
    const loginRouter = useRouter();
+
+   useEffect(() => {
+		const fetchUser = async () => {
+			const filteredUser = await getUser(user);
+			setFilteredUser(filteredUser);
+		};
+		fetchUser();
+	}, [filteredUser]);
 
    return(
       <div className="text-black mt-8">
          <div className="w-full h-[2px] bg-gray-200 mb-6" />
          <h2 className="text-3xl flex flex-col items-center pb-4">New Comment</h2>
-         { user ? <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
+         <p>{user ? user.name : "no user"}</p>
+         { filteredUser ? <form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
             <textarea  
                type="text"
                placeholder="Comment Here"

@@ -106,22 +106,22 @@ export default function page({ params }) {
   );
 
   return (
-    <main className="relative">
+    <main className="relative pb-16">
       <BackgroundUnderlay />
 
       <div className="pt-20 flex pb-10">
-        <div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-[#092C48] text-transparent bg-clip-text">
-          <span className="text-6xl pb-10 font-extrabold uppercase">Messages</span>
+        <div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
+          <span className="text-6xl pb-10 font-extrabold">Messages</span> <br />
         </div>
       </div>
 
-      <div className=" px-20 pb-20">
-        <div className="p-4 border-[3px] border-[#092C48] flex flex-col bg-white bg-opacity-30 rounded-xl">
+      <div className=" w-4/5 mx-auto">
+        <div className="bg-white p-6 rounded-xl drop-shadow-lg">
           {currentMessages.map((msg, index) => (
-            <div key={index} className={"flex flex-col mb-2 justify-end items-end w-full " + (user ? " justify-end items-end mr-auto ml-full" : " justify-start items-start mr-full ml-auto")}>
-              <div className={"flex p-2 justify-end rounded-xl bg-gradient-to-r" + currentTheme + (user ? " justify-end" : " justify-start")}>
+            <div key={index} className={"flex flex-col mb-2 w-full " + (user ? " justify-end items-end mr-auto ml-full" : " justify-start items-start mr-full ml-auto")}>
+              <div className={"flex p-2 justify-end rounded-xl bg-gradient-to-r max-w-[70%] xl:max-w-[45%] " + currentTheme + (user ? " justify-end" : " justify-start")}>
                 <strong className="pr-2">{msg.displayName || "Unknown"}:</strong>
-                <div>{msg.text}</div>
+                <div className="break-all">{msg.text}</div>
               </div>
               <div className="text-gray-500 font-normal text-sm italic">
                 {msg.timestamp?.toDate
@@ -152,7 +152,7 @@ export default function page({ params }) {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type a message..."
-                  className=" mx-4 px-2 rounded-3xl w-full text-black"
+                  className=" mx-4 px-2 rounded-3xl w-full text-black bg-white drop-shadow-md"
                 />
                 <button type="submit" className={"rounded-full bg-gradient-to-r inline-block py-2 px-4" + currentTheme}>Send</button>
               </div>

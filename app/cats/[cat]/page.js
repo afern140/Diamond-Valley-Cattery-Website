@@ -147,9 +147,9 @@ export default function Page({params}) {
 			<BackgroundUnderlay />
 
 			{cat ? (
-				<section className="relative z-20 pb-16">
+				<section className="relative z-20 pb-16 w-4/5 mx-auto">
 					<div className="pt-20 flex pb-10 relative z-20">
-						<div className="w-4/5 space-x-6 m-auto justify-center flex-row text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
+						<div className="w-full space-x-6 m-auto justify-center flex-row text-center  inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
 							<span className="text-6xl pb-10 font-extrabold uppercase">{cat.name}</span>
 							{user ? (
 								<button onClick={() => handleFavoriteButton()} className={"m-auto translate-y-2"}>
@@ -170,14 +170,14 @@ export default function Page({params}) {
 						</div>
 					</div>
 					
-					<div className="px-20 w-full flex">
+					<div className=" w-full flex">
 						<Carousel images={cat.carouselImage} />
 					</div>
 						
-					<div className="flex flex-col xl:flex-row w-full px-10 xl:px-20">
+					<div className="flex flex-col xl:flex-row w-full">
 						{/* First split of the section */}
 						<div className="flex flex-col w-full  text-xl font-bold text-left text-header-text-0 dark:text-dark-header-text-0">
-							<div className="p-10 mx-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
+							<div className="p-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
@@ -186,14 +186,14 @@ export default function Page({params}) {
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>
-							<div className="p-10 mx-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
+							<div className="p-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
 								<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 								<p className="font-normal">{cat.description ? cat.description : <span className="italic text-gray-600">No description</span>}</p>
 							</div>
 						</div>
 
 						{/* Second split of the section */}
-						<div className="flex flex-col xl:ml-auto mx-10 mb-auto mt-6">
+						<div className="flex flex-col xl:ml-auto mb-auto mt-6">
 							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold bg-white dark:bg-gray-500 p-8 rounded-xl drop-shadow-xl">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
 								<button onClick={user ? handleMeetingButton : (() => signinRoute.push("../../../login"))} className="mx-auto justify-center flex bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg rounded-xl p-4 text-xl" >
@@ -210,10 +210,10 @@ export default function Page({params}) {
 					</div>
 
 					{/* Conditions */}
-					<div className="flex flex-col w-fit mx-[80px] xl:mx-[120px] max-w-[88%] relative space-y-6 mt-6 rounded-lg min-w-64 text-header-text-0">
-						<div className=" bg-white dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
+					<div className="flex flex-col w-fit relative space-y-6 mt-6 rounded-lg min-w-64 text-header-text-0">
+						<div className=" bg-white w-fit dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
 							<h2 className="text-2xl mb-2">Conditions</h2>
-							<div className={" relative flex flex-wrap  dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4" + (cat.conditions && cat.conditions.length > 0 ? " h-48 overflow-y-auto w-[440px] con-screen-0:w-[860px] con-screen-1:w-[1280px] con-screen-2:w-fit" : " ")}>
+							<div className={" relative flex flex-wrap w-fit dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4" + (cat.conditions && cat.conditions.length > 0 ? " h-48 overflow-y-auto" : " ")}>
 								{cat.conditions && cat.conditions.length > 0 ? (
 									cat.conditions.map((condition) => (
 										<div key={condition.id} className="relative flex-col rounded-md p-4 m-4 min-h-40 w-[380px] bg-navbar-body-1 dark:bg-gray-300">
@@ -229,10 +229,10 @@ export default function Page({params}) {
 					</div>
 
 					{/* Vaccinations */}
-					<div className="flex flex-col w-fit mx-[80px] xl:mx-[120px] max-w-[88%] relative space-y-6 mt-6 rounded-lg min-w-64 text-header-text-0">
-						<div className="bg-white dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
+					<div className="flex flex-col w-fit relative space-y-6 mt-6 rounded-lg min-w-64 text-header-text-0">
+						<div className="bg-white dark:bg-gray-500 w-fit relative drop-shadow-lg rounded-xl p-10">
 							<h2 className="text-2xl mb-2">Vaccinations</h2>
-							<div className={" relative flex flex-wrap  dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4" + (cat.conditions && cat.conditions.length > 0 ? " h-96 overflow-y-auto w-[440px] con-screen-0:w-[860px] con-screen-1:w-[1280px] con-screen-2:w-fit" : " ")}>
+							<div className={" relative flex flex-wrap w-fit  dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4" + (cat.conditions && cat.conditions.length > 0 ? " h-96 overflow-y-auto " : " ")}>
 								{cat.vaccinations && cat.vaccinations.length > 0 ? (
 								cat.vaccinations.map((vaccination) => (
 									<div className="relative flex-col rounded-md p-4 m-4 min-h-64 w-[380px] bg-navbar-body-1 dark:bg-gray-300">
@@ -270,21 +270,21 @@ export default function Page({params}) {
 						</div>
 					</div>
 
-					<div className="text-header-text-0 text-xl font-bold p-10">
+					<div className="text-header-text-0 text-xl font-bold p-10 bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg mt-10 w-fit">
 						{cat.father || cat.mother ? (
 							<div>
 								<h2 className="text-2xl mx-10 mt-10">Parents</h2>
 								<div className="flex flex-wrap">
 									{cat.mother ? (
-										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center text-white dark:text-header-text-0">
+										<div className="bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg p-10 m-10 rounded-lg text-center dark:text-header-text-0">
 											<h2>Mother</h2>
-											<CatButton cat={cat.mother} lightText={true}/>
+											<CatButton cat={cat.mother} lightText={false}/>
 										</div>
 									) : null}
 									{cat.father ? (
-										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center text-white dark:text-header-text-0">
+										<div className="bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg p-10 m-10 rounded-lg text-center dark:text-header-text-0">
 											<h2>Father</h2>
-											<CatButton cat={cat.father} lightText={true}/>
+											<CatButton cat={cat.father} lightText={false}/>
 										</div>
 									) : null}
 								</div>
@@ -296,7 +296,7 @@ export default function Page({params}) {
 								<div className="flex flex-wrap">
 									{cat.children ? (
 										cat.children.map((child) => (
-											<div key={child.id} className=" bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
+											<div key={child.id} className=" bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg p-10 m-10 rounded-lg text-center">
 												<CatButton cat={child} lightText={true}/>
 											</div>
 										))

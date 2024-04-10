@@ -23,9 +23,9 @@ export default function Comments(cat, user) {
 
 
    return (
-      <section className="text-gray-800 pt-4 ">
+      <section className="text-gray-800 pt-4 w-full mt-10">
          <h1 className="text-5xl font-bold text-center text-gray-700 dark:text-dark-header-text-0 drop-shadow">Comments</h1>
-         <div className="mx-40 m-auto flex-col justify-center bg-white dark:bg-gray-500 bg-opacity-100 mt-10 p-8 drop-shadow-lg rounded-xl  overflow-hidden">
+         <div className=" m-auto flex-col justify-center bg-white dark:bg-gray-500 bg-opacity-100 mt-10 p-8 drop-shadow-lg rounded-xl  overflow-hidden">
             {comments.map((comment) => (
             <Comment 
             key={comment.id}

@@ -66,7 +66,8 @@ function handleEmailPasswordSignIn(e){
             <button type="submit" className="bg-slate-400 active:bg-slate-600 rounded text-white p-2">Sign In with Email</button>
         </form>
         <div>
-          <button onClick={() => handlePasswordReset()} className="text-slate-500 mb-2">Forgot Password</button>
+          {/*<button onClick={() => handlePasswordReset()} className="text-slate-500 mb-2">Forgot Password</button>*/}
+		  <Link href="login/forgotpassword" className="text-slate-500 mb-2">Forgot Password</Link>
           <Link href='login/signup' className="text-slate-500  ml-6">Sign Up</Link>
         </div>
       </div>

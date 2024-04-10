@@ -132,7 +132,7 @@ export default function Page({ params }) {
 		};
 		await updateObject('litters', updatedLitter, true);
 	  };
-
+	
 	const handleImageUpload = async (imageUrl) => {
 		try {
 			fetchCat()

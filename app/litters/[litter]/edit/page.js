@@ -240,6 +240,7 @@ export default function Page({ params }) {
 					</div>
 
 					{/*</div><div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">*/}
+					<div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">
 						<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 						{litter.completed ? (
 							<div className="flex">
@@ -276,6 +277,8 @@ export default function Page({ params }) {
 							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 						</div>
 					)}
+					</div>
+					
 					<button className="flex m-auto px-6 py-4 bg-white drop-shadow-lg rounded-xl mt-16 text-2xl" onClick={handleSubmit}>Submit</button>
 					<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />
 				</div>

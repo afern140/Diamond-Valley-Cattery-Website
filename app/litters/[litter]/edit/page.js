@@ -239,10 +239,10 @@ export default function Page({ params }) {
 						</div>
 					</div>
 
-					<div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">
+					<div className="bg-white flex flex-wrap overflow-y-auto p-10 rounded-xl drop-shadow-lg mt-10 h-[440px]">
 						<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 						{litter.completed ? (
-							<div className="flex">
+							<div className="flex flex-wrap overflow-y-auto">
 								{litter.children.map((child) => (
 									<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 rounded-xl text-header-text-0 place-items-center">
 										<h3>{child.name}</h3>
@@ -257,7 +257,7 @@ export default function Page({ params }) {
 										<button className="px-4 py-2 bg-gradient-to-r drop-shadow-lg bg-white rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 									</div>
 								))}
-								<div className=" flex justify-center flex-col font-bold p-4 m-4 bg-navbar-body-1 drop-shadow-lg rounded-xl text-header-text-0 place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 m-4 bg-navbar-body-1 drop-shadow-lg rounded-xl border-2 border-gray-300 border-dashed text-header-text-0 place-items-center">
 									<Image
 										alt="Cat"
 										src={"/img/Placeholder.png"}

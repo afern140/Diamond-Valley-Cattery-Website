@@ -33,7 +33,7 @@ export default function EditCondition({ condition, handleConditionChange, handle
 				<option value="finished">Finished</option>
 				<option value="inProgress">In Progress</option>
 			</select>
-			<button onClick={() => handleRemoveCondition(condition.id)} className=" bg-white drop-shadow-lg rounded-md p-2 mb-2">Remove Condition</button>
+			<button onClick={() => handleRemoveCondition(condition.id)} className=" bg-gray-200 drop-shadow-lg rounded-md p-2 mb-2">Remove Condition</button>
 		</div>
 	)
 }

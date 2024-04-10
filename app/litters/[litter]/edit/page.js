@@ -239,8 +239,6 @@ export default function Page({ params }) {
 						</div>
 					</div>
 
-					{/*</div><div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">*/}
-					<div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">
 						<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 						{litter.completed ? (
 							<div className="flex">
@@ -277,9 +275,8 @@ export default function Page({ params }) {
 								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 							</div>
 						)}
-					</div>
 
-					{/* Add Cats */}
+					{/* Add Images */}
 					<div className="bg-white p-10 rounded-xl drop-shadow-lg mt-10">
 						<h2 className="text-2xl mb-4">Carousel</h2>
 						<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />

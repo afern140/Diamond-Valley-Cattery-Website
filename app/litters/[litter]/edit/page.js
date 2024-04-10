@@ -278,8 +278,8 @@ export default function Page({ params }) {
 						</div>
 					)}
 					</div>
-					<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />
 					<button className="flex m-auto px-6 py-4 bg-navbar-body-0 drop-shadow-lg rounded-xl mt-16 text-2xl" onClick={handleSubmit}>Submit</button>
+					<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />
 				</div>
 			) : (
 				<div className="h-screen">

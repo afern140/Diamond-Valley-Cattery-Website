@@ -174,7 +174,7 @@ export default function Page() {
 						</div>
 					</div>
 					<div className="rounded-xl m-5 p-4 bg-white drop-shadow-lg w-fit mr-full ml-auto">
-						<label htmlFor="sort">Sort By:</label> <br/>
+						<label htmlFor="sort" className="flex justify-start font-bold text-xl text-text-header-0 drop-shadow-md">Sort By:</label> <br/>
 						<select id="sort" value={sortBy} onChange={handleSortChange} className="ml-2 p-2 bg-navbar-body-1 rounded-xl drop-shadow-lg">
 							<option value="">None</option>
 							<option value="name">Name</option>

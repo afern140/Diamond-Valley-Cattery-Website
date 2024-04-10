@@ -55,7 +55,7 @@ function CustomCursor() {
   // Render the custom cursor element with dynamic styles based on cursor state.
   return (
     <div
-      className={" fixed pointer-events-none -translate-x-1/3 z-50 transition cursor-none " + (isPointer ? " opacity-100 -translate-y-[10%]" : " -translate-y-[20%]")}
+      className={" fixed pointer-events-none -translate-x-1/3 z-[200] transition cursor-none " + (isPointer ? " opacity-100 -translate-y-[10%]" : " -translate-y-[20%]")}
       style={{
         ...cursorStyle,
         left: `${position.x}px`,

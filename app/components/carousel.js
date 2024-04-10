@@ -3,7 +3,7 @@ import { Carousel } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { getObjects } from "../_utils/firebase_services";
 
-export default function CarouselDefault({ images, iscatpage }) {
+export default function CarouselDefault({ images }) {
 	const theme = {
 		carousel: {
 			defaultProps: {
@@ -87,7 +87,7 @@ export default function CarouselDefault({ images, iscatpage }) {
 				return item.url
 			})
 			setImgUrl(arr);
-		} else if (!iscatpage) {
+		} else {
 			getAllImg();
 		}
 	}, [images])

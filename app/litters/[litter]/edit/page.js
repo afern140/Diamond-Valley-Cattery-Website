@@ -23,34 +23,33 @@ export default function Page({ params }) {
 	const handleImageSelected = (file) => {
 		setImageFile(file);
 	  };	  
-	
-
+	  const fetchLitter = async () => {
+		const litter = await getObject('litters', parseInt(params.litter));
+		if (litter.mother) {
+			const mother = await getDoc(litter.mother);
+			litter.mother = { docId: litter.mother.id, ...mother.data() };
+		} else {
+			litter.mother = null;
+		}
+		if (litter.father) {
+			const father = await getDoc(litter.father);
+			litter.father = { docId: litter.father.id, ...father.data() };
+		} else {
+			litter.father = null;
+		}
+		if (litter.children) {
+			const children = await Promise.all(litter.children.map(async (childRef) => {
+				const child = await getDoc(childRef)
+				return { docId: childRef.id, ...child.data()};
+			}));
+			litter.children = children;
+		} else {
+			litter.children = null;
+		}
+		setLitter(litter);
+	};
+    
 	useEffect(() => {
-		const fetchLitter = async () => {
-			const litter = await getObject('litters', parseInt(params.litter));
-			if (litter.mother) {
-				const mother = await getDoc(litter.mother);
-				litter.mother = { docId: litter.mother.id, ...mother.data() };
-			} else {
-				litter.mother = null;
-			}
-			if (litter.father) {
-				const father = await getDoc(litter.father);
-				litter.father = { docId: litter.father.id, ...father.data() };
-			} else {
-				litter.father = null;
-			}
-			if (litter.children) {
-				const children = await Promise.all(litter.children.map(async (childRef) => {
-					const child = await getDoc(childRef)
-					return { docId: childRef.id, ...child.data()};
-				}));
-				litter.children = children;
-			} else {
-				litter.children = null;
-			}
-			setLitter(litter);
-		};
 		fetchLitter();
 	}, [params]);
 

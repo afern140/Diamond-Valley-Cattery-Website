@@ -1,13 +1,16 @@
 import Image from "next/image"
 
-export default function CatSelection({ cats, showCatSelection, setShowCatSelection, handleSelectCat }) {
+export default function CatSelection({ cats, showCatSelection, setShowCatSelection, handleSelectCat, gender = "" }) {
+	let filteredCats = cats;
+	if (gender != "")
+		filteredCats = cats.filter((cat) => cat.gender == gender);
 	return (
 		showCatSelection && (
 			<div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 rounded-xl z-50">
 				<div className="bg-white dark:bg-gray-600 p-8 rounded-lg drop-shadow-lg w-3/4 h-[90%] relative">
 					<h2 className="text-lg font-bold mb-4 dark:text-dark-header-text-0">Select a New Cat</h2>
 					<div className="relative h-[80%] flex flex-wrap bg-white dark:bg-gray-500 p-4 rounded-xl drop-shadow-lg overflow-auto justify-between">
-						{cats ? cats.map((cat) => (
+						{filteredCats ? filteredCats.map((cat) => (
 							<div key={cat.id} className="bg-navbar-body-1 dark:bg-gray-300 m-2 p-2 rounded-xl drop-shadow-lg">
 								<button onClick={() => handleSelectCat(cat)} className="w-full flex justify-center flex-col font-bold p-2 text-black place-items-center">
 									<Image

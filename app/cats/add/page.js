@@ -69,6 +69,8 @@ export default function Page() {
 		dosesRemaining: 0,
 		futureDates: []
 	});
+	//Gender to display in the cat selection
+	const [selectorGender, setSelectorGender] = useState("");
 
 	useEffect(() => {
 		const fetchCats = async () => {
@@ -286,6 +288,7 @@ export default function Page() {
 	};
 
 	const handleSelectParentToUpdate = (parent) => {
+		setSelectorGender(parent === "mother" ? "Female" : "Male")
 		setSelectedParent(parent);
 		setShowParentSelection(true);
 	};
@@ -302,6 +305,7 @@ export default function Page() {
 	};
 
 	const handleAddChild = () => {
+		setSelectorGender("")
 		setShowChildSelection(true);
 	};
 	
@@ -422,6 +426,10 @@ export default function Page() {
 		console.log('newCat to be saved:', newCat);
 		await createObject('cats', newCat);
 		console.log('Cat saved successfully!');
+
+		//Go to the new cat's page
+		//router.push(`/cats/${newId}`);
+		window.location.href = `/cats/${newId}`;
 	
 	  } catch (error) {
 		console.error('Error during submission:', error);
@@ -476,14 +484,24 @@ export default function Page() {
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
 										/>
-										<input
+										{/*<input
 											type="text"
 											name="gender"
 											placeholder="Gender"
 											value={cat.gender}
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-										/>
+										/>*/}
+										<div>
+											<select
+											name="gender"
+											value={cat.gender}
+											onChange={handleChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg">
+												<option value="Male">Male</option>
+												<option value="Female">Female</option>
+											</select>
+										</div>
 										<input
 											type="date"
 											name="birthdate"
@@ -681,7 +699,7 @@ export default function Page() {
 										<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Father</button>
 									</div>)}
 							</div>
-							<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
+							<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent} gender={selectorGender}/>
 						</div>
 					</div>
 

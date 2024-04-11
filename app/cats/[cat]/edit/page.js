@@ -18,6 +18,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import CatCarouselController from "@/app/components/CatCarouselController";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
+import { set } from "firebase/database"
 
 export default function Page({params}){
 	const handleImageUpload = async (imageUrl) => {
@@ -95,6 +96,8 @@ export default function Page({params}){
 		dosesRemaining: 0,
 		futureDates: []
 	});
+	//Gender to display in the cat selection
+	const [selectorGender, setSelectorGender] = useState("");
 
 
 	useEffect(() => {
@@ -353,6 +356,7 @@ export default function Page({params}){
 	};
 
 	const handleSelectParentToUpdate = (parent) => {
+		setSelectorGender(parent === "mother" ? "Female" : "Male")
 		setSelectedParent(parent);
 		setShowParentSelection(true);
 	};
@@ -369,6 +373,7 @@ export default function Page({params}){
 	};
 
 	const handleAddChild = () => {
+		setSelectorGender("");
 		setShowChildSelection(true);
 	};
 	
@@ -385,22 +390,34 @@ export default function Page({params}){
 		await cat.vaccinations.map(async (vaccination) => {
 			await updateObject('vaccinations', vaccination, false)
 		})
-		const ownerRef = doc(db, 'users', cat.owner.docId);
-		const motherRef = doc(db, 'cats', cat.mother.docId);
-		const fatherRef = doc(db, 'cats', cat.father.docId);
+		let ownerRef = null;
+		if (cat.owner)
+			ownerRef = doc(db, 'users', cat.owner.docId);
+		let motherRef = null;
+		if (cat.mother)
+			motherRef = doc(db, 'cats', cat.mother.docId);
+		let fatherRef = null;
+		if (cat.father)
+			fatherRef = doc(db, 'cats', cat.father.docId);
 		const conditionRefs = cat.conditions.map(condition => doc(db, 'conditions', condition.docId));
 		const vaccinationRefs = cat.vaccinations.map(vaccination => doc(db, 'vaccinations', vaccination.docId));
-		const childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
+		let childrenRefs = [];
+		if (cat.children)
+			childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		const updatedCat = { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs }
 		const storage = getStorage();
-  if (thumbnail) {
-    const thumbnailRef = ref(storage, `thumbnails/${cat.id}`);
-    await uploadBytes(thumbnailRef, thumbnail);
-    const thumbnailUrl = await getDownloadURL(thumbnailRef);
-    updatedCat.thumbnail = thumbnailUrl;
-  }
+
+		if (thumbnail) {
+			const thumbnailRef = ref(storage, `thumbnails/${cat.id}`);
+			await uploadBytes(thumbnailRef, thumbnail);
+			const thumbnailUrl = await getDownloadURL(thumbnailRef);
+			updatedCat.thumbnail = thumbnailUrl;
+		}
 
 		await updateObject('cats', updatedCat, true);
+
+		//Return to the cat's page
+		window.location.href = `/cats/${cat.id}`;
 	}
 
 	//Changes the page title when the cat is loaded
@@ -454,14 +471,24 @@ export default function Page({params}){
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
 										/>
-										<input
+										{/*<input
 											type="text"
 											name="gender"
 											placeholder="Gender"
 											value={cat.gender}
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-										/>
+										/>*/}
+										<div>
+											<select
+											name="gender"
+											value={cat.gender}
+											onChange={handleChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg">
+												<option value="Male">Male</option>
+												<option value="Female">Female</option>
+											</select>
+										</div>
 										<input
 											type="date"
 											name="birthdate"
@@ -636,7 +663,7 @@ export default function Page({params}){
 							</div>)}
 						
 						</div>
-						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
+						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent} gender={selectorGender}/>
 					</div>
 
 					{/* Children */}

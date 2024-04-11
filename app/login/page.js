@@ -39,7 +39,7 @@ function handleEmailPasswordSignIn(e){
 		}
 		else{
 			alert("Email is not verified.");
-			signOut(auth);
+			//signOut(auth);
 		}
 	})
       .catch((error) => {

@@ -229,7 +229,6 @@ export default function Page() {
 	// Main Rendering
 	return (
 		<main className="w-full flex-col justify-center pointer-events-auto text-black text-xl font-normal overflow-hidden relative">
-			<BackButton url="#Navbar" />
 			<BackgroundUnderlay />
 
 			<div className="pt-20 flex pb-10">

@@ -458,61 +458,62 @@ export default function Page() {
 						
 							<div className="flex flex-col xl:w-1/3 w-[300px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
 								<h2 className="text-xl text-center mb-2">Details</h2>
-								<input
-									type="text"
-									name="name"
-									placeholder="Name"
-									value={cat.name}
-									onChange={handleChange}
-									className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-								/>
-								<input
-									type="text"
-									name="breed"
-									placeholder="Breed"
-									value={cat.breed}
-									onChange={handleChange}
-									className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-								/>
-								<input
-									type="text"
-									name="gender"
-									placeholder="Gender"
-									value={cat.gender}
-									onChange={handleChange}
-									className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-								/>
-								<input
-									type="date"
-									name="birthdate"
-									value={cat.birthdate ? new Date(cat.birthdate.toDate()).toISOString().split('T')[0] : ""}
-									onChange={handleDateChange}
-									className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-								/>
-								<input
-									type="text"
-									name="color"
-									placeholder="Color"
-									value={cat.color}
-									onChange={handleChange}
-									className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-								/>
-								<input
-									type="text"
-									name="eye_color"
-									placeholder="Eye Color"
-									value={cat.eye_color}
-									onChange={handleChange}
-									className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-								/>
-								<input
-									type="text"
-									name="description"
-									placeholder="Description"
-									value={cat.description}
-									onChange={handleChange}
-									className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-								/>
+								<div className="grid grid-cols-2">
+									<div>
+										<p>Name:</p>
+
+									</div>
+									<div>
+
+									</div>
+									<input
+										type="text"
+										name="name"
+										placeholder="Name"
+										value={cat.name}
+										onChange={handleChange}
+										className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+									/>
+									<input
+										type="text"
+										name="breed"
+										placeholder="Breed"
+										value={cat.breed}
+										onChange={handleChange}
+										className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+									/>
+									<input
+										type="text"
+										name="gender"
+										placeholder="Gender"
+										value={cat.gender}
+										onChange={handleChange}
+										className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+									/>
+									<input
+										type="date"
+										name="birthdate"
+										value={cat.birthdate ? new Date(cat.birthdate.toDate()).toISOString().split('T')[0] : ""}
+										onChange={handleDateChange}
+										className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+									/>
+									<input
+										type="text"
+										name="color"
+										placeholder="Color"
+										value={cat.color}
+										onChange={handleChange}
+										className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+									/>
+									<input
+										type="text"
+										name="eye_color"
+										placeholder="Eye Color"
+										value={cat.eye_color}
+										onChange={handleChange}
+										className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+									/>
+								</div>
 							</div>
 
 							<div className="flex flex-col xl:w-1/3 w-[300px] h-fit mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">

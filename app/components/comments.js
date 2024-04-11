@@ -25,6 +25,8 @@ export default function Comments({ cat, user }) {
 		<section className="text-gray-800 pt-4 w-full mt-10">
 			<h1 className="text-5xl font-bold text-center text-gray-700 dark:text-dark-header-text-0 drop-shadow">Comments</h1>
 			<div className=" m-auto flex-col justify-center bg-white dark:bg-gray-500 bg-opacity-100 mt-10 p-8 drop-shadow-lg rounded-xl  overflow-hidden">
+				<NewComment cat={cat} setComments={setComments} user={user}/>
+				<div className="w-full h-[1px] bg-gray-300 my-12" />
 				{comments.map((comment) => (
 					<Comment 
 						key={comment.id}
@@ -34,7 +36,6 @@ export default function Comments({ cat, user }) {
 						createName={comment.createName}
 					/>
 				))}
-				<NewComment cat={cat} setComments={setComments} user={user}/>
 			</div>
 		</section>
 	);
@@ -83,7 +84,6 @@ function NewComment({ cat, setComments, user }) {
 
 	return(
 		<div className="text-black mt-8">
-			<div className="w-full h-[2px] bg-gray-200 mb-6" />
 			<h2 className="text-3xl flex flex-col items-center pb-4">New Comment</h2>
 			{ user ? (
 				<form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
@@ -115,7 +115,7 @@ function Comment({catName, message, createName, createTime}) {
 	return (
 		<div className="text-black w-full bg-navbar-body-1 dark:bg-gray-300 p-4 my-4 rounded-xl drop-shadow-lg">
 			<h2 className="text-xl mb-4">{createName}</h2>
-			<p className="mb-4 w-full text-ellipsis overflow-hidden">{message}</p>
+			<p className="mb-4 w-full text-ellipsis overflow-y-auto max-h-[300px]">{message}</p>
 			<p>Posted on: {createTime.toLocaleDateString()}</p>
 		</div>
 	);

@@ -220,7 +220,7 @@ export default function Page({params}) {
 					{/* Conditions */}
 					<div className=" mt-10 text-header-text-0 bg-white w-fit dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
 						<h2 className="text-2xl mb-2">Conditions</h2>
-						<div className={" relative grid grid-cols-3 w-fit overflow-y-auto h-[200px] dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4"}>
+						<div className={" relative grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-fit overflow-y-auto h-[200px] dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4"}>
 							{cat.conditions && cat.conditions.length > 0 ? (
 								cat.conditions.map((condition) => (
 									<div key={condition.id} className="relative flex-col rounded-md p-4 m-4 min-h-40 w-[380px] bg-navbar-body-1 dark:bg-gray-300">

@@ -73,11 +73,11 @@ function handleEmailPasswordSignIn(e){
       </div>
         }
         {user && (
-        <div className="text-center text-slate-500">
-            <p>
-            Welcome, {user.displayName} ({user.email})
+        <div className="text-center text-header-text-0">
+            <p className=" text-3xl">
+            Welcome, {user.displayName}<br /> <span className="text-xl">[{user.email}]</span>
             </p>
-            <button onClick={handleSignOut} className="bg-slate-500 text-white p-2">Sign Out</button>
+            <button onClick={handleSignOut} className=" bg-navbar-body-0 text-white py-4 px-6 rounded-xl drop-shadow-lg mt-8">Sign Out</button>
             <br/>
         </div>
         )}

@@ -156,7 +156,6 @@ const Navbar = () => {
             if (settingsRef.current && !settingsRef.current.contains(event.target)) {
                 setExpandSettings(false);
                 setExpandUser(false);
-				        console.log("Search bar is off!");
             }
         }
 

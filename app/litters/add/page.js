@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { doc, Timestamp, collection, addDoc } from "firebase/firestore";
-import { imageDb, db } from "@/app/_utils/firebase";
+import { strg, db } from "@/app/_utils/firebase";
 import { getObjects, createObject } from "@/app/_utils/firebase_services";
 import CatSelection from "@/app/components/cats/cat-selection";
 import { v4 } from "uuid";
@@ -101,7 +101,7 @@ export default function Page() {
 	const handleSubmit = async () => {
 		let thumbnailUrl = null;
 		if (thumbnail) {
-		  const storageRef = ref(imageDb, `thumbnails/${v4()}`);
+		  const storageRef = ref(strg, `thumbnails/${v4()}`);
 		  const uploadResult = await uploadBytes(storageRef, thumbnail);
 		  thumbnailUrl = await getDownloadURL(uploadResult.ref);
 		}

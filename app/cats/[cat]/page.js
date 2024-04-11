@@ -173,7 +173,7 @@ export default function Page({params}) {
 		<main className="relative">
 			<BackgroundUnderlay />
 			{cat ? (
-				<section className="relative z-20 pb-16 w-4/5 mx-auto">
+				<section className="relative z-20 pb-16 w-4/5 mx-auto break-words">
 					<div className="pt-20 flex pb-10 relative z-20">
 						<div className="w-full space-x-6 m-auto justify-center flex-row text-center  inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
 							<span className="text-6xl pb-10 font-extrabold uppercase">{cat.name}</span>
@@ -208,9 +208,11 @@ export default function Page({params}) {
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>
-							<div className="p-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
+							<div className="p-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit max-w-[100%] h-fit">
 								<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
-								<p className="font-normal">{cat.description ? cat.description : <span className="italic text-gray-600">No description</span>}</p>
+								<div className="max-h-[200px] overflow-y-auto">
+									<p className="font-normal break-words">{cat.description ? cat.description : <span className="italic text-gray-600">No description</span>}</p>
+								</div>
 							</div>
 						</div>
 						{/* Second split of the section */}
@@ -245,7 +247,9 @@ export default function Page({params}) {
 								cat.conditions.map((condition) => (
 									<div ref={conRef} key={condition.id} className="relative self-start flex-col rounded-md p-4 m-4 min-h-40 h-fit w-[380px] bg-navbar-body-1 dark:bg-gray-300">
 										<h3 className="w-[300px] font-bold">{condition.name}</h3>
-										<p>Description: <span className="font-normal">{condition.description}</span></p>
+										<div className="max-h-[110px] overflow-y-auto">
+											<p>Description: <span className="font-normal">{condition.description}</span></p>
+										</div>
 										<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
 										<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 									</div>))
@@ -262,7 +266,9 @@ export default function Page({params}) {
 							cat.vaccinations.map((vaccination) => (
 								<div ref={vaccRef} className="relative flex-col rounded-md p-4 m-4 min-h-64 h-fit w-[380px] bg-navbar-body-1 dark:bg-gray-300">
 									<h3 className="w-[300px] font-bold">{vaccination.name}</h3>
-									<p>Description: <span className="font-normal">{vaccination.description}</span></p>
+									<div className="max-h-[110px] overflow-y-auto">
+										<p>Description: <span className="font-normal">{vaccination.description}</span></p>
+									</div>
 									<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 									<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
 									<h4>Doses Taken Dates:</h4>

@@ -10,7 +10,7 @@ export const getUser = async (userAuth) => {
 	if (user.favorites.cats) {
 		const favoriteCats = await Promise.all(user.favorites.cats.map(async (catRef) => {
 			const catDoc = await getDoc(catRef);
-			return catDoc.data();
+			return {docId: catDoc.id, ...catDoc.data()};
 		}));
 		user.favorites.cats = favoriteCats;
 	}

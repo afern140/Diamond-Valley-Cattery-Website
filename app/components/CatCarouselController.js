@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { doc, updateDoc } from "firebase/firestore";
-import { imageDb, db } from "../_utils/firebase";
+import { strg, db } from "../_utils/firebase";
 
 function CatCarouselController({ onImageUpload, cat }) {
   const [imgPreview, setImgPreview] = useState('');
@@ -21,7 +21,7 @@ function CatCarouselController({ onImageUpload, cat }) {
     try {
       if (file) {
         const storagePath = `images/${uuidv4()}`;
-        const imgRef = ref(imageDb, storagePath);
+        const imgRef = ref(strg, storagePath);
         const snapshot = await uploadBytes(imgRef, file);
         const url = await getDownloadURL(snapshot.ref);
 
@@ -59,7 +59,7 @@ function CatCarouselController({ onImageUpload, cat }) {
     const confirmDelete = window.confirm("Are you sure you want to delete this image?");
     if (confirmDelete) {
       try {
-        const imgRef = ref(imageDb, imageInfo.storagePath);
+        const imgRef = ref(strg, imageInfo.storagePath);
         await deleteObject(imgRef);
 
         cat.carouselImage.splice(index, 1);

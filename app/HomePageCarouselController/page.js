@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { imageDb, db } from "@/app/_utils/firebase";
+import { strg, db } from "@/app/_utils/firebase";
 import { getDownloadURL, ref, uploadBytes, deleteObject } from "firebase/storage";
 import { doc, setDoc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
@@ -42,7 +42,7 @@ function HomePageCarouselController() {
     const handleClick = () => {
         if (img) {
             const storagePath = `temp/${uuidv4()}`;
-            const imgRef = ref(imageDb, storagePath);
+            const imgRef = ref(strg, storagePath);
             uploadBytes(imgRef, img).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then(url => {
                     const imgDocRef = doc(db, "HomeCarousel", uuidv4());
@@ -75,7 +75,7 @@ function HomePageCarouselController() {
         const confirmDelete = window.confirm("Are you sure you want to delete this image?");
         if (confirmDelete) {
             await deleteDoc(doc(db, "HomeCarousel", id));
-            const imgRef = ref(imageDb, fullPath);
+            const imgRef = ref(strg, fullPath);
             deleteObject(imgRef).then(() => {
                 alert("Image deleted successfully.");
                 getAllImg();

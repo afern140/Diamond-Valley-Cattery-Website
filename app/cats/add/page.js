@@ -20,7 +20,7 @@ import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page() {
 	const [fileInputs, setFileInputs] = useState([{ id: v4(), file: null }]);
-	const [carouselImages, setCarouselImages] = useState([]);
+	const [carouselImage, setCarouselImage] = useState([]);
 	const {user} = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
 	const [cats, setCats] = useState([]);
@@ -324,7 +324,7 @@ export default function Page() {
 		const file = event.target.files[0];
 		if (file) {
 		  // Upload the file as soon as it is selected
-		  const imgRef = ref(imageDb, `carouselImages/${id}`);
+		  const imgRef = ref(imageDb, `carouselImage/${id}`);
 		  const snapshot = await uploadBytes(imgRef, file);
 		  const url = await getDownloadURL(snapshot.ref);
 		  const newImage = {
@@ -332,8 +332,8 @@ export default function Page() {
 			url: url
 		  };
 	  
-		  // Update the carouselImages state with the new image URL
-		  setCarouselImages(currentImages => [...currentImages, newImage]);
+		  // Update the carouselImage state with the new image URL
+		  setCarouselImage(currentImages => [...currentImages, newImage]);
 	  
 		  // Replace the current input with one that has a file, and add a new file input placeholder
 		  setFileInputs(currentInputs => {
@@ -358,13 +358,13 @@ export default function Page() {
 		const imageUploadPromises = fileInputs
 		  .filter(input => input.file !== null)
 		  .map(input => {
-			const imgRef = ref(imageDb, `carouselImages/${input.id}`);
+			const imgRef = ref(imageDb, `carouselImage/${input.id}`);
 			return uploadBytes(imgRef, input.file).then((snapshot) => getDownloadURL(snapshot.ref));
 		  });
 	  
 		const imageUrls = await Promise.all(imageUploadPromises);
 		return imageUrls.map((url, index) => ({
-		  storagePath: `carouselImages/${fileInputs[index].id}`,
+		  storagePath: `carouselImage/${fileInputs[index].id}`,
 		  url: url,
 		}));
 	  };
@@ -426,7 +426,7 @@ export default function Page() {
 			mother: motherRef, 
 			father: fatherRef, 
 			children: childrenRefs, 
-			carouselImages: uploadedImageUrls,
+			carouselImage: uploadedImageUrls,
 		};
 		console.log('newCat to be saved:', newCat);
 		await createObject('cats', newCat);

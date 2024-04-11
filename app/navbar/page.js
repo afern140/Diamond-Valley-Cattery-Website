@@ -162,8 +162,6 @@ const Navbar = () => {
         return () => { window.removeEventListener("mousedown", handleClick); }
 	}, [expandSettings]);
 
-  const thumbnail = "https://firebasestorage.googleapis.com/v0/b/fionabookingsystem.appspot.com/o/images%2FKittyPfp.png?alt=media&token=0c3981b6-a10b-4b50-b2c6-4b11408c5de8"
-
   return (
     <div className="font-sans text-black font-normal text-base pt-6 bg-navbar-body-0 dark:bg-dark-navbar-body-0 z-[100] relative">
     {toggleLargeCursor ? <CustomCursor /> : null}
@@ -186,7 +184,7 @@ const Navbar = () => {
               {/*<div className="bg-yellow-700 p-3 rounded-xl -translate-y-[21px] -z-20"/>*/}
 
               <div className="absolute -z-10 bg-white size-16 rounded-full bg-opacity-80 drop-shadow-lg overflow-hidden">
-                <Image alt="user" src={user && thumbnail ? thumbnail : "/img/userprofile.png"} width={64} height={64} className="m-auto"/>
+                <Image alt="user" src={user && user.thumbnail ? user.thumbnail : "/img/userprofile.png"} width={64} height={64} className="m-auto"/>
               </div>
 
               {/* Blocker Element */}

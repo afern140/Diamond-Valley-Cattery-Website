@@ -30,7 +30,7 @@ export default function page() {
     return date.toLocaleString();
   };
   return (
-    <div className="relative text-header-text-0 min-h-[66vh] h-fit">
+    <div className="relative text-header-text-0 min-h-[66vh] h-fit pb-16">
       <BackgroundUnderlay />
 
       {/* Header */}
@@ -41,16 +41,45 @@ export default function page() {
       </div>
       <div className="w-4/5 bg-white mx-auto p-10 dark:bg-gray-500 relative rounded-xl drop-shadow-lg">
         {allMessages.map(({ chatId, messages }) => (
-          <div key={chatId} className="relative z-10 bg-navbar-body-1 p-4 rounded-xl drop-shadow-lg">
+          <div key={chatId} className="relative z-10 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
             {messages.map((message) => (
-              <Link key={message.id} href={`/messages/${chatId}`}>
-                <div className="block p-2 hover:bg-gray-200 cursor-pointer">
-                  {message.displayName}: {message.text}
-                  <br />
-                  <small>{formatTimestamp(message.timestamp)}</small>
-                </div>
-              </Link>
-              
+              <div className="space-y-4">
+                <Link key={message.id} href={`/messages/${chatId}`}>
+                  <div className="block p-2 hover:bg-gray-200 cursor-pointer">
+                    {message.displayName}: {message.text}
+                    <br />
+                    <small>{formatTimestamp(message.timestamp)}</small>
+                  </div>
+                </Link>
+                <Link key={message.id} href={`/messages/${chatId}`}>
+                  <div className="block p-2 hover:bg-gray-200 cursor-pointer">
+                    {message.displayName}: {message.text}
+                    <br />
+                    <small>{formatTimestamp(message.timestamp)}</small>
+                  </div>
+                </Link>
+                <Link key={message.id} href={`/messages/${chatId}`}>
+                  <div className="block p-2 hover:bg-gray-200 cursor-pointer">
+                    {message.displayName}: {message.text}
+                    <br />
+                    <small>{formatTimestamp(message.timestamp)}</small>
+                  </div>
+                </Link>
+                <Link key={message.id} href={`/messages/${chatId}`}>
+                  <div className="block p-2 hover:bg-gray-200 cursor-pointer">
+                    {message.displayName}: {message.text}
+                    <br />
+                    <small>{formatTimestamp(message.timestamp)}</small>
+                  </div>
+                </Link>
+                <Link key={message.id} href={`/messages/${chatId}`}>
+                  <div className="block p-2 hover:bg-gray-200 cursor-pointer">
+                    {message.displayName}: {message.text}
+                    <br />
+                    <small>{formatTimestamp(message.timestamp)}</small>
+                  </div>
+                </Link>
+              </div>
             ))}
           </div>
         ))}

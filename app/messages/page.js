@@ -48,8 +48,8 @@ export default function page() {
 				{threads ? (
 					<div>
 						{threads.map((thread) => (
-							<div className="space-y-4">
-								<Link key={thread.docId} href={`/messages/${thread.docId}`}>
+							<div className="space-y-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow">
+								<Link className="p-2" key={thread.docId} href={`/messages/${thread.docId}`}>
 								<div className="block p-2 hover:bg-gray-200 cursor-pointer">
 									<h2 className="font-bold">{thread.recipient.username}</h2><br/>
 									<h3>{thread.latestMessage.displayName}: Sent on {new Date(thread.latestMessage.timestamp.toDate()).toLocaleDateString()}</h3>

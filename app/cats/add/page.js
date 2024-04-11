@@ -37,7 +37,7 @@ export default function Page() {
 		id: 0,
 		name: "",
 		breed: "",
-		gender: "",
+		gender: "Male",
 		birthdate: 0,
 		color: "",
 		eye_color: "",
@@ -99,6 +99,7 @@ export default function Page() {
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
+		console.log(name, value);
 		setCat((prevCat) => ({ ...prevCat, [name]: value }));
 	}
 
@@ -492,7 +493,6 @@ export default function Page() {
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
 										/>*/}
-										<div>
 											<select
 											name="gender"
 											value={cat.gender}
@@ -501,7 +501,6 @@ export default function Page() {
 												<option value="Male">Male</option>
 												<option value="Female">Female</option>
 											</select>
-										</div>
 										<input
 											type="date"
 											name="birthdate"

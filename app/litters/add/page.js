@@ -294,7 +294,7 @@ export default function Page() {
 							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 						</div>
 					) : (
-					<div className={"h-[330px]  "}>
+					<div className={showChildSelection ? "h-[330px]  " : "h-fit"}>
 						<button className="p-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg mt-6" onClick={handleMarkAsComplete}>Mark as Complete</button>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>

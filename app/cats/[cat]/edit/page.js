@@ -12,13 +12,12 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
+import EditThumbnail from "@/app/components/images/EditThumbnail"
 import CatButton from "@/app/components/cats/catbutton"
-import ImageUploader from "@/app/components/ImageUploader";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import CatCarouselController from "@/app/components/CatCarouselController";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
-import { set } from "firebase/database"
 
 export default function Page({params}){
 	const handleImageUpload = async (imageUrl) => {
@@ -383,13 +382,26 @@ export default function Page({params}){
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
+	const handleImageChange = (e) => {
+		const file = e.target.files[0];
+		const image = new Image();
+		image.onload = function () {
+			if (image.width !== image.height) {
+				alert("Thumbnails must be a square");
+			} else {
+				setThumbnail(file);
+			}
+		};
+		image.src = URL.createObjectURL(file);
+	};
+
 	const handleSubmit = async () => {
 		await cat.conditions.map(async (condition) => {
 			await updateObject('conditions', condition, false)
-		})
+		});
 		await cat.vaccinations.map(async (vaccination) => {
 			await updateObject('vaccinations', vaccination, false)
-		})
+		});
 		let ownerRef = null;
 		if (cat.owner)
 			ownerRef = doc(db, 'users', cat.owner.docId);
@@ -401,24 +413,19 @@ export default function Page({params}){
 			fatherRef = doc(db, 'cats', cat.father.docId);
 		const conditionRefs = cat.conditions.map(condition => doc(db, 'conditions', condition.docId));
 		const vaccinationRefs = cat.vaccinations.map(vaccination => doc(db, 'vaccinations', vaccination.docId));
-		let childrenRefs = [];
-		if (cat.children)
-			childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
-		const updatedCat = { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs }
-		const storage = getStorage();
-
+		const childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		if (thumbnail) {
-			const thumbnailRef = ref(storage, `thumbnails/${cat.id}`);
+			const thumbnailRef = ref(strg, 'thumbnails/');
 			await uploadBytes(thumbnailRef, thumbnail);
 			const thumbnailUrl = await getDownloadURL(thumbnailRef);
-			updatedCat.thumbnail = thumbnailUrl;
-		}
-
-		await updateObject('cats', updatedCat, true);
-
-		//Return to the cat's page
-		window.location.href = `/cats/${cat.id}`;
-	}
+			const updatedCat =  { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: thumbnailUrl  }
+			await updateObject('cats', updatedCat, true);
+		} else {
+			const updatedCat = { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
+			await updateObject('cats', updatedCat, true);
+		};
+		window.location.href = `/cats/${newId}`;
+	};
 
 	//Changes the page title when the cat is loaded
 	useEffect(() => {
@@ -441,7 +448,7 @@ export default function Page({params}){
 					<div className="mx-auto">
 						<div className="bg-white dark:bg-gray-500 p-10 rounded-xl drop-shadow-lg flex flex-col xl:flex-row justify-between">
 							<div className="mx-auto">
-								<ImageUploader onImageSelected={setThumbnail} inputKey={"thumbnail-uploader"} />
+								<EditThumbnail handleImageChange={handleImageChange}/>
 							</div>
 							<div className="flex flex-col w-[400px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
 								<h2 className="text-xl text-center mb-2">Details</h2>
@@ -471,20 +478,12 @@ export default function Page({params}){
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
 										/>
-										{/*<input
-											type="text"
-											name="gender"
-											placeholder="Gender"
-											value={cat.gender}
-											onChange={handleChange}
-											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-										/>*/}
 										<div>
 											<select
-											name="gender"
-											value={cat.gender}
-											onChange={handleChange}
-											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg">
+												name="gender"
+												value={cat.gender}
+												onChange={handleChange}
+												className="p-1 rounded-md pl-2 bg-white drop-shadow-lg">
 												<option value="Male">Male</option>
 												<option value="Female">Female</option>
 											</select>

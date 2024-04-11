@@ -98,8 +98,8 @@ export default function Page({params}) {
 
 	const handleFavoriteButton = async () => {
 		let updatedFavorites = dbUser.favorites.cats;
-		 console.log("Favorites before:")
-		 console.log(updatedFavorites)
+		//  console.log("Favorites before:")
+		//  console.log(updatedFavorites)
 		 const catRef = doc(db, 'cats', cat.docId);
 		if (favorite) {
 			//Remove favorite
@@ -127,9 +127,13 @@ export default function Page({params}) {
 					// })
 			setFavorite(true);
 		}
-		console.log("Favorites after:")
-		console.log(updatedFavorites)
+		// console.log("Favorites after:")
+		// console.log(updatedFavorites)
 		await updateUser({ ...dbUser, favorites: { ...dbUser.favorites, cats: updatedFavorites } });
+
+		//When updating the favorites, the local dbUser is not updated
+		//Updating it manually is a bit iffy, so instead we just reload the page
+		window.location.reload();
 	};
 
     //TO DO 

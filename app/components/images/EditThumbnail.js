@@ -1,4 +1,4 @@
-export default function EditThumbnail({ handleImageChange }) {
+export default function EditThumbnail({ handleImageChange, thumbnail }) {
 
 	return (
 		<div className="image-uploader">
@@ -7,7 +7,7 @@ export default function EditThumbnail({ handleImageChange }) {
 				accept="image"
 				onChange={handleImageChange} 
 			/>
-			{imgPreview && <img src={imgPreview} alt="Preview" style={{ width: '100px', height: 'auto' }} />}
+			{thumbnail && <img src={URL.createObjectURL(thumbnail)} alt="Preview" style={{ width: '100px', height: 'auto' }} />}
 		</div>
 	);
 }

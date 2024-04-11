@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image"
 import Logo from "./Logo";
@@ -12,6 +12,9 @@ import CustomCursor from "../components/CustomCursor";
 import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
 import {collection,addDoc,query,getDocs,Timestamp} from "firebase/firestore";
+import BackToTopButton from "../components/BackToTopButton";
+
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
     const {user,firebaseSignOut} = useUserAuth();
@@ -67,6 +70,7 @@ const Navbar = () => {
   const [contrastActive, setContrastActive] = useState(false);
   const [size, setSize] = useState({ x: 0, y: 0 });
   
+
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mousedown", handleMouseDown);
@@ -116,15 +120,57 @@ const Navbar = () => {
     return [null, null]
   }
 
+  // -- F -- Routing and Dropdown Parameters
+  const router = useRouter();
+
+  // Drop Down User Profile
+  const [userValue, setUserValue] = useState("");
+  useEffect(() => {
+    if (userValue === "Settings") {
+      setExpandSettings(true);
+      setUserValue("");
+    }
+    else if (userValue === "Dashboard") {
+      router.push("/dashboard")
+    }
+    else if (userValue === "Sign Out") {
+      handleSignOut();
+    }
+    else if (userValue === "Sign In") {
+      router.push("../login");
+    }
+  }, [userValue]);
+
+  function handleSettingsClose() {
+    setExpandSettings(false);
+    setUserValue("");
+  }
+
+  // -- F -- search bar click away
+  const settingsRef = useRef(null);
+	useEffect(() => {
+		// only add the event listener when the settings
+        if (!expandSettings) return;
+
+        function handleClick(event) {
+          if (settingsRef.current && !settingsRef.current.contains(event.target)) {
+            setExpandSettings(false);
+          }
+        }
+
+        window.addEventListener("mousedown", handleClick);
+        return () => { window.removeEventListener("mousedown", handleClick); }
+	}, [expandSettings]);
+
   return (
-    <div className="font-sans text-black font-normal text-base pt-6 bg-navbar-body-0 dark:bg-dark-navbar-body-0 z-40 relative">
+    <div className="font-sans text-black font-normal text-base pt-6 bg-navbar-body-0 dark:bg-dark-navbar-body-0 z-[100] relative">
     {toggleLargeCursor ? <CustomCursor /> : null}
 
-    <div className="w-full sticky mx-auto p-2 z-0">
+    <div className="w-full sticky mx-auto p-2 z-50">
     {/*<div className="size-[400px] absolute -top-10 right-0 -z-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#E29DA7] via-[#00000000] to-[#00000000]" />*/}
 
-      <div className="w-full h-full m-auto flex-col z-10 relative">
-        <div className="w-full flex m-auto space-x-6">
+      <div className="w-full h-full m-auto flex-col z-50 relative">
+        <div className="w-full flex m-auto space-x-6 relative z-50">
           <div className="w-full pl-4 left-10">
             <Logo callback={choosePage} />
           </div>
@@ -133,10 +179,30 @@ const Navbar = () => {
           <div className="w-full flex">
             {/* Settings */}
             <div id="mousemove" className="relative justify-end flex m-auto w-full px-10 z-40">
-              <button className={"p-2 rounded-full relative transition duration-300 text-black z-10 border-2 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (expandUser ? " bg-white bg-opacity-90 hover:scale-110 hover:bg-white hover:bg-opacity-100 border-gray-500 hover:border-gray-700" : " hover:bg-white hover:bg-opacity-90 bg-white bg-opacity-70 hover:scale-110 border-black hover:border-gray-700")}
+              {/*<button className={"p-2 rounded-full relative transition duration-300 text-black z-10 border-2 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (expandUser ? " bg-white bg-opacity-90 hover:scale-110 hover:bg-white hover:bg-opacity-100 border-gray-500 hover:border-gray-700" : " hover:bg-white hover:bg-opacity-90 bg-white bg-opacity-70 hover:scale-110 border-black hover:border-gray-700")}
                                 onClick={() => setExpandUser(!expandUser)}><Image alt="user" src="/img/userprofile.png" width={48} height={48} /></button>
               {/*<div className="bg-yellow-700 p-3 rounded-xl -translate-y-[21px] -z-20"/>*/}
 
+              <div className="absolute -z-10 bg-white size-16 rounded-full bg-opacity-80 drop-shadow-lg overflow-hidden">
+                <Image alt="user" src={user && user.thumbnail ? user.thumbnail : "/img/userprofile.png"} width={64} height={64} className="m-auto"/>
+              </div>
+
+              {/* Blocker Element */}
+              <div className=" h-16 w-32 absolute right-[105px] z-10 opacity-0"/>
+              <select value={userValue} onChange={(e) => setUserValue(e.target.value)} className=" opacity-0 h-16 w-32 p-4 bg-white">
+                <option value="" className="hidden" disabled></option>
+                <option value="Settings" className="font-bold p-4 top-12 appearance-auto">Settings</option>
+
+                {user ? (
+                <>
+                  <option value="Dashboard" className="font-bold p-4">Dashboard</option>
+                  <option value="Sign Out" className="font-bold p-4">Sign Out</option>
+                </>
+                ) : (
+                  <option value="Sign In" className="font-bold p-4">Sign In</option>
+                )}
+              </select>
+              
               { expandUser &&
                 (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-6 shadow transition duration-300 overflow-clip">
                   <div className="relative w-full z-40">
@@ -165,6 +231,41 @@ const Navbar = () => {
                   </div>
                 </div>)
               }
+
+              {/* New Settings Pop-up */}
+              {expandSettings &&
+                <div ref={settingsRef} className="z-50 bg-gray-700 rounded-2xl drop-shadow-lg bg-opacity-80 w-72 h-fit py-8 fixed right-1/2 top-1/3 translate-x-1/2">
+                  <div className="relative bg-white dark:bg-gray-300 py-4 px-2 rounded-xl drop-shadow-lg w-[80%] top-1/2 left-1/2 -translate-x-1/2">
+                    <h1 className="p-3 text-2xl text-center">Settings</h1>
+
+                    {/* Dark Theme */}
+                    <div className="flex p-2 space-x-4 text-black dark:text-white">
+                      <p className=" dark:text-header-text-0">Dark Theme</p>
+                      <button className="rounded-full" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+                        <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 bg-gray-700 dark:bg-green-400"} >
+                          <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 -translate-x-3 dark:translate-x-3"} />
+                        </div>
+                      </button>
+                    </div>
+
+                    {/* Large Cursor */}
+                    <div className="flex p-2 space-x-4 text-black dark:text-white">
+                      <p className=" dark:text-header-text-0">Large Cursor</p>
+                      <button className="rounded-full" onClick={() => setToggleLargeCursor(!toggleLargeCursor)}>
+                        <div className={"w-12 h-6 rounded-full border-2 flex transition duration-200 " + (toggleLargeCursor ? " bg-green-400 " : " bg-gray-700 dark:bg-gray-500")} >
+                          <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 " + (toggleLargeCursor ? " translate-x-3" : " -translate-x-3")} />
+                        </div>
+                      </button>
+                    </div>
+
+                    {/* Close */}
+                    <div className="w-full flex justify-end p-2 pt-4">
+                      <button onClick={() => handleSettingsClose()} className="bg-navbar-body-1 dark:bg-gray-500 dark:text-dark-header-text-0 py-2 px-4 rounded-xl drop-shadow-lg relative justify-end">Close</button>
+                    </div>
+                  </div>
+                </div>
+              }
+
               {expandSettings && expandUser && 
                 (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-[344px] shadow transition duration-300 overflow-clip">
                 <div className="flex p-2 space-x-4 text-black dark:text-white">
@@ -174,12 +275,6 @@ const Navbar = () => {
                       <div className={"bg-gray-300 dark:bg-white size-4 rounded-full m-auto transition duration-300 -translate-x-3 dark:translate-x-3"} />
                     </div>
                   </button>
-                </div>
-                <div className="flex p-2 space-x-4 text-black dark:text-white relative border-y">
-                  <p>Contrast</p>
-                  <div className="rounded-full w-full pr-2">
-                    <input className=" bg-gray-700 dark:bg-gray-500 border-2 my-auto h-6 p-1 rounded-full appearance-none" type="range" min="0" max="2" step="0.1" id="contrast-slider"/>
-                  </div>
                 </div>
                 <div className="flex p-2 space-x-4 text-black dark:text-white">
                   <p>Large Cursor</p>
@@ -197,6 +292,7 @@ const Navbar = () => {
 
       </div>
     </div>
+
         {/* Navigation Buttons */}
         <div className="w-full h-full flex m-auto mt-2 relative border border-navbar-body-2  -z-10">
           <div className="border-r border-navbar-body-2  w-full flex justify-center"><LinkButton text="About" selected={aboutSelected} callback={choosePage} /></div>

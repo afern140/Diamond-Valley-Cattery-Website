@@ -94,7 +94,7 @@ export default function CarouselDefault({ images }) {
 
 
 	return (
-		<div className="grid max-h-[440px] w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
+		<div className="grid h-[70%] mx-auto aspect-video w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
 			<Carousel
 				className="pb-5"
 				autoplay

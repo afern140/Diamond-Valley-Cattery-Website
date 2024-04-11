@@ -7,7 +7,6 @@ import { doc, getDoc, Timestamp } from "firebase/firestore"
 import { db } from "@/app/_utils/firebase"
 import { useUserAuth } from "@/app/_utils/auth-context"
 import { getObject, getObjects, createObject, updateObject } from "@/app/_utils/firebase_services"
-import { getUser } from "@/app/_utils/user_services"
 import EditCondition from "@/app/components/conditions/edit-condition"
 import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
@@ -66,8 +65,7 @@ export default function Page({params}){
 		}
 	};
 	const [thumbnail, setThumbnail] = useState(null);
-	const {user} = useUserAuth();
-	const [filteredUser, setFilteredUser] = useState();
+	const { user, dbUser } = useUserAuth();
 	const [cat, setCat] = useState();
 	const [cats, setCats] = useState();
 	const [conditions, setConditions] = useState();
@@ -141,14 +139,6 @@ export default function Page({params}){
 	}, [params]);
 
 	useEffect(() => {
-		const fetchUser = async () => {
-			const filteredUser = await getUser(user);
-			setFilteredUser(filteredUser);
-		};
-		fetchUser();
-	}, [user]);
-
-	useEffect(() => {
 		const fetchCats = async () => {
 			const cats = await getObjects('cats');
 			setCats(cats);
@@ -176,6 +166,13 @@ export default function Page({params}){
 		const { name, value } = e.target;
 		setCat((prevCat) => ({ ...prevCat, [name]: value }));
 	}
+
+	const handleDateChange = (e) => {
+		const { name, value } = e.target;
+		const date = new Date(value);
+		const timestamp = Timestamp.fromDate(date);
+		setCat((prevCat) => ({ ...prevCat, [name]: timestamp }))
+	};
 
 	const handleConditionChange = (e, conditionId) => {
 		const { name, value } = e.target;
@@ -418,111 +415,107 @@ export default function Page({params}){
 		<main className=" min-h-screen relative text-[#092C48] pb-16">
 			<BackgroundUnderlay />
 			{cat ? (
-				<div className="">
+				<div className="w-4/5 mx-auto pb-16">
 					<div className="pt-20 flex pb-10">
 						<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
 							<span className="text-6xl pb-10 font-extrabold">Edit {cat.name}</span> <br />
 						</div>
 					</div>
-
-					<div className="flex w-4/5 p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
-						<div className="w-full flex-col space-y-2">
-							<h2 className="text-2xl mb-2">Details</h2>
-							<div className="flex space-x-3">
-								<h3 className="my-auto w-20 text-right">Name: </h3>
-								<input
-								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
-								type="text"
-								name="name"
-								placeholder={cat.name}
-								value={cat.name}
-								onChange={handleChange}
-							/>
+					<div className="mx-auto">
+						<div className="bg-white dark:bg-gray-500 p-10 rounded-xl drop-shadow-lg flex flex-col xl:flex-row justify-between">
+							<div className="mx-auto">
+								<ImageUploader onImageSelected={setThumbnail} inputKey={"thumbnail-uploader"} />
 							</div>
-							<div className="flex space-x-3">
-								<h3 className="my-auto w-20 text-right">Breed: </h3>
-								<input
-								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
-								type="text"
-								name="breed"
-								placeholder={cat.breed}
-								value={cat.breed}
-								onChange={handleChange}
-								/>
+							<div className="flex flex-col w-[400px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
+								<h2 className="text-xl text-center mb-2">Details</h2>
+								<div className="grid grid-cols-3">
+									<div className="col-span-1 text-end pr-2 space-y-3">
+										<p className="h-7 mt-1 my-auto">Name:</p>
+										<p className="h-7 mt-1 my-auto">Breed:</p>
+										<p className="h-7 mt-1 my-auto">Gender:</p>
+										<p className="h-7 mt-1 my-auto">Birthdate:</p>
+										<p className="h-7 mt-1 my-auto">Color:</p>
+										<p className="h-7 mt-1 my-auto">Eye Color:</p>
+									</div>
+									<div className="col-span-2 space-y-2">
+										<input
+											type="text"
+											name="name"
+											placeholder="Name"
+											value={cat.name}
+											onChange={handleChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+										/>
+										<input
+											type="text"
+											name="breed"
+											placeholder="Breed"
+											value={cat.breed}
+											onChange={handleChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+										/>
+										<input
+											type="text"
+											name="gender"
+											placeholder="Gender"
+											value={cat.gender}
+											onChange={handleChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+										/>
+										<input
+											type="date"
+											name="birthdate"
+											value={cat.birthdate ? new Date(cat.birthdate.toDate()).toISOString().split('T')[0] : ""}
+											onChange={handleDateChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+										/>
+										<input
+											type="text"
+											name="color"
+											placeholder="Color"
+											value={cat.color}
+											onChange={handleChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+										/>
+										<input
+											type="text"
+											name="eye_color"
+											placeholder="Eye Color"
+											value={cat.eye_color}
+											onChange={handleChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
+										/>
+									</div>
+								</div>
 							</div>
-							<div className="flex space-x-3">
-								<h3 className="my-auto w-20 text-right">Gender: </h3>
-								<input
-								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
-								type="text"
-								name="gender"
-								placeholder={cat.gender}
-								value={cat.gender}
-								onChange={handleChange}
-								/>
-							</div>
-							<div className="flex space-x-3">
-								<h3 className="my-auto w-20 text-right">Age: </h3>
-								<input
-								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
-								type="number"
-								name="age"
-								placeholder={cat.age}
-								value={cat.age}
-								onChange={handleChange}
-								/>
-							</div>
-							<div className="flex space-x-3">
-								<h3 className="my-auto w-20 text-right">Color: </h3>
-								<input
-								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
-								type="text"
-								name="color"
-								placeholder={cat.color}
-								value={cat.color}
-								onChange={handleChange}
-								/>
-							</div>
-							<div className="flex space-x-3">
-								<h3 className="my-auto w-22 text-right">Eye Color: </h3>
-								<input
-								className="p-1 rounded-xl pl-2 bg-[#e5e5ff] drop-shadow-lg"
-								type="text"
-								name="eye_color"
-								placeholder={cat.eye_color}
-								value={cat.eye_color}
-								onChange={handleChange}
-								/>
-							</div>
-						</div>
-						<div className="bg-[#092C48] w-4 h-4/5 rounded-full relative" />
-						<div className="size-full">	
-							<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
-							<div className="size-full">
+							<div className="flex flex-col xl:w-1/3 w-[300px] h-fit mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
+								<h2 className="text-xl text-center mb-2">Description</h2>
 								<textarea
-									className="p-1 rounded-xl pl-2 size-full bg-[#e5e5ff] drop-shadow-lg"
 									type="text"
 									name="description"
-									placeholder={cat.description}
+									placeholder="Description"
 									value={cat.description}
 									onChange={handleChange}
+									className="p-1 rounded-md pl-2 min-h-[200px] bg-white drop-shadow-lg"
 								/>
 							</div>
 						</div>
 					</div>
-					<ImageUploader onImageSelected={setThumbnail} inputKey="thumbnail-uploader" />
-					<div className="">
+					{/* Conditions & Vaccinations */}
+					<div className=" w-4/5 mx-auto">
+						
+						{/* Conditions */}
 						<h2 className="text-2xl font-bold mb-4 mt-10 px-10 text-center dark:text-dark-header-text-0">Conditions</h2>
-						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
-							<div className="flex flex-wrap space-x-6">
+						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white dark:bg-gray-500  drop-shadow-lg">
+							<div className={"flex flex-wrap overflow-y-auto " + (cat.conditions && cat.conditions.length > 0 ? " h-[280px]" : " h-fit")}>
 								{cat.conditions ? (
 									cat.conditions.map((condition) => (
 										<EditCondition key={condition.id} condition={condition} handleConditionChange={handleConditionChange} handleTreatedChange={handleTreatedChange} handleRemoveCondition={handleRemoveCondition}/>
 									)
-								)) : (<h2>None</h2>)}
-								<div className="flex flex-col mb-4 drop-shadow-lg bg-white rounded-xl p-2">
+								)) : (<h2 className="italic text-gray-500">None</h2>)}
+								<div className="flex flex-col mb-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 border-2 border-dashed border-gray-300 m-2 rounded-xl p-2">
 									{selectedCondition ? (
-										<>
+										<div>
 											<select
 												onChange={(e) => handleSelectCondition(e)}
 												className=" bg-white drop-shadow-lg rounded-md p-2 mb-2"
@@ -535,7 +528,7 @@ export default function Page({params}){
 											<h3 className=" bg-white drop-shadow-lg rounded-md p-2 mb-2">{selectedCondition.description}</h3>
 											<h3 className=" bg-white drop-shadow-lg rounded-md p-2 mb-2">{selectedCondition.treatment}</h3>
 											<h3 className=" bg-white drop-shadow-lg rounded-md p-2 mb-2">{selectedCondition.treated ? "Finished" : "In Progress"}</h3>
-										</>
+										</div>
 									) : (
 										<select
 											onChange={(e) => handleSelectCondition(e)}
@@ -552,19 +545,21 @@ export default function Page({params}){
 								<AddCondition newCondition={newCondition} handleConditionChange={handleConditionChange} handleTreatedChange={handleTreatedChange} handleAddCondition={handleAddCondition}/>
 							</div>
 						</div>
-
+						
+						{/* Vaccinations */}
 						<h2 className="text-2xl font-bold mb-4 mt-10 px-10 text-center dark:text-dark-header-text-0">Vaccinations</h2>
-						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white drop-shadow-lg">
+						<div className="flex w-fit p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white dark:bg-gray-500  drop-shadow-lg">
 							<div>
-								<div className="flex flex-wrap space-x-6">
+								<div className={"flex flex-wrap overflow-y-auto " + (cat.vaccinations && cat.vaccinations.length > 0 ? " h-[820px]" : " h-fit")}>
 									{cat.vaccinations ? (
 										cat.vaccinations.map((vaccination) => (
 											<EditVaccination vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleVaccinationChange={handleVaccinationChange} handleStatusChange={handleStatusChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleRemoveVaccination={handleRemoveVaccination} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection}/>
 										)
 									)) : (<h2>None</h2>)}
-									<div className="flex flex-col mb-4 bg-white drop-shadow-lg rounded-md p-2">
+									<div className="flex flex-col mb-4 bg-navbar-body-1 dark:bg-gray-300 m-2 drop-shadow-lg rounded-md border-2 border-dashed border-gray-300 p-2 w-[320px] h-fit">
 										{selectedVaccine ? (
-										<>
+										<div>
+											<h2 className="text-center font-bold mb-4">Select a vaccine to add</h2>
 											<select
 												onChange={(e) => handleSelectVaccine(e)}
 												className=" bg-white drop-shadow-lg rounded-md p-2 mb-2"
@@ -577,7 +572,7 @@ export default function Page({params}){
 											<h3 className=" bg-white drop-shadow-lg rounded-md p-2 mb-2">{selectedVaccine.description}</h3>
 											<h3 className=" bg-white drop-shadow-lg rounded-md p-2 mb-2">{selectedVaccine.completed ? "Finished" : "In Progress"}</h3>
 											<h3 className=" bg-white drop-shadow-lg rounded-md p-2 mb-2">{selectedVaccine.dosesTaken}</h3>
-										</>
+										</div>
 										) : (
 										<select
 											onChange={(e) => handleSelectVaccine(e)}
@@ -597,44 +592,72 @@ export default function Page({params}){
 						</div>
 					</div>
 
-					<div>
-						<h2 className="text-xl font-bold mb-4 mt-6 px-10 dark:text-dark-header-text-0">Parents</h2>
-						<div className="flex px-10 space-x-10 mt-6 flex-wrap">
+					{/* Parents */}
+					<div className=" w-4/5 mx-auto mt-6 bg-white dark:bg-gray-500  p-10 rounded-xl drop-shadow-lg">
+						<h2 className="text-xl font-bold mb-4 mt-6 dark:text-dark-header-text-0">Parents</h2>
+						<div className="flex space-x-10 mt-6 flex-wrap">
+							{/* Mother */}
 							{cat.mother ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+								<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 									<h2 className="font-normal">Mother</h2>
 									<CatButton cat={cat.mother} />
 									<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Mother</button>
 								</div>
-							) : (<button onClick={() => handleSelectParentToUpdate('mother')}>Add Mother</button>)}
-							{cat.father ? (
-								<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
-									<h2 className="font-normal">Father</h2>
-									<CatButton cat={cat.father} />
-									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Father</button>
-								</div>
-							) : (<button onClick={() => handleSelectParentToUpdate('father')}>Add Father</button>)}
-						</div>
-						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
-					</div>
-					<div className="px-10 mt-10">
-						<h2 className="text-xl font-bold mb-4 dark:text-dark-header-text-0">Children</h2>
-						<div className="flex flex-wrap">
-							{cat.children ? (
-								cat.children.map((child) =>(
-									<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
-										<CatButton cat={child} />
-										<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Remove {child.name}</button>
-									</div>
-								))
-							) : (<></>)}
-							<div className=" flex justify-center flex-col font-bold p-4 bg-[#e5e5ff] drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+							) : (
+								<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 								<Image
 									src="/img/Placeholder.png"
 									alt="Cat"
 									width={200}
 									height={100}
-									className="border-2 border-black m-5"
+									className="border border-black rounded-xl m-5"
+								/>
+								<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Mother</button>
+							</div>
+							)}
+							
+							{/* Father */}
+							{cat.father ? (
+								<div className=" flex justify-center flex-col font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+									<h2 className="font-normal">Father</h2>
+									<CatButton cat={cat.father} />
+									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Replace Father</button>
+								</div>
+							) : (
+							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+								<Image
+									src="/img/Placeholder.png"
+									alt="Cat"
+									width={200}
+									height={100}
+									className="border border-black rounded-xl m-5"
+								/>
+								<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Father</button>
+							</div>)}
+						
+						</div>
+						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
+					</div>
+
+					{/* Children */}
+					<div className=" w-4/5 mx-auto mt-6 p-10 bg-white dark:bg-gray-500  rounded-xl drop-shadow-lg">
+						<h2 className="text-xl font-bold mb-4 dark:text-dark-header-text-0">Children</h2>
+						<div className="flex flex-wrap">
+							{cat.children ? (
+								cat.children.map((child) =>(
+									<div className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+										<CatButton cat={child} />
+										<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Remove {child.name}</button>
+									</div>
+								))
+							) : (<></>)}
+							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+								<Image
+									src="/img/Placeholder.png"
+									alt="Cat"
+									width={200}
+									height={100}
+									className="border border-black rounded-xl m-5"
 								/>
 								<button onClick={() => handleAddChild()} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Select Child</button>
 							</div>
@@ -642,7 +665,7 @@ export default function Page({params}){
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
 					<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />
-					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-[#e5e5ff] rounded-xl mt-16 text-2xl">Submit</button>
+					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 dark:bg-gray-600 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300">Submit</button>
 				</div>
 			) : (
 				<h1>Loading</h1>

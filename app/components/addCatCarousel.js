@@ -61,13 +61,13 @@ function AddCatCarousel({ onImageUpload, cat }) {
   }, [imgPreview]);
 
   return (
-    <>
+    <div>
       <div className="mt-8">
         <input type="file" onChange={handleImageChange} className="mb-2" />
         {imgPreview && <img src={imgPreview} alt="Preview" className="w-24 h-auto" />}
       </div>
       <button type="button" onClick={handleConfirmUpload} className="bg-blue-500 text-white py-2 px-4 mt-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 cursor-pointer">Confirm Upload</button>
-    </>
+    </div>
   );
 }
 

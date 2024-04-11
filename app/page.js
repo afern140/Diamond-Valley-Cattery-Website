@@ -19,8 +19,8 @@ export default function Home() {
         </div>
 
         {/* Top Solid-Color Part */}
-        <div className="w-full mx-auto -mb-20 relative z-10">
-          <div className="w-4/5 mx-auto z-10 relative">
+        <div className="w-full mx-auto -mb-32 relative z-10">
+          <div className="w-4/5 mx-auto pt-8 z-10 relative">
             <CarouselDefault />
           </div>
         </div>

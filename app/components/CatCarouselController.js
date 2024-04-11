@@ -84,14 +84,22 @@ function CatCarouselController({ onImageUpload, cat }) {
   }, [imgPreview]);
 
   return (
-    <>
-      <div className="mt-8 flex flex-col items-center">
-      <input type="file" onChange={handleImageChange} className="mb-2 mr-4 py-2 px-4 rounded-full border-0 text-sm font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100" />
-
-        {imgPreview && <img src={imgPreview} alt="Preview" className="w-32 h-32 object-cover mt-4 rounded-lg shadow-lg" />}
+    <div className="w-4/5 mx-auto bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg p-10 mt-6">
+      <h1 className="text-center text-2xl dark:text-dark-header-text-0 font-bold">Cat Images</h1>
+      <div className="mt-8 flex items-center">
+        <label htmlFor="carouselDrop" className="h-[300px] w-auto min-w-[300px] m-4 rounded-xl border-4 border-dashed border-gray-300 hover:scale-105 hover:cursor-pointer transition duration-300">
+          <input hidden id="carouselDrop" type="file" onChange={handleImageChange} className=" relative z-50 mr-4 py-2 px-4 rounded-full border-0 text-sm font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100" />
+          <div className="w-1/2 h-1/2 relative flex mx-auto translate-y-1/2">
+            <div className="bg-gray-300 w-full h-2 absolute top-1/2 -translate-y-1/2 rounded" />
+            <div className="bg-gray-300 w-2 h-full absolute left-1/2 -translate-x-1/2 rounded" />
+          </div>
+        </label>
+        {imgPreview && <img src={imgPreview} alt="Preview" className="h-[300px] w-auto object-cover rounded-lg drop-shadow-lg" />}
       </div>
-      <button type="button" onClick={handleConfirmUpload} className="bg-blue-500 text-white py-2 px-4 mt-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out transform hover:scale-105">Confirm Upload</button>
-      <button type="button" onClick={handleCancelUpload} className="bg-gray-300 text-gray-700 py-2 px-4 mt-4 ml-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50 transition duration-150 ease-in-out">Cancel Upload</button>
+      <div className="flex justify-center w-full">
+        <button type="button" onClick={handleConfirmUpload} className="bg-blue-500 text-white py-2 px-4 mt-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 ease-in-out transform hover:scale-105 focus:scale-95 focus:bg-blue-700">Confirm Upload</button>
+        <button type="button" onClick={handleCancelUpload} className="bg-gray-300 text-gray-700 py-2 px-4 mt-4 ml-2 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50 transition duration-150 ease-in-out">Cancel Upload</button>
+      </div>
       <div className="mt-4 grid grid-cols-3 gap-4">
         {cat.carouselImage && cat.carouselImage.map((imageInfo, index) => (
           <div key={index} className="flex flex-col items-center">
@@ -100,7 +108,7 @@ function CatCarouselController({ onImageUpload, cat }) {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }
 

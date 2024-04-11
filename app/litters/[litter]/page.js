@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getDoc } from "firebase/firestore";
 import { getObject, getObjects } from "@/app/_utils/firebase_services";
-import Carousel from "@/app/components/carousel"
+import Carousel from "@/app/components/LitterCarousel"
 import CatButton from "@/app/components/cats/catbutton";
 import CatSelection from "@/app/components/cats/cat-selection";
 
@@ -54,7 +54,7 @@ export default function Page({ params }) {
 						</div>
 					</div>
 
-					<Carousel/>
+					<Carousel LitterData = {litter}/>
 
 					{/* Details */}
 					<div className="flex flex-col xl:flex-row w-full space-x-0 xl:space-x-6 mx-auto text-xl font-bold text-left text-header-text-0 dark:text-dark-header-text-0">

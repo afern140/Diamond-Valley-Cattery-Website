@@ -87,14 +87,6 @@ export default function Page() {
 		setAgeType("");
 		setColorType("");
 	}
-
-	//Handle sorts
-	const sortItems = (value) => {
-		const split = value.split(" ");
-		const type = split[0];
-		const filter = split[1];
-		setSortingMethod(filter);
-	}
 	
 	//When search, filters, or sorting method change, update the list of cats
 	useEffect(() => {

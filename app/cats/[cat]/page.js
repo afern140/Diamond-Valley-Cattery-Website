@@ -21,80 +21,78 @@ export default function Page({params}) {
 
     const {createOrJoinChat} = useChat();
 	const { user, dbUser } = useUserAuth();
-	const [filteredUser, setFilteredUser] = useState();
+	// const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
 	const [favorite, setFavorite] = useState(false);
 
-	const fetchCat = async () => {
-		const cat = await getObject('cats', parseInt(params.cat));
-		console.log('Cat Data', cat);
-		if (cat.mother) {
-			const motherDoc = await getDoc(cat.mother);
-			cat.mother = motherDoc.data();
-		} else {
-			cat.mother = null;
-		}
-		if (cat.father) {
-			const fatherDoc = await getDoc(cat.father);
-			cat.father = fatherDoc.data();
-		} else {
-			cat.father = null;
-		}
-		if (cat.owner) {
-			const ownerDoc = await getDoc(cat.owner);
-			cat.owner = ownerDoc.data();
-		} else {
-			cat.owner = null;
-		}
-		if (cat.children) {
-			const childrenData = await Promise.all(cat.children.map(async (childRef) => {
-				const childDoc = await getDoc(childRef);
-				return childDoc.data();
-			}));
-			cat.children = childrenData;
-		}
-		if (cat.conditions && Array.isArray(cat.conditions)) {
-			const conditionsData = await Promise.all(cat.conditions.map(async (conditionRef) => {
-				const conditionDoc = await getDoc(conditionRef);
-				return conditionDoc.data();
-			}));
-			cat.conditions = conditionsData;
-		}
-		else
-			cat.conditions = [];
-
-		if (cat.vaccinations && Array.isArray(cat.vaccinations)) {
-			const vaccinationsData = await Promise.all(cat.vaccinations.map(async (vaccinationRef) => {
-				const vaccinationDoc = await getDoc(vaccinationRef);
-				return vaccinationDoc.data();
-			}));
-			cat.vaccinations = vaccinationsData;
-		}
-		else
-			cat.vaccinations = [];
-		setCat(cat);
-	};
-
 	useEffect(() => {
+		const fetchCat = async () => {
+			const cat = await getObject('cats', parseInt(params.cat));
+			if (cat.mother) {
+				const motherDoc = await getDoc(cat.mother);
+				cat.mother = motherDoc.data();
+			} else {
+				cat.mother = null;
+			}
+			if (cat.father) {
+				const fatherDoc = await getDoc(cat.father);
+				cat.father = fatherDoc.data();
+			} else {
+				cat.father = null;
+			}
+			if (cat.owner) {
+				const ownerDoc = await getDoc(cat.owner);
+				cat.owner = ownerDoc.data();
+			} else {
+				cat.owner = null;
+			}
+			if (cat.children) {
+				const childrenData = await Promise.all(cat.children.map(async (childRef) => {
+					const childDoc = await getDoc(childRef);
+					return childDoc.data();
+				}));
+				cat.children = childrenData;
+			}
+			if (cat.conditions && Array.isArray(cat.conditions)) {
+				const conditionsData = await Promise.all(cat.conditions.map(async (conditionRef) => {
+					const conditionDoc = await getDoc(conditionRef);
+					return conditionDoc.data();
+				}));
+				cat.conditions = conditionsData;
+			}
+			else
+				cat.conditions = [];
+	
+			if (cat.vaccinations && Array.isArray(cat.vaccinations)) {
+				const vaccinationsData = await Promise.all(cat.vaccinations.map(async (vaccinationRef) => {
+					const vaccinationDoc = await getDoc(vaccinationRef);
+					return vaccinationDoc.data();
+				}));
+				cat.vaccinations = vaccinationsData;
+			}
+			else
+				cat.vaccinations = [];
+			setCat(cat);
+		};
 		fetchCat();
 	}, [params]);
 
-	useEffect(() => {
-		const fetchUser = async () => {
-			const filteredUser = await getUser(user);
-			setFilteredUser(filteredUser);
-		};
-		fetchUser();
-	}, [user]);
+	// useEffect(() => {
+	// 	const fetchUser = async () => {
+	// 		const filteredUser = await getUser(user);
+	// 		setFilteredUser(filteredUser);
+	// 	};
+	// 	fetchUser();
+	// }, [user]);
 	
 	useEffect(() => {
 		const fetchFavorites = async () => {
-			if (filteredUser && filteredUser.favorites && filteredUser.favorites.cats && cat) {
-				setFavorite(filteredUser.favorites.cats.some(ref => ref.path === doc(db, 'cats', cat.docId).path));
+			if (dbUser && dbUser.favorites && dbUser.favorites.cats && cat) {
+				setFavorite(dbUser.favorites.cats.some(ref => ref.path === doc(db, 'cats', cat.docId).path));
 			}
 		};
 		fetchFavorites();
-	}, [filteredUser, cat]);
+	}, [dbUser, cat]);
 
 	//Changes the page title when the cat is loaded
 	useEffect(() => {
@@ -107,15 +105,15 @@ export default function Page({params}) {
 	const handleFavoriteButton = async () => {
 		let updatedFavorites;
 		if (favorite) {
-			updatedFavorites = filteredUser.favorites.cats.filter(ref => ref.path !== doc(db, 'cats', cat.docId).path);
+			updatedFavorites = dbUser.favorites.cats.filter(ref => ref.path !== doc(db, 'cats', cat.docId).path);
 		} else {
-			if (!filteredUser.favorites.cats.some(ref => ref.path === doc(db, 'cats', cat.docId).path)) {
-				updatedFavorites = [...filteredUser.favorites.cats, doc(db, 'cats', cat.docId)];
+			if (!dbUser.favorites.cats.some(ref => ref.path === doc(db, 'cats', cat.docId).path)) {
+				updatedFavorites = [...dbUser.favorites.cats, doc(db, 'cats', cat.docId)];
 			} else {
-				updatedFavorites = filteredUser.favorites.cats;
+				updatedFavorites = dbUser.favorites.cats;
 			}
 		}
-		await updateUser({ ...filteredUser, favorites: { ...filteredUser.favorites, cats: updatedFavorites } });
+		await updateUser({ ...dbUser, favorites: { ...dbUser.favorites, cats: updatedFavorites } });
 		setFavorite(updatedFavorites.some(ref => ref.path === doc(db, 'cats', cat.docId).path));
 	};
 
@@ -131,21 +129,20 @@ export default function Page({params}) {
             }
         }
     };
-	const handleImageUpload = async (imageUrl) => {
-		try {
-			fetchCat()
-		} catch (error) {
-			console.error("Error handling image upload:", error);
-		}
-	};
+	// const handleImageUpload = async (imageUrl) => {
+	// 	try {
+	// 		fetchCat()
+	// 	} catch (error) {
+	// 		console.error("Error handling image upload:", error);
+	// 	}
+	// };
 
 	// -- F -- Routing
-	const signinRoute = useRouter();
+	// const signinRoute = useRouter();
 
 	return(
 		<main className="relative">
 			<BackgroundUnderlay />
-
 			{cat ? (
 				<section className="relative z-20 pb-16 w-4/5 mx-auto">
 					<div className="pt-20 flex pb-10 relative z-20">
@@ -159,8 +156,7 @@ export default function Page({params}) {
 									</div>
 								</button>
 							) : null}
-
-							{filteredUser && filteredUser.role === 'breeder' && cat.owner && cat.owner.uid === user.uid ? (
+							{dbUser && dbUser.role === 'breeder' && cat.owner && cat.owner.uid === user.uid ? (
 								<Link className="relative pointer-events-auto" href={`/cats/${cat.id}/edit`}>
 									<button className="relative pointer-events-auto">
 										<Image alt="Edit" src="/img/edit.svg" width={48} height={48} />
@@ -169,11 +165,9 @@ export default function Page({params}) {
 							) : null}
 						</div>
 					</div>
-					
 					<div className=" w-full flex">
 						<Carousel images={cat.carouselImage} />
 					</div>
-						
 					<div className="flex flex-col xl:flex-row w-full">
 						{/* First split of the section */}
 						<div className="flex flex-col w-full  text-xl font-bold text-left text-header-text-0 dark:text-dark-header-text-0">
@@ -181,7 +175,6 @@ export default function Page({params}) {
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
 								<h3>Gender: <span className="font-normal">{cat.gender}</span></h3>
-
 								<h3>Birthdate: <span className="font-normal">{new Date(cat.birthdate.toDate()).toLocaleDateString()}</span></h3>
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
@@ -191,24 +184,30 @@ export default function Page({params}) {
 								<p className="font-normal">{cat.description ? cat.description : <span className="italic text-gray-600">No description</span>}</p>
 							</div>
 						</div>
-
 						{/* Second split of the section */}
 						<div className="flex flex-col xl:ml-auto mb-auto mt-6">
 							<div className="text-[#092C48] dark:text-dark-header-text-0 font-bold bg-white dark:bg-gray-500 p-8 rounded-xl drop-shadow-xl">
 								<h2 className="text-2xl text-center mb-4">Want to Purchase {cat.name}?</h2>
-								<button onClick={user ? handleMeetingButton : (() => signinRoute.push("../../../login"))} className="mx-auto justify-center flex bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg rounded-xl p-4 text-xl" >
-									<div className="relative flex min-w-[200px] w-[270px]">
-										<span className="my-auto flex text-header-text-0 ">{!user ? "Sign In to" : ""} Request a Meeting</span>
-										<div className="flex mx-3 w-[3px] bg-[#092C48] rounded-full" />
-										<button onClick={user ? handleMeetingButton : (() => signinRoute.push("../../../login"))} className="bg-white bg-opacity-0 hover:bg-opacity-50 active:bg-opacity-80 transition duration-100 p-2 rounded-full">
+								{user ? (
+									<button onClick={handleMeetingButton} className="mx-auto justify-center flex bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg rounded-xl p-4 text-xl" >
+										<div className="relative flex min-w-[200px] w-[270px]">
+											<h2 className="my-auto flex text-header-text-0 ">Request a Meeting</h2>
+											<div className="flex mx-3 w-[3px] bg-[#092C48] rounded-full" />
 											<Image alt=">" src="/img/right-arrow.svg" width={32} height={32} />
-										</button>
-									</div>
-								</button>
+										</div>
+									</button>
+								) : (
+									<Link href={"/login"} className="mx-auto justify-center flex bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg rounded-xl p-4 text-xl" >
+										<div className="relative flex min-w-[200px] w-[270px]">
+											<h2 className="my-auto flex text-header-text-0 ">Sign In to Request a Meeting</h2>
+											<div className="flex mx-3 w-[3px] bg-[#092C48] rounded-full" />
+											<Image alt=">" src="/img/right-arrow.svg" width={32} height={32} />
+										</div>
+									</Link>
+								)}
 							</div>
 						</div>
 					</div>
-
 					{/* Conditions */}
 					<div className=" mt-10 text-header-text-0 bg-white w-fit dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
 						<h2 className="text-2xl mb-2">Conditions</h2>
@@ -216,7 +215,7 @@ export default function Page({params}) {
 							{cat.conditions && cat.conditions.length > 0 ? (
 								cat.conditions.map((condition) => (
 									<div key={condition.id} className="relative flex-col rounded-md p-4 m-4 min-h-40 w-[380px] bg-navbar-body-1 dark:bg-gray-300">
-										<h3 className="w-[300px]">{condition.name}</h3>
+										<h3 className="w-[300px] font-bold">{condition.name}</h3>
 										<p>Description: <span className="font-normal">{condition.description}</span></p>
 										<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
 										<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
@@ -233,7 +232,7 @@ export default function Page({params}) {
 							{cat.vaccinations && cat.vaccinations.length > 0 ? (
 							cat.vaccinations.map((vaccination) => (
 								<div className="relative flex-col rounded-md p-4 m-4 min-h-64 w-[380px] bg-navbar-body-1 dark:bg-gray-300">
-									<h3 className="w-[300px]">{vaccination.name}</h3>
+									<h3 className="w-[300px] font-bold">{vaccination.name}</h3>
 									<p>Description: <span className="font-normal">{vaccination.description}</span></p>
 									<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 									<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
@@ -243,7 +242,7 @@ export default function Page({params}) {
 											<li key={index} className="font-normal">
 												<div className="flex space-x-2">
 													<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
-													{new Date(date.toDate()).toISOString().split('T')[0]}
+													{new Date(date.toDate()).toLocaleDateString()}
 												</div>
 											</li>
 										))}
@@ -255,7 +254,7 @@ export default function Page({params}) {
 											<li key={index} className="font-normal">
 												<div className="flex space-x-2">
 													<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
-													<span>{date && new Date(date.toDate()).toISOString().split('T')[0]}</span>
+													<span>{date && new Date(date.toDate()).toLocaleDateString()}</span>
 												</div>
 											</li>
 										))}
@@ -301,16 +300,11 @@ export default function Page({params}) {
 							</div>
 						) : null}
 					</div>
-					{filteredUser ?
-						<Comments cat={cat} user={filteredUser}/>
-					:
-						<Comments cat={cat} user={null}/>
-					}
+					<Comments cat={cat} user={dbUser}/>
 				</section>
 			) : (
 				<h1 className="text-header-text-0 dark:text-dark-header-text-0 text-3xl text-center font-bold p-5">Error 404: Cat Not Found.</h1>
 			)}
 		</main>
 	)
-    //No cats are goods cats
 }

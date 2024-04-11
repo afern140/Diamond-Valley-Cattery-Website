@@ -199,7 +199,7 @@ export default function Page({params}) {
 					</div>
 					<div className="flex flex-col xl:flex-row w-full">
 						{/* First split of the section */}
-						<div className="flex flex-col w-full  text-xl font-bold text-left text-header-text-0 dark:text-dark-header-text-0">
+						<div className="flex flex-col w-fit max-w-[100%] xl:max-w-[60%]  text-xl font-bold text-left text-header-text-0 dark:text-dark-header-text-0">
 							<div className="p-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
 								<h2 className="text-2xl mb-2">Details</h2>
 								<h3>Breed: <span className="font-normal">{cat.breed}</span></h3>
@@ -247,11 +247,11 @@ export default function Page({params}) {
 								cat.conditions.map((condition) => (
 									<div ref={conRef} key={condition.id} className="relative self-start flex-col rounded-md p-4 m-4 min-h-40 h-fit w-[380px] bg-navbar-body-1 dark:bg-gray-300">
 										<h3 className="w-[300px] font-bold">{condition.name}</h3>
-										<div className="max-h-[110px] overflow-y-auto">
+										<div className="overflow-y-auto max-h-[200px]">
 											<p>Description: <span className="font-normal">{condition.description}</span></p>
+											<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
+											<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 										</div>
-										<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
-										<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 									</div>))
 								) : (<span className="italic text-gray-500">No conditions</span>)
 							}
@@ -266,34 +266,34 @@ export default function Page({params}) {
 							cat.vaccinations.map((vaccination) => (
 								<div ref={vaccRef} className="relative flex-col rounded-md p-4 m-4 min-h-64 h-fit w-[380px] bg-navbar-body-1 dark:bg-gray-300">
 									<h3 className="w-[300px] font-bold">{vaccination.name}</h3>
-									<div className="max-h-[110px] overflow-y-auto">
+									<div className="overflow-y-auto max-h-[300px]">
 										<p>Description: <span className="font-normal">{vaccination.description}</span></p>
+										<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
+										<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
+										<h4>Doses Taken Dates:</h4>
+										<ul className="list-none">
+											{vaccination.datesTaken.map((date, index) => (
+												<li key={index} className="font-normal">
+													<div className="flex space-x-2">
+														<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
+														{new Date(date.toDate()).toLocaleDateString()}
+													</div>
+												</li>
+											))}
+										</ul>
+										<h4>Doses Remaining: <span className="font-normal">{vaccination.dosesRemaining}</span></h4>
+										<h4>Planned Dosage Dates:</h4>
+										<ul className="list-none">
+											{vaccination.futureDates.fill().map((date, index) => (
+												<li key={index} className="font-normal">
+													<div className="flex space-x-2">
+														<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
+														<span>{date && new Date(date.toDate()).toLocaleDateString()}</span>
+													</div>
+												</li>
+											))}
+										</ul>
 									</div>
-									<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
-									<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
-									<h4>Doses Taken Dates:</h4>
-									<ul className="list-none">
-										{vaccination.datesTaken.map((date, index) => (
-											<li key={index} className="font-normal">
-												<div className="flex space-x-2">
-													<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
-													{new Date(date.toDate()).toLocaleDateString()}
-												</div>
-											</li>
-										))}
-									</ul>
-									<h4>Doses Remaining: <span className="font-normal">{vaccination.dosesRemaining}</span></h4>
-									<h4>Planned Dosage Dates:</h4>
-									<ul className="list-none">
-										{vaccination.futureDates.fill().map((date, index) => (
-											<li key={index} className="font-normal">
-												<div className="flex space-x-2">
-													<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
-													<span>{date && new Date(date.toDate()).toLocaleDateString()}</span>
-												</div>
-											</li>
-										))}
-									</ul>
 								</div>
 							))) : (<span className="italic text-gray-500">No vaccinations</span>)
 							}

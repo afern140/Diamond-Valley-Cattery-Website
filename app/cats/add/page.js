@@ -370,6 +370,7 @@ export default function Page() {
 
 	const handleSubmit = async () => {
 		const newId = cats.reduce((max, cat) => Math.max(max, cat.id), 0) + 1;
+        const validGenders = ["male", "female"];
 		let motherRef = null;
 		let fatherRef = null;
 		let conditionRefs = [];
@@ -377,6 +378,42 @@ export default function Page() {
 		let childrenRefs = [];
 		
 
+        if (!cat.name.trim() || cat.name.length > 64 ) {
+            alert("Invalid name. Please ensure it is not empty, and within 64 characters.");
+            return;
+          }
+
+        if(!cat.breed.trim() || cat.breed.length > 20){
+            alert("Invalid name. Please ensure it is not empty, and within 64 characters.");
+            return;
+        }
+          
+        if(!validGenders.includes(cat.gender.toLowerCase().trim())){
+            alert("Invalid gender. Please ensure it is either 'male' or 'female'.");
+          return;  
+        }
+
+        if (!cat.birthdate) {
+            alert("Invalid birthdate. Please ensure a date is selected.");
+            return;
+        }
+
+  
+        if (!cat.color.trim() || cat.color.length > 30) {
+            alert("Invalid color. Please ensure it is not empty and within 30 characters.");
+            return;
+        }
+
+
+        if (!cat.eye_color.trim() || cat.eye_color.length > 30) {
+            alert("Invalid eye color. Please ensure it is not empty and within 30 characters.");
+            return;
+        }
+
+        if(!cat.description.trim() || cat.description > 1024){
+            alert("Invalid description. Please ensure it is not a empty and within 1024 charaters.");
+            return;
+        }
 		cat.conditions.map(async (condition) => {
 			await updateObject('conditions', condition, false)
 		})

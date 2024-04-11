@@ -4,43 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { useUserAuth } from "../_utils/auth-context";
-import {
-getUser,
-getUserCats,
-updateUser,
-useUser,
-} from "../_utils/user_services";
+import { updateUser } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
+import CatButton from "../components/cats/catbutton";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page() {
-	const { user } = useUserAuth();
-	const [filteredUser, setFilteredUser] = useState();
-	const [favoriteCats, setFavoriteCats] = useState();
+	const { user, dbUser } = useUserAuth();
 	const [updatedUser, setUpdatedUser] = useState();
 	const [edit, setEdit] = useState(false);
 	const [image, setImage] = useState("/img/Placeholder.png");
-	const [chatsWithLatestUnreadMessage, setChatsWithLatestUnreadMessage] =
-		useState([]);
+	const [chatsWithLatestUnreadMessage, setChatsWithLatestUnreadMessage] = useState([]);
 	const { fetchChatsWithLatestMessage, markMessageAsRead } = useChat();
 	const [unreadMessageIds, setUnreadMessageIds] = useState(new Set());
+
 	useEffect(() => {
-		const fetchUser = async () => {
-		const newUser = await getUser(user);
-		setFilteredUser(newUser);
-		setUpdatedUser(newUser);
-		};
-		fetchUser();
-	}, [user]);
-	
-	useEffect(() => {
-		const fetchUserCats = async () => {
-		const favoriteCats = await getUserCats(filteredUser);
-		setFavoriteCats(favoriteCats);
-		};
-		fetchUserCats();
-	}, [filteredUser]);
+		setUpdatedUser(dbUser);
+	}, [dbUser]);
 	
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -123,8 +104,7 @@ export default function Page() {
 				<span className="text-6xl pb-10 font-extrabold">Dashboard</span> <br />
 			</div>
 		</div>
-
-		{filteredUser ? (
+		{dbUser ? (
 			<div className="w-4/5 mx-auto">
 				<div className="flex flex-row justify-center items-center bg-white dark:bg-gray-500 rounded-xl drop-shadow-xl w-full mx-auto p-10 text-left">
 					<div className="text-center m-auto">
@@ -154,9 +134,8 @@ export default function Page() {
 							</label>
 							}
 						</div>
-						<h2 className="mt-2 bg-navbar-body-1 dark:bg-gray-300 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {filteredUser.role}</h2>
+						<h2 className="mt-2 bg-navbar-body-1 dark:bg-gray-300 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {dbUser.role}</h2>
 					</div>
-					
 					{edit ? (
 					<div className="flex flex-col bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg space-y-2 mx-auto">
 						
@@ -164,7 +143,7 @@ export default function Page() {
 						<input
 							type="text"
 							name="name"
-							placeholder={filteredUser.name}
+							placeholder={dbUser.name}
 							value={updatedUser.name}
 							onChange={handleChange}
 							className="bg-white rounded-md drop-shadow-lg p-2"
@@ -172,7 +151,7 @@ export default function Page() {
 						<input
 							type="text"
 							name="username"
-							placeholder={filteredUser.username}
+							placeholder={dbUser.username}
 							value={updatedUser.username}
 							onChange={handleChange}
 							className="bg-white rounded-md drop-shadow-lg p-2"
@@ -180,7 +159,7 @@ export default function Page() {
 						<input
 							type="text"
 							name="email"
-							placeholder={filteredUser.email}
+							placeholder={dbUser.email}
 							value={updatedUser.email}
 							onChange={handleChange}
 							className="bg-white rounded-md drop-shadow-lg p-2"
@@ -188,7 +167,7 @@ export default function Page() {
 						<input
 							type="text"
 							name="phone"
-							placeholder={filteredUser.phone}
+							placeholder={dbUser.phone}
 							value={parseInt(updatedUser.phone)}
 							onChange={handleChange}
 							className="bg-white rounded-md drop-shadow-lg p-2"
@@ -200,10 +179,10 @@ export default function Page() {
 					) : (
 					<div className="m-auto space-y-2 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
 						<h2 className="text-xl mb-4 text-center">Details</h2>
-						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Name: {filteredUser.name}</h2>
-						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Username: {filteredUser.username}</h2>
-						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Email: {filteredUser.email}</h2>
-						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Phone: {filteredUser.phone}</h2>
+						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Name: {dbUser.name}</h2>
+						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Username: {dbUser.username}</h2>
+						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Email: {dbUser.email}</h2>
+						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Phone: {dbUser.phone}</h2>
 						
 						<div className="flex mr-auto ml-full justify-end w-full">
 							<button onClick={handleEdit} className=" px-4 py-2 bg-gray-200 dark:bg-gray-400 dark:text-dark-header-text-0 rounded-md drop-shadow-lg">
@@ -213,7 +192,6 @@ export default function Page() {
 					</div>
 					)}
 				</div>
-
 				{/* Recent Messages */}
 				<div className="bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg p-10 mt-10">
 					<h2 className=" text-2xl text-left font-bold dark:text-dark-header-text-0">
@@ -244,26 +222,14 @@ export default function Page() {
 				
 				{/* Favorite Cats */}
 				<div className="bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg p-10 mt-10">
-					<h2 className="dark:text-dark-header-text-0 text-2xl text-left font-bold pb-4 ">
-						Favorite Cats
-					</h2>
+					<h2 className="dark:text-dark-header-text-0 text-2xl text-left font-bold pb-4 ">Favorite Cats</h2>
 					<div className="flex">
-						{favoriteCats ? (
-						favoriteCats.map((cat) => (
-							<div className="text-center bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
-								<Link href={`./cats/${cat.id}`}>
-									<Image
-									src="/img/Placeholder.png"
-									alt="Cat"
-									width={200}
-									height={100}
-									className="border-2 border-black m-5"
-									/>
-									<span className="text-xl">{cat.name}</span><br />
-									<span>{cat.breed}</span>
-								</Link>
-							</div>
-						))
+						{dbUser.favorites.cats ? (
+							dbUser.favorites.cats.map((cat) => (
+								<div className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+									<CatButton cat={cat} />
+								</div>
+							))
 						) : (
 						<h2>Add cats to your favorites list to have them appear here</h2>
 						)}
@@ -271,9 +237,7 @@ export default function Page() {
 				</div>
 			</div>
 		) : (
-			<div>
-			Please <Link href="./login">log in</Link> to view your dashboard
-			</div>
+			<div>Please <Link href="./login">log in</Link> to view your dashboard</div>
 		)}
 		</main>
 	);

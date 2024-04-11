@@ -422,6 +422,10 @@ export default function Page() {
 		console.log('newCat to be saved:', newCat);
 		await createObject('cats', newCat);
 		console.log('Cat saved successfully!');
+
+		//Go to the new cat's page
+		//router.push(`/cats/${newId}`);
+		window.location.href = `/cats/${newId}`;
 	
 	  } catch (error) {
 		console.error('Error during submission:', error);
@@ -476,14 +480,24 @@ export default function Page() {
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
 										/>
-										<input
+										{/*<input
 											type="text"
 											name="gender"
 											placeholder="Gender"
 											value={cat.gender}
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-										/>
+										/>*/}
+										<div>
+											<select
+											name="gender"
+											value={cat.gender}
+											onChange={handleChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg">
+												<option value="Male">Male</option>
+												<option value="Female">Female</option>
+											</select>
+										</div>
 										<input
 											type="date"
 											name="birthdate"

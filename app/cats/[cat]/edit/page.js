@@ -385,22 +385,34 @@ export default function Page({params}){
 		await cat.vaccinations.map(async (vaccination) => {
 			await updateObject('vaccinations', vaccination, false)
 		})
-		const ownerRef = doc(db, 'users', cat.owner.docId);
-		const motherRef = doc(db, 'cats', cat.mother.docId);
-		const fatherRef = doc(db, 'cats', cat.father.docId);
+		let ownerRef = null;
+		if (cat.owner)
+			ownerRef = doc(db, 'users', cat.owner.docId);
+		let motherRef = null;
+		if (cat.mother)
+			motherRef = doc(db, 'cats', cat.mother.docId);
+		let fatherRef = null;
+		if (cat.father)
+			fatherRef = doc(db, 'cats', cat.father.docId);
 		const conditionRefs = cat.conditions.map(condition => doc(db, 'conditions', condition.docId));
 		const vaccinationRefs = cat.vaccinations.map(vaccination => doc(db, 'vaccinations', vaccination.docId));
-		const childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
+		let childrenRefs = [];
+		if (cat.children)
+			childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		const updatedCat = { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs }
 		const storage = getStorage();
-  if (thumbnail) {
-    const thumbnailRef = ref(storage, `thumbnails/${cat.id}`);
-    await uploadBytes(thumbnailRef, thumbnail);
-    const thumbnailUrl = await getDownloadURL(thumbnailRef);
-    updatedCat.thumbnail = thumbnailUrl;
-  }
+
+		if (thumbnail) {
+			const thumbnailRef = ref(storage, `thumbnails/${cat.id}`);
+			await uploadBytes(thumbnailRef, thumbnail);
+			const thumbnailUrl = await getDownloadURL(thumbnailRef);
+			updatedCat.thumbnail = thumbnailUrl;
+		}
 
 		await updateObject('cats', updatedCat, true);
+
+		//Return to the cat's page
+		window.location.href = `/cats/${cat.id}`;
 	}
 
 	//Changes the page title when the cat is loaded

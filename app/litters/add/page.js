@@ -261,6 +261,8 @@ export default function Page() {
 
 				{/* Children */}
 				<div className="mt-10 bg-white dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg">
+				<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
+					
 					{litter.completed ? (
 						<div className="flex px-10 space-x-10 mt-6">
 							<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
@@ -293,7 +295,6 @@ export default function Page() {
 						</div>
 					) : (
 					<div className={" bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg mt-6 " + (showChildSelection ? "w-full h-[460px]" : " size-fit")}>
-						<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 						<button className="size-full p-4" onClick={handleMarkAsComplete}>Mark as Complete</button>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>

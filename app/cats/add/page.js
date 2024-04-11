@@ -514,6 +514,18 @@ export default function Page() {
 									className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
 								/>
 							</div>
+
+							<div className="flex flex-col xl:w-1/3 w-[300px] h-fit mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
+								<h2 className="text-xl text-center mb-2">Description</h2>
+								<textarea
+									type="text"
+									name="name"
+									placeholder="Name"
+									value={cat.name}
+									onChange={handleChange}
+									className="p-1 rounded-md pl-2 min-h-[200px] bg-white drop-shadow-lg"
+								/>
+							</div>
 						</div>
 					</div>
 

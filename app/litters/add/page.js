@@ -294,8 +294,8 @@ export default function Page() {
 							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 						</div>
 					) : (
-					<div className={" bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg mt-6 " + (showChildSelection ? "w-full h-[460px]" : " size-fit")}>
-						<button className="size-full p-4" onClick={handleMarkAsComplete}>Mark as Complete</button>
+					<div className={"h-[330px]  "}>
+						<button className="p-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg mt-6" onClick={handleMarkAsComplete}>Mark as Complete</button>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
 					)}

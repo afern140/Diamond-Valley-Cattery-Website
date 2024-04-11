@@ -98,14 +98,37 @@ export default function Page({params}) {
 
 	const handleFavoriteButton = async () => {
 		let updatedFavorites = dbUser.favorites.cats;
-		const catRef = doc(db, 'cats', cat.docId);
+		 console.log("Favorites before:")
+		 console.log(updatedFavorites)
+		 const catRef = doc(db, 'cats', cat.docId);
 		if (favorite) {
-			updatedFavorites = dbUser.favorites.cats.filter(ref => ref.path !== catRef.path);
+			//Remove favorite
+			//updatedFavorites = dbUser.favorites.cats.filter(ref => ref.path !== catRef.path);
+			//Need to convert objects to references
+			updatedFavorites = dbUser.favorites.cats.map((newFavorite) => 
+			{
+				if (newFavorite.docId !== catRef.id)
+					return doc(db, "cats", newFavorite.docId)
+				else
+					return null
+				//doc(db, "cats", newFavorite.docId)
+			});
+			//Purge nulls
+			updatedFavorites = updatedFavorites.filter((newFavorite) => newFavorite !== null);
 			setFavorite(false);
 		} else {
-			updatedFavorites = [...dbUser.favorites.cats, catRef];
+			//Add new favorite
+					//Requires converting old favorites back to references because they get read as objects LOL
+					const newReferences = dbUser.favorites.cats.map((newFavorite) => doc(db, "cats", newFavorite.docId));
+					updatedFavorites = [...newReferences, catRef];
+					// dbUser.favorites.cats.map((newFavorite) => {
+					// 	console.log("Debug newFavorite:")
+					// 	console.log(newFavorite)
+					// })
 			setFavorite(true);
 		}
+		console.log("Favorites after:")
+		console.log(updatedFavorites)
 		await updateUser({ ...dbUser, favorites: { ...dbUser.favorites, cats: updatedFavorites } });
 	};
 

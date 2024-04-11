@@ -110,8 +110,8 @@ function NewComment({ cat, setComments, user }) {
 }
 
 function Comment({catName, message, createName, createTime}) {
-	console.log("Entered Comment.");
-	console.log(createTime);
+	//console.log("Entered Comment.");
+	//console.log(createTime);
 	return (
 		<div className="text-black w-full bg-navbar-body-1 dark:bg-gray-300 p-4 my-4 rounded-xl drop-shadow-lg">
 			<h2 className="text-xl mb-4">{createName}</h2>

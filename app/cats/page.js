@@ -333,7 +333,7 @@ export default function Page() {
 										{/*<Image className="absolute mt-5" alt="o" src="/img/circle.svg" width={96} height={96} />*/}
 										{/*<span className=" -translate-x-10 relative z-40">+</span>*/}
 										<div className=" ml-10 mr-10">
-											<span className=" dark:bg-gray-300 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</span>
+											<span className="bg-background-gradient-1 rounded-full text-transparent bg-clip-text text-8xl relative inline-block text-left drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">+</span>
 										</div>
 									</div>
 								</div>

@@ -9,6 +9,7 @@ import { useUserAuth } from "@/app/_utils/auth-context"
 import { getObjects, createObject, updateObject } from "@/app/_utils/firebase_services"
 import { getUser } from "@/app/_utils/user_services"
 import { v4 } from "uuid";
+import CatButton from "@/app/components/cats/catbutton"
 import EditCondition from "@/app/components/conditions/edit-condition"
 import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
@@ -524,9 +525,9 @@ export default function Page() {
 								<h2 className="text-xl text-center mb-2">Description</h2>
 								<textarea
 									type="text"
-									name="name"
-									placeholder="Name"
-									value={cat.name}
+									name="description"
+									placeholder="Description"
+									value={cat.description}
 									onChange={handleChange}
 									className="p-1 rounded-md pl-2 min-h-[200px] bg-white drop-shadow-lg"
 								/>
@@ -700,15 +701,8 @@ export default function Page() {
 							<div className="flex flex-wrap">
 								{cat.children ? (
 									cat.children.map((child) =>(
-										<div className="m-4 p-4 bg-navbar-body-1 dark:bg-gray-300  rounded-xl drop-shadow-lg items-center text-center">
-											{child.name}
-											<Image
-												src={cat.children.thumbnail || "/img/Placeholder.png"}
-												alt="Cat"
-												width={200}
-												height={100}
-												className="border-2 border-black m-5"
-											/>
+										<div className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+											<CatButton cat={child} />
 											<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Remove {child.name}</button>
 										</div>
 									))

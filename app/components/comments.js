@@ -67,13 +67,13 @@ function NewComment(cat, setComments) {
       e.preventDefault();
 
       // Validate the message
-      if(typeof message !== "sgtring" || !message.trim()){
+      if(typeof message !== "string" || !message.trim()){
         alert("Please enter a valid message.")
         return;
       }
 
       // Check message length
-      if(message.length > 512){
+      if(message.length > 1024){
         alert("Your comments is too long. Please limit it to 1024 characters.");
         return;
       }

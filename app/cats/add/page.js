@@ -172,7 +172,6 @@ export default function Page() {
             alert("Invalid condition treatment. Please ensure it is not empty and within 512 characters.");
             return;
         }
-
 		const newId = conditions.reduce((max, condition) => Math.max(max, condition.id), 0) + 1;
 		const updatedCondition = { ...newCondition, id: newId };
 		const conditionRef = await createObject('conditions', updatedCondition);

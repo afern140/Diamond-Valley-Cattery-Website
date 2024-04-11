@@ -44,6 +44,7 @@ export default function Page() {
 	
 	const handleChange = (e) => {
 		const { name, value } = e.target;
+		console.log(e.target);
 		setUpdatedUser((prevUser) => ({ ...prevUser, [name]: value }));
 	};
 	
@@ -53,7 +54,12 @@ export default function Page() {
 	
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
-		setImage(URL.createObjectURL(file));
+
+		const imgUrl = URL.createObjectURL(file);
+		setImage(imgUrl);
+
+		
+		setUpdatedUser((prevUser) => ({ ...prevUser, [thumbnail]: value }));
 	};
 	
 	const handleSubmit = async () => {

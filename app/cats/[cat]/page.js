@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Carousel from "@/app/components/carousel"
 import { useUserAuth } from "@/app/_utils/auth-context";
 import { updateUser } from "@/app/_utils/user_services";
@@ -149,11 +149,31 @@ export default function Page({params}) {
         }
     };
 
+	// -- F -- Height Refs
+	const conRef = useRef();
+	const vaccRef = useRef();
+	const [vaccHeight, setVaccHeight] = useState(0);
+	const [conHeight, setConHeight] = useState(0);
+
+	useEffect(() => {
+		if (!conRef || conRef.current == undefined) return;
+
+		setConHeight(conRef.current.clientHeight);
+	});
+
+	useEffect(() => {
+		if (!vaccRef || vaccRef.current == undefined) return;
+
+		setVaccHeight(vaccRef.current.clientHeight);
+		console.log("Set height of vaccination to: " + vaccHeight);		
+	});
+
+
 	return(
 		<main className="relative">
 			<BackgroundUnderlay />
 			{cat ? (
-				<section className="relative z-20 pb-16 w-4/5 mx-auto">
+				<section className="relative z-20 pb-16 w-4/5 mx-auto break-words">
 					<div className="pt-20 flex pb-10 relative z-20">
 						<div className="w-full space-x-6 m-auto justify-center flex-row text-center  inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text">
 							<span className="text-6xl pb-10 font-extrabold uppercase">{cat.name}</span>
@@ -188,9 +208,11 @@ export default function Page({params}) {
 								<h3>Color: <span className="font-normal">{cat.color}</span></h3>
 								<h3>Eye Color: <span className="font-normal">{cat.eye_color}</span></h3>
 							</div>
-							<div className="p-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit">
+							<div className="p-10 mt-6 rounded-lg bg-white dark:bg-gray-500 drop-shadow-lg min-w-[400px] xl:min-w-[40%] w-fit max-w-[100%] h-fit">
 								<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
-								<p className="font-normal">{cat.description ? cat.description : <span className="italic text-gray-600">No description</span>}</p>
+								<div className="max-h-[200px] overflow-y-auto">
+									<p className="font-normal break-words">{cat.description ? cat.description : <span className="italic text-gray-600">No description</span>}</p>
+								</div>
 							</div>
 						</div>
 						{/* Second split of the section */}
@@ -220,12 +242,14 @@ export default function Page({params}) {
 					{/* Conditions */}
 					<div className=" mt-10 text-header-text-0 bg-white w-fit dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
 						<h2 className="text-2xl mb-2">Conditions</h2>
-						<div className={" relative grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-fit overflow-y-auto h-[200px] dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4"}>
+						<div className={" relative flex flex-wrap w-fit overflow-y-auto dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4"} style={{height: conHeight + 30}}>
 							{cat.conditions && cat.conditions.length > 0 ? (
 								cat.conditions.map((condition) => (
-									<div key={condition.id} className="relative flex-col rounded-md p-4 m-4 min-h-40 w-[380px] bg-navbar-body-1 dark:bg-gray-300">
+									<div ref={conRef} key={condition.id} className="relative self-start flex-col rounded-md p-4 m-4 min-h-40 h-fit w-[380px] bg-navbar-body-1 dark:bg-gray-300">
 										<h3 className="w-[300px] font-bold">{condition.name}</h3>
-										<p>Description: <span className="font-normal">{condition.description}</span></p>
+										<div className="max-h-[110px] overflow-y-auto">
+											<p>Description: <span className="font-normal">{condition.description}</span></p>
+										</div>
 										<p>Treatment: <span className="font-normal">{condition.treatment}</span></p>
 										<h4>Treatment Status: {condition.treated ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 									</div>))
@@ -237,12 +261,14 @@ export default function Page({params}) {
 					{/* Vaccinations */}
 					<div className=" mt-10 text-header-text-0 bg-white w-fit dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
 						<h2 className="text-2xl mb-2">Vaccinations</h2>
-						<div className={" relative grid grid-cols-3 w-fit overflow-y-auto h-[380px] dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4"}>
+						<div className={`relative flex flex-wrap w-fit overflow-y-auto dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4`} style={{height: vaccHeight + 30}}>
 							{cat.vaccinations && cat.vaccinations.length > 0 ? (
 							cat.vaccinations.map((vaccination) => (
-								<div className="relative flex-col rounded-md p-4 m-4 min-h-64 w-[380px] bg-navbar-body-1 dark:bg-gray-300">
+								<div ref={vaccRef} className="relative flex-col rounded-md p-4 m-4 min-h-64 h-fit w-[380px] bg-navbar-body-1 dark:bg-gray-300">
 									<h3 className="w-[300px] font-bold">{vaccination.name}</h3>
-									<p>Description: <span className="font-normal">{vaccination.description}</span></p>
+									<div className="max-h-[110px] overflow-y-auto">
+										<p>Description: <span className="font-normal">{vaccination.description}</span></p>
+									</div>
 									<h4>Dosage Status: {vaccination.completed ? (<span className="font-normal">Finished</span>) : (<span className="font-normal">In Progress</span>)}</h4>
 									<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
 									<h4>Doses Taken Dates:</h4>

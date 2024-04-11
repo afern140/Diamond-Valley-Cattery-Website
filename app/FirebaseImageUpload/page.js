@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { imageDb, db } from "@/app/_utils/firebase";
+import { strg, db } from "@/app/_utils/firebase";
 import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 import { doc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { v4 } from "uuid";
@@ -14,7 +14,7 @@ function FirebaseImageUpload() {
     const [searchResults, setSearchResults] = useState([]);
 
     const getAllImg = () => {
-        listAll(ref(imageDb, "temp")).then(imgs => {
+        listAll(ref(strg, "temp")).then(imgs => {
             const newUrls = [];
             imgs.items.forEach(val => {
                 getDownloadURL(val).then(url => {
@@ -35,7 +35,7 @@ function FirebaseImageUpload() {
 
     const handleClick = () => {
         if (img && tag !== undefined && tag !== '') {
-            const imgRef = ref(imageDb, `temp/${v4()}`);
+            const imgRef = ref(strg, `temp/${v4()}`);
             uploadBytes(imgRef, img).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then(url => {
                     setImgUrl(data => [...data, url]);

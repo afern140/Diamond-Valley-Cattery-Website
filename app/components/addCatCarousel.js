@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
 import { getDownloadURL } from "firebase/storage";
-import { imageDb,db } from "../_utils/firebase";
+import { strg,db } from "../_utils/firebase";
 import { updateDoc, doc } from "firebase/firestore";
 
 function AddCatCarousel({ onImageUpload, cat }) {
@@ -21,7 +21,7 @@ function AddCatCarousel({ onImageUpload, cat }) {
   const handleConfirmUpload = async () => {
     try {
       if (file) {
-        const imgRef = ref(imageDb, `images/${v4()}`);
+        const imgRef = ref(strg, `images/${v4()}`);
         const snapshot = await uploadBytes(imgRef, file);
         const url = await getDownloadURL(snapshot.ref);
         

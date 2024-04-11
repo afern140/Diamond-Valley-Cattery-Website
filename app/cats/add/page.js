@@ -459,7 +459,7 @@ export default function Page() {
 							<div className="flex flex-col w-[400px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
 								<h2 className="text-xl text-center mb-2">Details</h2>
 								<div className="grid grid-cols-3">
-									<div className="col-span-1 text-end pr-2">
+									<div className="col-span-1 text-end pr-2 space-y-3">
 										<p className="h-7 mt-1 my-auto">Name:</p>
 										<p className="h-7 mt-1 my-auto">Breed:</p>
 										<p className="h-7 mt-1 my-auto">Gender:</p>
@@ -467,7 +467,7 @@ export default function Page() {
 										<p className="h-7 mt-1 my-auto">Color:</p>
 										<p className="h-7 mt-1 my-auto">Eye Color:</p>
 									</div>
-									<div className="col-span-2">
+									<div className="col-span-2 space-y-2">
 										<input
 											type="text"
 											name="name"

@@ -52,16 +52,16 @@ async function getComments(cat){
 
 async function addComment(commentDoc,cat){
    //console.log("Entered addComment.")
-   const itemsRef = collection(db, 'cats', cat.cat.docId, 'comments');
+   const itemsRef = collection(db, 'cats', cat.docId, 'comments');
    console.log("Cat in add comment is: ");
-   console.log(cat.cat.docId);
+   console.log(cat.docId);
    const docRef = await addDoc(itemsRef, commentDoc);
    return docRef.id;
 }
 
-function NewComment(cat, setComments) {
+function NewComment({cat, setComments}) {
    const [message, setMessage] = useState("");
-   const currentCat = cat.cat;
+   const currentCat = cat;
    
    async function handleAddComment(e){
       e.preventDefault();

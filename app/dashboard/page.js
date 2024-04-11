@@ -44,7 +44,6 @@ export default function Page() {
 	
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		console.log(e.target);
 		setUpdatedUser((prevUser) => ({ ...prevUser, [name]: value }));
 	};
 	
@@ -58,8 +57,8 @@ export default function Page() {
 		const imgUrl = URL.createObjectURL(file);
 		setImage(imgUrl);
 
-		
-		setUpdatedUser((prevUser) => ({ ...prevUser, [thumbnail]: value }));
+		const { thumbnail } = e.target;
+		setUpdatedUser((prevUser) => ({ ...prevUser, [thumbnail]: imgUrl }));
 	};
 	
 	const handleSubmit = async () => {
@@ -146,6 +145,7 @@ export default function Page() {
 								</label>
 								<input
 									id="pfpImage"
+									name="thumbnail"
 									type="file"
 									accept="image/"
 									onChange={handleImageChange}

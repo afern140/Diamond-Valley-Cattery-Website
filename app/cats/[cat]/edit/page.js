@@ -1,6 +1,6 @@
 "use client"
 
-import Image from "next/image"
+// import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { doc, getDoc, Timestamp } from "firebase/firestore"
@@ -13,57 +13,14 @@ import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
 import EditThumbnail from "@/app/components/images/EditThumbnail"
-import CatButton from "@/app/components/cats/catbutton"
+import CatButton from "@/app/components/cats/cat-button"
+import AddCatButton from "@/app/components/cats/add-cat-button"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import CatCarouselController from "@/app/components/CatCarouselController";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({params}){
-	const handleImageUpload = async (imageUrl) => {
-		try {
-			const fetchCat = async () => {
-				const cat = await getObject('cats', parseInt(params.cat));
-				if (cat.mother) {
-					const motherDoc = await getDoc(cat.mother);
-					cat.mother = { docId: cat.mother.id, ...motherDoc.data()};
-				}
-				if (cat.father) {
-					const fatherDoc = await getDoc(cat.father);
-					cat.father = { docId: cat.father.id, ...fatherDoc.data()};
-				}
-				if (cat.owner) {
-					const ownerDoc = await getDoc(cat.owner);
-					cat.owner = { docId: cat.owner.id, ...ownerDoc.data()};
-				}
-				if (cat.children) {
-					const childrenData = await Promise.all(cat.children.map(async (childRef) => {
-						const childDoc = await getDoc(childRef);
-						return { docId: childRef.id, ...childDoc.data()};
-					}));
-					cat.children = childrenData;
-				}
-				if (cat.conditions) {
-					const conditionsData = await Promise.all(cat.conditions.map(async (conditionRef) => {
-						const conditionDoc = await getDoc(conditionRef);
-						return { docId: conditionRef.id, ...conditionDoc.data()};
-					}));
-					cat.conditions = conditionsData;
-				}
-				if (cat.vaccinations) {
-					const vaccinationsData = await Promise.all(cat.vaccinations.map(async (vaccinationRef) => {
-						const vaccinationDoc = await getDoc(vaccinationRef);
-						return { docId: vaccinationRef.id, ...vaccinationDoc.data()};
-					}));
-					cat.vaccinations = vaccinationsData;
-				}
-				setCat(cat);
-			};
-			fetchCat()
-		} catch (error) {
-			console.error("Error handling image upload:", error);
-		}
-	};
 	const [thumbnail, setThumbnail] = useState(null);
 	const { user, dbUser } = useUserAuth();
 	const [cat, setCat] = useState();
@@ -389,10 +346,10 @@ export default function Page({params}){
 			if (image.width !== image.height) {
 				alert("Thumbnails must be a square");
 			} else {
-				setThumbnail(file);
+				image.src = URL.createObjectURL(file);
+				setThumbnail(image);
 			}
 		};
-		image.src = URL.createObjectURL(file);
 	};
 
 	const handleSubmit = async () => {
@@ -448,7 +405,7 @@ export default function Page({params}){
 					<div className="mx-auto">
 						<div className="bg-white dark:bg-gray-500 p-10 rounded-xl drop-shadow-lg flex flex-col xl:flex-row justify-between">
 							<div className="mx-auto">
-								<EditThumbnail handleImageChange={handleImageChange}/>
+								<EditThumbnail handleImageChange={handleImageChange} thumbnail={thumbnail}/>
 							</div>
 							<div className="flex flex-col w-[400px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
 								<h2 className="text-xl text-center mb-2">Details</h2>
@@ -631,15 +588,9 @@ export default function Page({params}){
 								</div>
 							) : (
 								<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
-								<Image
-									src="/img/Placeholder.png"
-									alt="Cat"
-									width={200}
-									height={100}
-									className="border border-black rounded-xl m-5"
-								/>
-								<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Mother</button>
-							</div>
+									<AddCatButton/>
+									<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Mother</button>
+								</div>
 							)}
 							
 							{/* Father */}
@@ -651,16 +602,9 @@ export default function Page({params}){
 								</div>
 							) : (
 							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
-								<Image
-									src="/img/Placeholder.png"
-									alt="Cat"
-									width={200}
-									height={100}
-									className="border border-black rounded-xl m-5"
-								/>
+								<AddCatButton/>
 								<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Father</button>
 							</div>)}
-						
 						</div>
 						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent} gender={selectorGender}/>
 					</div>
@@ -678,19 +622,13 @@ export default function Page({params}){
 								))
 							) : (<></>)}
 							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
-								<Image
-									src="/img/Placeholder.png"
-									alt="Cat"
-									width={200}
-									height={100}
-									className="border border-black rounded-xl m-5"
-								/>
+								<AddCatButton/>
 								<button onClick={() => handleAddChild()} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Select Child</button>
 							</div>
 						</div>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
-					<CatCarouselController onImageUpload={handleImageUpload} cat={cat} />
+					{/* <CatCarouselController onImageUpload={handleImageUpload} cat={cat} /> */}
 					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 dark:bg-gray-600 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300">Submit</button>
 				</div>
 			) : (

@@ -11,7 +11,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
 import Comments from "@/app/components/comments";
-import CatButton from "@/app/components/cats/catbutton";
+import CatButton from "@/app/components/cats/cat-button";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 

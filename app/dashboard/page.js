@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import { useUserAuth } from "../_utils/auth-context";
 import { updateUser } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
-import CatButton from "../components/cats/catbutton";
+import CatButton from "../components/cats/cat-button";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 

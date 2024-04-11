@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { getDoc } from "firebase/firestore";
 import { getObject, getObjects } from "@/app/_utils/firebase_services";
 import Carousel from "@/app/components/LitterCarousel"
-import CatButton from "@/app/components/cats/catbutton";
+import CatButton from "@/app/components/cats/cat-button";
 import CatSelection from "@/app/components/cats/cat-selection";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";

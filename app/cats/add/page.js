@@ -9,7 +9,7 @@ import { useUserAuth } from "@/app/_utils/auth-context"
 import { getObjects, createObject, updateObject } from "@/app/_utils/firebase_services"
 import { getUser } from "@/app/_utils/user_services"
 import { v4 } from "uuid";
-import CatButton from "@/app/components/cats/catbutton"
+import CatButton from "@/app/components/cats/cat-button"
 import EditCondition from "@/app/components/conditions/edit-condition"
 import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"

@@ -131,8 +131,8 @@ export default function Page() {
 
 				<div className="mt-10 bg-white dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg">
 					<h2 className="text-2xl mb-4">Details</h2>
-					<div className="flex flex-col xl:flex-row">
-						<div className="mx-auto w-full h-[300px]">
+					<div className="flex flex-col xl:flex-row justify-evenly">
+						<div className="mx-auto w-[300px] h-[300px] justify-evenly">
 							<ImageUploader onImageSelected={handleImageSelected} inputKey="litter-thumbnail" />
 						
 							{/*<div>
@@ -159,7 +159,7 @@ export default function Page() {
 							</div>*/}
 						</div>
 
-						<div className="w-fit m-4 h-fit flex-col space-y-2 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
+						<div className="w-fit m-4 h-fit flex-col -translate-x-[20px] space-y-2 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
 							<h2 className="text-2xl mb-2 font-bold dark:text-dark-header-text-0">Details</h2>
 							<div className="flex space-x-3">
 								<h3 className="my-auto w-32 text-right">Name: </h3>
@@ -183,7 +183,7 @@ export default function Page() {
 								/>
 							</div>
 						</div>
-						<div className=" w-full h-fit bg-navbar-body-1 dark:bg-gray-300 m-4 p-4 rounded-xl drop-shadow-lg">	
+						<div className=" w-full max-w-[40%] h-fit translate-x-[20px] bg-navbar-body-1 dark:bg-gray-300 m-4 p-4 rounded-xl drop-shadow-lg">	
 							<h2 className="text-2xl mb-2 font-extrabold">Description</h2>
 							<div className="size-full">
 								<textarea
@@ -261,9 +261,9 @@ export default function Page() {
 
 				{/* Children */}
 				<div className="mt-10 bg-white dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg">
-					<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 					{litter.completed ? (
 						<div className="flex px-10 space-x-10 mt-6">
+							<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 							{litter.children.map((child) => (
 								<div className="m-4 p-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg items-center text-center">
 									<h3>{child.name}</h3>
@@ -293,6 +293,7 @@ export default function Page() {
 						</div>
 					) : (
 					<div className={" bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg mt-6 " + (showChildSelection ? "w-full h-[460px]" : " size-fit")}>
+						<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 						<button className="size-full p-4" onClick={handleMarkAsComplete}>Mark as Complete</button>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>

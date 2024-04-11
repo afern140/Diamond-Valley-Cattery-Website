@@ -59,7 +59,6 @@ export default function Page({params}) {
 			}
 			else
 				cat.conditions = [];
-	
 			if (cat.vaccinations && Array.isArray(cat.vaccinations)) {
 				const vaccinationsData = await Promise.all(cat.vaccinations.map(async (vaccinationRef) => {
 					const vaccinationDoc = await getDoc(vaccinationRef);
@@ -77,8 +76,14 @@ export default function Page({params}) {
 	useEffect(() => {
 		const fetchFavorites = async () => {
 			if (dbUser && dbUser.favorites && dbUser.favorites.cats && cat) {
-				setFavorite(dbUser.favorites.cats.some(ref => ref.path === doc(db, 'cats', cat.docId).path));
-			}
+				// setFavorite(dbUser.favorites.cats.some((ref) => ref.id === cat.id));
+				dbUser.favorites.cats.forEach((favorite) => {
+					console.log(favorite)
+					if (favorite.id === cat.id) {
+						setFavorite(true)
+					};
+				});
+			};
 		};
 		fetchFavorites();
 	}, [dbUser, cat]);
@@ -92,18 +97,16 @@ export default function Page({params}) {
 	}, [cat]);
 
 	const handleFavoriteButton = async () => {
-		let updatedFavorites;
+		let updatedFavorites = dbUser.favorites.cats;
+		const catRef = doc(db, 'cats', cat.docId);
 		if (favorite) {
-			updatedFavorites = dbUser.favorites.cats.filter(ref => ref.path !== doc(db, 'cats', cat.docId).path);
+			updatedFavorites = dbUser.favorites.cats.filter(ref => ref.path !== catRef.path);
+			setFavorite(false);
 		} else {
-			if (!dbUser.favorites.cats.some(ref => ref.path === doc(db, 'cats', cat.docId).path)) {
-				updatedFavorites = [...dbUser.favorites.cats, doc(db, 'cats', cat.docId)];
-			} else {
-				updatedFavorites = dbUser.favorites.cats;
-			}
+			updatedFavorites = [...dbUser.favorites.cats, catRef];
+			setFavorite(true);
 		}
 		await updateUser({ ...dbUser, favorites: { ...dbUser.favorites, cats: updatedFavorites } });
-		setFavorite(updatedFavorites.some(ref => ref.path === doc(db, 'cats', cat.docId).path));
 	};
 
     //TO DO 

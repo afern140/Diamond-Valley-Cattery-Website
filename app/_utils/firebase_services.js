@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { collection, doc, getDocs, updateDoc, addDoc, getDoc } from "firebase/firestore";
+import { collection, doc, getDocs, updateDoc, addDoc, query, where } from "firebase/firestore";
 import { db } from "../_utils/firebase";
 
 export const getObjects = async (type) => {
@@ -12,10 +12,10 @@ export const getObjects = async (type) => {
 }
 
 export const getObject = async (type, id) => {
-	const documents = await getDocs(collection(db, type));
-	const data = documents.docs.map((doc) => ({docId: doc.id, ...doc.data(),}));
-	const object = data.find(item => item.id == id);
+	const document = await getDocs(query(collection(db, type), where("id", "==", id)));
+	const object = document.docs.map(doc => ({ docId: doc.id, ...doc.data() }))[0];
 	console.log(`Fetched ${type} object`)
+	console.log(object);
 	return object;
 }
 

@@ -17,7 +17,8 @@ export default function page() {
 		const threadsData = threadsDocuments.docs.map((doc) => ({docId: doc.id, ...doc.data()}))
 		const threads = await Promise.all(threadsData.map(async (thread) => {
 			const message = (await getDoc(thread.messageRefs[thread.messageRefs.length - 1])).data();
-			return { ...thread, latestMessage: message };
+			const recipient = (await(getDocs(query(collection(db, "users"), where("uid", "==", thread.users.find(uid => uid !== user.uid)))))).docs.map(doc => doc.data())[0];
+			return { ...thread, recipient: recipient, latestMessage: message };
 		}));
 		return threads;
 	}
@@ -50,8 +51,8 @@ export default function page() {
 							<div className="space-y-4">
 								<Link key={thread.docId} href={`/messages/${thread.docId}`}>
 								<div className="block p-2 hover:bg-gray-200 cursor-pointer">
-									{thread.latestMessage.displayName}: Sent on {new Date(thread.latestMessage.timestamp.toDate()).toLocaleDateString()}
-									<br />
+									<h2 className="font-bold">{thread.recipient.username}</h2><br/>
+									<h3>{thread.latestMessage.displayName}: Sent on {new Date(thread.latestMessage.timestamp.toDate()).toLocaleDateString()}</h3>
 									<h2>{thread.latestMessage.text}</h2>
 								</div>
 								</Link>

@@ -29,7 +29,7 @@ export default function Page({params}){
 		}
 	};
 	const [thumbnail, setThumbnail] = useState(null);
-	const {user} = useUserAuth();
+	const { user, dbUser } = useUserAuth();
 	const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
 	const [cats, setCats] = useState();
@@ -103,13 +103,13 @@ export default function Page({params}){
 		fetchCat();
 	}, [params]);
 
-	useEffect(() => {
-		const fetchUser = async () => {
-			const filteredUser = await getUser(user);
-			setFilteredUser(filteredUser);
-		};
-		fetchUser();
-	}, [user]);
+	// useEffect(() => {
+	// 	const fetchUser = async () => {
+	// 		const filteredUser = await getUser(user);
+	// 		setFilteredUser(filteredUser);
+	// 	};
+	// 	fetchUser();
+	// }, [user]);
 
 	useEffect(() => {
 		const fetchCats = async () => {

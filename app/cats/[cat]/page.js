@@ -5,15 +5,13 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import Carousel from "@/app/components/carousel"
 import { useUserAuth } from "@/app/_utils/auth-context";
-import CatCarouselController from "@/app/components/CatCarouselController";
-import { getUser, updateUser, useUser } from "@/app/_utils/user_services";
+import { updateUser } from "@/app/_utils/user_services";
 import { db } from "@/app/_utils/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { getObject } from "@/app/_utils/firebase_services";
 import { useChat } from "@/app/_utils/chat-context";
 import Comments from "@/app/components/comments";
 import CatButton from "@/app/components/cats/catbutton";
-import { useRouter } from "next/navigation";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
@@ -21,7 +19,6 @@ export default function Page({params}) {
 
     const {createOrJoinChat} = useChat();
 	const { user, dbUser } = useUserAuth();
-	// const [filteredUser, setFilteredUser] = useState();
 	const [cat, setCat] = useState();
 	const [favorite, setFavorite] = useState(false);
 
@@ -76,14 +73,6 @@ export default function Page({params}) {
 		};
 		fetchCat();
 	}, [params]);
-
-	// useEffect(() => {
-	// 	const fetchUser = async () => {
-	// 		const filteredUser = await getUser(user);
-	// 		setFilteredUser(filteredUser);
-	// 	};
-	// 	fetchUser();
-	// }, [user]);
 	
 	useEffect(() => {
 		const fetchFavorites = async () => {
@@ -129,16 +118,6 @@ export default function Page({params}) {
             }
         }
     };
-	// const handleImageUpload = async (imageUrl) => {
-	// 	try {
-	// 		fetchCat()
-	// 	} catch (error) {
-	// 		console.error("Error handling image upload:", error);
-	// 	}
-	// };
-
-	// -- F -- Routing
-	// const signinRoute = useRouter();
 
 	return(
 		<main className="relative">

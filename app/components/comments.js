@@ -5,7 +5,6 @@ import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
 import {collection,addDoc,query,getDocs,Timestamp} from "firebase/firestore";
 
-
 export default function Comments({ cat, user }) {
 	const [comments, setComments] = useState([]);
 
@@ -35,14 +34,14 @@ export default function Comments({ cat, user }) {
 						createName={comment.createName}
 					/>
 				))}
-				<NewComment cat={cat.cat} setComments={setComments} user={user}/>
+				<NewComment cat={cat} setComments={setComments} user={user}/>
 			</div>
 		</section>
 	);
 }
 
 async function getComments(cat){
-	const itemsRef = collection(db, 'cats', cat.cat.docId, 'comments');
+	const itemsRef = collection(db, 'cats', cat.docId, 'comments');
 	const q = query(itemsRef);
 	const snapshot = await getDocs(q);
 	const itemsList = snapshot.docs.map((doc) => {
@@ -53,9 +52,9 @@ async function getComments(cat){
 
 async function addComment(commentDoc,cat){
 	//console.log("Entered addComment.")
-	const itemsRef = collection(db, 'cats', cat.cat.docId, 'comments');
+	const itemsRef = collection(db, 'cats', cat.docId, 'comments');
 	console.log("Cat in add comment is: ");
-	console.log(cat.cat.docId);
+	console.log(cat.docId);
 	const docRef = await addDoc(itemsRef, commentDoc);
 	return docRef.id;
 }
@@ -86,7 +85,7 @@ function NewComment({ cat, setComments, user }) {
 		<div className="text-black mt-8">
 			<div className="w-full h-[2px] bg-gray-200 mb-6" />
 			<h2 className="text-3xl flex flex-col items-center pb-4">New Comment</h2>
-			{ user.uid ? (
+			{ user ? (
 				<form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
 					<textarea  
 						type="text"

@@ -116,6 +116,7 @@ export default function Page() {
 
 	const handleConditionChange = (e, conditionId) => {
 		const { name, value } = e.target;
+        
 		if (conditionId === 0) {
 			setNewCondition({...newCondition, [name]: value});
 		} else {
@@ -158,6 +159,20 @@ export default function Page() {
 	};
 
 	const handleAddCondition = async () => {
+          // Validation for new condition
+        if(!newCondition.name.trim() || newCondition.name.length > 64) {
+            alert("Invalid condition name. Please ensure it is not empty and within 64 characters.");
+            return;
+        }
+        if(!newCondition.description.trim() || newCondition.description.length > 256){
+            alert("Invalid condition description. Please ensure it is not empty and within 256 characters.");
+            return;
+        }
+        if(!newCondition.treatment.trim() || newCondition.treatment.length > 512){
+            alert("Invalid condition treatment. Please ensure it is not empty and within 512 characters.");
+            return;
+        }
+
 		const newId = conditions.reduce((max, condition) => Math.max(max, condition.id), 0) + 1;
 		const updatedCondition = { ...newCondition, id: newId };
 		const conditionRef = await createObject('conditions', updatedCondition);
@@ -220,6 +235,8 @@ export default function Page() {
 	const handleAddDate = (dateType, vaccinationId) => {
 		const date = new Date(newDate);
 		const timestamp = Timestamp.fromDate(date);
+        
+
 		if (vaccinationId === 0) {
 			setNewVaccine({ ...newVaccine, [dateType]: [...newVaccine[dateType], timestamp] })
 		} else {
@@ -275,6 +292,15 @@ export default function Page() {
 	};
 	
 	const handleAddVaccine = async () => {
+        // Validation for new vaccine
+        if (!newVaccine.name.trim() || newVaccine.name.length > 32) {
+            alert("Invalid vaccine name. Please ensure it is not empty and within 32 characters.");
+            return;
+        }
+        if (newVaccine.description && newVaccine.description.length > 512) {
+            alert("Invalid vaccine description. Please ensure it is within 512 characters.");
+            return;
+        }       
 		const newId = vaccinations.reduce((max, vaccine) => Math.max(max, vaccine.id), 0) + 1;
 		const updatedVaccine = { ...newVaccine, id: newId };
 		const vaccineRef = await createObject('vaccinations', updatedVaccine);
@@ -377,43 +403,36 @@ export default function Page() {
 		let vaccinationRefs = [];
 		let childrenRefs = [];
 		
-
+        //General Validation
         if (!cat.name.trim() || cat.name.length > 64 ) {
             alert("Invalid name. Please ensure it is not empty, and within 64 characters.");
             return;
           }
-
         if(!cat.breed.trim() || cat.breed.length > 20){
             alert("Invalid name. Please ensure it is not empty, and within 64 characters.");
             return;
         }
-          
         if(!validGenders.includes(cat.gender.toLowerCase().trim())){
             alert("Invalid gender. Please ensure it is either 'male' or 'female'.");
           return;  
         }
-
         if (!cat.birthdate) {
             alert("Invalid birthdate. Please ensure a date is selected.");
             return;
         }
-
-  
         if (!cat.color.trim() || cat.color.length > 30) {
             alert("Invalid color. Please ensure it is not empty and within 30 characters.");
             return;
         }
-
-
         if (!cat.eye_color.trim() || cat.eye_color.length > 30) {
             alert("Invalid eye color. Please ensure it is not empty and within 30 characters.");
             return;
         }
-
         if(!cat.description.trim() || cat.description > 1024){
-            alert("Invalid description. Please ensure it is not a empty and within 1024 charaters.");
+            alert("Invalid description. Please ensure it is not a empty and within 1024 characters.");
             return;
         }
+   
 		cat.conditions.map(async (condition) => {
 			await updateObject('conditions', condition, false)
 		})

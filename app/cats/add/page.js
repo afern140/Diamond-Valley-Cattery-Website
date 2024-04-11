@@ -21,8 +21,7 @@ import BackgroundUnderlay from "@/app/components/background-underlay";
 export default function Page() {
 	const [fileInputs, setFileInputs] = useState([{ id: v4(), file: null }]);
 	const [carouselImage, setCarouselImage] = useState([]);
-	const {user} = useUserAuth();
-	const [filteredUser, setFilteredUser] = useState();
+	const { user, dbUser } = useUserAuth();
 	const [cats, setCats] = useState([]);
 	const [conditions, setConditions] = useState([]);
 	const [vaccinations, setVaccinations] = useState([]);
@@ -70,14 +69,6 @@ export default function Page() {
 		dosesRemaining: 0,
 		futureDates: []
 	});
-
-	useEffect(() => {
-		const fetchUser = async () => {
-			const filteredUser = await getUser(user);
-			setFilteredUser(filteredUser);
-		};
-		fetchUser();
-	}, [user]);
 
 	useEffect(() => {
 		const fetchCats = async () => {
@@ -385,7 +376,7 @@ export default function Page() {
 		cat.vaccinations.map(async (vaccination) => {
 			await updateObject('vaccinations', vaccination, false)
 		})
-		const ownerRef = doc(db, 'users', filteredUser.docId);
+		const ownerRef = doc(db, 'users', dbUser.docId);
 		if (cat.mother !== "") {
 			motherRef = doc(db, 'cats', cat.mother.docId)
 		}
@@ -440,7 +431,7 @@ export default function Page() {
 	return(
 		<main className="relative min-h-screen text-header-text-0">
 			<BackgroundUnderlay />
-			{filteredUser ? (
+			{dbUser ? (
 				<div className="w-4/5 mx-auto pb-16">
 					
 					{/* Header */}

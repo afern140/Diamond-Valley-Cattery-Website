@@ -18,6 +18,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import CatCarouselController from "@/app/components/CatCarouselController";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
+import { set } from "firebase/database"
 
 export default function Page({params}){
 	const handleImageUpload = async (imageUrl) => {
@@ -95,6 +96,8 @@ export default function Page({params}){
 		dosesRemaining: 0,
 		futureDates: []
 	});
+	//Gender to display in the cat selection
+	const [selectorGender, setSelectorGender] = useState("");
 
 
 	useEffect(() => {
@@ -353,6 +356,7 @@ export default function Page({params}){
 	};
 
 	const handleSelectParentToUpdate = (parent) => {
+		setSelectorGender(parent === "mother" ? "Female" : "Male")
 		setSelectedParent(parent);
 		setShowParentSelection(true);
 	};
@@ -369,6 +373,7 @@ export default function Page({params}){
 	};
 
 	const handleAddChild = () => {
+		setSelectorGender("");
 		setShowChildSelection(true);
 	};
 	
@@ -466,14 +471,24 @@ export default function Page({params}){
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
 										/>
-										<input
+										{/*<input
 											type="text"
 											name="gender"
 											placeholder="Gender"
 											value={cat.gender}
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-										/>
+										/>*/}
+										<div>
+											<select
+											name="gender"
+											value={cat.gender}
+											onChange={handleChange}
+											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg">
+												<option value="Male">Male</option>
+												<option value="Female">Female</option>
+											</select>
+										</div>
 										<input
 											type="date"
 											name="birthdate"
@@ -648,7 +663,7 @@ export default function Page({params}){
 							</div>)}
 						
 						</div>
-						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
+						<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent} gender={selectorGender}/>
 					</div>
 
 					{/* Children */}

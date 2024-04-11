@@ -69,6 +69,8 @@ export default function Page() {
 		dosesRemaining: 0,
 		futureDates: []
 	});
+	//Gender to display in the cat selection
+	const [selectorGender, setSelectorGender] = useState("");
 
 	useEffect(() => {
 		const fetchCats = async () => {
@@ -286,6 +288,7 @@ export default function Page() {
 	};
 
 	const handleSelectParentToUpdate = (parent) => {
+		setSelectorGender(parent === "mother" ? "Female" : "Male")
 		setSelectedParent(parent);
 		setShowParentSelection(true);
 	};
@@ -302,6 +305,7 @@ export default function Page() {
 	};
 
 	const handleAddChild = () => {
+		setSelectorGender("")
 		setShowChildSelection(true);
 	};
 	
@@ -695,7 +699,7 @@ export default function Page() {
 										<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Father</button>
 									</div>)}
 							</div>
-							<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent}/>
+							<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent} gender={selectorGender}/>
 						</div>
 					</div>
 

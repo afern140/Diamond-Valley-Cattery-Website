@@ -149,18 +149,20 @@ const Navbar = () => {
   // -- F -- search bar click away
   const settingsRef = useRef(null);
 	useEffect(() => {
-		// only add the event listener when the settings
-        if (!expandSettings) return;
+		// only add the event listener when the search bar drop is opened
+        if (!expandUser) return;
 
         function handleClick(event) {
-          if (settingsRef.current && !settingsRef.current.contains(event.target)) {
-            setExpandSettings(false);
-          }
+            if (settingsRef.current && !settingsRef.current.contains(event.target)) {
+                setExpandSettings(false);
+                setExpandUser(false);
+				        console.log("Search bar is off!");
+            }
         }
 
         window.addEventListener("mousedown", handleClick);
         return () => { window.removeEventListener("mousedown", handleClick); }
-	}, [expandSettings]);
+	}, [expandSettings, expandUser]);
 
   return (
     <div className="font-sans text-black font-normal text-base pt-6 bg-navbar-body-0 dark:bg-dark-navbar-body-0 z-[100] relative">
@@ -179,7 +181,7 @@ const Navbar = () => {
           <div className="w-full flex">
             {/* Settings */}
             <div id="mousemove" className="relative justify-end flex m-auto w-full px-10 z-40">
-              {/*<button className={"p-2 rounded-full relative transition duration-300 text-black z-10 border-2 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (expandUser ? " bg-white bg-opacity-90 hover:scale-110 hover:bg-white hover:bg-opacity-100 border-gray-500 hover:border-gray-700" : " hover:bg-white hover:bg-opacity-90 bg-white bg-opacity-70 hover:scale-110 border-black hover:border-gray-700")}
+              <button className={"p-2 rounded-full relative transition duration-300 text-black z-10 border-2 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] " + (expandUser ? " bg-white bg-opacity-90 hover:scale-110 hover:bg-white hover:bg-opacity-100 border-gray-500 hover:border-gray-700" : " hover:bg-white hover:bg-opacity-90 bg-white bg-opacity-70 hover:scale-110 border-black hover:border-gray-700")}
                                 onClick={() => setExpandUser(!expandUser)}><Image alt="user" src="/img/userprofile.png" width={48} height={48} /></button>
               {/*<div className="bg-yellow-700 p-3 rounded-xl -translate-y-[21px] -z-20"/>*/}
 
@@ -187,24 +189,27 @@ const Navbar = () => {
                 <Image alt="user" src={user && user.thumbnail ? user.thumbnail : "/img/userprofile.png"} width={64} height={64} className="m-auto"/>
               </div>
 
-              {/* Blocker Element */}
+              {/* Blocker Element *//*}
               <div className=" h-16 w-32 absolute right-[105px] z-10 opacity-0"/>
-              <select value={userValue} onChange={(e) => setUserValue(e.target.value)} className=" opacity-0 h-16 w-32 p-4 bg-white">
+              <select value={userValue} onChange={(e) => setUserValue(e.target.value)} className="relative z-0 opacity-0 h-16 w-64 py-4 px-16 bg-gray-300 rounded-xl">
                 <option value="" className="hidden" disabled></option>
-                <option value="Settings" className="font-bold p-4 top-12 appearance-auto">Settings</option>
+                <option value="Settings" className="font-bold text-xl py-4 top-12 text-header-text-0 relative z-0 appearance-auto">Settings</option>
 
+                <Image alt="placeholder" src="/img/dashboard.png" width={64} height={64} className="relative z-10" />
                 {user ? (
                 <>
-                  <option value="Dashboard" className="font-bold p-4">Dashboard</option>
-                  <option value="Sign Out" className="font-bold p-4">Sign Out</option>
+                  <option value="Dashboard" className="font-bold text-xl px-16 text-header-text-0 py-4 relative z-0">Dashboard<span className=""/></option>
+                  <option value="Sign Out" className="font-bold text-xl px-16 text-header-text-0 py-4 relative z-0">Sign Out</option>
                 </>
                 ) : (
-                  <option value="Sign In" className="font-bold p-4">Sign In</option>
+                  <option value="Sign In" className="font-bold text-xl px-16 text-header-text-0 py-4 relative z-0">Sign In</option>
                 )}
               </select>
+              <Image alt="placeholder" src="/img/dashboard.png" width={64} height={64} className="absolute -translate-x-20 translate-y-12 z-[100]" />
+              */}
               
               { expandUser &&
-                (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-6 shadow transition duration-300 overflow-clip">
+                (<div ref={settingsRef} className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-6 shadow transition duration-300 overflow-clip">
                   <div className="relative w-full z-40">
                     <button className="relative w-full z-40 " onClick={() => setExpandSettings(!expandSettings)}>
                       <div className={"relative z-40 flex p-2 w-full text-black dark:text-white dark:hover:bg-gray-700 hover:bg-gray-200 size-full text-left" + (expandSettings ? " bg-gray-200 dark:bg-gray-400 hover:bg-gray-300 active:bg-gray-400" : " dark:hover:bg-gray-700 hover:bg-gray-200 active:bg-gray-400")}>
@@ -233,9 +238,9 @@ const Navbar = () => {
               }
 
               {/* New Settings Pop-up */}
-              {expandSettings &&
+              {expandSettings && false &&
                 <div ref={settingsRef} className="z-50 bg-gray-700 rounded-2xl drop-shadow-lg bg-opacity-80 w-72 h-fit py-8 fixed right-1/2 top-1/3 translate-x-1/2">
-                  <div className="relative bg-white dark:bg-gray-300 py-4 px-2 rounded-xl drop-shadow-lg w-[80%] top-1/2 left-1/2 -translate-x-1/2">
+                  <div ref={settingsRef} className="relative bg-white dark:bg-gray-300 py-4 px-2 rounded-xl drop-shadow-lg w-[80%] top-1/2 left-1/2 -translate-x-1/2">
                     <h1 className="p-3 text-2xl text-center">Settings</h1>
 
                     {/* Dark Theme */}

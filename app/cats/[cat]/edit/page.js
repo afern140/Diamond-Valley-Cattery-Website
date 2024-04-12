@@ -372,7 +372,7 @@ export default function Page({params}){
 		const vaccinationRefs = cat.vaccinations.map(vaccination => doc(db, 'vaccinations', vaccination.docId));
 		const childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		if (thumbnail) {
-			const thumbnailRef = ref(strg, 'thumbnails/');
+			const thumbnailRef = ref(strg, `thumbnails/${cat.id}`);
 			await uploadBytes(thumbnailRef, thumbnail);
 			const thumbnailUrl = await getDownloadURL(thumbnailRef);
 			const updatedCat =  { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: thumbnailUrl  }

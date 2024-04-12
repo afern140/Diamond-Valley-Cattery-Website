@@ -179,19 +179,30 @@ export default function Page() {
 						</div>
 					</div>
 					)}
+					<div className="bg-navbar-body-1 dark:bg-gray-300 mx-auto mb-auto p-4 w-[240px] h-full rounded-xl drop-shadow-lg">
+						<h2 className="text-lg text-center pb-2">Settings</h2>
+						<div className="space-y-2">
+							<Link href="../messages" >
+								<p className=" w-full bg-white text-center p-2 rounded-xl drop-shadow-lg mb-2">Messages</p>
+							</Link>
+							<Link href="../login/forgotpassword" >
+								<p className=" w-full bg-white text-center p-2 rounded-xl drop-shadow-lg mb-2">Reset Password</p>
+							</Link>
+						</div>
+					</div>
 				</div>
 				{/* Recent Messages */}
 				<div className="bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg p-10 mt-10">
 					<h2 className=" text-2xl text-left font-bold dark:text-dark-header-text-0">
 						Recent Messages
 					</h2>
-                    <div className="mx-10 my-4">
+                    <div className=" my-4 overflow-y-auto max-h-[400px]">
                     {chatsWithLatestUnreadMessage.length > 0 ? (
                      chatsWithLatestUnreadMessage.map(({ chatId, lastMessage }) => (
-                        <div key={chatId} className="rounded-md p-2 my-1 bg-blue-100">
-                            <Link href={`/messages/${chatId}`}>
+                        <div key={chatId} className="rounded-md my-1 bg-blue-100 w-full max-w-[100%] overflow-hidden">
+                            <Link href={`/messages/${chatId}`} className="rounded-xl">
                                 <div
-                                className="cursor-pointer hover:bg-blue-200 transition duration-300 ease-in-out"
+                                className="cursor-pointer p-4 hover:bg-blue-200 transition duration-300 ease-in-out"
                                 onClick={async () => {
                                     // Check if the message is not sent by the current user
                                     if (user.uid !== lastMessage.userId) {
@@ -200,7 +211,7 @@ export default function Page() {
                                     // Navigation to the chat page is handled by Link component
                                     }}
                                     >
-                                    <span>
+                                    <span className="text-ellipsis break-words">
                                         {lastMessage.displayName || "Unknown"}:{" "}
                                         {lastMessage.text}
                                     </span>

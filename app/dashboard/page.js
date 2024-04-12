@@ -196,13 +196,13 @@ export default function Page() {
 					<h2 className=" text-2xl text-left font-bold dark:text-dark-header-text-0">
 						Recent Messages
 					</h2>
-                    <div className="mx-10 my-4">
+                    <div className=" my-4 overflow-y-auto max-h-[400px]">
                     {chatsWithLatestUnreadMessage.length > 0 ? (
                      chatsWithLatestUnreadMessage.map(({ chatId, lastMessage }) => (
-                        <div key={chatId} className="rounded-md p-2 my-1 bg-blue-100">
-                            <Link href={`/messages/${chatId}`}>
+                        <div key={chatId} className="rounded-md my-1 bg-blue-100 w-fit max-w-[100%] overflow-hidden">
+                            <Link href={`/messages/${chatId}`} className="rounded-xl">
                                 <div
-                                className="cursor-pointer hover:bg-blue-200 transition duration-300 ease-in-out"
+                                className="cursor-pointer p-4 hover:bg-blue-200 transition duration-300 ease-in-out"
                                 onClick={async () => {
                                     // Check if the message is not sent by the current user
                                     if (user.uid !== lastMessage.userId) {
@@ -211,7 +211,7 @@ export default function Page() {
                                     // Navigation to the chat page is handled by Link component
                                     }}
                                     >
-                                    <span>
+                                    <span className="text-ellipsis break-words">
                                         {lastMessage.displayName || "Unknown"}:{" "}
                                         {lastMessage.text}
                                     </span>

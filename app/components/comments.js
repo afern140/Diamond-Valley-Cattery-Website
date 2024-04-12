@@ -27,15 +27,17 @@ export default function Comments({ cat, user }) {
 			<div className=" m-auto flex-col justify-center bg-white dark:bg-gray-500 bg-opacity-100 mt-10 p-8 drop-shadow-lg rounded-xl  overflow-hidden">
 				<NewComment cat={cat} setComments={setComments} user={user}/>
 				<div className="w-full h-[1px] bg-gray-300 my-12" />
-				{comments.map((comment) => (
-					<Comment 
-						key={comment.id}
-						createTime={comment.createTime ? new Date(comment.createTime.toDate().toISOString().split('T'[0])) : new Date() }
-						catName={comment.catName}
-						message={comment.message}
-						createName={comment.createName}
-					/>
-				))}
+				<div className="overflow-y-auto max-h-[1000px]">
+					{comments.map((comment) => (
+						<Comment 
+							key={comment.id}
+							createTime={comment.createTime ? new Date(comment.createTime.toDate().toISOString().split('T'[0])) : new Date() }
+							catName={comment.catName}
+							message={comment.message}
+							createName={comment.createName}
+						/>
+					))}
+				</div>
 			</div>
 		</section>
 	);

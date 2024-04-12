@@ -340,18 +340,13 @@ export default function Page({params}){
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
-	const handleThumbnailChange = (e) => {
+	const handleThumbnailChange = async (e) => {
 		const file = e.target.files[0];
-		const image = new Image();
-		image.onload = function () {
-			if (image.width !== image.height) {
-				alert("Thumbnails must be a square");
-			} else {
-				setThumbnailFile(file)
-				setThumbnail(URL.createObjectURL(file));
-			}
-		};
-		image.src = URL.createObjectURL(file);
+		const thumbnailRef = ref(strg, `thumbnails/cats/${cat.id}`);
+		await uploadBytes(thumbnailRef, file);
+		const thumbnailUrl = await getDownloadURL(thumbnailRef);
+		setThumbnail(thumbnailUrl);
+		setCat((prevCat) => ({ ...prevCat, thumbnail: thumbnailUrl }));
 	};
 
 	const handleSubmit = async () => {
@@ -373,16 +368,8 @@ export default function Page({params}){
 		const conditionRefs = cat.conditions.map(condition => doc(db, 'conditions', condition.docId));
 		const vaccinationRefs = cat.vaccinations.map(vaccination => doc(db, 'vaccinations', vaccination.docId));
 		const childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
-		if (thumbnailFile) {
-			const thumbnailRef = ref(strg, `thumbnails/${cat.id}`);
-			await uploadBytes(thumbnailRef, thumbnailFile);
-			const thumbnailUrl = await getDownloadURL(thumbnailRef);
-			const updatedCat =  { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: thumbnailUrl  }
-			await updateObject('cats', updatedCat, true);
-		} else {
-			const updatedCat = { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
-			await updateObject('cats', updatedCat, true);
-		};
+		const updatedCat =  { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
+		await updateObject('cats', updatedCat, true);
 		window.location.href = `/cats/${cat.id}`;
 	};
 

@@ -316,21 +316,15 @@ export default function Page() {
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
-	const handleThumbnailChange = (e) => {
+	const handleThumbnailChange = async (e) => {
 		const file = e.target.files[0];
-		const image = new Image();
-		image.onload = function () {
-			if (image.width !== image.height) {
-				alert("Thumbnails must be a square");
-			} else {
-				setThumbnailFile(file)
-				console.log(thumbnailFile)
-				setThumbnail(URL.createObjectURL(file));
-				console.log(thumbnail)
-			}
-		};
-		image.src = URL.createObjectURL(file);
+		const thumbnailRef = ref(strg, `thumbnails/cats/${cat.id}`);
+		await uploadBytes(thumbnailRef, file);
+		const thumbnailUrl = await getDownloadURL(thumbnailRef);
+		setThumbnail(thumbnailUrl);
+		setCat((prevCat) => ({ ...prevCat, thumbnail: thumbnailUrl }));
 	};
+
 
 	const handleImageSelected = async (event, id) => {
 		const file = event.target.files[0];
@@ -412,16 +406,8 @@ export default function Page() {
 		if (cat.children.length > 0) {
 			childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		}
-		if (thumbnailFile) {
-			const thumbnailRef = ref(strg, `thumbnails/${cat.id}`);
-			await uploadBytes(thumbnailRef, thumbnailFile);
-			const thumbnailUrl = await getDownloadURL(thumbnailRef);
-			const newCat =  { ...cat, id: newId, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: thumbnailUrl  }
-			await createObject('cats', newCat, true);
-		} else {
-			const newCat = { ...cat, id: newId, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
-			await createObject('cats', newCat, true);
-		};
+		const newCat =  { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
+		await createObject('cats', newCat);
 
 	// 	let thumbnailUrl = null;
     // 	const fileInput = document.querySelector('input[type="file"]');

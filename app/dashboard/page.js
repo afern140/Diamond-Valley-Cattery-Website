@@ -18,9 +18,7 @@ export default function Page() {
 	const { user, dbUser } = useUserAuth();
 	const [updatedUser, setUpdatedUser] = useState();
 	const [edit, setEdit] = useState(false);
-	const [image, setImage] = useState("/img/Placeholder.png");
 	const [thumbnail, setThumbnail] = useState();
-	const [thumbnailFile, setThumbnailFile] = useState();
     const [chatsWithLatestUnreadMessage, setChatsWithLatestUnreadMessage] = useState([]);
 	const { fetchChatsWithLatestUnreadMessage, markMessageAsRead } = useChat();
 
@@ -41,42 +39,18 @@ export default function Page() {
 	const handleEdit = () => {
 		setEdit(true);
 	};
-	
-	// const handleImageChange = (e) => {
-	// 	const file = e.target.files[0];
 
-	// 	const imgUrl = URL.createObjectURL(file);
-	// 	setImage(imgUrl);
-
-	// 	const { thumbnail } = e.target;
-	// 	setUpdatedUser((prevUser) => ({ ...prevUser, [thumbnail]: imgUrl }));
-	// };
-
-	const handleThumbnailChange = (e) => {
+	const handleThumbnailChange = async (e) => {
 		const file = e.target.files[0];
-		const image = new Image();
-		image.onload = function () {
-			if (image.width !== image.height) {
-				alert("Thumbnails must be a square");
-			} else {
-				setThumbnailFile(file)
-				setThumbnail(URL.createObjectURL(file));
-			}
-		};
-		image.src = URL.createObjectURL(file);
+		const thumbnailRef = ref(strg, `thumbnails/users/${dbUser.uid}`);
+		await uploadBytes(thumbnailRef, file);
+		const thumbnailUrl = await getDownloadURL(thumbnailRef);
+		setThumbnail(thumbnailUrl);
+		setUpdatedUser((prevUser) => ({ ...prevUser, thumbnail: thumbnailUrl }));
 	};
 	
 	const handleSubmit = async () => {
-		// await updateUser(updatedUser);
-		if (thumbnailFile) {
-			const thumbnailRef = ref(strg, `thumbnails/${dbUser.uid}`);
-			await uploadBytes(thumbnailRef, thumbnailFile);
-			const thumbnailUrl = await getDownloadURL(thumbnailRef);
-			const updatedUserThumbnail =  { ...updatedUser, thumbnail: thumbnailUrl  }
-			await updateUser(updatedUserThumbnail);
-		} else {
-			await updateUser(updatedUser);
-		};
+		await updateUser(updatedUser);
 		setEdit(false);
 	};
 	

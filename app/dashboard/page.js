@@ -179,6 +179,17 @@ export default function Page() {
 						</div>
 					</div>
 					)}
+					<div className="bg-navbar-body-1 dark:bg-gray-300 mx-auto mb-auto p-4 w-[240px] h-full rounded-xl drop-shadow-lg">
+						<h2 className="text-lg text-center pb-2">Settings</h2>
+						<div className="space-y-2">
+							<Link href="../messages" >
+								<p className=" w-full bg-white text-center p-2 rounded-xl drop-shadow-lg mb-2">Messages</p>
+							</Link>
+							<Link href="../login/forgotpassword" >
+								<p className=" w-full bg-white text-center p-2 rounded-xl drop-shadow-lg mb-2">Reset Password</p>
+							</Link>
+						</div>
+					</div>
 				</div>
 				{/* Recent Messages */}
 				<div className="bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg p-10 mt-10">

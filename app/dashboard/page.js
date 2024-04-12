@@ -199,7 +199,7 @@ export default function Page() {
                     <div className=" my-4 overflow-y-auto max-h-[400px]">
                     {chatsWithLatestUnreadMessage.length > 0 ? (
                      chatsWithLatestUnreadMessage.map(({ chatId, lastMessage }) => (
-                        <div key={chatId} className="rounded-md my-1 bg-blue-100 w-fit max-w-[100%] overflow-hidden">
+                        <div key={chatId} className="rounded-md my-1 bg-blue-100 w-full max-w-[100%] overflow-hidden">
                             <Link href={`/messages/${chatId}`} className="rounded-xl">
                                 <div
                                 className="cursor-pointer p-4 hover:bg-blue-200 transition duration-300 ease-in-out"

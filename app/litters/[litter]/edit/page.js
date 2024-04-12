@@ -1,55 +1,58 @@
 "use client"
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/app/_utils/firebase";
 import { getObject, getObjects, updateObject } from "@/app/_utils/firebase_services";
-import CatSelection from "@/app/components/cats/cat-selection";
-import ImageUploader from "@/app/components/ImageUploader";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import CatSelection from "@/app/components/cats/cat-selection";
+import CatButton from "@/app/components/cats/cat-button";
+import AddCatButton from "@/app/components/cats/add-cat-button";
+import EditThumbnail from "@/app/components/images/EditThumbnail";
 import LitterCarouselController from "@/app/components/LitterCarouselController";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({ params }) {
-	const [imageFile, setImageFile] = useState(null);
+	// const [imageFile, setImageFile] = useState(null);
 	const [litter, setLitter] = useState();
+	const [thumbnail, setThumbnail] = useState();
 	const [cats, setCats] = useState([]);
 	const [selectedParent, setSelectedParent] = useState();
 	const [showParentSelection, setShowParentSelection] = useState(false);
 	const [showChildSelection, setShowChildSelection] = useState(false);
-	const handleImageSelected = (file) => {
-		setImageFile(file);
-	  };	  
-	  const fetchLitter = async () => {
-		const litter = await getObject('litters', parseInt(params.litter));
-		if (litter.mother) {
-			const mother = await getDoc(litter.mother);
-			litter.mother = { docId: litter.mother.id, ...mother.data() };
-		} else {
-			litter.mother = null;
-		}
-		if (litter.father) {
-			const father = await getDoc(litter.father);
-			litter.father = { docId: litter.father.id, ...father.data() };
-		} else {
-			litter.father = null;
-		}
-		if (litter.children) {
-			const children = await Promise.all(litter.children.map(async (childRef) => {
-				const child = await getDoc(childRef)
-				return { docId: childRef.id, ...child.data()};
-			}));
-			litter.children = children;
-		} else {
-			litter.children = null;
-		}
-		setLitter(litter);
-	};
+	
+	// const handleImageSelected = (file) => {
+	// 	setImageFile(file);
+	// };	  
     
 	useEffect(() => {
+		const fetchLitter = async () => {
+			const litter = await getObject('litters', parseInt(params.litter));
+			if (litter.mother) {
+				const mother = await getDoc(litter.mother);
+				litter.mother = { docId: litter.mother.id, ...mother.data() };
+			} else {
+				litter.mother = null;
+			}
+			if (litter.father) {
+				const father = await getDoc(litter.father);
+				litter.father = { docId: litter.father.id, ...father.data() };
+			} else {
+				litter.father = null;
+			}
+			if (litter.children) {
+				const children = await Promise.all(litter.children.map(async (childRef) => {
+					const child = await getDoc(childRef)
+					return { docId: childRef.id, ...child.data()};
+				}));
+				litter.children = children;
+			} else {
+				litter.children = null;
+			}
+			setLitter(litter);
+		};
 		fetchLitter();
 	}, [params]);
 
@@ -106,15 +109,24 @@ export default function Page({ params }) {
 		setLitter(prevLitter => ({ ...prevLitter, children: updatedChildren }));
 	};
 
+	const handleThumbnailChange = async (e) => {
+		const file = e.target.files[0];
+		const thumbnailRef = ref(strg, `thumbnails/litters/${litter.id}`);
+		await uploadBytes(thumbnailRef, file);
+		const thumbnailUrl = await getDownloadURL(thumbnailRef);
+		setThumbnail(thumbnailUrl);
+		setLitter((prevLitter) => ({ ...prevLitter, thumbnail: thumbnailUrl }));
+	};
+
 	const handleSubmit = async () => {
 		// Upload the image to Firebase Storage if an image is selected
-		let imageUrl = litter.thumbnail; // Default to the existing thumbnail URL
-		if (imageFile) {
-		  const storage = getStorage();
-		  const imageRef = ref(storage, `litters/${litter.id}/thumbnail`);
-		  await uploadBytes(imageRef, imageFile);
-		  imageUrl = await getDownloadURL(imageRef);
-		}
+		// let imageUrl = litter.thumbnail; // Default to the existing thumbnail URL
+		// if (imageFile) {
+		//   const storage = getStorage();
+		//   const imageRef = ref(storage, `litters/${litter.id}/thumbnail`);
+		//   await uploadBytes(imageRef, imageFile);
+		//   imageUrl = await getDownloadURL(imageRef);
+		// }
 	  
 		// Update the Firestore document
 		const motherRef = doc(db, 'cats', litter.mother.docId);
@@ -123,23 +135,18 @@ export default function Page({ params }) {
 		if (litter.completed) {
 		  childrenRefs = litter.children.map(child => doc(db, 'cats', child.docId));
 		}
-		const updatedLitter = {
-		  ...litter,
-		  mother: motherRef,
-		  father: fatherRef,
-		  children: childrenRefs,
-		  thumbnail: imageUrl // Set the new thumbnail URL
-		};
+		const updatedLitter = { ...litter, mother: motherRef, father: fatherRef, children: childrenRefs };
 		await updateObject('litters', updatedLitter, true);
+		window.location.href = `/cats/${litter.id}`;
 	  };
 	
-	const handleImageUpload = async (imageUrl) => {
-		try {
-			fetchCat()
-		} catch (error) {
-			console.error("Error handling image upload:", error);
-		}
-	};
+	// const handleImageUpload = async (imageUrl) => {
+	// 	try {
+	// 		fetchCat()
+	// 	} catch (error) {
+	// 		console.error("Error handling image upload:", error);
+	// 	}
+	// };
 
 	return (
 		<main className="relative text-[#092C48] pb-12">
@@ -155,7 +162,7 @@ export default function Page({ params }) {
 					{/* Edit Details */}
 					<div className="flex flex-col xl:flex-row p-10 mt-6 m-auto justify-evenly rounded-lg min-w-64 bg-white dark:bg-gray-500 drop-shadow-lg text-[#092C48]">
 						<div className="size-full mx-auto my-4 xl:m-4 max-w-[300px] h-[300px]">
-							<ImageUploader onImageSelected={handleImageSelected} />
+							<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail}/>
 						</div>
 						
 						<div className="w-full h-fit flex-col space-y-2 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg p-4 max-w-[400px] mx-auto my-4 xl:m-4">
@@ -206,30 +213,14 @@ export default function Page({ params }) {
 							{litter.mother ? (
 								<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl text-header-text-0 place-items-center">
 									<h2>Mother</h2>
-									<h3 className="font-normal mb-4">{litter.mother.name}</h3>
-									<Image
-										alt="Cat"
-										src={litter.mother.thumbnail ? litter.mother.thumbnail : "/img/Placeholder.png"}
-										width={200}
-										height={200}
-										className="justify-center align-center place-items-center"
-										objectFit="contain"
-									/>
+									<CatButton cat={litter.mother}/>
 									<button className="px-4 py-2 drop-shadow-lg bg-white rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Mother</button>
 								</div>
 							) : (<></>)}
 							{litter.father ? (
 								<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl text-header-text-0 place-items-center">
 									<h2>Father</h2>
-									<h3 className="font-normal mb-4">{litter.father.name}</h3>
-									<Image
-										alt="Cat"
-										src={litter.father.thumbnail ? litter.father.thumbnail : "/img/Placeholder.png"}
-										width={200}
-										height={200}
-										className="justify-center align-center place-items-center"
-										objectFit="contain"
-									/>
+									<CatButton cat={litter.father}/>
 									<button className="px-4 py-2 bg-white drop-shadow-lg rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Father</button>
 								</div>
 							) : (<></>)}
@@ -245,27 +236,12 @@ export default function Page({ params }) {
 							<div className="flex flex-wrap overflow-y-auto">
 								{litter.children.map((child) => (
 									<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl text-header-text-0 place-items-center">
-										<h3>{child.name}</h3>
-										<Image
-											alt="Cat"
-											src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}
-											width={200}
-											height={200}
-											className="justify-center align-center place-items-center"
-											objectFit="contain"
-										/>
+										<CatButton cat={child}/>
 										<button className="px-4 py-2 bg-gradient-to-r drop-shadow-lg bg-white rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 									</div>
 								))}
 								<div className=" flex justify-center flex-col font-bold p-4 m-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg rounded-xl border-2 border-gray-300 border-dashed text-header-text-0 place-items-center">
-									<Image
-										alt="Cat"
-										src={"/img/Placeholder.png"}
-										width={200}
-										height={200}
-										className="justify-center align-center place-items-center"
-										objectFit="contain"
-									/>
+									<AddCatButton/>
 									<button className="px-4 py-2 bg-white drop-shadow-lg rounded-xl mt-6" onClick={() => handleAddChild()}>Select Child</button>
 								</div>
 								<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
@@ -279,7 +255,7 @@ export default function Page({ params }) {
 						)}
 					</div>
 					<button className="flex m-auto px-6 py-4 bg-white drop-shadow-lg rounded-xl mt-16 text-2xl" onClick={handleSubmit}>Submit</button>
-					<LitterCarouselController onImageUpload={handleImageUpload} litter={litter} />
+					{/* <LitterCarouselController onImageUpload={handleImageUpload} litter={litter} /> */}
 				</div>
 			) : (
 				<div className="h-screen">

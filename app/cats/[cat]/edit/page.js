@@ -25,7 +25,6 @@ export default function Page({params}){
 	const [conditions, setConditions] = useState();
 	const [vaccinations, setVaccinations] = useState();
 	const [thumbnail, setThumbnail] = useState();
-	const [thumbnailFile, setThumbnailFile] = useState();
 	const [selectedCondition, setSelectedCondition] = useState();
 	const [selectedVaccine, setSelectedVaccine] = useState();
 	const [selectedParent, setSelectedParent] = useState();

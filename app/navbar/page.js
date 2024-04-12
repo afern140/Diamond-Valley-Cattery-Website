@@ -271,7 +271,7 @@ const Navbar = () => {
               }
 
               {expandSettings && expandUser && 
-                (<div className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-[344px] shadow transition duration-300 overflow-clip">
+                (<div ref={settingsRef} className="bg-white dark:bg-gray-600 w-80 h-fit absolute right-0 z-40 rounded-lg border-2 border-gray-300 translate-y-[72px] -translate-x-[344px] shadow transition duration-300 overflow-clip">
                 <div className="flex p-2 space-x-4 text-black dark:text-white">
                   <p>Dark Theme</p>
                   <button className="rounded-full" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>

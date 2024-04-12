@@ -92,7 +92,7 @@ function NewComment({ cat, setComments, user }) {
 						placeholder="Comment Here"
 						value = {message}
 						onChange={(e) => setMessage(e.target.value)}
-						className="border-s-4 border-[#c7c7e1] max-h-[250px] p-2 mb-16 w-full rounded-md min-h-32 drop-shadow-lg text-black bg-navbar-body-1 dark:bg-gray-300"
+						className="border-s-4 border-[#c7c7e1] max-h-[300px] p-2 mb-16 w-full rounded-md min-h-32 drop-shadow-lg text-black bg-navbar-body-1 dark:bg-gray-300"
 					/>
 					<button type="submit" className=" drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded text-black py-4 text-2xl px-6 transition duration-300 hover:scale-110">
 						Comment

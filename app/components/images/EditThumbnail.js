@@ -1,10 +1,10 @@
-export default function EditThumbnail({ handleImageChange, thumbnail }) {
+export default function EditThumbnail({ handleThumbnailChange, thumbnail }) {
     return (
         <main className="min-h-screen relative text-[#092C48] pb-16">
             <input
                 type="file"
                 accept="image/*"
-                onChange={handleImageChange}
+                onChange={handleThumbnailChange}
                 className="block mx-auto mb-4"
             />
             {thumbnail ? (

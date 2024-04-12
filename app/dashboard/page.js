@@ -1,26 +1,36 @@
 "use client";
 
-import Image from "next/image";
+import NextImage from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import { db, strg } from "@/app/_utils/firebase"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { updateObject } from "../_utils/firebase_services";
 import { useUserAuth } from "../_utils/auth-context";
 import { updateUser } from "../_utils/user_services";
 import { useChat } from "@/app/_utils/chat-context";
 import CatButton from "../components/cats/cat-button";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
+import EditThumbnail from "../components/images/EditThumbnail";
 
 export default function Page() {
 	const { user, dbUser } = useUserAuth();
 	const [updatedUser, setUpdatedUser] = useState();
 	const [edit, setEdit] = useState(false);
 	const [image, setImage] = useState("/img/Placeholder.png");
-    const [chatsWithLatestUnreadMessage, setChatsWithLatestUnreadMessage] =
-    useState([]);
-  const { fetchChatsWithLatestUnreadMessage, markMessageAsRead } = useChat();
+	const [thumbnail, setThumbnail] = useState();
+	const [thumbnailFile, setThumbnailFile] = useState();
+    const [chatsWithLatestUnreadMessage, setChatsWithLatestUnreadMessage] = useState([]);
+	const { fetchChatsWithLatestUnreadMessage, markMessageAsRead } = useChat();
 
 	useEffect(() => {
-		setUpdatedUser(dbUser);
+		if (dbUser) {
+			setUpdatedUser(dbUser);
+			if (dbUser.thumbnail) {
+				setThumbnail(dbUser.thumbnail);
+			}
+		}
 	}, [dbUser]);
 	
 	const handleChange = (e) => {
@@ -32,18 +42,41 @@ export default function Page() {
 		setEdit(true);
 	};
 	
-	const handleImageChange = (e) => {
+	// const handleImageChange = (e) => {
+	// 	const file = e.target.files[0];
+
+	// 	const imgUrl = URL.createObjectURL(file);
+	// 	setImage(imgUrl);
+
+	// 	const { thumbnail } = e.target;
+	// 	setUpdatedUser((prevUser) => ({ ...prevUser, [thumbnail]: imgUrl }));
+	// };
+
+	const handleThumbnailChange = (e) => {
 		const file = e.target.files[0];
-
-		const imgUrl = URL.createObjectURL(file);
-		setImage(imgUrl);
-
-		const { thumbnail } = e.target;
-		setUpdatedUser((prevUser) => ({ ...prevUser, [thumbnail]: imgUrl }));
+		const image = new Image();
+		image.onload = function () {
+			if (image.width !== image.height) {
+				alert("Thumbnails must be a square");
+			} else {
+				setThumbnailFile(file)
+				setThumbnail(URL.createObjectURL(file));
+			}
+		};
+		image.src = URL.createObjectURL(file);
 	};
 	
 	const handleSubmit = async () => {
-		await updateUser(updatedUser);
+		// await updateUser(updatedUser);
+		if (thumbnailFile) {
+			const thumbnailRef = ref(strg, `thumbnails/${dbUser.uid}`);
+			await uploadBytes(thumbnailRef, thumbnailFile);
+			const thumbnailUrl = await getDownloadURL(thumbnailRef);
+			const updatedUserThumbnail =  { ...updatedUser, thumbnail: thumbnailUrl  }
+			await updateUser(updatedUserThumbnail);
+		} else {
+			await updateUser(updatedUser);
+		};
 		setEdit(false);
 	};
 	
@@ -97,29 +130,30 @@ export default function Page() {
 				<div className="flex flex-row justify-center items-center bg-white dark:bg-gray-500 rounded-xl drop-shadow-xl w-full mx-auto p-10 text-left">
 					<div className="text-center m-auto">
 						<div className="relative">
-							<Image
-								src={image}
+							<NextImage
+								src={thumbnail}
 								alt="Profile Picture"
 								width={200}
 								height={200}
 								className="border-2 relative border-black m-5 mb-2"
 							/>
 							{ edit && 	// Putting another edit check here for proper positioning on window size
-							<label htmlFor="pfpImage" className="absolute top-0 left-5 size-[200px]">
-								<label htmlFor="pfpImage" className="bg-gray-700 border-[4px] border-dashed border-gray-200 size-[200px] absolute left-0 z-[100] bg-opacity-70 opacity-0 hover:opacity-100 transition duration-300">
-									<div htmlFor="pfpImage" className="size-full relative flex">
-										<p htmlFor="pfpImage" className=" m-auto px-4 py-2 border-2 border-white rounded-xl bg-gray-800 text-white">Upload Image</p>
-									</div>
-								</label>
-								<input
-									id="pfpImage"
-									name="thumbnail"
-									type="file"
-									accept="image/"
-									onChange={handleImageChange}
-									className="bg-navbar-body-1 dark:bg-gray-300 z-30 absolute rounded-md drop-shadow-lg size-[200px] left-0 opacity-0"
-								/>
-							</label>
+								<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail} />
+							// <label htmlFor="pfpImage" className="absolute top-0 left-5 size-[200px]">
+							// 	<label htmlFor="pfpImage" className="bg-gray-700 border-[4px] border-dashed border-gray-200 size-[200px] absolute left-0 z-[100] bg-opacity-70 opacity-0 hover:opacity-100 transition duration-300">
+							// 		<div htmlFor="pfpImage" className="size-full relative flex">
+							// 			<p htmlFor="pfpImage" className=" m-auto px-4 py-2 border-2 border-white rounded-xl bg-gray-800 text-white">Upload Image</p>
+							// 		</div>
+							// 	</label>
+							// 	<input
+							// 		id="pfpImage"
+							// 		name="thumbnail"
+							// 		type="file"
+							// 		accept="image/"
+							// 		onChange={handleImageChange}
+							// 		className="bg-navbar-body-1 dark:bg-gray-300 z-30 absolute rounded-md drop-shadow-lg size-[200px] left-0 opacity-0"
+							// 	/>
+							// </label>
 							}
 						</div>
 						<h2 className="mt-2 bg-navbar-body-1 dark:bg-gray-300 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {dbUser.role}</h2>

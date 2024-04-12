@@ -28,7 +28,9 @@ export const getUser = async (userAuth) => {
 // 	return usersCatData
 // }
 
-export const updateUser = async (updatedUser) => {
+export const updateUser = async (user) => {
+	const favoritesRefs = user.favorites.cats.map(favorite => doc(db, 'cats', favorite.docId));
+	const updatedUser = { ...user, favorites: { ...user.favorites, cats: favoritesRefs } }
 	const { docId, ...updatedUserPrunedID } = updatedUser;
 	const userRef = doc(db, 'users', docId);
 	await updateDoc(userRef, updatedUserPrunedID);

@@ -1,21 +1,20 @@
 "use client"
 
-import Image from "next/image"
 import { useState, useEffect } from "react"
-import { db, imageDb } from "@/app/_utils/firebase"
+import { db, strg } from "@/app/_utils/firebase"
 import { doc, Timestamp } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useUserAuth } from "@/app/_utils/auth-context"
 import { getObjects, createObject, updateObject } from "@/app/_utils/firebase_services"
-import { getUser } from "@/app/_utils/user_services"
 import { v4 } from "uuid";
 import CatButton from "@/app/components/cats/cat-button"
+import AddCatButton from "@/app/components/cats/add-cat-button"
 import EditCondition from "@/app/components/conditions/edit-condition"
 import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
-import ImageUploader from "@/app/components/ImageUploader";
+import EditThumbnail from "@/app/components/images/EditThumbnail"
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page() {
@@ -25,6 +24,8 @@ export default function Page() {
 	const [cats, setCats] = useState([]);
 	const [conditions, setConditions] = useState([]);
 	const [vaccinations, setVaccinations] = useState([]);
+	const [thumbnail, setThumbnail] = useState();
+	const [thumbnailFile, setThumbnailFile] = useState();
 	const [selectedCondition, setSelectedCondition] = useState();
 	const [selectedVaccine, setSelectedVaccine] = useState();
 	const [selectedParent, setSelectedParent] = useState();
@@ -32,7 +33,6 @@ export default function Page() {
 	const [showChildSelection, setShowChildSelection] = useState(false);
 	const [showTakenDateSelection, setShowTakenDateSelection] = useState(false);
 	const [showPlannedDateSelection, setShowPlannedDateSelection] = useState(false);
-	const [inputKey, setInputKey] = useState(Date.now());
 	const [cat, setCat] = useState({
 		id: 0,
 		name: "",
@@ -316,6 +316,22 @@ export default function Page() {
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
+	const handleThumbnailChange = (e) => {
+		const file = e.target.files[0];
+		const image = new Image();
+		image.onload = function () {
+			if (image.width !== image.height) {
+				alert("Thumbnails must be a square");
+			} else {
+				setThumbnailFile(file)
+				console.log(thumbnailFile)
+				setThumbnail(URL.createObjectURL(file));
+				console.log(thumbnail)
+			}
+		};
+		image.src = URL.createObjectURL(file);
+	};
+
 	const handleImageSelected = async (event, id) => {
 		const file = event.target.files[0];
 		if (file) {
@@ -347,7 +363,6 @@ export default function Page() {
 		  });
 		}
 	  };
-	  
 	  
 
 	  const uploadFiles = async () => {
@@ -397,44 +412,49 @@ export default function Page() {
 		if (cat.children.length > 0) {
 			childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		}
-
-		let thumbnailUrl = null;
-    	const fileInput = document.querySelector('input[type="file"]');
-    	const imgFile = fileInput.files[0];
-    	if (imgFile) {
-        	const imgRef = ref(imageDb, `images/${v4()}`);
-        	const snapshot = await uploadBytes(imgRef, imgFile);
-        	thumbnailUrl = await getDownloadURL(snapshot.ref);
-    	}
-		
-		const carouselImageObjects = await uploadFiles();
-
-	try {
-
-		const uploadedImageUrls = await uploadFiles();
-
-		const newCat = {
-			...cat, 
-			id: newId, 
-			conditions: conditionRefs, 
-			vaccinations: vaccinationRefs, 
-			owner: ownerRef, 
-			mother: motherRef, 
-			father: fatherRef, 
-			children: childrenRefs, 
-			carouselImage: uploadedImageUrls,
+		if (thumbnailFile) {
+			const thumbnailRef = ref(strg, `thumbnails/${cat.id}`);
+			await uploadBytes(thumbnailRef, thumbnailFile);
+			const thumbnailUrl = await getDownloadURL(thumbnailRef);
+			const newCat =  { ...cat, id: newId, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: thumbnailUrl  }
+			await createObject('cats', newCat, true);
+		} else {
+			const newCat = { ...cat, id: newId, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
+			await createObject('cats', newCat, true);
 		};
-		console.log('newCat to be saved:', newCat);
-		await createObject('cats', newCat);
-		console.log('Cat saved successfully!');
 
-		//Go to the new cat's page
-		//router.push(`/cats/${newId}`);
+	// 	let thumbnailUrl = null;
+    // 	const fileInput = document.querySelector('input[type="file"]');
+    // 	const imgFile = fileInput.files[0];
+    // 	if (imgFile) {
+    //     	const imgRef = ref(imageDb, `images/${v4()}`);
+    //     	const snapshot = await uploadBytes(imgRef, imgFile);
+    //     	thumbnailUrl = await getDownloadURL(snapshot.ref);
+    // 	}
+		
+	// 	const carouselImageObjects = await uploadFiles();
+
+	// try {
+
+	// 	const uploadedImageUrls = await uploadFiles();
+
+		// const newCat = {
+		// 	...cat, 
+		// 	id: newId, 
+		// 	conditions: conditionRefs, 
+		// 	vaccinations: vaccinationRefs, 
+		// 	owner: ownerRef, 
+		// 	mother: motherRef, 
+		// 	father: fatherRef, 
+		// 	children: childrenRefs, 
+		// 	carouselImage: uploadedImageUrls,
+		// };
+		// await createObject('cats', newCat);
 		window.location.href = `/cats/${newId}`;
 	
-	  } catch (error) {
-		console.error('Error during submission:', error);
-	  }
+	//   } catch (error) {
+	// 	console.error('Error during submission:', error);
+	//   }
 	};
 
 	return(
@@ -442,19 +462,17 @@ export default function Page() {
 			<BackgroundUnderlay />
 			{dbUser ? (
 				<div className="w-4/5 mx-auto pb-16">
-					
 					{/* Header */}
 					<div className="pt-20 flex pb-10">
 						<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
 							<span className="text-6xl pb-10 font-extrabold">Add Cat</span> <br />
 						</div>
 					</div>
-
 					{/* Add Details */}
 					<div className="mx-auto">
 						<div className="bg-white dark:bg-gray-500 p-10 rounded-xl drop-shadow-lg flex flex-col xl:flex-row justify-between">
 							<div className="mx-auto">
-								<ImageUploader onImageSelected={handleImageSelected} inputKey={inputKey} />
+								<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail}/>
 							</div>
 						
 							<div className="flex flex-col w-[400px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
@@ -485,14 +503,6 @@ export default function Page() {
 											onChange={handleChange}
 											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
 										/>
-										{/*<input
-											type="text"
-											name="gender"
-											placeholder="Gender"
-											value={cat.gender}
-											onChange={handleChange}
-											className="p-1 rounded-md pl-2 bg-white drop-shadow-lg"
-										/>*/}
 										<div>
 											<select
 											name="gender"
@@ -653,50 +663,24 @@ export default function Page() {
 							<div className="flex flex-wrap">
 								{cat.mother ? (
 									<div className="m-4 p-4 bg-navbar-body-1 dark:bg-gray-300  rounded-xl drop-shadow-lg items-center text-center">
-										{cat.mother.name}
-										<Image
-											src={cat.mother.thumbnail || "/img/Placeholder.png"}
-											alt="Cat"
-											width={200}
-											height={100}
-											className="border-2 border-black m-5"
-										/>
 										<h2 className="font-normal">Mother</h2>
+										<CatButton cat={cat.mother} />
 										<button onClick={() => handleSelectParentToUpdate('mother')} className="bg-white drop-shadow-lg py-2 px-4 rounded mt-4">Replace Mother</button>
 									</div>
 								) : (
 									<div className=" flex justify-center flex-col m-4 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300  drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
-										<Image
-											src="/img/Placeholder.png"
-											alt="Cat"
-											width={200}
-											height={100}
-											className="border border-black rounded-xl m-5"
-										/>
+										<AddCatButton/>
 										<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Mother</button>
 									</div>)}
 								{cat.father ? (
 									<div className="m-4 p-4 bg-navbar-body-1 dark:bg-gray-300  rounded-xl drop-shadow-lg items-center text-center">
-										{cat.father.name}
-										<Image
-											src={cat.father.thumbnail || "/img/Placeholder.png"}
-											alt="Cat"
-											width={200}
-											height={100}
-											className="border-2 border-black m-5"
-										/>
 										<h2 className="font-normal">Father</h2>
+										<CatButton cat={cat.father} />
 										<button onClick={() => handleSelectParentToUpdate('father')} className="bg-white drop-shadow-lg py-2 px-4 rounded mt-4">Replace Father</button>
 									</div>
 								) : (
 									<div className=" flex justify-center flex-col m-4 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300  drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
-										<Image
-											src="/img/Placeholder.png"
-											alt="Cat"
-											width={200}
-											height={100}
-											className="border border-black rounded-xl m-5"
-										/>
+										<AddCatButton/>
 										<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Father</button>
 									</div>)}
 							</div>
@@ -718,13 +702,7 @@ export default function Page() {
 									))
 								) : (<></>)}
 								<div className=" flex justify-center flex-col m-4 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300  drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
-									<Image
-										src="/img/Placeholder.png"
-										alt="Cat"
-										width={200}
-										height={100}
-										className="border border-black rounded-xl m-5"
-									/>
+									<AddCatButton/>
 									<button onClick={() => handleAddChild()} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Select Child</button>
 								</div>
 							</div>

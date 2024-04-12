@@ -76,13 +76,13 @@ export default function Page({params}) {
 	useEffect(() => {
 		const fetchFavorites = async () => {
 			if (dbUser && dbUser.favorites && dbUser.favorites.cats && cat) {
-				// setFavorite(dbUser.favorites.cats.some((ref) => ref.id === cat.id));
-				dbUser.favorites.cats.forEach((favorite) => {
-					console.log(favorite)
-					if (favorite.id === cat.id) {
-						setFavorite(true)
-					};
-				});
+				setFavorite(dbUser.favorites.cats.some((ref) => ref.id === cat.id));
+				// dbUser.favorites.cats.forEach((favorite) => {
+				// 	console.log(favorite)
+				// 	if (favorite.id === cat.id) {
+				// 		setFavorite(true)
+				// 	};
+				// });
 			};
 		};
 		fetchFavorites();
@@ -98,41 +98,14 @@ export default function Page({params}) {
 
 	const handleFavoriteButton = async () => {
 		let updatedFavorites = dbUser.favorites.cats;
-		//  console.log("Favorites before:")
-		//  console.log(updatedFavorites)
-		 const catRef = doc(db, 'cats', cat.docId);
 		if (favorite) {
-			//Remove favorite
-			//updatedFavorites = dbUser.favorites.cats.filter(ref => ref.path !== catRef.path);
-			//Need to convert objects to references
-			updatedFavorites = dbUser.favorites.cats.map((newFavorite) => 
-			{
-				if (newFavorite.docId !== catRef.id)
-					return doc(db, "cats", newFavorite.docId)
-				else
-					return null
-				//doc(db, "cats", newFavorite.docId)
-			});
-			//Purge nulls
-			updatedFavorites = updatedFavorites.filter((newFavorite) => newFavorite !== null);
+			updatedFavorites = updatedFavorites.filter((favoriteCat) => favoriteCat.id !== cat.id);
 			setFavorite(false);
 		} else {
-			//Add new favorite
-					//Requires converting old favorites back to references because they get read as objects LOL
-					const newReferences = dbUser.favorites.cats.map((newFavorite) => doc(db, "cats", newFavorite.docId));
-					updatedFavorites = [...newReferences, catRef];
-					// dbUser.favorites.cats.map((newFavorite) => {
-					// 	console.log("Debug newFavorite:")
-					// 	console.log(newFavorite)
-					// })
+			updatedFavorites = [...updatedFavorites, cat];
 			setFavorite(true);
 		}
-		// console.log("Favorites after:")
-		// console.log(updatedFavorites)
 		await updateUser({ ...dbUser, favorites: { ...dbUser.favorites, cats: updatedFavorites } });
-
-		//When updating the favorites, the local dbUser is not updated
-		//Updating it manually is a bit iffy, so instead we just reload the page
 		window.location.reload();
 	};
 

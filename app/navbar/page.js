@@ -17,7 +17,7 @@ import BackToTopButton from "../components/BackToTopButton";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-    const {user,firebaseSignOut} = useUserAuth();
+    const {user, dbUser, firebaseSignOut} = useUserAuth();
     function handleSignOut(){
       firebaseSignOut();
  }
@@ -185,7 +185,7 @@ const Navbar = () => {
               {/*<div className="bg-yellow-700 p-3 rounded-xl -translate-y-[21px] -z-20"/>*/}
 
               <div className="absolute -z-10 bg-white size-16 rounded-full bg-opacity-80 drop-shadow-lg overflow-hidden">
-                <Image alt="user" src={user && user.thumbnail ? user.thumbnail : "/img/userprofile.png"} width={64} height={64} className="m-auto"/>
+                <Image alt="user" src={dbUser && dbUser.thumbnail ? dbUser.thumbnail : "/img/userprofile.png"} width={64} height={64} className="m-auto"/>
               </div>
 
               {/* Blocker Element *//*}

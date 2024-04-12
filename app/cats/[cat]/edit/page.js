@@ -19,13 +19,13 @@ import CatCarouselController from "@/app/components/CatCarouselController";
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({params}){
-	const [thumbnail, setThumbnail] = useState();
-	const [thumbnailFile, setThumbnailFile] = useState();
 	const { user, dbUser } = useUserAuth();
 	const [cat, setCat] = useState();
 	const [cats, setCats] = useState();
 	const [conditions, setConditions] = useState();
 	const [vaccinations, setVaccinations] = useState();
+	const [thumbnail, setThumbnail] = useState();
+	const [thumbnailFile, setThumbnailFile] = useState();
 	const [selectedCondition, setSelectedCondition] = useState();
 	const [selectedVaccine, setSelectedVaccine] = useState();
 	const [selectedParent, setSelectedParent] = useState();
@@ -340,7 +340,7 @@ export default function Page({params}){
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
-	const handleImageChange = (e) => {
+	const handleThumbnailChange = (e) => {
 		const file = e.target.files[0];
 		const image = new Image();
 		image.onload = function () {
@@ -348,9 +348,7 @@ export default function Page({params}){
 				alert("Thumbnails must be a square");
 			} else {
 				setThumbnailFile(file)
-				console.log(thumbnailFile)
 				setThumbnail(URL.createObjectURL(file));
-				console.log(thumbnail)
 			}
 		};
 		image.src = URL.createObjectURL(file);
@@ -409,7 +407,7 @@ export default function Page({params}){
 					<div className="mx-auto">
 						<div className="bg-white dark:bg-gray-500 p-10 rounded-xl drop-shadow-lg flex flex-col xl:flex-row justify-between">
 							<div className="mx-auto">
-								<EditThumbnail handleImageChange={handleImageChange} thumbnail={thumbnail}/>
+								<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail}/>
 							</div>
 							<div className="flex flex-col w-[400px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
 								<h2 className="text-xl text-center mb-2">Details</h2>

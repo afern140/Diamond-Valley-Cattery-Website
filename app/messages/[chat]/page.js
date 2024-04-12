@@ -118,9 +118,9 @@ export default function page({ params }) {
       <div className=" w-4/5 mx-auto">
         <div className="bg-white dark:bg-gray-600 p-6 rounded-xl drop-shadow-lg">
           {currentMessages.map((msg, index) => (
-            <div key={index} className={"flex flex-col mb-2 w-full " + (user ? " justify-end items-end mr-auto ml-full" : " justify-start items-start mr-full ml-auto")}>
-              <div className={"flex p-2 justify-end rounded-xl bg-gradient-to-r max-w-[70%] xl:max-w-[45%] " + currentTheme + (user ? " justify-end" : " justify-start")}>
-                <strong className="pr-2">{msg.displayName || "Unknown"}:</strong>
+            <div key={index} className={"flex flex-col mb-2 w-full " + (user.uid === msg.userId ? " justify-end items-end mr-auto ml-full" : " justify-start items-start mr-full ml-auto")}>
+              <span className="text-lg pb-1 text-gray-500">{msg.displayName || "Unknown"}</span>
+              <div className={"flex py-2 px-4 justify-end rounded-xl bg-gradient-to-r max-w-[70%] xl:max-w-[45%] " + currentTheme + (user ? " justify-end" : " justify-start")}>
                 <div className="break-all">{msg.text}</div>
               </div>
               <div className="text-gray-500 dark:text-gray-300 font-normal text-sm italic">
@@ -152,7 +152,7 @@ export default function page({ params }) {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type a message..."
-                  className=" mx-4 px-2 rounded-3xl w-full text-black bg-white drop-shadow-md"
+                  className=" mx-4 px-6 rounded-3xl w-full text-black bg-white drop-shadow-md"
                 />
                 <button type="submit" className={"rounded-full bg-gradient-to-r inline-block py-2 px-4" + currentTheme}>Send</button>
               </div>

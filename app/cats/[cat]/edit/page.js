@@ -1,7 +1,5 @@
 "use client"
 
-// import Image from "next/image"
-import Link from "next/link"
 import { useState, useEffect } from "react"
 import { doc, getDoc, Timestamp } from "firebase/firestore"
 import { db, strg } from "@/app/_utils/firebase"
@@ -21,7 +19,8 @@ import CatCarouselController from "@/app/components/CatCarouselController";
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({params}){
-	const [thumbnail, setThumbnail] = useState(null);
+	const [thumbnail, setThumbnail] = useState();
+	const [thumbnailFile, setThumbnailFile] = useState();
 	const { user, dbUser } = useUserAuth();
 	const [cat, setCat] = useState();
 	const [cats, setCats] = useState();
@@ -54,7 +53,6 @@ export default function Page({params}){
 	});
 	//Gender to display in the cat selection
 	const [selectorGender, setSelectorGender] = useState("");
-
 
 	useEffect(() => {
 		const fetchCat = async () => {
@@ -91,6 +89,9 @@ export default function Page({params}){
 					return { docId: vaccinationRef.id, ...vaccinationDoc.data()};
 				}));
 				cat.vaccinations = vaccinationsData;
+			}
+			if (cat.thumbnail) {
+				setThumbnail(cat.thumbnail)
 			}
 			setCat(cat);
 		};
@@ -339,18 +340,21 @@ export default function Page({params}){
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        const image = new Image();
-        image.onload = function () {
-            if (image.width !== image.height) {
-                alert("Thumbnails must be a square");
-            } else {
-                setThumbnail(file); // Update the thumbnail state
-            }
-        };
-        image.src = URL.createObjectURL(file); // Load the image
-    };
+	const handleImageChange = (e) => {
+		const file = e.target.files[0];
+		const image = new Image();
+		image.onload = function () {
+			if (image.width !== image.height) {
+				alert("Thumbnails must be a square");
+			} else {
+				setThumbnailFile(file)
+				console.log(thumbnailFile)
+				setThumbnail(URL.createObjectURL(file));
+				console.log(thumbnail)
+			}
+		};
+		image.src = URL.createObjectURL(file);
+	};
 
 	const handleSubmit = async () => {
 		await cat.conditions.map(async (condition) => {
@@ -371,9 +375,9 @@ export default function Page({params}){
 		const conditionRefs = cat.conditions.map(condition => doc(db, 'conditions', condition.docId));
 		const vaccinationRefs = cat.vaccinations.map(vaccination => doc(db, 'vaccinations', vaccination.docId));
 		const childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
-		if (thumbnail) {
+		if (thumbnailFile) {
 			const thumbnailRef = ref(strg, `thumbnails/${cat.id}`);
-			await uploadBytes(thumbnailRef, thumbnail);
+			await uploadBytes(thumbnailRef, thumbnailFile);
 			const thumbnailUrl = await getDownloadURL(thumbnailRef);
 			const updatedCat =  { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs, thumbnail: thumbnailUrl  }
 			await updateObject('cats', updatedCat, true);

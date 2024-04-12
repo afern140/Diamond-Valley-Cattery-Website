@@ -161,7 +161,7 @@ export default function Page() {
 					sortedData = sortedData.sort(function (a, b)  { if (a.gender > b.gender) return 1;  if (a.gender < b.gender) return -1;  return 0; })
 					break;
 				case "Age":
-					sortedData = [...filteredData.sort((a, b) => a.birthdate.seconds - b.birthdate.seconds)];
+					sortedData = [...filteredData.sort((a, b) =>a.birthdate && b.birthdate ? a.birthdate.seconds - b.birthdate.seconds : 0)];
 					
 					// -- F -- This sorting method works
 					sortedData = sortedData.sort(function (a, b)  { if (a.age > b.age) return 1;  if (a.age < b.age) return -1;  return 0; })

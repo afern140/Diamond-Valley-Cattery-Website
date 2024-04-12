@@ -4,7 +4,7 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { doc, getDoc, Timestamp } from "firebase/firestore"
-import { db } from "@/app/_utils/firebase"
+import { db, strg } from "@/app/_utils/firebase"
 import { useUserAuth } from "@/app/_utils/auth-context"
 import { getObject, getObjects, createObject, updateObject } from "@/app/_utils/firebase_services"
 import EditCondition from "@/app/components/conditions/edit-condition"
@@ -339,18 +339,18 @@ export default function Page({params}){
 		setCat((prevCat) => ({ ...prevCat, children: updatedChildren }));
 	}
 
-	const handleImageChange = (e) => {
-		const file = e.target.files[0];
-		const image = new Image();
-		image.onload = function () {
-			if (image.width !== image.height) {
-				alert("Thumbnails must be a square");
-			} else {
-				image.src = URL.createObjectURL(file);
-				setThumbnail(image);
-			}
-		};
-	};
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        const image = new Image();
+        image.onload = function () {
+            if (image.width !== image.height) {
+                alert("Thumbnails must be a square");
+            } else {
+                setThumbnail(file); // Update the thumbnail state
+            }
+        };
+        image.src = URL.createObjectURL(file); // Load the image
+    };
 
 	const handleSubmit = async () => {
 		await cat.conditions.map(async (condition) => {
@@ -381,7 +381,7 @@ export default function Page({params}){
 			const updatedCat = { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
 			await updateObject('cats', updatedCat, true);
 		};
-		window.location.href = `/cats/${newId}`;
+		window.location.href = `/cats/${cat.id}`;
 	};
 
 	//Changes the page title when the cat is loaded

@@ -14,7 +14,7 @@ export default function page() {
 
 	const getThreads = async (user) => {
 		const threadsDocuments = await getDocs(query(collection(db, "chats"), where("users", "array-contains", user.uid)));
-		const threadsData = threadsDocuments.docs.map((doc) => ({docId: doc.id, ...doc.data()}))
+		const threadsData = threadsDocuments.docs.map((doc) => ({docId: doc.id, ...doc.data()}));
 		let threads = await Promise.all(threadsData.map(async (thread) => {
 			let message;
 			let recipient;
@@ -24,10 +24,9 @@ export default function page() {
 				return { ...thread, recipient: recipient, latestMessage: message };
 			};
 		}));
-		threads = threads.filter((thread) => (thread))
-		console.log(threads)
+		threads = threads.filter((thread) => (thread));
 		return threads;
-	}
+	};
 
 	useEffect(() => {
 		if (user) {

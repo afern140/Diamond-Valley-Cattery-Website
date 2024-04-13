@@ -6,7 +6,6 @@ import { doc, Timestamp } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useUserAuth } from "@/app/_utils/auth-context"
 import { getObjects, createObject, updateObject } from "@/app/_utils/firebase_services"
-import { v4 } from "uuid";
 import CatButton from "@/app/components/cats/cat-button"
 import AddCatButton from "@/app/components/cats/add-cat-button"
 import EditCondition from "@/app/components/conditions/edit-condition"
@@ -15,16 +14,16 @@ import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
 import EditThumbnail from "@/app/components/images/EditThumbnail"
+import EditCarousel from "@/app/components/images/EditCarousel";
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page() {
-	const [fileInputs, setFileInputs] = useState([{ id: v4(), file: null }]);
-	const [carouselImage, setCarouselImage] = useState([]);
 	const { user, dbUser } = useUserAuth();
 	const [cats, setCats] = useState([]);
 	const [conditions, setConditions] = useState([]);
 	const [vaccinations, setVaccinations] = useState([]);
 	const [thumbnail, setThumbnail] = useState();
+	const [carouselImages, setCarouselImages] = useState([]);
 	const [selectedCondition, setSelectedCondition] = useState();
 	const [selectedVaccine, setSelectedVaccine] = useState();
 	const [selectedParent, setSelectedParent] = useState();
@@ -48,7 +47,7 @@ export default function Page() {
 		conditions: [],
 		vaccinations: [],
 		children: [],
-		images: []
+		carouselImages: []
 	})
 	const [newCondition, setNewCondition] = useState({
 		id: 0,
@@ -323,56 +322,23 @@ export default function Page() {
 		setThumbnail(thumbnailUrl);
 		setCat((prevCat) => ({ ...prevCat, thumbnail: thumbnailUrl }));
 	};
+	
+	const handleCarouselAdd = async (e) => {
+		const newId = cat.carouselImages.length;
+		const file = e.target.files[0];
+		const carouselRef = ref(strg, `carousel-images/cats/${cat.id}/${newId}`);
+		await uploadBytes(carouselRef, file);
+		const carouselUrl = await getDownloadURL(carouselRef);
+		setCarouselImages({ ...carouselImages, carouselUrl });
+		setCat((prevCat) => ({ ...prevCat, carouselImages: [ ...prevCat.carouselImages, carouselUrl ] }));
+	}
 
-
-	const handleImageSelected = async (event, id) => {
-		const file = event.target.files[0];
-		if (file) {
-		  // Upload the file as soon as it is selected
-		  const imgRef = ref(imageDb, `carouselImage/${id}`);
-		  const snapshot = await uploadBytes(imgRef, file);
-		  const url = await getDownloadURL(snapshot.ref);
-		  const newImage = {
-			storagePath: snapshot.metadata.fullPath,
-			url: url
-		  };
-	  
-		  // Update the carouselImage state with the new image URL
-		  setCarouselImage(currentImages => [...currentImages, newImage]);
-	  
-		  // Replace the current input with one that has a file, and add a new file input placeholder
-		  setFileInputs(currentInputs => {
-			const updatedInputs = currentInputs.map(input => {
-			  if (input.id === id) {
-				return { ...input, file: file };
-			  }
-			  return input;
-			});
-			// Only add a new input placeholder if the current one is being used
-			if (currentInputs.some(input => input.id === id && input.file === null)) {
-			  updatedInputs.push({ id: v4(), file: null });
-			}
-			return updatedInputs;
-		  });
-		}
-	  };
-	  
-
-	  const uploadFiles = async () => {
-		const imageUploadPromises = fileInputs
-		  .filter(input => input.file !== null)
-		  .map(input => {
-			const imgRef = ref(imageDb, `carouselImage/${input.id}`);
-			return uploadBytes(imgRef, input.file).then((snapshot) => getDownloadURL(snapshot.ref));
-		  });
-	  
-		const imageUrls = await Promise.all(imageUploadPromises);
-		return imageUrls.map((url, index) => ({
-		  storagePath: `carouselImage/${fileInputs[index].id}`,
-		  url: url,
-		}));
-	  };
-	  
+	const handleCarouselDelete = async (index) => {
+		const updatedCarouselImages = cat.carouselImages.filter((image, i) => i !== index);
+		const imageRef = ref(strg, `carousel-images/cats/${cat.id}/${index}`);
+		await deleteObject(imageRef);
+		setCat((prevCat) => ({ ...prevCat, carouselImages: updatedCarouselImages }));
+	}
 
 	const handleSubmit = async () => {
 		const newId = cats.reduce((max, cat) => Math.max(max, cat.id), 0) + 1;
@@ -381,7 +347,6 @@ export default function Page() {
 		let conditionRefs = [];
 		let vaccinationRefs = [];
 		let childrenRefs = [];
-		
 
 		cat.conditions.map(async (condition) => {
 			await updateObject('conditions', condition, false)
@@ -405,41 +370,9 @@ export default function Page() {
 		if (cat.children.length > 0) {
 			childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		}
-		const newCat =  { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
+		const newCat =  { ...cat, id: newId, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
 		await createObject('cats', newCat);
-
-	// 	let thumbnailUrl = null;
-    // 	const fileInput = document.querySelector('input[type="file"]');
-    // 	const imgFile = fileInput.files[0];
-    // 	if (imgFile) {
-    //     	const imgRef = ref(imageDb, `images/${v4()}`);
-    //     	const snapshot = await uploadBytes(imgRef, imgFile);
-    //     	thumbnailUrl = await getDownloadURL(snapshot.ref);
-    // 	}
-		
-	// 	const carouselImageObjects = await uploadFiles();
-
-	// try {
-
-	// 	const uploadedImageUrls = await uploadFiles();
-
-		// const newCat = {
-		// 	...cat, 
-		// 	id: newId, 
-		// 	conditions: conditionRefs, 
-		// 	vaccinations: vaccinationRefs, 
-		// 	owner: ownerRef, 
-		// 	mother: motherRef, 
-		// 	father: fatherRef, 
-		// 	children: childrenRefs, 
-		// 	carouselImage: uploadedImageUrls,
-		// };
-		// await createObject('cats', newCat);
 		window.location.href = `/cats/${newId}`;
-	
-	//   } catch (error) {
-	// 	console.error('Error during submission:', error);
-	//   }
 	};
 
 	return(
@@ -539,22 +472,12 @@ export default function Page() {
 							</div>
 						</div>
 					</div>
-
-					{/* Carousel Images */}
 					<div className="mt-10 bg-white dark:text-dark-header-text-0 dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg h-[420px]">
 						<div className="h-[300px]">
 							<h2 className="text-xl font-bold mb-4">Images</h2>
-							{fileInputs.map((input, index) => (
-								<input
-								key={input.id}
-								type="file"
-								onChange={(event) => handleImageSelected(event, input.id)}
-								className={`border border-gray-300 rounded-md p-2 mb-2 ${index > 0 ? 'mt-2' : ''}`}
-								/>
-							))}
+							<EditCarousel cat={cat} handleCarouselAdd={handleCarouselAdd} handleCarouselDelete={handleCarouselDelete}/>
 						</div>
 					</div>
-
 					{/* Conditions */}
 					<div className="mt-10 bg-white dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg">
 						<h2 className="text-xl font-bold mb-4 dark:text-dark-header-text-0">Conditions</h2>

@@ -3,13 +3,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useChat } from "@/app/_utils/chat-context";
 import { useUserAuth } from "@/app/_utils/auth-context";
-
-import GradientColorButton from "@/app/components/gradientColor";
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 //Message
 export default function page({ params }) {
-const { user } = useUserAuth();
+	const { user } = useUserAuth();
 	const { loadChatMessages, sendMessage } = useChat();
 	const [currentMessages, setCurrentMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState("");
@@ -43,7 +41,6 @@ const { user } = useUserAuth();
 
 	useEffect(() => {
 		currentMessages.map((msg) => {
-			console.log(user)
 			if (msg.userId !== user.uid) {
 				setOtherUsername(msg.displayName);
 			}

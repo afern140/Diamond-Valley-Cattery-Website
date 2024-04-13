@@ -132,7 +132,7 @@ export default function Page({params}){
 		const { name, value } = e.target;
 		const date = new Date(value);
 		const timestamp = Timestamp.fromDate(date);
-		setCat((prevCat) => ({ ...prevCat, [name]: timestamp }))
+		setCat((prevCat) => ({ ...prevCat, [name]: timestamp }));
 	};
 
 	const handleConditionChange = (e, conditionId) => {

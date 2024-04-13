@@ -112,7 +112,9 @@ export default function Page() {
 								className="border-2 relative border-black m-5 mb-2"
 							/>
 							{ edit && 	// Putting another edit check here for proper positioning on window size
-								<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail} />
+								<div className="size-[200px] m-5">
+									<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail} />
+								</div>
 							// <label htmlFor="pfpImage" className="absolute top-0 left-5 size-[200px]">
 							// 	<label htmlFor="pfpImage" className="bg-gray-700 border-[4px] border-dashed border-gray-200 size-[200px] absolute left-0 z-[100] bg-opacity-70 opacity-0 hover:opacity-100 transition duration-300">
 							// 		<div htmlFor="pfpImage" className="size-full relative flex">
@@ -133,7 +135,7 @@ export default function Page() {
 						<h2 className="mt-2 bg-navbar-body-1 dark:bg-gray-300 rounded-xl w-fit mx-auto px-4 py-2 drop-shadow-lg">Role: {dbUser.role}</h2>
 					</div>
 					{edit ? (
-					<div className="flex flex-col bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg space-y-2 mx-auto">
+					<div className="flex flex-col bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg space-y-2 mx-auto mb-auto">
 						
 						<h2 className="text-xl mb-4 text-center">Edit Details</h2>
 						<input
@@ -173,13 +175,27 @@ export default function Page() {
 						</div>
 					</div>
 					) : (
-					<div className="m-auto space-y-2 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
+					<div className="m-auto space-y-2 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg max-w-[360px] w-fit">
 						<h2 className="text-xl mb-4 text-center">Details</h2>
-						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Name: {dbUser.name}</h2>
-						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Username: {dbUser.username}</h2>
-						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Email: {dbUser.email}</h2>
-						<h2 className="bg-white rounded-md drop-shadow-lg p-2">Phone: {dbUser.phone}</h2>
-						
+						<div className="flex flex-col space-y-2">
+							<div className="flex text-ellipsis">
+								<h2 className="text-right pr-2 py-2 w-[100px]">Name: </h2>
+								<h2 className="bg-white rounded-md drop-shadow-lg p-2 w-[200px]">{dbUser.name}</h2>
+							</div>
+							<div className="flex">
+								<h2 className="text-right pr-2 py-2 w-[100px]">Username: </h2>
+								<h2 className="bg-white rounded-md drop-shadow-lg p-2  w-[200px]">{dbUser.username}</h2>
+							</div>
+							<div className="flex">
+								<h2 className="text-right pr-2 py-2 w-[100px]">Email: </h2>
+								<h2 className="bg-white rounded-md drop-shadow-lg p-2  w-[200px] text-ellipsis truncate">{dbUser.email}</h2>
+							</div>
+							<div className="flex">
+								<h2 className="text-right pr-2 py-2 w-[100px]">Phone: </h2>
+								<h2 className="bg-white rounded-md drop-shadow-lg p-2  w-[200px]">{dbUser.phone}</h2>
+							</div>
+						</div>
+
 						<div className="flex mr-auto ml-full justify-end w-full">
 							<button onClick={handleEdit} className=" px-4 py-2 bg-gray-200 dark:bg-gray-400 dark:text-dark-header-text-0 rounded-md drop-shadow-lg">
 								Edit
@@ -239,7 +255,7 @@ export default function Page() {
 				{/* Favorite Cats */}
 				<div className="bg-white dark:bg-gray-500 rounded-xl drop-shadow-lg p-10 mt-10">
 					<h2 className="dark:text-dark-header-text-0 text-2xl text-left font-bold pb-4 ">Favorite Cats</h2>
-					<div className="flex">
+					<div className="flex flex-wrap max-h-[650px] overflow-y-auto">
 						{dbUser.favorites.cats ? (
 							dbUser.favorites.cats.map((cat) => (
 								<div className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">

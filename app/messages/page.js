@@ -51,12 +51,12 @@ export default function page() {
 			</div>
 			<div className="w-4/5 bg-white mx-auto p-10 dark:bg-gray-500 relative rounded-xl drop-shadow-lg">
 				{threads ? (
-					<div>
+					<div className="space-y-2">
 						{threads.map((thread) => (
-							<div className="space-y-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow">
-								<Link className="p-2" key={thread.docId} href={`/messages/${thread.docId}`}>
+							<div className="space-y-2 bg-navbar-body-1 overflow-hidden dark:bg-gray-300 rounded-xl drop-shadow h-fit">
+								<Link className="size-full rounded-xl" key={thread.docId} href={`/messages/${thread.docId}`}>
 								<div className="block p-2 hover:bg-gray-200 cursor-pointer">
-									<h2 className="font-bold">{thread.recipient.username}</h2><br/>
+									<h2 className="font-bold">{thread.recipient.username}</h2>
 									<h3>{thread.latestMessage.displayName}: Sent on {new Date(thread.latestMessage.timestamp.toDate()).toLocaleDateString()}</h3>
 									<h2>{thread.latestMessage.text}</h2>
 								</div>

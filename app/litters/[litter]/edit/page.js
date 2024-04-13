@@ -210,7 +210,7 @@ export default function Page({ params }) {
 					{/* Parents */}
 					<div className="bg-white dark:bg-gray-500 p-10 rounded-xl drop-shadow-lg mt-10">
 						<h2 className="text-2xl dark:text-dark-header-text-0">Parents</h2>
-						<div className="flex px-10 space-x-10 mt-6">
+						<div className="flex mt-6">
 							{litter.mother ? (
 								<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl text-header-text-0 place-items-center">
 									<h2>Mother</h2>
@@ -231,7 +231,7 @@ export default function Page({ params }) {
 						</div>
 					</div>
 
-					<div className="bg-white dark:bg-gray-500 flex flex-wrap overflow-y-auto p-10 rounded-xl drop-shadow-lg mt-10 h-[440px]">
+					<div className="bg-white dark:bg-gray-500 flex flex-col overflow-y-auto p-10 rounded-xl drop-shadow-lg mt-10 h-[530px]">
 						<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 						{litter.completed ? (
 							<div className="flex flex-wrap overflow-y-auto">

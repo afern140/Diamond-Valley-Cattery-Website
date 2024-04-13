@@ -146,10 +146,10 @@ export default function Page() {
 				<div className="mt-10 bg-white dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg">
 					<h2 className="text-2xl mb-4">Details</h2>
 					<div className="flex flex-col xl:flex-row justify-evenly">
-						<div className="mx-auto w-[300px] h-[300px] justify-evenly">
+						<div className="mr-4 size-[210px] justify-evenly overflow-hidden">
 							<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail}/>
 						</div>
-						<div className="w-fit m-4 h-fit flex-col -translate-x-[20px] space-y-2 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
+						<div className="w-fit m-4 h-fit flex-col ml-auto -translate-x-[20px] space-y-2 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
 							<h2 className="text-2xl mb-2 font-bold dark:text-dark-header-text-0">Details</h2>
 							<div className="flex space-x-3">
 								<h3 className="my-auto w-32 text-right">Name: </h3>
@@ -199,7 +199,7 @@ export default function Page() {
 				<div className="mt-10 bg-white dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg">
 					<div>
 						<h2 className="text-2xl dark:text-dark-header-text-0">Parents</h2>
-						<div className="flex px-10 space-x-10 mt-6">
+						<div className="flex mt-6">
 							{litter.mother ? (
 								<div className="m-4 p-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg items-center text-center">
 									<h2>Mother</h2>
@@ -207,7 +207,7 @@ export default function Page() {
 									<button className="px-4 py-2 bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('mother')}>Replace Mother</button>
 								</div>
 							) : (
-							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+							<div className=" flex justify-center flex-col m-4 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 								<AddCatButton/>
 								<button onClick={() => handleSelectParentToUpdate('mother')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Mother</button>
 							</div>)}
@@ -218,7 +218,7 @@ export default function Page() {
 									<button className="px-4 py-2 bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl mt-6" onClick={() => handleSelectParentToUpdate('father')}>Replace Father</button>
 								</div>
 							) : (
-								<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+								<div className=" flex justify-center flex-col m-4 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 									<AddCatButton/>
 									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Father</button>
 								</div>)}
@@ -232,15 +232,14 @@ export default function Page() {
 				<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 					
 					{litter.completed ? (
-						<div className="flex px-10 space-x-10 mt-6">
-							<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
+						<div className="flex flex-wrap mt-6 overflow-y-auto max-h-[800px]">
 							{litter.children.map((child) => (
-								<div className="m-4 p-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg items-center text-center">
+								<div className="m-3 p-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg items-center text-center">
 									<CatButton cat={child}/>
 									<button className="px-4 py-2 bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 								</div>
 							))}
-							<div className=" flex justify-center flex-col m-2 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
+							<div className=" flex justify-center flex-col m-4 border-2 border-dashed border-gray-300 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">								
 								<AddCatButton/>
 								<button className="px-4 py-2 bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl mt-6" onClick={() => handleAddChild()}>Select Child</button>
 							</div>

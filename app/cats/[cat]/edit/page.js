@@ -53,6 +53,7 @@ export default function Page({params}){
 	});
 	//Gender to display in the cat selection
 	const [selectorGender, setSelectorGender] = useState("");
+	const [selectorFilter, setSelectorFilter] = useState([]);
 
 	useEffect(() => {
 		const fetchCat = async () => {
@@ -313,6 +314,22 @@ export default function Page({params}){
 			futureDates: []
 		});
 	};
+
+	//Fills filter with current cat, cat's children, and cat's parents
+	useEffect(() => {
+		const filter = [];
+		if (cat) {
+			filter.push(cat.id);
+			cat.children.forEach(child => filter.push(child.id));
+			if (cat.mother)
+				filter.push(cat.mother.id);
+			if (cat.father)
+				filter.push(cat.father.id);
+		}
+		console.log("New selector filter:")
+		console.log(filter)
+		setSelectorFilter(filter);
+	}, [cat]);
 
 	const handleSelectParentToUpdate = (parent) => {
 		setSelectorGender(parent === "mother" ? "Female" : "Male")
@@ -624,7 +641,7 @@ export default function Page({params}){
 									<button onClick={() => handleSelectParentToUpdate('father')} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Add Father</button>
 								</div>)}
 							</div>
-							<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent} gender={selectorGender}/>
+							<CatSelection cats={cats} showCatSelection={showParentSelection} setShowCatSelection={setShowParentSelection} handleSelectCat={handleReplaceParent} gender={selectorGender} filtered={selectorFilter}/>
 						</div>
 
 						{/* Children */}
@@ -644,7 +661,7 @@ export default function Page({params}){
 									<button onClick={() => handleAddChild()} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Select Child</button>
 								</div>
 							</div>
-							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
+							<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild} filtered={selectorFilter}/>
 						</div>
 						<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 dark:bg-gray-600 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300">Submit</button>
 					</div>

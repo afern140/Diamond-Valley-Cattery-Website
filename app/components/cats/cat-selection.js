@@ -1,9 +1,14 @@
 import Image from "next/image"
 
-export default function CatSelection({ cats, showCatSelection, setShowCatSelection, handleSelectCat, gender = "" }) {
+export default function CatSelection({ cats, showCatSelection, setShowCatSelection, handleSelectCat, gender = "", filtered = [] }) {
 	let filteredCats = cats;
+	//Gender filter: Only shows cats of the given gender
 	if (gender != "")
-		filteredCats = cats.filter((cat) => cat.gender == gender);
+		filteredCats = filteredCats.filter((cat) => cat.gender == gender);
+	//Manual filter: Only shows cats that are not in the filtered list
+	//Used to prevent duplicate children
+	if (filtered.length > 0)
+		filteredCats = filteredCats.filter((cat) => !filtered.includes(cat.id));
 	return (
 		showCatSelection && (
 			<div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75 rounded-xl z-50">

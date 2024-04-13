@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import Carousel from "@/app/components/carousel"
+import Carousel from "@/app/components/images/carousel"
 import { useUserAuth } from "@/app/_utils/auth-context";
 import { updateUser } from "@/app/_utils/user_services";
 import { db } from "@/app/_utils/firebase";
@@ -77,12 +77,6 @@ export default function Page({params}) {
 		const fetchFavorites = async () => {
 			if (dbUser && dbUser.favorites && dbUser.favorites.cats && cat) {
 				setFavorite(dbUser.favorites.cats.some((ref) => ref.id === cat.id));
-				// dbUser.favorites.cats.forEach((favorite) => {
-				// 	console.log(favorite)
-				// 	if (favorite.id === cat.id) {
-				// 		setFavorite(true)
-				// 	};
-				// });
 			};
 		};
 		fetchFavorites();

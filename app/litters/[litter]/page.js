@@ -5,9 +5,8 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getDoc } from "firebase/firestore";
 import { getObject, getObjects } from "@/app/_utils/firebase_services";
-import Carousel from "@/app/components/LitterCarousel"
+import Carousel from "@/app/components/images/carousel";
 import CatButton from "@/app/components/cats/cat-button";
-import CatSelection from "@/app/components/cats/cat-selection";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
@@ -54,7 +53,7 @@ export default function Page({ params }) {
 						</div>
 					</div>
 
-					<Carousel LitterData = {litter}/>
+					<Carousel images={litter.carouselImages}/>
 
 					{/* Details */}
 					<div className="flex flex-col xl:flex-row w-full space-x-0 xl:space-x-6 mx-auto text-xl font-bold text-left text-header-text-0 dark:text-dark-header-text-0">

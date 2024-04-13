@@ -12,7 +12,7 @@ import { useChat } from "@/app/_utils/chat-context";
 import CatButton from "../components/cats/cat-button";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
-import EditThumbnail from "../components/images/EditThumbnail";
+import EditThumbnail from "../components/images/edit-thumbnail";
 
 export default function Page() {
 	const { user, dbUser } = useUserAuth();

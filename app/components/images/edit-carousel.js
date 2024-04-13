@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-export default function EditCarousel({ cat, handleCarouselAdd, handleCarouselDelete }) {
+export default function EditCarousel({ object, handleCarouselAdd, handleCarouselDelete }) {
 	return (
 		<div>
-			{cat.carouselImages && cat.carouselImages.map((image, index) => (
+			{object.carouselImages && object.carouselImages.map((image, index) => (
 				<div key={index} className="">
 					<Image
 						src={image}

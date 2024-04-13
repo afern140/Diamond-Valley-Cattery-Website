@@ -1,32 +1,27 @@
 "use client"
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from "@/app/_utils/firebase";
 import { getObject, getObjects, updateObject } from "@/app/_utils/firebase_services";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import CatSelection from "@/app/components/cats/cat-selection";
 import CatButton from "@/app/components/cats/cat-button";
 import AddCatButton from "@/app/components/cats/add-cat-button";
-import EditThumbnail from "@/app/components/images/EditThumbnail";
-import LitterCarouselController from "@/app/components/LitterCarouselController";
+import EditThumbnail from "@/app/components/images/edit-thumbnail";
+import EditCarousel from "@/app/components/images/edit-carousel";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({ params }) {
-	// const [imageFile, setImageFile] = useState(null);
 	const [litter, setLitter] = useState();
 	const [thumbnail, setThumbnail] = useState();
+	const [carouselImages, setCarouselImages] = useState([]);
 	const [cats, setCats] = useState([]);
 	const [selectedParent, setSelectedParent] = useState();
 	const [showParentSelection, setShowParentSelection] = useState(false);
 	const [showChildSelection, setShowChildSelection] = useState(false);
 	
-	// const handleImageSelected = (file) => {
-	// 	setImageFile(file);
-	// };	  
-    
 	useEffect(() => {
 		const fetchLitter = async () => {
 			const litter = await getObject('litters', parseInt(params.litter));
@@ -118,17 +113,25 @@ export default function Page({ params }) {
 		setLitter((prevLitter) => ({ ...prevLitter, thumbnail: thumbnailUrl }));
 	};
 
+	const handleCarouselAdd = async (e) => {
+		const newId = litter.carouselImages.length;
+		const file = e.target.files[0];
+		const carouselRef = ref(strg, `carousel-images/litters/${litter.id}/${newId}`);
+		await uploadBytes(carouselRef, file);
+		const carouselUrl = await getDownloadURL(carouselRef);
+		setCarouselImages({ ...carouselImages, carouselUrl });
+		setLitter((prevLitter) => ({ ...prevLitter, carouselImages: [ ...prevLitter.carouselImages, carouselUrl ] }));
+	}
+
+	const handleCarouselDelete = async (index) => {
+		//Deleting an Image doesn't properly remove the link to the image from the array
+		const updatedCarouselImages = litter.carouselImages.filter((image, i) => i !== index);
+		const imageRef = ref(strg, `carousel-images/litters/${litter.id}/${index}`);
+		await deleteObject(imageRef);
+		setLitter((prevLitter) => ({ ...prevLitter, carouselImages: updatedCarouselImages }));
+	}
+
 	const handleSubmit = async () => {
-		// Upload the image to Firebase Storage if an image is selected
-		// let imageUrl = litter.thumbnail; // Default to the existing thumbnail URL
-		// if (imageFile) {
-		//   const storage = getStorage();
-		//   const imageRef = ref(storage, `litters/${litter.id}/thumbnail`);
-		//   await uploadBytes(imageRef, imageFile);
-		//   imageUrl = await getDownloadURL(imageRef);
-		// }
-	  
-		// Update the Firestore document
 		const motherRef = doc(db, 'cats', litter.mother.docId);
 		const fatherRef = doc(db, 'cats', litter.father.docId);
 		let childrenRefs = [];
@@ -139,14 +142,6 @@ export default function Page({ params }) {
 		await updateObject('litters', updatedLitter, true);
 		window.location.href = `/cats/${litter.id}`;
 	  };
-	
-	// const handleImageUpload = async (imageUrl) => {
-	// 	try {
-	// 		fetchCat()
-	// 	} catch (error) {
-	// 		console.error("Error handling image upload:", error);
-	// 	}
-	// };
 
 	return (
 		<main className="relative text-[#092C48] pb-12">
@@ -203,6 +198,12 @@ export default function Page({ params }) {
 									onChange={handleChange}
 								/>
 							</div>
+						</div>
+					</div>
+					<div className="mt-10 bg-white dark:text-dark-header-text-0 dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg h-[420px]">
+						<div className="h-[300px]">
+							<h2 className="text-xl font-bold mb-4">Images</h2>
+							<EditCarousel object={litter} handleCarouselAdd={handleCarouselAdd} handleCarouselDelete={handleCarouselDelete}/>
 						</div>
 					</div>
 

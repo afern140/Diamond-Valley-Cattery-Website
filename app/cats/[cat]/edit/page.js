@@ -10,21 +10,22 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
-import EditThumbnail from "@/app/components/images/EditThumbnail"
+import EditThumbnail from "@/app/components/images/edit-thumbnail"
+import EditCarousel from "@/app/components/images/edit-carousel"
 import CatButton from "@/app/components/cats/cat-button"
 import AddCatButton from "@/app/components/cats/add-cat-button"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import CatCarouselController from "@/app/components/CatCarouselController";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page({params}){
 	const { user, dbUser } = useUserAuth();
 	const [cat, setCat] = useState();
-	const [cats, setCats] = useState();
-	const [conditions, setConditions] = useState();
-	const [vaccinations, setVaccinations] = useState();
+	const [cats, setCats] = useState([]);
+	const [conditions, setConditions] = useState([]);
+	const [vaccinations, setVaccinations] = useState([]);
 	const [thumbnail, setThumbnail] = useState();
+	const [carouselImages, setCarouselImages] = useState([]);
 	const [selectedCondition, setSelectedCondition] = useState();
 	const [selectedVaccine, setSelectedVaccine] = useState();
 	const [selectedParent, setSelectedParent] = useState();
@@ -348,6 +349,24 @@ export default function Page({params}){
 		setCat((prevCat) => ({ ...prevCat, thumbnail: thumbnailUrl }));
 	};
 
+	const handleCarouselAdd = async (e) => {
+		const newId = cat.carouselImages.length;
+		const file = e.target.files[0];
+		const carouselRef = ref(strg, `carousel-images/cats/${cat.id}/${newId}`);
+		await uploadBytes(carouselRef, file);
+		const carouselUrl = await getDownloadURL(carouselRef);
+		setCarouselImages({ ...carouselImages, carouselUrl });
+		setCat((prevCat) => ({ ...prevCat, carouselImages: [ ...prevCat.carouselImages, carouselUrl ] }));
+	}
+
+	const handleCarouselDelete = async (index) => {
+		//Deleting an Image doesn't properly remove the link to the image from the array
+		const updatedCarouselImages = cat.carouselImages.filter((image, i) => i !== index);
+		const imageRef = ref(strg, `carousel-images/cats/${cat.id}/${index}`);
+		await deleteObject(imageRef);
+		setCat((prevCat) => ({ ...prevCat, carouselImages: updatedCarouselImages }));
+	}
+
 	const handleSubmit = async () => {
 		await cat.conditions.map(async (condition) => {
 			await updateObject('conditions', condition, false)
@@ -470,6 +489,12 @@ export default function Page({params}){
 									className="p-1 rounded-md pl-2 min-h-[200px] bg-white drop-shadow-lg"
 								/>
 							</div>
+						</div>
+					</div>
+					<div className="mt-10 bg-white dark:text-dark-header-text-0 dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg h-[420px]">
+						<div className="h-[300px]">
+							<h2 className="text-xl font-bold mb-4">Images</h2>
+							<EditCarousel object={cat} handleCarouselAdd={handleCarouselAdd} handleCarouselDelete={handleCarouselDelete}/>
 						</div>
 					</div>
 					{/* Conditions & Vaccinations */}
@@ -616,7 +641,6 @@ export default function Page({params}){
 						</div>
 						<CatSelection cats={cats} showCatSelection={showChildSelection} setShowCatSelection={setShowChildSelection} handleSelectCat={handleSelectChild}/>
 					</div>
-					{/* <CatCarouselController onImageUpload={handleImageUpload} cat={cat} /> */}
 					<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 dark:bg-gray-600 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300">Submit</button>
 				</div>
 			) : (

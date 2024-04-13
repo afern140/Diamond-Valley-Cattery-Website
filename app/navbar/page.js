@@ -12,7 +12,6 @@ import CustomCursor from "../components/CustomCursor";
 import {db} from "../_utils/firebase";
 import {auth} from "../_utils/firebase";
 import {collection,addDoc,query,getDocs,Timestamp} from "firebase/firestore";
-import BackToTopButton from "../components/BackToTopButton";
 
 import { useRouter } from "next/navigation";
 

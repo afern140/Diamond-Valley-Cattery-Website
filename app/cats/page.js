@@ -4,12 +4,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { getObjects, getObject } from "../_utils/firebase_services";
-import Dropdown from "@/app/components/dropdown";
 import CatButton from "@/app/components/cats/cat-button";
-import BackButton from "@/app/components/BackToTopButton"
 import BackgroundUnderlay from "@/app/components/background-underlay";
 import { useUserAuth } from "../_utils/auth-context";
-import getUser from "../_utils/user_services";
 
 export default function Page() {
 	//Holds data that the page can display. Uses backup data until database is loaded

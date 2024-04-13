@@ -13,8 +13,8 @@ import AddCondition from "@/app/components/conditions/add-condition"
 import EditVaccination from "@/app/components/vaccinations/edit-vaccination"
 import AddVaccination from "@/app/components/vaccinations/add-vaccination"
 import CatSelection from "@/app/components/cats/cat-selection"
-import EditThumbnail from "@/app/components/images/EditThumbnail"
-import EditCarousel from "@/app/components/images/EditCarousel";
+import EditThumbnail from "@/app/components/images/edit-thumbnail"
+import EditCarousel from "@/app/components/images/edit-carousel";
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Page() {
@@ -478,7 +478,7 @@ export default function Page() {
 					<div className="mt-10 bg-white dark:text-dark-header-text-0 dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg h-[420px]">
 						<div className="h-[300px]">
 							<h2 className="text-xl font-bold mb-4">Images</h2>
-							<EditCarousel cat={cat} handleCarouselAdd={handleCarouselAdd} handleCarouselDelete={handleCarouselDelete}/>
+							<EditCarousel object={cat} handleCarouselAdd={handleCarouselAdd} handleCarouselDelete={handleCarouselDelete}/>
 						</div>
 					</div>
 					{/* Conditions */}

@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import { doc, Timestamp, collection, addDoc } from "firebase/firestore";
 import { strg, db } from "@/app/_utils/firebase";
 import { getObjects, createObject } from "@/app/_utils/firebase_services";
-import CatSelection from "@/app/components/cats/cat-selection";
-import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import CatButton from "@/app/components/cats/cat-button";
 import AddCatButton from "@/app/components/cats/add-cat-button";
-import EditThumbnail from "@/app/components/images/EditThumbnail";
+import CatSelection from "@/app/components/cats/cat-selection";
+import EditThumbnail from "@/app/components/images/edit-thumbnail";
+import EditCarousel from "@/app/components/images/edit-carousel";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
@@ -102,6 +102,24 @@ export default function Page() {
 		setLitter((prevLitter) => ({ ...prevLitter, thumbnail: thumbnailUrl }));
 	};
 
+	const handleCarouselAdd = async (e) => {
+		const newId = litter.carouselImages.length;
+		const file = e.target.files[0];
+		const carouselRef = ref(strg, `carousel-images/litters/${litter.id}/${newId}`);
+		await uploadBytes(carouselRef, file);
+		const carouselUrl = await getDownloadURL(carouselRef);
+		setCarouselImages({ ...carouselImages, carouselUrl });
+		setLitter((prevLitter) => ({ ...prevLitter, carouselImages: [ ...prevLitter.carouselImages, carouselUrl ] }));
+	}
+
+	const handleCarouselDelete = async (index) => {
+		//Deleting an Image doesn't properly remove the link to the image from the array
+		const updatedCarouselImages = litter.carouselImages.filter((image, i) => i !== index);
+		const imageRef = ref(strg, `carousel-images/litters/${litter.id}/${index}`);
+		await deleteObject(imageRef);
+		setLitter((prevLitter) => ({ ...prevLitter, carouselImages: updatedCarouselImages }));
+	}
+
 	const handleSubmit = async () => {
 		const newId = litters.reduce((max, litter) => Math.max(max, litter.id), 0) + 1;
 		const motherRef = doc(db, 'cats', litter.mother.docId);
@@ -113,7 +131,7 @@ export default function Page() {
 		const updatedLitter = { ...litter, id: newId, mother: motherRef, father: fatherRef, children: childrenRefs };
 		await createObject('litters', updatedLitter);
 	};
-	  
+
 	return (
 		<main className=" relative text-header-text-0 pb-16">
 			<BackgroundUnderlay />
@@ -130,31 +148,7 @@ export default function Page() {
 					<div className="flex flex-col xl:flex-row justify-evenly">
 						<div className="mx-auto w-[300px] h-[300px] justify-evenly">
 							<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail}/>
-						
-							{/*<div>
-								<input
-									type="text"
-									name="name"
-									placeholder={litter.name ? litter.name : "Name"}
-									value={litter.name}
-									onChange={handleChange}
-								/>
-								<input
-									type="text"
-									name="description"
-									placeholder={litter.description ? litter.description : "Description"}
-									value={litter.description}
-									onChange={handleChange}
-								/>
-								<input
-									type="date"
-									name="expDate"
-									value={litter.expDate ? new Date(litter.expDate.toDate()).toISOString().split('T')[0] : ""}
-									onChange={handleDateChange}
-								/>
-							</div>*/}
 						</div>
-
 						<div className="w-fit m-4 h-fit flex-col -translate-x-[20px] space-y-2 bg-navbar-body-1 dark:bg-gray-300 p-4 rounded-xl drop-shadow-lg">
 							<h2 className="text-2xl mb-2 font-bold dark:text-dark-header-text-0">Details</h2>
 							<div className="flex space-x-3">
@@ -192,6 +186,12 @@ export default function Page() {
 								/>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div className="mt-10 bg-white dark:text-dark-header-text-0 dark:bg-gray-500 rounded-xl p-10 drop-shadow-lg h-[420px]">
+					<div className="h-[300px]">
+						<h2 className="text-xl font-bold mb-4">Images</h2>
+						<EditCarousel object={litter} handleCarouselAdd={handleCarouselAdd} handleCarouselDelete={handleCarouselDelete}/>
 					</div>
 				</div>
 

@@ -1,10 +1,24 @@
+"use client"
+
 import Image from 'next/image'
 import Link from 'next/link'
-import CarouselDefault from './components/carousel';
+import { useState, useEffect } from 'react';
+import { getObject } from './_utils/firebase_services';
+import CarouselDefault from './components/images/carousel';
 import Button from './components/displaybutton'
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 export default function Home() {
+	const [images, setImages] = useState();
+
+	useEffect(() => {
+		const fetchImages = async () => {
+			const images = await getObject('images', 'home');
+			setImages(images);
+		};
+		fetchImages();
+	}, []);
+
   return (
     <main className="w-screen  relative overflow-hidden">
       <div className="relative size-full">
@@ -21,7 +35,7 @@ export default function Home() {
         {/* Top Solid-Color Part */}
         <div className="w-full mx-auto -mb-32 relative z-10">
           <div className="w-4/5 mx-auto pt-8 z-10 relative">
-            <CarouselDefault />
+            <CarouselDefault images={images}/>
           </div>
         </div>
 

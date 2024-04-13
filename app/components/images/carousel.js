@@ -1,7 +1,5 @@
 'use client';
 import { Carousel } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import { getObjects } from "../_utils/firebase_services";
 
 export default function CarouselDefault({ images }) {
 	const theme = {
@@ -68,26 +66,7 @@ export default function CarouselDefault({ images }) {
 				},
 			},
 		},
-	}
-	// const [imgUrl, setImgUrl] = useState([]);
-
-	// const getAllImg = () => {
-	// 	getObjects('img').then((obj) => {
-	// 		let arr = obj.map((item) => {
-	// 			return item.url
-	// 		})
-	// 		setImgUrl(arr)
-	// 	})
-	// }
-
-
-	// useEffect(() => {
-	// 	if (images && images.length > 0) {
-	// 		setImgUrl(images);
-	// 	} else {
-	// 		getAllImg();
-	// 	}
-	// }, [images])
+	};
 
 	return (
 		<div className="grid max-h-[440px] w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
@@ -131,8 +110,6 @@ export default function CarouselDefault({ images }) {
 						/>
 					))
 				)}
-
-
 			</Carousel>
 		</div>
 	)

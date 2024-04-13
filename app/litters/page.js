@@ -155,7 +155,7 @@ export default function Page() {
 									id="search-bar"
 									placeholder="Search"
 									value={fieldInput}
-									className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-full h-16"
+									className=" bg-[#e5e5ff] bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 pr-16 w-full h-16"
 									onChange = { (Event) => searchItems(Event.target.value, "") }>
 								</input>
 
@@ -234,7 +234,7 @@ export default function Page() {
 									</div>
 								</div>
 							))
-						) : (<h2 className="">No litters found containing "{fieldInput}"</h2>)
+						) : (<h2 className="break-words">No litters found containing {fieldInput}.</h2>)
 					) : (<h2>Loading litters...</h2>)}
 				</div>
 			</div>

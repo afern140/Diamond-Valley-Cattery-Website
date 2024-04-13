@@ -394,11 +394,11 @@ export default function Page() {
 					{/* Add Details */}
 					<div className="mx-auto">
 						<div className="bg-white dark:bg-gray-500 p-10 rounded-xl drop-shadow-lg flex flex-col xl:flex-row justify-between">
-							<div className="mx-auto">
+							<div className="mx-auto size-[310px]">
 								<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail}/>
 							</div>
 						
-							<div className="flex flex-col w-[400px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
+							<div className="flex flex-col w-[360px] h-fit mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
 								<h2 className="text-xl text-center mb-2">Details</h2>
 								<div className="grid grid-cols-3">
 									<div className="col-span-1 text-end pr-2 space-y-3">
@@ -464,7 +464,7 @@ export default function Page() {
 								</div>
 							</div>
 
-							<div className="flex flex-col xl:w-1/3 w-[300px] h-fit mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
+							<div className="flex flex-col xl:w-1/3 w-[300px] max-h-[310px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">
 								<h2 className="text-xl text-center mb-2">Description</h2>
 								<textarea
 									type="text"
@@ -472,7 +472,7 @@ export default function Page() {
 									placeholder="Description"
 									value={cat.description}
 									onChange={handleChange}
-									className="p-1 rounded-md pl-2 min-h-[200px] bg-white drop-shadow-lg"
+									className="p-1 rounded-md pl-2 min-h-[200px] h-full bg-white drop-shadow-lg"
 								/>
 							</div>
 						</div>
@@ -494,24 +494,24 @@ export default function Page() {
 							)) : (<h2>None</h2>)}
 							<div className="flex flex-col mb-4 bg-navbar-body-1 dark:bg-gray-300 m-2 border-2 border-gray-300 border-dashed drop-shadow-lg rounded-md p-2">
 								{selectedCondition ? (
-									<div className="flex flex-col mb-4 bg-navbar-body-1 dark:bg-gray-300  m-2 drop-shadow-lg rounded-md p-2">
+									<div className="flex flex-col w-64 h-[180px] p-1 mb-2 overflow-auto">
 										<select
 											onChange={(e) => handleSelectCondition(e)}
-											className="border border-gray-300 bg-white rounded-md p-2 mb-2"
+											className="drop-shadow-lg bg-white rounded-md p-2 mb-2"
 										>
 											<option value="bg-white">Select a condition</option>
 											{conditions.map((condition) => (
 												<option key={condition.id} value={condition.id} className="bg-white">{condition.name}</option>
 											))}
 										</select>
-										<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedCondition.description}</h3>
-										<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedCondition.treatment}</h3>
-										<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedCondition.treated ? "Finished" : "In Progress"}</h3>
+										<h3 className="drop-shadow-lg rounded-md p-2 mb-2 bg-white break-words">{selectedCondition.description}</h3>
+										<h3 className="drop-shadow-lg rounded-md p-2 mb-2 bg-white break-words">{selectedCondition.treatment}</h3>
+										<h3 className="drop-shadow-lg rounded-md p-2 mb-2 bg-white break-words">{selectedCondition.treated ? "Finished" : "In Progress"}</h3>
 									</div>
 								) : (
 									<select
 										onChange={(e) => handleSelectCondition(e)}
-										className="border border-gray-300 bg-white rounded-md p-2 mb-2"
+										className="drop-shadow-lg bg-white rounded-md p-2 mb-2"
 									>
 										<option value="">Select a condition</option>
 										{conditions.map((condition) => (
@@ -537,24 +537,24 @@ export default function Page() {
 								)) : (<h2>None</h2>)}
 								<div className="w-[320px] flex flex-col mb-4 bg-navbar-body-1 dark:bg-gray-300  m-2 border-2 border-gray-300 border-dashed drop-shadow-lg rounded-md p-2">
 									{selectedVaccine ? (
-									<div>
+									<div className="h-[420px] overflow-auto">
 										<select
 											onChange={(e) => handleSelectVaccine(e)}
-											className="border border-gray-300 bg-white rounded-md p-2 mb-2"
+											className="drop-shadow-lg bg-white rounded-md p-2 mb-2"
 										>
 											<option value="">Select a vaccine</option>
 											{vaccinations.map((vaccine) => (
 												<option key={vaccine.id} value={vaccine.id}>{vaccine.name}</option>
 											))}
 										</select>
-										<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedVaccine.description}</h3>
-										<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedVaccine.completed ? "Finished" : "In Progress"}</h3>
-										<h3 className="border border-gray-300 rounded-md p-2 mb-2">{selectedVaccine.dosesTaken}</h3>
+										<h3 className="drop-shadow-lg bg-white rounded-md p-2 mb-2 break-words">{selectedVaccine.description}</h3>
+										<h3 className="drop-shadow-lg bg-white rounded-md p-2 mb-2 break-words">{selectedVaccine.completed ? "Finished" : "In Progress"}</h3>
+										<h3 className="drop-shadow-lg bg-white rounded-md p-2 mb-2 break-words">{selectedVaccine.dosesTaken}</h3>
 									</div>
 									) : (
 									<select
 										onChange={(e) => handleSelectVaccine(e)}
-										className="border border-gray-300 bg-white rounded-md p-2 mb-2"
+										className="drop-shadow-lg bg-white rounded-md p-2 mb-2"
 									>
 										<option value="">Select a vaccine</option>
 										{vaccinations.map((vaccine) => (

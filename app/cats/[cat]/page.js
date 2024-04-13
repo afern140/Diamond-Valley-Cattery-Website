@@ -269,32 +269,32 @@ export default function Page({params}) {
 
 					<div className="text-header-text-0 text-xl font-bold">
 						{cat.father || cat.mother ? (
-							<div>
-								<h2 className="text-2xl mt-10">Parents</h2>
+							<div className="mt-10 bg-white w-full dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
+								<h2 className="text-2xl">Parents</h2>
 								<div className="flex flex-wrap">
 									{cat.mother ? (
-										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 my-10 mr-10 rounded-lg text-center text-white dark:text-header-text-0">
-											<h2>Mother</h2>
-											<CatButton cat={cat.mother} lightText={true}/>
+										<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 my-10 mr-10 rounded-lg text-center text-white dark:text-header-text-0">
+											<h2 className=" text-header-text-0">Mother</h2>
+											<CatButton cat={cat.mother} lightText={false}/>
 										</div>
 									) : null}
 									{cat.father ? (
-										<div className="bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 my-10 rounded-lg text-center text-white dark:text-header-text-0">
-											<h2>Father</h2>
-											<CatButton cat={cat.father} lightText={true}/>
+										<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 my-10 rounded-lg text-center text-white dark:text-header-text-0">
+											<h2 className=" text-header-text-0">Father</h2>
+											<CatButton cat={cat.father} lightText={false}/>
 										</div>
 									) : null}
 								</div>
 							</div>
 						) : null}
 						{cat.children && cat.children.length > 0 ? (
-							<div>
-								<h2 className="text-2xl mx-10 mt-10">Children</h2>
-								<div className="flex flex-wrap">
+							<div  className="mt-10 bg-white w-full dark:bg-gray-500 relative drop-shadow-lg rounded-xl p-10">
+								<h2 className="text-2xl">Children</h2>
+								<div className="flex flex-wrap max-h-[400px] overflow-y-auto">
 									{cat.children ? (
 										cat.children.map((child) => (
-											<div key={child.id} className=" bg-navbar-body-0 dark:bg-gray-400 drop-shadow-lg p-10 my-10 mr-10 rounded-lg text-center">
-												<CatButton cat={child} lightText={true}/>
+											<div key={child.id} className=" bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 my-5 mr-10 rounded-lg text-center">
+												<CatButton cat={child} lightText={false}/>
 											</div>
 										))
 									) : null}

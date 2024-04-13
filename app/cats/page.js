@@ -287,7 +287,7 @@ export default function Page() {
 										id="search-bar"
 										placeholder="Search"
 										value={fieldInput}
-										className=" bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 w-full h-16"
+										className=" bg-opacity-50 dark:bg-gray-300 dark:bg-opacity-100 placeholder-text-header-0 shadow drop-shadow-lg rounded-3xl text-xl pl-4 pr-16 w-full h-16"
 										onChange = { (Event) => searchItems(Event.target.value, "") }>
 									</input>
 
@@ -357,7 +357,7 @@ export default function Page() {
 										</div>
 									))
 								:
-									<div className="w-full col-span-3 p-4">No cats found with search parameters "{fieldInput}".</div>
+									<div className="w-full col-span-3 p-4 break-words">No cats found with search parameters {fieldInput}.</div>
 							)
 							: <div className="p-4">Awaiting cats</div>
 							}

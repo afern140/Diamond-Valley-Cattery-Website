@@ -1,4 +1,6 @@
 'use client';
+
+import Image from "next/image";
 import { Carousel } from "@material-tailwind/react";
 
 export default function CarouselDefault({ images }) {
@@ -69,7 +71,7 @@ export default function CarouselDefault({ images }) {
 	};
 
 	return (
-		<div className="grid max-h-[440px] w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
+		<div className="grid max-h-[625px] w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
 			<Carousel
 				className="pb-5"
 				autoplay
@@ -93,7 +95,7 @@ export default function CarouselDefault({ images }) {
 							key={index}
 							src={image}
 							alt={`image ${index + 1}`}
-							className="h-full w-full object-cover"
+							className="h-full w-full object-cover border-4 border-navbar-body-1 drop-shadow-md"
 						/>
 					))
 				) : (
@@ -102,11 +104,13 @@ export default function CarouselDefault({ images }) {
 						"https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80",
 						"https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80",
 					].map((src, index) => (
-						<img
+						<Image
 							key={index}
 							src={src}
 							alt={`image ${index + 1}`}
-							className="h-full w-full object-cover"
+							width={1920}
+							height={1080}
+							className="h-full w-full object-cover border-4 border-navbar-body-1 drop-shadow-md"
 						/>
 					))
 				)}

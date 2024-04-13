@@ -69,32 +69,28 @@ export default function CarouselDefault({ images }) {
 			},
 		},
 	}
-	const [imgUrl, setImgUrl] = useState([]);
+	// const [imgUrl, setImgUrl] = useState([]);
 
-	const getAllImg = () => {
-		getObjects('HomeCarousel').then((obj) => {
-			let arr = obj.map((item) => {
-				return item.url
-			})
-			setImgUrl(arr)
-		})
-	}
+	// const getAllImg = () => {
+	// 	getObjects('img').then((obj) => {
+	// 		let arr = obj.map((item) => {
+	// 			return item.url
+	// 		})
+	// 		setImgUrl(arr)
+	// 	})
+	// }
 
 
-	useEffect(() => {
-		if (images && images.length > 0) {
-			let arr = images.map((item) => {
-				return item.url
-			})
-			setImgUrl(arr);
-		} else {
-			getAllImg();
-		}
-	}, [images])
-
+	// useEffect(() => {
+	// 	if (images && images.length > 0) {
+	// 		setImgUrl(images);
+	// 	} else {
+	// 		getAllImg();
+	// 	}
+	// }, [images])
 
 	return (
-		<div className="grid h-[70%] mx-auto aspect-video w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
+		<div className="grid max-h-[440px] w-full place-items-center overflow-x-hidden overflow-y-hidden p-6">
 			<Carousel
 				className="pb-5"
 				autoplay
@@ -112,27 +108,11 @@ export default function CarouselDefault({ images }) {
 					</div>
 				)}
 			>
-				{/* <img
-							src="https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80"
-							alt="image 1"
-							className="h-full w-full object-cover"
-						/>
-						<img
-							src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
-							alt="image 2"
-							className="h-full w-full object-cover"
-						/>
-						<img
-							src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80"
-							alt="image 3"
-							className="h-full w-full object-cover"
-						/> */}
-
-				{imgUrl.length > 0 ? (
-					imgUrl.map((item, index) => (
+				{images && images.length > 0 ? (
+					images.map((image, index) => (
 						<img
 							key={index}
-							src={item}
+							src={image}
 							alt={`image ${index + 1}`}
 							className="h-full w-full object-cover"
 						/>

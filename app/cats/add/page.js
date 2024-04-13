@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { db, strg } from "@/app/_utils/firebase"
 import { doc, Timestamp } from "firebase/firestore"
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes, deleteObject } from "firebase/storage";
 import { useUserAuth } from "@/app/_utils/auth-context"
 import { getObjects, createObject, updateObject } from "@/app/_utils/firebase_services"
 import CatButton from "@/app/components/cats/cat-button"
@@ -74,7 +74,10 @@ export default function Page() {
 		const fetchCats = async () => {
 			const cats = await getObjects('cats');
 			setCats(cats);
+			const newId = cats.reduce((max, cat) => Math.max(max, cat.id), 0) + 1;
+			setCat({ ...cat, id: newId })
 			console.log(cats);
+			console.log(cat);
 		};
 		fetchCats();
 	}, []);
@@ -334,6 +337,7 @@ export default function Page() {
 	}
 
 	const handleCarouselDelete = async (index) => {
+		//Deleting an Image doesn't properly remove the link to the image from the array
 		const updatedCarouselImages = cat.carouselImages.filter((image, i) => i !== index);
 		const imageRef = ref(strg, `carousel-images/cats/${cat.id}/${index}`);
 		await deleteObject(imageRef);
@@ -341,7 +345,6 @@ export default function Page() {
 	}
 
 	const handleSubmit = async () => {
-		const newId = cats.reduce((max, cat) => Math.max(max, cat.id), 0) + 1;
 		let motherRef = null;
 		let fatherRef = null;
 		let conditionRefs = [];
@@ -370,9 +373,9 @@ export default function Page() {
 		if (cat.children.length > 0) {
 			childrenRefs = cat.children.map(child => doc(db, 'cats', child.docId));
 		}
-		const newCat =  { ...cat, id: newId, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
+		const newCat =  { ...cat, conditions: conditionRefs, vaccinations: vaccinationRefs, owner: ownerRef, mother: motherRef, father: fatherRef, children: childrenRefs  }
 		await createObject('cats', newCat);
-		window.location.href = `/cats/${newId}`;
+		window.location.href = `/cats/${cat.id}`;
 	};
 
 	return(

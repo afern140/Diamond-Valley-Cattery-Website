@@ -168,7 +168,7 @@ export default function Page({params}) {
 						</div>
 					</div>
 					<div className=" w-full flex">
-						<Carousel images={cat.carouselImage} />
+						<Carousel images={cat.carouselImages} />
 					</div>
 					<div className="flex flex-col xl:flex-row w-full">
 						{/* First split of the section */}

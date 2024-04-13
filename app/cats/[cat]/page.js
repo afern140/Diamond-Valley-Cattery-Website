@@ -91,9 +91,9 @@ export default function Page({params}) {
 	//Changes the page title when the cat is loaded
 	useEffect(() => {
 		if (cat) 
-			document.title = "testing Cattery - " + cat.name + "'s page";
+			document.title = "Diamond Valley Cattery - " + cat.name + "'s page";
 		else
-			document.title = "testing Cattery - Cat page";
+			document.title = "Diamond Valley Cattery - Cat page";
 	}, [cat]);
 
 	const handleFavoriteButton = async () => {

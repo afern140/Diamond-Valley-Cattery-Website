@@ -14,7 +14,7 @@ import EditThumbnail from "@/app/components/images/edit-thumbnail"
 import EditCarousel from "@/app/components/images/edit-carousel"
 import CatButton from "@/app/components/cats/cat-button"
 import AddCatButton from "@/app/components/cats/add-cat-button"
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
@@ -420,11 +420,11 @@ export default function Page({params}){
 
 	return(
 		<main className=" min-h-screen relative text-[#092C48] pb-16">
+			<BackgroundUnderlay />
 			{dbUser ? (
 				<>
 				{cat && cat.owner.uid == dbUser.uid ? (
 					<>
-					<BackgroundUnderlay />
 					<div className="w-4/5 mx-auto pb-16">
 						<div className="pt-20 flex pb-10">
 							<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">

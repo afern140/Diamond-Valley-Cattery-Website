@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { db } from "@/app/_utils/firebase";
+import { query, collection, where, doc, getDoc, getDocs } from "firebase/firestore";
 import { useChat } from "@/app/_utils/chat-context";
 import { useUserAuth } from "@/app/_utils/auth-context";
 import BackgroundUnderlay from "@/app/components/background-underlay";
@@ -14,6 +16,7 @@ export default function Page({ params }) {
 
 	// Extract chat ID from page parameters.
 	const chatId = params.chat;
+	const [otherUser, setOtherUser] = useState();
 	const [otherUsername, setOtherUsername] = useState("Anonymous");
 
 	useEffect(() => {
@@ -40,18 +43,23 @@ export default function Page({ params }) {
 	}, []);
 
 	useEffect(() => {
-		currentMessages.map((msg) => {
-			if (msg.userId !== user.uid) {
-				setOtherUsername(msg.displayName);
-			}
-		})
-	}, [currentMessages, user])
+		const fetchThread = async () => {
+			const thread = (await getDoc(doc(db, 'chats', params.chat))).data();
+			thread.users.map(async (otherUser) => {
+				if (user && otherUser !== user.uid) {
+					const recipientDocument = (await getDocs(query(collection(db, 'users'), where("uid", "==", otherUser))));
+					const recipient = recipientDocument.docs.map(doc => ({ docId: doc.id, ...doc.data() }))[0];
+					setOtherUsername(recipient.username);
+				}
+			});
+		}
+		fetchThread();
+	}, [user]);
 
 	const isProfanity = (text) => {
 		const badWords = ["smash","john"];
 		return badWords.some((word) => text.toLowerCase().includes(word.toLowerCase()));
 	};
-
 
 	// This function is called when the user sends a message.
 	const handleSendMessage = async (e) => {

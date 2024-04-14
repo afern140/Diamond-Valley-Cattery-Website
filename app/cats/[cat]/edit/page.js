@@ -571,7 +571,7 @@ export default function Page({params}){
 									<div className={"flex flex-wrap overflow-y-auto " + (cat.vaccinations && cat.vaccinations.length > 0 ? " h-[820px]" : " h-fit")}>
 										{cat.vaccinations ? (
 											cat.vaccinations.map((vaccination) => (
-												<EditVaccination vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleVaccinationChange={handleVaccinationChange} handleStatusChange={handleStatusChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleRemoveVaccination={handleRemoveVaccination} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection}/>
+												<EditVaccination key={vaccination.id} vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleVaccinationChange={handleVaccinationChange} handleStatusChange={handleStatusChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleRemoveVaccination={handleRemoveVaccination} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection}/>
 											)
 										)) : (<h2>None</h2>)}
 										<div className="flex flex-col mb-4 bg-navbar-body-1 dark:bg-gray-300 m-2 drop-shadow-lg rounded-md border-2 border-dashed border-gray-300 p-2 w-[320px] h-fit">
@@ -650,7 +650,7 @@ export default function Page({params}){
 							<div className="flex flex-wrap">
 								{cat.children ? (
 									cat.children.map((child) =>(
-										<div className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+										<div key={child.id} className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 											<CatButton cat={child} />
 											<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Remove {child.name}</button>
 										</div>
@@ -666,7 +666,7 @@ export default function Page({params}){
 						<button onClick={handleSubmit} className="flex m-auto px-6 py-4 drop-shadow-lg bg-navbar-body-0 dark:bg-gray-600 rounded-xl mt-16 text-2xl hover:scale-105 text-white transition duration-300">Submit</button>
 					</div>
 					</>
-				) : <h1>You cannot edit a cat you don't own</h1>}
+				) : <h1>You cannot edit a cat you don&apost own</h1>}
 				</>
 			) : (<h1>You must be logged in to edit a cat</h1>)}
 		</main>

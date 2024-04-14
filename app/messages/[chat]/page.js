@@ -6,7 +6,7 @@ import { useUserAuth } from "@/app/_utils/auth-context";
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
 //Message
-export default function page({ params }) {
+export default function Page({ params }) {
 	const { user } = useUserAuth();
 	const { loadChatMessages, sendMessage } = useChat();
 	const [currentMessages, setCurrentMessages] = useState([]);

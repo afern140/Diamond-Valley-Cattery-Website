@@ -18,7 +18,7 @@ export async function addUser(userDoc) {
 }
 
 
-export default function page() {
+export default function Page() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -44,7 +44,7 @@ export default function page() {
             var errorCode = error.code;
             var errorMessage = error.message;
             if (errorCode === 'auth/email-already-in-use') {
-              alert('Invalid Email or Password');
+              alert('An account with this email already exists');
             }
             else{
              console.log(errorCode, errorMessage);
@@ -158,7 +158,7 @@ export default function page() {
     }
     {user && 
     <div className="min-h-screen flex flex-column items-center justify-center bg-white dark:bg-gray-500">
-      <div className="text-slate-500">Hi {user.displayName} you're already logged in.</div>
+      <div className="text-slate-500">Hi {user.displayName} You will soon be redirected to your dashboard</div>
       <button onClick={handleRedirect} className="bg-slate-500 text-white p-2">Go to Login</button>
     </div>
     }

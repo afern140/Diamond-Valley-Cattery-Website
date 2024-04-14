@@ -163,7 +163,7 @@ export default function Page() {
 								<div ref={searchbarRef} className={`absolute w-full z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl flex-col overflow-hidden`}>
 									{
 										sortedLitters.map((cat) => (
-											<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
+											<button key={cat.id} className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
 										))
 									}
 								</div> : <div />
@@ -187,7 +187,7 @@ export default function Page() {
 					{sortedLitters ? (
 						sortedLitters.length > 0 ? (
 							sortedLitters.map((litter) => (
-								<div className="flex flex-row drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl m-5 p-5">
+								<div key={litter.id} className="flex flex-row drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl m-5 p-5">
 									<div className="h-full my-auto">
 										<Link href={`/litters/${litter.id}`} className="text-center mt-full mb-full">
 											<h2 className="text-xl mb-2 font-bold">{litter.name}</h2>
@@ -213,7 +213,7 @@ export default function Page() {
 													<h2 className="text-xl">Kittens:</h2>
 													<div className="flex flex-wrap">
 														{litter.children.map((child) => (
-															<Link href={`/cats/${child.id}`} className="text-center m-1 p-2 bg-white rounded-md drop-shadow-lg">
+															<Link key={child.id} href={`/cats/${child.id}`} className="text-center m-1 p-2 bg-white rounded-md drop-shadow-lg">
 																<Image
 																	alt="kitten"
 																	src={child.thumbnail ? child.thumbnail : "/img/Placeholder.png"}

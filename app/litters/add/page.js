@@ -234,7 +234,7 @@ export default function Page() {
 					{litter.completed ? (
 						<div className="flex flex-wrap mt-6 overflow-y-auto max-h-[800px]">
 							{litter.children.map((child) => (
-								<div className="m-3 p-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg items-center text-center">
+								<div key={child.id} className="m-3 p-4 bg-navbar-body-1 dark:bg-gray-300 rounded-xl drop-shadow-lg items-center text-center">
 									<CatButton cat={child}/>
 									<button className="px-4 py-2 bg-white dark:bg-gray-500 drop-shadow-lg rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 								</div>

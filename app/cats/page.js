@@ -238,7 +238,7 @@ export default function Page() {
 						<select id="sort" value={breedType} onChange={(e) => setBreedType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-white bg-opacity-100 w-full max-w-[300px]">
 							<option value="">None</option>
 							{breeds.map((breed) => (
-								<option value={breed}>{breed}</option>
+								<option key={breed} value={breed}>{breed}</option>
 							))}
 						</select>
 						<h3 className="py-2 text-lg dark:text-dark-header-text-0">Gender</h3>
@@ -253,7 +253,7 @@ export default function Page() {
 						<select id="sort" value={ageType} onChange={(e) => setAgeType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-white bg-opacity-100 w-full max-w-[300px]">
 							<option value="">None</option>
 							{ageGroups.map((age) => (
-								<option value={age.age}>{age.age}</option>
+								<option key={age} value={age.age}>{age.age}</option>
 							))}
 						</select>
 						<h3 className="py-2 text-lg dark:text-dark-header-text-0">Color</h3>
@@ -261,12 +261,9 @@ export default function Page() {
 						<select id="sort" value={colorType} onChange={(e) => setColorType(e.target.value)} className=" drop-shadow-md p-2 text-xl rounded-xl dark:bg-gray-300 bg-white bg-opacity-100 w-full max-w-[300px]">
 							<option value="">None</option>
 							{colors.map((color) => (
-								<option value={color}>{color}</option>
+								<option key={color} value={color}>{color}</option>
 							))}
 						</select>
-						
-
-
 						<div className="w-fit z-10">
 							<button onClick={clearFilters} className=" py-2 z-10 relative px-4 mt-10 bg-gray-200 drop-shadow-lg text-text-header-0 rounded-xl font-semibold">Clear Filters</button>
 							{/*<div className="p-4 bg-yellow-700 rounded-xl absolute h-10 -translate-y-[36px] -z-10 w-full" />*/}
@@ -295,7 +292,7 @@ export default function Page() {
 									<div ref={searchbarRef} className={`absolute w-full z-50 bg-gray-100 bg-opacity-100 border-2 placeholder-text-header-0 shadow rounded-3xl text-xl flex-col overflow-hidden`}>
 										{
 											filteredResults.map((cat) => (
-												<button className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
+												<button key={cat.id} className="w-full text-left h-10 hover:bg-white pl-4" onClick={() => completeAutocomplete(cat.name)}>{cat.name}</button>
 											))
 										}
 									</div> : <div />
@@ -308,16 +305,12 @@ export default function Page() {
 
 						<div className=" w-full max-w-[200px] mr-full ml-auto justify-end flex-col bg-navbar-body-1 dark:bg-gray-500 rounded-xl p-4 drop-shadow-lg z-50">
 							<h2 className="flex justify-start font-bold text-xl text-text-header-0 dark:text-dark-header-text-0 drop-shadow-md">Sort by:</h2>
-							
-							{/*<div className=" pt-4">
-								<Dropdown queryType="sort" callback={sortItems} isInsidePanel={true}/>
-							</div>*/}
 
 							{/* Sorting Dropdown Filter -- F */}
 							<select id="sort" value={sortingMethod} onChange={(e) => setSortingMethod(e.target.value)} className=" drop-shadow-md p-2 mt-4 text-xl rounded-xl dark:bg-gray-300 bg-opacity-100">
 								<option value="" >None</option>
 								{ sortbyGroups.map((filterType) => (
-									<option value={filterType.group}>{filterType.group}</option>
+									<option key={filterType.group} value={filterType.group}>{filterType.group}</option>
 								))}
 							</select>
 						</div>
@@ -352,7 +345,7 @@ export default function Page() {
 							{filteredResults ? (
 								filteredResults.length > 0 ?
 									filteredResults.map((cat) => (
-										<div className="hover:scale-110 transition duration-300">
+										<div key={cat.id} className="hover:scale-110 transition duration-300">
 											<CatButton cat={cat}/>
 										</div>
 									))

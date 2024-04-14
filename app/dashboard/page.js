@@ -258,7 +258,7 @@ export default function Page() {
 					<div className="flex flex-wrap max-h-[650px] overflow-y-auto">
 						{dbUser.favorites.cats ? (
 							dbUser.favorites.cats.map((cat) => (
-								<div className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+								<div key={cat.id} className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 									<CatButton cat={cat} />
 								</div>
 							))

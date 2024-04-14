@@ -236,7 +236,7 @@ export default function Page({ params }) {
 						{litter.completed ? (
 							<div className="flex flex-wrap overflow-y-auto">
 								{litter.children.map((child) => (
-									<div className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl text-header-text-0 place-items-center">
+									<div key={child.id} className=" flex justify-center flex-col font-bold p-4 m-4 drop-shadow-lg bg-navbar-body-1 dark:bg-gray-300 rounded-xl text-header-text-0 place-items-center">
 										<CatButton cat={child}/>
 										<button className="px-4 py-2 bg-gradient-to-r drop-shadow-lg bg-white rounded-xl mt-6" onClick={() => handleRemoveChild(child)}>Remove {child.name}</button>
 									</div>

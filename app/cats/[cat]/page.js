@@ -231,7 +231,7 @@ export default function Page({params}) {
 						<div className={`relative flex flex-wrap w-fit overflow-y-auto dark:bg-gray-400 drop-shadow-lg rounded-xl mr-4`} style={{height: vaccHeight + 30}}>
 							{cat.vaccinations && cat.vaccinations.length > 0 ? (
 							cat.vaccinations.map((vaccination) => (
-								<div ref={vaccRef} className="relative flex-col rounded-md p-4 m-4 min-h-64 h-fit w-[380px] bg-navbar-body-1 dark:bg-gray-300">
+								<div key={vaccination.id} ref={vaccRef} className="relative flex-col rounded-md p-4 m-4 min-h-64 h-fit w-[380px] bg-navbar-body-1 dark:bg-gray-300">
 									<h3 className="w-[300px] font-bold">{vaccination.name}</h3>
 									<div className="overflow-y-auto max-h-[300px]">
 										<p>Description: <span className="font-normal">{vaccination.description}</span></p>

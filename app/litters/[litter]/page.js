@@ -95,9 +95,9 @@ export default function Page({ params }) {
 							<div className="">
 								<h2 className="text-2xl dark:text-dark-header-text-0">Children</h2>
 								<div className="flex flex-wrap">
-								{litter.children.map((child, index) => (
-										<div className="flex flex-wrap">
-											<div key={index} className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
+								{litter.children.map((child) => (
+										<div key={child.id} className="flex flex-wrap">
+											<div className="bg-navbar-body-1 dark:bg-gray-400 drop-shadow-lg p-10 m-10 rounded-lg text-center">
 												<CatButton cat={child} />
 											</div>
 										</div>

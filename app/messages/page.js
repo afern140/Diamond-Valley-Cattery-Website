@@ -8,7 +8,7 @@ import { useChat } from "@/app/_utils/chat-context";
 import Link from "next/link";
 import BackgroundUnderlay from "@/app/components/background-underlay";
 
-export default function page() {
+export default function Page() {
 	const { user } = useUserAuth();
 	const [threads, setThreads] = useState([]);
 
@@ -53,7 +53,7 @@ export default function page() {
 				{threads ? (
 					<div className="space-y-2">
 						{threads.map((thread) => (
-							<div className="space-y-2 bg-navbar-body-1 overflow-hidden dark:bg-gray-300 rounded-xl drop-shadow h-fit">
+							<div key={thread.docId} className="space-y-2 bg-navbar-body-1 overflow-hidden dark:bg-gray-300 rounded-xl drop-shadow h-fit">
 								<Link className="size-full rounded-xl" key={thread.docId} href={`/messages/${thread.docId}`}>
 								<div className="block p-2 hover:bg-gray-200 cursor-pointer">
 									<h2 className="font-bold">{thread.recipient.username}</h2>

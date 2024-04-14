@@ -40,9 +40,9 @@ export default function Page() {
 		color: "",
 		eye_color: "",
 		description: "",
-		mother: "",
-		father: "",
-		owner: "",
+		mother: null,
+		father: null,
+		owner: null,
 		thumbnail: "",
 		conditions: [],
 		vaccinations: [],
@@ -549,7 +549,7 @@ export default function Page() {
 							<div className="flex flex-wrap">
 								{cat.vaccinations ? (
 									cat.vaccinations.map((vaccination) => (
-										<EditVaccination vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleVaccinationChange={handleVaccinationChange} handleStatusChange={handleStatusChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleRemoveVaccination={handleRemoveVaccination} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection}/>
+										<EditVaccination key={vaccination.id} vaccination={vaccination} newDate={newDate} setNewDate={setNewDate} handleVaccinationChange={handleVaccinationChange} handleStatusChange={handleStatusChange} handleVaccinationDateChange={handleVaccinationDateChange} handleRemoveDate={handleRemoveDate} handleAddDate={handleAddDate} handleRemoveVaccination={handleRemoveVaccination} showTakenDateSelection={showTakenDateSelection} setShowTakenDateSelection={setShowTakenDateSelection} showPlannedDateSelection={showPlannedDateSelection} setShowPlannedDateSelection={setShowPlannedDateSelection}/>
 									)
 								)) : (<h2>None</h2>)}
 								<div className="w-[320px] flex flex-col mb-4 bg-navbar-body-1 dark:bg-gray-300  m-2 border-2 border-gray-300 border-dashed drop-shadow-lg rounded-md p-2">
@@ -625,7 +625,7 @@ export default function Page() {
 							<div className="flex flex-wrap">
 								{cat.children ? (
 									cat.children.map((child) =>(
-										<div className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
+										<div key={child.id} className=" flex justify-center flex-col m-2 font-bold p-4 bg-navbar-body-1 dark:bg-gray-300 drop-shadow-lg  rounded-xl text-[#092C48] place-items-center">
 											<CatButton cat={child} />
 											<button onClick={() => handleRemoveChild(child)} className="px-4 py-2 bg-white drop-shadow-lg  rounded-xl mt-6">Remove {child.name}</button>
 										</div>

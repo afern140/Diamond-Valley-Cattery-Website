@@ -157,7 +157,7 @@ export default function Page() {
 
 	const handleAddCondition = async () => {
 		const newId = conditions.reduce((max, condition) => Math.max(max, condition.id), 0) + 1;
-		const ownerRef = doc(db, 'users', cat.owner.docId);
+		const ownerRef = doc(db, 'users', dbUser.docId);
 		const updatedCondition = { ...newCondition, id: newId, owner: ownerRef };
 		const conditionRef = await createObject('conditions', updatedCondition);
 		const newConditionWithId = { ...updatedCondition, docId: conditionRef.id };
@@ -275,7 +275,7 @@ export default function Page() {
 	
 	const handleAddVaccine = async () => {
 		const newId = vaccinations.reduce((max, vaccine) => Math.max(max, vaccine.id), 0) + 1;
-		const ownerRef = doc(db, 'users', cat.owner.docId);
+		const ownerRef = doc(db, 'users', dbUser.docId);
 		const updatedVaccine = { ...newVaccine, id: newId, owner: ownerRef };
 		const vaccineRef = await createObject('vaccinations', updatedVaccine);
 		const newVaccineWithId = { ...updatedVaccine, docId: vaccineRef.id };

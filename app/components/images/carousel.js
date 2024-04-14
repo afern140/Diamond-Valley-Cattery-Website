@@ -91,10 +91,12 @@ export default function CarouselDefault({ images }) {
 			>
 				{images && images.length > 0 ? (
 					images.map((image, index) => (
-						<img
+						<Image
 							key={index}
 							src={image}
 							alt={`image ${index + 1}`}
+							width={1920}
+							height={1080}
 							className="h-full w-full object-cover border-4 border-navbar-body-1 drop-shadow-md"
 						/>
 					))

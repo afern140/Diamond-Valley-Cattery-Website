@@ -13,11 +13,11 @@ export default function Page({ params }) {
 	const { loadChatMessages, sendMessage } = useChat();
 	const [currentMessages, setCurrentMessages] = useState([]);
 	const [newMessage, setNewMessage] = useState("");
+	const [authorizedUsers, setAuthorizedUsers] = useState([]);
+	const [otherUsername, setOtherUsername] = useState("Anonymous");
 
 	// Extract chat ID from page parameters.
 	const chatId = params.chat;
-	const [otherUser, setOtherUser] = useState();
-	const [otherUsername, setOtherUsername] = useState("Anonymous");
 
 	useEffect(() => {
 		console.log("Component mounted - should log only once");
@@ -45,14 +45,17 @@ export default function Page({ params }) {
 	useEffect(() => {
 		const fetchThread = async () => {
 			const thread = (await getDoc(doc(db, 'chats', params.chat))).data();
-			thread.users.map(async (otherUser) => {
-				if (user && otherUser !== user.uid) {
-					const recipientDocument = (await getDocs(query(collection(db, 'users'), where("uid", "==", otherUser))));
-					const recipient = recipientDocument.docs.map(doc => ({ docId: doc.id, ...doc.data() }))[0];
-					setOtherUsername(recipient.username);
-				}
-			});
-		}
+			if (thread) {
+				thread.users.map(async (otherUser) => {
+					setAuthorizedUsers([...authorizedUsers, otherUser])
+					if (user && otherUser !== user.uid) {
+						const recipientDocument = (await getDocs(query(collection(db, 'users'), where("uid", "==", otherUser))));
+						const recipient = recipientDocument.docs.map(doc => ({ docId: doc.id, ...doc.data() }))[0];
+						setOtherUsername(recipient.username);
+					};
+				});
+			};
+		};
 		fetchThread();
 	}, [user]);
 
@@ -103,58 +106,61 @@ export default function Page({ params }) {
 	return (
 		<main className="relative pb-16">
 			<BackgroundUnderlay />
-
-			<div className="pt-20 flex pb-10">
-				<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
-				<span className="text-6xl pb-10 font-extrabold">{otherUsername || "Anonymous"}</span> <br />
+			{user && authorizedUsers.includes(user.uid) ? (
+				<>
+				<div className="pt-20 flex pb-10">
+					<div className="w-4/5 m-auto justify-center flex-col text-center mx-auto inline-block font-bold bg-[#092C48] dark:bg-dark-header-text-0 text-transparent bg-clip-text pb-2">
+					<span className="text-6xl pb-10 font-extrabold">{otherUsername || "Anonymous"}</span> <br />
+					</div>
 				</div>
-			</div>
 
-			<div className=" w-4/5 mx-auto">
-				<div className="bg-white dark:bg-gray-600 p-6 rounded-xl drop-shadow-lg">
-				{currentMessages.map((msg, index) => (
-					<div key={index} className={"flex flex-col mb-2 w-full " + (user.uid === msg.userId ? " justify-end items-end mr-auto ml-full" : " justify-start items-start mr-full ml-auto")}>
-					{/*<span className="text-lg pb-1 text-gray-500">{msg.displayName || "Unknown"}</span>*/}
-					<div className={"flex py-2 px-4 justify-end rounded-xl bg-gradient-to-r max-w-[70%] xl:max-w-[45%] " + (user.uid === msg.userId ? " justify-end bg-navbar-body-0" : " justify-start text-black bg-navbar-body-1")}>
-						<div className="break-all">{msg.text}</div>
-					</div>
-					<div className="text-gray-500 dark:text-gray-300 font-normal text-sm italic">
-						{msg.timestamp?.toDate
-						? msg.timestamp.toDate().toLocaleString()
-						: "Just now"}{" "}
-					</div>
-					</div>
-					))
-					}
-
-				<div className="w-full h-full flex relative">
-					{/*<button onClick={() => setOpenThemeBlock(!openThemeBlock)} className={" text-transparent bg-clip-text bg-gradient-to-r inline-block text-5xl" + currentTheme}>+</button>
-					{ openThemeBlock && <div className=" absolute flex mt-20 w-full rounded-xl bg-gray-800 border-4 border-gray-900 p-4 space-x-8">
-					{
-						Object.values(themes).map((theme, index) => (
-						<div key={index}>
-							<GradientColorButton callback={handleCallback} theme={theme}/>
+				<div className=" w-4/5 mx-auto">
+					<div className="bg-white dark:bg-gray-600 p-6 rounded-xl drop-shadow-lg">
+					{currentMessages.map((msg, index) => (
+						<div key={index} className={"flex flex-col mb-2 w-full " + (user.uid === msg.userId ? " justify-end items-end mr-auto ml-full" : " justify-start items-start mr-full ml-auto")}>
+						{/*<span className="text-lg pb-1 text-gray-500">{msg.displayName || "Unknown"}</span>*/}
+						<div className={"flex py-2 px-4 justify-end rounded-xl bg-gradient-to-r max-w-[70%] xl:max-w-[45%] " + (user.uid === msg.userId ? " justify-end bg-navbar-body-0" : " justify-start text-black bg-navbar-body-1")}>
+							<div className="break-all">{msg.text}</div>
+						</div>
+						<div className="text-gray-500 dark:text-gray-300 font-normal text-sm italic">
+							{msg.timestamp?.toDate
+							? msg.timestamp.toDate().toLocaleString()
+							: "Just now"}{" "}
+						</div>
 						</div>
 						))
-					}
-					</div>
-					}*/}
+						}
 
-					<form className="w-full" onSubmit={handleSendMessage}>
-					<div className="flex w-full h-full m-auto">
-						<input
-						type="text"
-						value={newMessage}
-						onChange={(e) => setNewMessage(e.target.value)}
-						placeholder="Type a message..."
-						className=" mr-4 px-6 rounded-3xl w-full text-black bg-white drop-shadow-md"
-						/>
-						<button type="submit" className={"rounded-full bg-gradient-to-r inline-block py-2 px-4 bg-navbar-body-0"}>Send</button>
+					<div className="w-full h-full flex relative">
+						{/*<button onClick={() => setOpenThemeBlock(!openThemeBlock)} className={" text-transparent bg-clip-text bg-gradient-to-r inline-block text-5xl" + currentTheme}>+</button>
+						{ openThemeBlock && <div className=" absolute flex mt-20 w-full rounded-xl bg-gray-800 border-4 border-gray-900 p-4 space-x-8">
+						{
+							Object.values(themes).map((theme, index) => (
+							<div key={index}>
+								<GradientColorButton callback={handleCallback} theme={theme}/>
+							</div>
+							))
+						}
+						</div>
+						}*/}
+
+						<form className="w-full" onSubmit={handleSendMessage}>
+						<div className="flex w-full h-full m-auto">
+							<input
+							type="text"
+							value={newMessage}
+							onChange={(e) => setNewMessage(e.target.value)}
+							placeholder="Type a message..."
+							className=" mr-4 px-6 rounded-3xl w-full text-black bg-white drop-shadow-md"
+							/>
+							<button type="submit" className={"rounded-full bg-gradient-to-r inline-block py-2 px-4 bg-navbar-body-0"}>Send</button>
+						</div>
+						</form>
 					</div>
-					</form>
+					</div>
 				</div>
-				</div>
-			</div>
+				</>
+			) : null}
 		</main>
 	);
 }

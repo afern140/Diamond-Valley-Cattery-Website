@@ -16,9 +16,9 @@ export default function EditThumbnail({ handleThumbnailChange, thumbnail }) {
 						htmlFor="add-profile-picture"
 						src={thumbnail}
 						alt="Thumbnail"
-						width={100}
-						height={100}
-						className="block mx-auto w-32 h-32 rounded-full hover:cursor-pointer hover:scale-110 transition duration-300"
+						width={200}
+						height={200}
+						className="block mx-auto border-2 relative border-black m-5 mb-2 hover:cursor-pointer hover:scale-110 transition duration-300"
 					/>
 				</label>
 			) : (

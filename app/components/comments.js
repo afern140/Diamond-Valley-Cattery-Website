@@ -86,7 +86,6 @@ function NewComment({ cat, setComments, user }) {
 
 	return(
 		<div className="text-black mt-8">
-			<h2 className="text-3xl flex flex-col items-center pb-4">New Comment</h2>
 			{ user ? (
 				<form onSubmit={handleAddComment} className="mb-8 flex flex-col items-center">
 					<textarea  

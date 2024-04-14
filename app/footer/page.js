@@ -1,7 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import Logo from "@/app/navbar/Logo";
-import Button from "@/app/navbar/Button";
 
 const Footer = () => {
   return (

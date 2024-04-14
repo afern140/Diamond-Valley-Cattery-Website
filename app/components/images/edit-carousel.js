@@ -20,7 +20,7 @@ export default function EditCarousel({ object, handleCarouselAdd, handleCarousel
 							alt={`Carousel Image ${index}`}
 							width={250}
 							height={250}
-							className="block mx-auto w-32 h-32 rounded-full"
+							className="block mx-auto border-2 relative border-black m-5 mb-2 hover:cursor-pointer hover:scale-110 transition duration-300"
 						/>
 						<button onClick={() => handleCarouselDelete(index)} className="flex mx-auto px-4 py-2 bg-navbar-body-1 drop-shadow-lg m-2 rounded-md"><span className="mx-auto">Delete</span></button>
 					</div>

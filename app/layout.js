@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-//import Navigation from "./navbar/page";
 import Header from "./header/header";
 import Footer from "./footer/page";
 import { AuthContextProvider } from "./_utils/auth-context";

@@ -433,7 +433,7 @@ export default function Page({params}){
 						</div>
 						<div className="mx-auto">
 							<div className="bg-white dark:bg-gray-500 p-10 rounded-xl drop-shadow-lg flex flex-col xl:flex-row justify-between">
-								<div className="mx-auto">
+								<div className="mx-auto size-[310px]">
 									<EditThumbnail handleThumbnailChange={handleThumbnailChange} thumbnail={thumbnail}/>
 								</div>
 								<div className="flex flex-col w-[400px] mx-auto mt-6 xl:mt-0 space-y-2 bg-navbar-body-1 dark:bg-gray-300  p-4 rounded-xl drop-shadow-lg">

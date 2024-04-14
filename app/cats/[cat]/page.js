@@ -239,26 +239,26 @@ export default function Page({params}) {
 										<h4>Doses Taken: <span className="font-normal">{vaccination.dosesTaken}</span></h4>
 										<h4>Doses Taken Dates:</h4>
 										<ul className="list-none">
-											{vaccination.datesTaken.map((date, index) => (
+											{vaccination.datesTaken && vaccination.datesTaken.length > 0 ? (vaccination.datesTaken.map((date, index) => (
 												<li key={index} className="font-normal">
 													<div className="flex space-x-2">
 														<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
 														{new Date(date.toDate()).toLocaleDateString()}
 													</div>
 												</li>
-											))}
+											))) : null}
 										</ul>
 										<h4>Doses Remaining: <span className="font-normal">{vaccination.dosesRemaining}</span></h4>
 										<h4>Planned Dosage Dates:</h4>
 										<ul className="list-none">
-											{vaccination.futureDates.fill().map((date, index) => (
+											{vaccination.futureDates && vaccination.futureDates.length > 0 ? (vaccination.futureDates.map((date, index) => (
 												<li key={index} className="font-normal">
 													<div className="flex space-x-2">
 														<Image alt=">" src="/img/right-arrow-head.svg" width={16} height={16} />
-														<span>{date && new Date(date.toDate()).toLocaleDateString()}</span>
+														{new Date(date.toDate()).toLocaleDateString()}
 													</div>
 												</li>
-											))}
+											))) : null}
 										</ul>
 									</div>
 								</div>

@@ -377,10 +377,10 @@ export default function Page() {
 			await updateObject('vaccinations', vaccination, false)
 		})
 		const ownerRef = doc(db, 'users', dbUser.docId);
-		if (cat.mother !== "") {
+		if (cat.mother !== null) {
 			motherRef = doc(db, 'cats', cat.mother.docId)
 		}
-		if (cat.father !== "") {
+		if (cat.father !== null) {
 			fatherRef = doc(db, 'cats', cat.father.docId)
 		}
 		if (cat.conditions.length > 0) {

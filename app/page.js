@@ -20,7 +20,7 @@ export default function Home() {
 	}, []);
 
   return (
-    <main className="w-screen  relative overflow-hidden">
+    <main className=" relative overflow-hidden">
       <div className="relative size-full">
         <BackgroundUnderlay />
 

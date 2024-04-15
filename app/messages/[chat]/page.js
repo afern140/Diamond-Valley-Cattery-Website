@@ -47,7 +47,7 @@ export default function Page({ params }) {
 			const thread = (await getDoc(doc(db, 'chats', params.chat))).data();
 			if (thread) {
 				thread.users.map(async (otherUser) => {
-					setAuthorizedUsers([...authorizedUsers, otherUser])
+					authorizedUsers.push(otherUser);
 					if (user && otherUser !== user.uid) {
 						const recipientDocument = (await getDocs(query(collection(db, 'users'), where("uid", "==", otherUser))));
 						const recipient = recipientDocument.docs.map(doc => ({ docId: doc.id, ...doc.data() }))[0];

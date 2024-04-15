@@ -14,7 +14,7 @@ export default function Home() {
 	useEffect(() => {
 		const fetchImages = async () => {
 			const images = await getObject('images', 'home');
-			setImages(images);
+			setImages(images.carouselImages);
 		};
 		fetchImages();
 	}, []);
